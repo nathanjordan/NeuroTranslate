@@ -1,0 +1,8 @@
+org.morphml.biophysics.schema
+org.morphml.channelml.schema
+org.morphml.metadata.schema
+org.morphml.morphml.schema
+org.morphml.networkml.schema
+org.morphml.neuroml.schema
+unr.neurotranslate.main
+unr.neurotranslate.util

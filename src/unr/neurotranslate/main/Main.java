@@ -5,11 +5,7 @@
  */
 package unr.neurotranslate.main;
 
-import org.morphml.networkml.schema.Networkml;
-import org.morphml.neuroml.schema.Neuroml;
-
-import unr.neurotranslate.util.NeuroMLConverter;
-
+import unr.neurotranslate.util.NCSParser;
 /**
  * @author njordan
  * 
@@ -21,21 +17,24 @@ public class Main {
 	 * @throws Exception 
 	 */
 	
-	static {
-	    System.loadLibrary("nativelib");
-	  }
-	
 	public static void main(String[] args) throws Exception {
-			
-			Neuroml test;
-			
-			NeuroMLConverter converter = new NeuroMLConverter();
-			
-			test = converter.readNeuroML("/home/njordan/Downloads/Cerebellum.xml");
-			
-			converter.neuromlToXml( test , "/home/njordan/Downloads/Cerebellum_out.xml");
-			
-			System.out.println("good!");
+		
+		//Neuroml test;
+		
+		//NeuroMLConverter converter = new NeuroMLConverter();
+		
+		//test = converter.readNeuroML("/home/njordan/Downloads/Cerebellum.xml");
+		
+		//converter.neuromlToXml( test , "/home/njordan/Downloads/Cerebellum_out.xml");
+		
+		//System.out.println("good!");
+		
+		int returned = 0;
+		NCSParser parser = new NCSParser();
+		String filename = "ffdsa";
+		//Always node 0 for now...output is 0 otherwise it will start printing stuff
+		returned = parser.ParseInput( 0 , filename.toCharArray() , 0 );
+		System.out.println(returned);
 			
 		
 		}

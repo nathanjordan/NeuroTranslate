@@ -43,24 +43,24 @@ public class NeuroMLConverter
 	
 	
 	
+	@SuppressWarnings("unchecked")
 	public Morphml xmlToMorphology(String xmlFile) throws Exception
 	{
 		File f = new File(xmlFile);
 		if (!f.exists()) throw new FileNotFoundException(f.getAbsolutePath());
 		
-		JAXBElement<Morphml> jbe =
-			(JAXBElement<Morphml>) unmarshaller.unmarshal(f);
+		JAXBElement<Morphml> jbe = (JAXBElement<Morphml>) unmarshaller.unmarshal(f);
 		
 		return jbe.getValue();		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ChannelmlType xmlToChannel(String xmlfile) throws Exception
 	{
 		File f = new File(xmlfile);
 		if (!f.exists()) throw new FileNotFoundException(f.getAbsolutePath());
 		
-		JAXBElement<ChannelmlType> jbe =
-			(JAXBElement<ChannelmlType>) unmarshaller.unmarshal(f);
+		JAXBElement<ChannelmlType> jbe = (JAXBElement<ChannelmlType>) unmarshaller.unmarshal(f);
 		
 		return jbe.getValue();
 	}

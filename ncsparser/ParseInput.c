@@ -22,7 +22,7 @@ TMP_INPUT *TIN;       /* This must be global so parse.y can access it */
 char *currentFile = NULL;
 
 
-ARRAYS *ParseInput (int node, char *filename, int output)
+extern ARRAYS *ParseInput (int node, char *filename, int output)
 {
   TREENODE *SymTree;
   ARRAYS *AR;

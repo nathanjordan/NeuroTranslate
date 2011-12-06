@@ -6,6 +6,6 @@ public class NCSParser {
 		System.load("~/Downloads/workspace/NeuroTranslate/native/ncsparser.so");
 		}
 	
-	public native Object ParseInput( int node , char[] filename, int output );
+	public static native Object ParseInput( int node , String filename, int output );	
 		
 	}

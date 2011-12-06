@@ -7,8 +7,8 @@ JNIEXPORT jobject JNICALL Java_unr_neurotranslate_util_NCSParser_ParseInput(JNIE
 	
 	char * filename8 = (*env)->GetStringUTFChars( env, filename , NULL );
 	
-	ARRAYS* arrays = ParseInput ( 1 , filename , 0 );
+	ARRAYS* arrays = ParseInput ( 1 , filename8 , 0 );
 	
-	return null;
+	return 0;
 	
 	}

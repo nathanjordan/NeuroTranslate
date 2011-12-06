@@ -29,11 +29,10 @@ public class Main {
 		
 		//System.out.println("good!");
 		
-		int returned = 0;
-		NCSParser parser = new NCSParser();
+		Object returned;
 		String filename = "ffdsa";
 		//Always node 0 for now...output is 0 otherwise it will start printing stuff
-		returned = parser.ParseInput( 0 , filename.toCharArray() , 0 );
+		returned = NCSParser.ParseInput( 0 , filename , 0 );
 		System.out.println(returned);
 			
 		

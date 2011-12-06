@@ -59,7 +59,7 @@ $(NAME).a: $(SRC)
 	$(CC) -c $(CFLAGS) $(INCLUDES)  $(?:.o=.c)
 #	ar -rv $@.a $?
 #	ar -rv parse.a $?
-	gcc -fPIC -shared -o ncsparser.so *.o
+	gcc -fPIC -shared -o ncsparser.so *.o -lmpi
 
 
 $(NAME): $(TOBJS) $(NAME).a

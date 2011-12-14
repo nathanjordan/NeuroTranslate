@@ -43,7 +43,7 @@ extern ARRAYS *ParseInput (int node, char *filename, int output)
 
 //printf ("Node %d, ReadFile returns %d bytes\n", node, nbytes);
 
-  printerr ("Parsing file...\n");
+  //printerr ("Parsing file...\n");
 
   scanner (fbuf, nbytes);
   free (fbuf);
@@ -71,7 +71,7 @@ extern ARRAYS *ParseInput (int node, char *filename, int output)
     return (NULL);
   }
 
-  if (TIN->Node == 0) PrintInfo (TIN, stdout);
+  //if (TIN->Node == 0) PrintInfo (TIN, stdout);
 
 /* Add an option here to check all the input files which are */
 /* named in the brain definition file?                       */
@@ -90,18 +90,23 @@ extern ARRAYS *ParseInput (int node, char *filename, int output)
     AR = fromLoadConvertIn (SymTree);
 
 //printf ("Node %3d: ConvertIn done\n", node); fflush (stdout);
-  if (TIN->nDataErr > 0)
+
+  //////////////////////////////////////////////////////////////////////////////////////////
+  //THIS NEEDS TO BE RE-ENABLED!!
+  //////////////////////////////////////////////////////////////////////////////////////////
+
+  /*if (TIN->nDataErr > 0)
   {
     print2err ("Parsing failed, %d data errors found.\n", TIN->nDataErr);
     return (NULL);
-  }
+  }*/
 
   if (AR != NULL)
   {
     if (TIN->Node == 0)
     {
-      printf ("LayerCount = %d\n", AR->LayerCount); 
-      printf ("CellCount  = %d\n", AR->CellCount); 
+      //printf ("LayerCount = %d\n", AR->LayerCount);
+      //printf ("CellCount  = %d\n", AR->CellCount);
 
 //    PrintBrain (stdout, AR);
 

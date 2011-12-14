@@ -30,11 +30,12 @@ public class Main {
 		//System.out.println("good!");
 		
 		Object returned;
-		String filename = "ffdsa";
+		
+		String filename = "/home/njordan/Downloads/PrototypeNCS.in";
 		//Always node 0 for now...output is 0 otherwise it will start printing stuff
 		returned = NCSParser.ParseInput( 0 , filename , 0 );
+		
 		System.out.println(returned);
-			
 		
 		}
 

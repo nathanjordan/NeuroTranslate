@@ -12,11 +12,11 @@ public class Brain {
 	
 	int spikeRpt;
 	
-	Number Duration;
+	double Duration;
 	
 	int FSV;
 	
-	Number Seed;
+	long Seed;
 	
 	int nColumns;
 	
@@ -44,7 +44,7 @@ public class Brain {
 	
 	char[] savefile;
 	
-	Number savetime;
+	double savetime;
 	
 	char[] loadfile;
 	

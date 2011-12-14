@@ -1,6 +1,8 @@
 package unr.neurotranslate.ncsclasses;
 
 public class Arrays {
+	//test array
+	public int[] test;
 	
 	public int LayerCount;
 	public int CellCount;

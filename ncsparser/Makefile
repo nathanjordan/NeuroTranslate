@@ -20,7 +20,8 @@ CFLAGS += -D_IS_C
 
 # Pentium Pro/Pentium II/Pentium III/Xeon/K6/K7/6x86mx
 
-CFLAGS += -I/usr/lib/openmpi/include/ -I/usr/lib/jvm/java-6-sun-1.6.0.26/include/ -I/usr/lib/jvm/java-6-sun-1.6.0.26/include/linux/ -fPIC
+#CFLAGS += -I/usr/lib/openmpi/include/ -I/usr/lib/jvm/java-6-sun-1.6.0.26/include/ -I/usr/lib/jvm/java-6-sun-1.6.0.26/include/linux/
+CFLAGS += -I/usr/lib/openmpi/include/ -I/usr/lib/jvm/java-6-sun-1.6.0.26/include/ -I/usr/lib/jvm/java-6-sun-1.6.0.26/include/linux/ -fPIC -ggdb
 
 #CFLAGS += -mpentiumpro -malign-functions=2 -malign-loops=2 \
 #          -malign-jumps=2 -march=i686 -mcpu=i686
@@ -36,13 +37,15 @@ ifeq ($(LIB),yes)
   SRC = $(NAME)(parse.o) $(NAME)(scan.o) $(NAME)(ParseInput.o) $(NAME)(elements.o) \
         $(NAME)(list.o) $(NAME)(connect.o) $(NAME)(SymTree.o) $(NAME)(tree.o)      \
         $(NAME)(ConvertIn.o) $(NAME)(defines.o) $(NAME)(dump.o)   \
-        $(NAME)(NameDefine.o) $(NAME)(ReadFile.o) $(NAME)(printerr.o) $(NAME)(JNIParser.o)
+        $(NAME)(NameDefine.o) $(NAME)(ReadFile.o) $(NAME)(printerr.o) $(NAME)(JNIParser.o) \
+        $(NAME)(JNIFunctions.o)
 else
 
   SRC = parse.o scan.o ParseInput.o elements.o \
         list.o connect.o SymTree.o tree.o      \
         ConvertIn.o defines.o dump.o   \
-        NameDefine.o ReadFile.o printerr.o JNIParser.o
+        NameDefine.o ReadFile.o printerr.o JNIParser.o \
+        JNIFunctions.o
 
   YACC = bison -v -d -y
   LEX  = flex
@@ -59,7 +62,8 @@ $(NAME).a: $(SRC)
 	$(CC) -c $(CFLAGS) $(INCLUDES)  $(?:.o=.c)
 #	ar -rv $@.a $?
 #	ar -rv parse.a $?
-	gcc -fPIC -shared -o ncsparser.so *.o -lmpi
+	gcc -fPIC -shared -o ncsparser.so *.o -lmpi -ggdb
+	gcc -o test.out *.o -lmpi -ggdb
 
 
 $(NAME): $(TOBJS) $(NAME).a
@@ -68,7 +72,7 @@ $(NAME): $(TOBJS) $(NAME).a
 	$(CC) -o $@ $(TOBJS) $(LFLAGS) $(INCLUDES) $(NAME).a $(LIBS)
 
 clean:
-	 rm -f *.o *~ core gmon.out scan.c $(NAME) parse.a parse.c parse.h ncsparser.so
+	 rm -f *.o *~ core gmon.out scan.c $(NAME) parse.a parse.c parse.h *.so *.out
 
 maintst.o:   maintst.c options.h
 parse.o:     parse.y input.h
@@ -82,6 +86,7 @@ tree.o:      tree.c tree.h
 ConvertIn.o:  input.h SymTree.h InitStruct.h arrays.h
 defines.o :  defines.h
 JNIParser.o : JNIParser.h JNIParser.c
+JNIFunctions : JNIFunctions.h JNIFunctions.c
 
 parse.h:    parse.c
 

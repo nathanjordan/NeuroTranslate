@@ -51,13 +51,14 @@ char *ReadFile (char *name, int node, int *bytes)
     }
   }
 
-  MPI_Bcast (bytes, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  //MPI_Bcast (bytes, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
   if (*bytes > 0)
   {
-    if (node == 0)
+	  //for the simulator to spread the process
+    /*if (node == 0)
     {
-      MPI_Comm_size (MPI_COMM_WORLD, &nnodes);      /* Hack for now */
+      MPI_Comm_size (MPI_COMM_WORLD, &nnodes);      // Hack for now//
 
       end = data + *bytes;
       send = data;
@@ -82,10 +83,10 @@ char *ReadFile (char *name, int node, int *bytes)
         MPI_Recv (recv, *bytes, MPI_BYTE, 0, 0, MPI_COMM_WORLD, &status);
         recv += BLKSIZE;
       }
-    }
+    }*/
 
-    data [*bytes] = '\0';       /* make sure it's NULL-terminated, as */
-                                /* calling code may treat as string   */
+    data [*bytes] = '\0';        //make sure it's NULL-terminated, as
+                                //calling code may treat as string
   }
   else
     data = NULL;
@@ -102,7 +103,7 @@ char *ReadFile (char *name, int node, int *bytes)
 double *ReadFPNFile (char *name, int node, int *nvals, int reverse)
 {
   FILE *in;
-  MPI_Status status;
+  //MPI_Status status;
   struct stat fs;
   size_t nbytes, nread;
   double f, *fpn, *offset;
@@ -197,7 +198,7 @@ double *ReadFPNFile (char *name, int node, int *nvals, int reverse)
     }
   }
 
-  MPI_Bcast (nvals, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  //MPI_Bcast (nvals, 1, MPI_INT, 0, MPI_COMM_WORLD);
   doublesPerBlock = floor(BLKSIZE/sizeof(double));
 
   //if there are many values, need to send in smaller blocks
@@ -206,16 +207,16 @@ double *ReadFPNFile (char *name, int node, int *nvals, int reverse)
   {
     if (node == 0)
     {
-      MPI_Comm_size (MPI_COMM_WORLD, &nnodes);
+     // MPI_Comm_size (MPI_COMM_WORLD, &nnodes);
       offset = fpn;
       for( i=0; i<*nvals; i+=doublesPerBlock )
       {
         for (j = 1; j < nnodes; j++)
         {
-          if( i+doublesPerBlock > *nvals )
-            MPI_Send (offset, (*nvals-i), MPI_DOUBLE, j, 0, MPI_COMM_WORLD);
-          else
-            MPI_Send (offset, doublesPerBlock, MPI_DOUBLE, j, 0, MPI_COMM_WORLD);
+          //if( i+doublesPerBlock > *nvals )
+            //MPI_Send (offset, (*nvals-i), MPI_DOUBLE, j, 0, MPI_COMM_WORLD);
+          //else
+            //MPI_Send (offset, doublesPerBlock, MPI_DOUBLE, j, 0, MPI_COMM_WORLD);
         }
         offset += doublesPerBlock;
       }
@@ -227,10 +228,10 @@ double *ReadFPNFile (char *name, int node, int *nvals, int reverse)
 
       for( i=0; i<*nvals; i+=doublesPerBlock )
       {
-        if( i+doublesPerBlock > *nvals )
-          MPI_Recv (offset, (*nvals-i), MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &status);
-        else
-          MPI_Recv (offset, doublesPerBlock, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &status);
+        //if( i+doublesPerBlock > *nvals )
+          //MPI_Recv (offset, (*nvals-i), MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &status);
+        //else
+          //MPI_Recv (offset, doublesPerBlock, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &status);
         offset += doublesPerBlock;
       }
     }

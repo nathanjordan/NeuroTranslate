@@ -15,7 +15,7 @@ public class Recurrent {
 	
 	public char[] synName;
 	
-	public Number PrecurrenceAtoB;
-	public Number PrecurrenceBtoA;
+	public double PrecurrenceAtoB;
+	public double PrecurrenceBtoA;
 	
 	}

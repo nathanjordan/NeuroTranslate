@@ -2,6 +2,8 @@ package unr.neurotranslate.ncsclasses;
 
 public class Connect {
 	
+	public Locator l;
+	
 	public char[] fromColName;
 	public char[] fromLayName;
 	public char[] fromCmpName;
@@ -21,12 +23,12 @@ public class Connect {
 	public int toCmp;
 	public int synType;
 	
-	public Number speed;
-	public Number prob;
-	public Number step;
+	public double speed;
+	public double prob;
+	public double step;
 	
-	public Number[] delay;
-	public Number[] recurrentProbability;
+	public double[] delay;
+	public double[] recurrentProbability;
 	
 	public Connect recurrentConnection;
 	

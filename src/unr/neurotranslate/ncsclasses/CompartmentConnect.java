@@ -7,9 +7,9 @@ public class CompartmentConnect {
 	public char[] toCmpName;
 	public int fromCmp;
 	public int toCmp;
-	public Number Speed;
-	public Number G;
-	public Number retroG;
-	public Number delay;
+	public double Speed;
+	public double G;
+	public double retroG;
+	public double delay;
 	
 	}

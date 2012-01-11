@@ -4,12 +4,12 @@ public class CShell {
 	
 	public Locator l;
 	
-	public Number width;
+	public double width;
 	
-	public Number height;
+	public double height;
 	
-	public Number x;
+	public double x;
 	
-	public Number y;
+	public double y;
 	
 	}

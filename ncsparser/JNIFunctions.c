@@ -8,6 +8,11 @@
 
 #define NCS_PACKAGE "Lunr/neurotranslate/ncsclasses/\0"
 
+/**
+ *
+ * Sets a java integer field
+ *
+ */
 void setIntField( JNIEnv * env, jobject o , char* fieldName , int value ) {
 
 	jclass c = (*env)->GetObjectClass( env, o );
@@ -18,6 +23,11 @@ void setIntField( JNIEnv * env, jobject o , char* fieldName , int value ) {
 
 	}
 
+/**
+ *
+ * Sets a java long field
+ *
+ */
 void setLongField( JNIEnv * env, jobject o , char* fieldName , long value ) {
 
 	jclass c = (*env)->GetObjectClass( env, o );
@@ -28,6 +38,11 @@ void setLongField( JNIEnv * env, jobject o , char* fieldName , long value ) {
 
 	}
 
+/**
+ *
+ * Sets a java float field
+ *
+ */
 void setFloatField( JNIEnv * env, jobject o , char* fieldName , float value ) {
 
 	jclass c = (*env)->GetObjectClass( env, o );
@@ -38,6 +53,11 @@ void setFloatField( JNIEnv * env, jobject o , char* fieldName , float value ) {
 
 	}
 
+/**
+ *
+ * Sets a java double field
+ *
+ */
 void setDoubleField( JNIEnv * env, jobject o , char* fieldName , double value ) {
 
 	jclass c = (*env)->GetObjectClass( env, o );
@@ -48,6 +68,11 @@ void setDoubleField( JNIEnv * env, jobject o , char* fieldName , double value ) 
 
 	}
 
+/**
+ *
+ * Sets a java char field
+ *
+ */
 void setCharField( JNIEnv * env, jobject o , char* fieldName , char value ) {
 
 	jclass c = (*env)->GetObjectClass( env, o );
@@ -58,6 +83,11 @@ void setCharField( JNIEnv * env, jobject o , char* fieldName , char value ) {
 
 	}
 
+/**
+ *
+ * Sets a java object field with another java object
+ *
+ */
 void setObjField( JNIEnv * env, jobject o , char* fieldName , jobject value , char* class ) {
 
 	jclass c = (*env)->GetObjectClass( env, o );
@@ -74,6 +104,11 @@ void setObjField( JNIEnv * env, jobject o , char* fieldName , jobject value , ch
 
 	}
 
+/**
+ *
+ * Sets a java integer array field
+ *
+ */
 void setIntArrayField( JNIEnv * env, jobject o , char* fieldName , int size , int* values) {
 
 	jclass c = (*env)->GetObjectClass( env, o );
@@ -88,6 +123,11 @@ void setIntArrayField( JNIEnv * env, jobject o , char* fieldName , int size , in
 
 	}
 
+/**
+ *
+ * Sets a java long array field
+ *
+ */
 void setLongArrayField( JNIEnv * env, jobject o , char* fieldName , int size , long* values) {
 
 	jclass c = (*env)->GetObjectClass( env, o );
@@ -102,6 +142,11 @@ void setLongArrayField( JNIEnv * env, jobject o , char* fieldName , int size , l
 
 	}
 
+/**
+ *
+ * Sets a java float array field
+ *
+ */
 void setFloatArrayField( JNIEnv * env, jobject o , char* fieldName , int size , float* values) {
 
 	jclass c = (*env)->GetObjectClass( env, o );
@@ -116,6 +161,11 @@ void setFloatArrayField( JNIEnv * env, jobject o , char* fieldName , int size , 
 
 	}
 
+/**
+ *
+ * Sets a java double array field
+ *
+ */
 void setDoubleArrayField( JNIEnv * env, jobject o , char* fieldName , int size , double* values) {
 
 	jclass c = (*env)->GetObjectClass( env, o );
@@ -130,6 +180,11 @@ void setDoubleArrayField( JNIEnv * env, jobject o , char* fieldName , int size ,
 
 	}
 
+/**
+ *
+ * Sets a java char array field
+ *
+ */
 void setCharArrayField( JNIEnv * env, jobject o , char* fieldName , int size , char* values ) {
 
 	jclass c = (*env)->GetObjectClass( env, o );
@@ -145,6 +200,11 @@ void setCharArrayField( JNIEnv * env, jobject o , char* fieldName , int size , c
 
 	}
 
+/**
+ *
+ * Sets a java object array field with an array of java objects
+ *
+ */
 void setObjArrayField( JNIEnv * env, jobject o , char* fieldName , int size , jobject* values , char* class ) {
 
 	jclass c = (*env)->GetObjectClass( env, o );

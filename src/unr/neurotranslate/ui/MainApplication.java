@@ -23,6 +23,12 @@ import org.gnome.gtk.Window;
 import org.gnome.gtk.WindowPosition;
 import org.gnome.gtk.ToggleButton.Toggled;
 
+
+/**
+ * The MainApplication class is responsible for creating the menu-bar, tab interface, and handling importing and exporting of files. A Table layout is used in order to hold all the widgets used
+ * in this tab. 
+ * @author nitish/kim
+ */
 public class MainApplication extends Window {
 	
 	// Vertical box containers	
@@ -51,7 +57,7 @@ public class MainApplication extends Window {
 	private String importedFile;
 	private File temp;
 	private Statusbar statusBar;	
-	    	
+	
 	// NeuroTranslate constructor
 	public MainApplication() {
 		
@@ -67,8 +73,12 @@ public class MainApplication extends Window {
 		setDefaultSize( windowWidth, windowHeight );		
         setPosition( WindowPosition.CENTER );       
         
+        // Show all window components
         showAll();
-        nmlTabs.hide();
+        
+        // Hide one set of tabs initially            
+        nmlTabs.hide();	
+         
     	// Handle quitting program
 		connect(new Window.DeleteEvent() {
             public boolean onDeleteEvent(Widget source, Event event) {
@@ -157,17 +167,16 @@ public class MainApplication extends Window {
         // Toggle buttons for view stack 
        ncsTButton = new ToggleButton( "NCS" );
        nmlTButton = new ToggleButton( "NeuroML" );
-       // Align toggle buttons to the far right of window
-       Alignment viewAlign = new  Alignment( 1.0f, 0.0f, 0.0f, 0.0f );       
        
+       // Align toggle buttons to the far right of window
+       Alignment viewAlign = new  Alignment( 1.0f, 0.0f, 0.0f, 0.0f );              
        HButtonBox viewBox = new HButtonBox();
        viewBox.packStart( ncsTButton, false, false, 0 );
        viewBox.packStart( nmlTButton, false, false, 0 );
        viewAlign.add( viewBox );
        ncsBox.packEnd( viewAlign, false, false, 0 );
  
-       // Set ncs view active on program start
-       //ncsTButton.setActive( true );
+       // Set ncs view active on program start      
        ncsTButton.setActive( true );
         
        // Switch to NCS view if toggled
@@ -213,7 +222,7 @@ public class MainApplication extends Window {
 		
 		// Initialize a status bar for current imported file
 		statusBar = new Statusbar();
-		statusBar.setMessage( "No file imported..." );					
+		statusBar.setMessage( "No file imported..." );
 		
 		// Set up menu-bar
 		MenuBar menuBar = new MenuBar();
@@ -265,18 +274,28 @@ public class MainApplication extends Window {
 				// Figure out which type of file was imported 							
 				if( importedFile.endsWith( ".inc" ) ) {
 										
-				/*
-				 * TODO - deal with NCS
-				 */
-				
+					/*
+					 * TODO - deal with NCS
+					 */
+					
+					// Show ncs view and hide neuroml
+					ncsTabs.show();
+					nmlTabs.hide();
+					nmlTButton.setActive( false );
+					ncsTButton.setActive( true );
 				}											
 										
 				else if( importedFile.endsWith( ".xml" ) ) {
 				
-				/*
-				 * TODO - deal with XML
-				 */
+					/*
+					 * TODO - deal with XML
+					 */
 					
+					// Show neuroml view and hide ncs
+					nmlTabs.show();
+					ncsTabs.hide();
+					nmlTButton.setActive( true );
+					ncsTButton.setActive( false );
 				}
 																						
 				else {
@@ -287,8 +306,7 @@ public class MainApplication extends Window {
 			}				
 			}
 		});
-	    
-	    // Set up options for "Edit" menu
+	    	  
 	    // TODO - Export as NCS or NeuroML
 	    MenuItem exportItem = new MenuItem( "Export File");
 	    exportItem.connect(new MenuItem.Activate() {
@@ -305,11 +323,7 @@ public class MainApplication extends Window {
 			
 			// deal with the result
 			if( response == ResponseType.OK ) {
-				/* TODO
-				 * 
-				 *  Open a window/list in order to allow users to save a file
-				 *  
-				 */
+
 				System.out.println( saveDialog.getFilename() );				
 			}
 			}

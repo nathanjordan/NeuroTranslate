@@ -13,6 +13,11 @@ import org.gnome.gtk.TextComboBoxEntry;
 import org.gnome.gtk.VBox;
 import org.gnome.gtk.Widget;
 
+/**
+ * The NetworkTab class is responsible for handling all the Network tab layout and widgets. A Table layout is used in order to hold all the widgets used
+ * in this tab. 
+ * @author nitish/kim
+ */
 public class NetworkTab {
 
 	// Nested tab variables

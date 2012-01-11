@@ -17,6 +17,11 @@ import org.gnome.gtk.TextComboBoxEntry;
 import org.gnome.gtk.VBox;
 import org.gnome.gtk.Widget;
 
+/**
+ * The MorphologyTab class is responsible for handling all the Morphology tab layout and widgets. A Table layout is used in order to hold all the widgets used
+ * in this tab. This tab creates a nested tab interface for the Cells, Segments, and Cables tab. 
+ * @author nitish/kim
+ */
 public class MorphologyTab {
 	
 	// Nested tab variables

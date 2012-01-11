@@ -2,6 +2,7 @@ package unr.neurotranslate.ui;
 
 import java.util.ArrayList;
 
+import org.gnome.gtk.Alignment;
 import org.gnome.gtk.AttachOptions;
 import org.gnome.gtk.Box;
 import org.gnome.gtk.Button;
@@ -19,12 +20,20 @@ import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
 import org.gnome.gtk.ComboBox.Changed;
 
+/**
+ * The AntColumnShellTab class is responsible for handling all the Column Shell tab layout and widgets. A Table container is used in order to display the widgets.
+ * @author nitish/kim
+ */
 public class AntColumnShellTab {
 
+	// Bool value used for updating column shell combo-box
 	private Boolean changing;
 	
+	// List of all widgets under the column shell tab
 	private ArrayList<Widget> widgets;
 	
+	// List of the current column shells present in the model
+	private ArrayList<columnShell> columnShellList;
 	
 	public AntColumnShellTab( VBox box ) {
 				
@@ -71,7 +80,7 @@ public class AntColumnShellTab {
 		cShellRemove.setImage( removeImage );
 		
 		// Set data for columnShell combo-box from fake model
-		final ArrayList<columnShell> columnShellList = new ArrayList<columnShell>();		
+		columnShellList = new ArrayList<columnShell>();		
 		columnShellList.add( new columnShell( "column_shell_a", "300", "800", "(0, 800)") );
 		columnShellList.add( new columnShell( "column_shell_b", "4", "5", "(2, 3)") );
 		columnShellList.add( new columnShell( "column_shell_c", "7", "2", "(4, 5)") );			
@@ -106,7 +115,7 @@ public class AntColumnShellTab {
 
 		// Set changing variable to false initially. 		
 		changing = false;
-		
+				
 		// Update corresponding Column Shell data as combo-box changes
 		((TextComboBox) widgets.get(0)).connect(new Changed() {
 			
@@ -197,7 +206,35 @@ public class AntColumnShellTab {
 				// Set remove button to not sensitive to prevent silliness
 				arg0.setSensitive( false );				
 			}
-		});			
+		});	
+		
+		// Add save/reset buttons to anatomy tab
+		Alignment balign = new  Alignment( 0.0f, 0.0f, 0.0f, 0.0f );
+		Button saveB = new Button( Stock.SAVE );		
+		Button resetB = new Button( "_Reset" );		
+		HBox contentControl = new HBox( false, 5 );
+		contentControl.packStart( saveB, false, false, 0 );
+		contentControl.packStart( resetB, false, false, 5 );
+		balign.add(contentControl);		
+		box.packEnd( balign, false, false, 0 );
+		
+		
+		// Update column shell list if user chooses to save data
+		saveB.connect( new Clicked() {
+			
+			@Override
+			public void onClicked(Button arg0) {				
+				
+				// Get index of selected column shell
+				int index = ((ComboBox) widgets.get(0)).getActive();
+				
+				// Re-populate all column shell list with new data 
+				columnShellList.get(index).setType( ((Entry) widgets.get(1)).getText() );
+				columnShellList.get(index).setHeight( ((Entry) widgets.get(2)).getText() );
+				columnShellList.get(index).setWidth( ((Entry) widgets.get(3)).getText() );
+				columnShellList.get(index).setLocation( ((Entry) widgets.get(4)).getText() );								
+			}
+		});
+		
 	}
-	
 }

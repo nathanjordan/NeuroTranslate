@@ -3,13 +3,34 @@
 #include "JNIFunctions.h"
 #include <string.h>
 
+/***************************************************************************************
+ *
+ * Function Prototypes
+ *
+ **************************************************************************************/
+
+/**
+ * Main NCS parser function that
+ */
 extern ARRAYS *ParseInput (int node, char *filename, int output);
+
+/*
+ * Parser functions, they convert C code to java
+ */
 jobject parseArrays( JNIEnv * env , ARRAYS* arr );
 jobject parseBrain( JNIEnv * env , T_BRAIN* );
 jobject parseLocator( JNIEnv * env , LOCATOR* loc );
 jobject parseList( JNIEnv * env , LIST* l );
 jobject parseConnect( JNIEnv * env , T_CONNECT* con );
 jobject parseRecurrent( JNIEnv * env , T_RECURRENT* r );
+jobject parseCompartmentConnect( JNIEnv * env , T_CMPCONNECT* con );
+jobject parseAnything( JNIEnv * env , T_ANYTHING* a );
+
+/***************************************************************************************
+ *
+ * Native Method
+ *
+ **************************************************************************************/
 
 JNIEXPORT jobject JNICALL Java_unr_neurotranslate_util_NCSParser_ParseInput(JNIEnv * env, jobject o , jint node, jstring filename, jint output ) {
 	
@@ -19,23 +40,21 @@ JNIEXPORT jobject JNICALL Java_unr_neurotranslate_util_NCSParser_ParseInput(JNIE
 	
 	ARRAYS* arrays = ParseInput( node , filename8 , output );
 
-	printf("A");
-
 	return parseArrays( env , arrays );
 
 	}
 
 int main() {
 
-	int jjj = 5;
-
-	ARRAYS* arrays = ParseInput ( 0 , "/home/njordan/Downloads/PrototypeNCS.in" , 0 );
-
-	int ggg;
-
-	//parseArrays( env , arrays );
+	return 0;
 
 	}
+
+/***************************************************************************************
+ *
+ * Parser Functions
+ *
+ **************************************************************************************/
 
 jobject parseArrays( JNIEnv * env , ARRAYS* arr ) {
 
@@ -57,8 +76,6 @@ jobject parseBrain( JNIEnv * env , T_BRAIN* b ) {
 	jclass c = (*env)->FindClass( env, "unr/neurotranslate/ncsclasses/Brain" );
 
 	jobject brain = (*env)->AllocObject( env, c );
-
-	printf("C");
 
 	////  Brain Fields  ////
 
@@ -295,5 +312,144 @@ jobject parseCompartmentConnect( JNIEnv * env , T_CMPCONNECT* con ) {
 
 	jobject o = (*env)->AllocObject( env, c );
 
+	setObjField( env , o , "l" , parseLocator( env , &con->L) , "Locator;\0" );
+
+	if(con->fromCmpName)
+	setCharArrayField( env , o , "fromCmpName" , strlen( con->fromCmpName ) , con->fromCmpName );
+
+	if(con->toCmpName)
+	setCharArrayField( env , o , "toCmpName" , strlen( con->toCmpName ) , con->toCmpName );
+
+	setIntField( env , o , "fromCmp" , con->FromCmp );
+
+	setIntField( env , o , "toCmp" , con->ToCmp );
+
+	setDoubleField( env , o , "Speed" , con->Speed );
+
+	setDoubleField( env , o , "G" , con->G );
+
+	setDoubleField( env , o , "retroG" , con->retroG );
+
+	setDoubleField( env , o , "delay" , con->delay );
+
 	return o;
 	}
+
+jobject parseAnything( JNIEnv * env , T_ANYTHING* a ) {
+
+	jclass c = (*env)->FindClass( env, "unr/neurotranslate/ncsclasses/Anything" );
+
+	jobject o = (*env)->AllocObject( env, c );
+
+	setObjField( env , o , "l" , parseLocator( env , &a->L) , "Locator;\0" );
+
+	return o;
+
+	}
+
+jobject parseCShell( JNIEnv * env , T_CSHELL* cs ) {
+
+	jclass c = (*env)->FindClass( env, "unr/neurotranslate/ncsclasses/CShell" );
+
+	jobject o = (*env)->AllocObject( env, c );
+
+	setObjField( env , o , "l" , parseLocator( env , &cs->L) , "Locator;\0" );
+
+	setDoubleField( env , o , "width" , cs->width );
+
+	setDoubleField( env , o , "height" , cs->height );
+
+	setDoubleField( env , o , "x" , cs->x );
+
+	setDoubleField( env , o , "y" , cs->y );
+
+	return o;
+
+	}
+
+jobject parseColumn( JNIEnv * env , T_COLUMN* col ) {
+
+	jclass c = (*env)->FindClass( env, "unr/neurotranslate/ncsclasses/Column" );
+
+	jobject o = (*env)->AllocObject( env, c );
+
+	setObjField( env , o , "l" , parseLocator( env , &col->L) , "Locator;\0" );
+
+	if(col->shellName)
+	setCharArrayField( env , o , "shellName" , strlen( col->shellName ) , col->shellName );
+
+	setIntField( env , o , "CShell" , col->CShell );
+
+	setIntField( env , o , "nLayers" , col->nLayers );
+
+	if(col->LayerNames)
+	setObjField( env , o , "layerNames" , parseList( env , col->LayerNames) , "List;\0" );
+
+	if(col->Layers)
+	setIntArrayField( env , o , "layers" , col->nLayers , col->Layers );
+
+	setIntField( env , o , "nConnect" , col->nConnect );
+
+	jobject* cnList = calloc( sizeof(jobject) , col->nConnect );
+
+	for( int i = 0 ; i < col->nConnect ; i++ ) {
+
+		cnList[i] = parseConnect( env , &col->CnList[i] );
+
+		}
+
+	setObjArrayField( env , o , "cnList" , col->nConnect , cnList , "Connect;\0" );
+
+	//////////////////
+	//
+	//  connect (WTF???)
+	//
+	//////////////////
+
+	setIntField( env , o , "nRecurrent" , col->nRecurrent );
+
+	jobject* recurrentList = calloc( sizeof(jobject) , col->nRecurrent );
+
+	for( int i = 0 ; i < col->nRecurrent ; i++ ) {
+
+		recurrentList[i] = parseRecurrent( env , &col->recurrentList[i] );
+
+		}
+
+	setObjArrayField( env , o , "recurrentList" , col->nRecurrent , recurrentList , "Recurrent;\0" );
+
+	return o;
+
+	}
+
+jobject parseLShell( JNIEnv * env , T_LSHELL* shell ) {
+
+	jclass c = (*env)->FindClass( env, "unr/neurotranslate/ncsclasses/LShell" );
+
+	jobject o = (*env)->AllocObject( env, c );
+
+	setObjField( env , o , "l" , parseLocator( env , &shell->L) , "Locator;\0" );
+
+	setDoubleField( env , o , "lower" , shell->Lower );
+
+	setDoubleField( env , o , "upper" , shell->Upper );
+
+	return o;
+
+	}
+
+/*jobject parseLayer( JNIEnv * env , T_LAYER* lay ) {
+
+	jclass c = (*env)->FindClass( env, "unr/neurotranslate/ncsclasses/Layer" );
+
+	jobject o = (*env)->AllocObject( env, c );
+
+	setObjField( env , o , "l" , parseLocator( env , &lay->L) , "Locator;\0" );
+
+	if(lay->shellName)
+	setCharArrayField( env , o , "shellName" , strlen( lay->shellName ) , lay->shellName );
+
+	setIntField( env , o , "LShell" , lay->Lower );
+
+	}
+*/

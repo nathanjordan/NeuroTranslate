@@ -1,5 +1,10 @@
 package unr.neurotranslate.ui;
 
+/**
+ * This class is used in order to represent a Column Shell. The type, width, height, and location parameters are used to represent one Column Shell. 
+ * The getters and setters are used in order to retrieve and store information from the column shell instance.
+ * @author nitish/kim
+ */
 public class columnShell {
 	
 	private String type;
@@ -39,6 +44,22 @@ public class columnShell {
 	
 	public String getLocation() {
 		return location;
+	}
+	
+	public void setType( String t ) {
+		type = t;
+	}
+	
+	public void setWidth(  String w ) {
+		width = w;
+	}
+	
+	public void setHeight(  String h ) {
+		height = h;
+	}
+	
+	public void setLocation( String l  ) {
+		location = l;
 	}
 }
 

@@ -10,9 +10,13 @@ import org.gnome.gtk.TextComboBoxEntry;
 import org.gnome.gtk.VBox;
 import org.gnome.gtk.Widget;
 
+/**
+ * The ChannelTab class is responsible for handling all the Channel tab layout and widgets. A Table container is used in order to display the widgets. 
+ * @author nitish/kim
+ */
 public class ChannelTab {
 	
-	
+	// List of all the widgets for this tab
 	private ArrayList<Widget> widgets;
 	
 	public ChannelTab( VBox box ) {

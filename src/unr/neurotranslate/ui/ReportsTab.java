@@ -10,6 +10,11 @@ import org.gnome.gtk.TextComboBox;
 import org.gnome.gtk.VBox;
 import org.gnome.gtk.Widget;
 
+/**
+ * The ReportsTab class is responsible for handling all the Report tab layout and widgets. A Table layout is used in order to hold all the widgets used
+ * in this tab. This tab will retrieve the report data generated after the simulation has been run.
+ * @author nitish/kim
+ */
 public class ReportsTab {
 
 	private ArrayList<Widget> widgets;

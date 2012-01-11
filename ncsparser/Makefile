@@ -21,7 +21,7 @@ CFLAGS += -D_IS_C
 # Pentium Pro/Pentium II/Pentium III/Xeon/K6/K7/6x86mx
 
 #CFLAGS += -I/usr/lib/openmpi/include/ -I/usr/lib/jvm/java-6-sun-1.6.0.26/include/ -I/usr/lib/jvm/java-6-sun-1.6.0.26/include/linux/
-CFLAGS += -I/usr/lib/openmpi/include/ -I/usr/lib/jvm/java-6-sun-1.6.0.26/include/ -I/usr/lib/jvm/java-6-sun-1.6.0.26/include/linux/ -fPIC -ggdb
+CFLAGS += -I/usr/lib/openmpi/include/ -I/usr/lib/jvm/java-6-sun-1.6.0.26/include/ -I/usr/lib/jvm/java-6-sun-1.6.0.26/include/linux/ -fPIC -ggdb -std=c99
 
 #CFLAGS += -mpentiumpro -malign-functions=2 -malign-loops=2 \
 #          -malign-jumps=2 -march=i686 -mcpu=i686

@@ -2,6 +2,7 @@ package unr.neurotranslate.ui;
 
 import java.util.ArrayList;
 
+import org.gnome.gtk.Alignment;
 import org.gnome.gtk.AttachOptions;
 import org.gnome.gtk.Box;
 import org.gnome.gtk.Button;
@@ -16,12 +17,15 @@ import org.gnome.gtk.TextComboBox;
 import org.gnome.gtk.VBox;
 import org.gnome.gtk.Widget;
 
+/**
+ * The AntLayerShellTab class is responsible for handling all the Layer Shell tab layout and widgets. A Table container is used in order to display the widgets. 
+ * @author nitish/kim
+ */
 public class AntLayerShellTab {
-	
-	
+
+	// List of all widgets used in this tab
 	ArrayList<Widget> widgets;
-	
-	
+
 	public AntLayerShellTab( VBox box ) {
 		
 		Table table = new Table( 5, 3, true );
@@ -72,7 +76,16 @@ public class AntLayerShellTab {
 		
 		// Add table to VBox container for tab
 		box.packStart( table, false, false, 0 );
-		
+	
+		// Add save/reset buttons to anatomy tab
+		Alignment balign = new  Alignment( 0.0f, 0.0f, 0.0f, 0.0f );
+		Button saveB = new Button( Stock.SAVE );		
+		Button resetB = new Button( "_Reset" );		
+		HBox contentControl = new HBox( false, 5 );
+		contentControl.packStart( saveB, false, false, 0 );
+		contentControl.packStart( resetB, false, false, 5 );
+		balign.add(contentControl);		
+		box.packEnd( balign, false, false, 0 );
 	}
 
 }

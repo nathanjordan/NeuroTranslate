@@ -7,8 +7,6 @@ import org.gnome.gtk.AttachOptions;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.ComboBox;
 import org.gnome.gtk.HBox;
-import org.gnome.gtk.IconSize;
-import org.gnome.gtk.Image;
 import org.gnome.gtk.Label;
 import org.gnome.gtk.Stock;
 import org.gnome.gtk.Table;
@@ -16,6 +14,10 @@ import org.gnome.gtk.TextComboBox;
 import org.gnome.gtk.VBox;
 import org.gnome.gtk.Widget;
 
+/**
+ * The ConnectTab class is responsible for handling all the Connect tab layout and widgets. A Table container is used in order to display the widgets. 
+ * @author nitish/kim
+ */
 public class ConnectTab {
 
 	private ArrayList<Widget> widgets;
@@ -80,14 +82,10 @@ public class ConnectTab {
 
 		// Add save/reset buttons
 		Alignment balign = new  Alignment( 0.0f, 0.0f, 0.0f, 0.0f );
-		Button saveB = new Button( );
-		Image save = new Image();
-		save.setImage(Stock.SAVE, IconSize.DND);
-		saveB.setImage(save);
-		Button resetB = new Button();
-		Image reset = new Image();
-		reset.setImage( Stock.REVERT_TO_SAVED, IconSize.DND );
-		resetB.setImage( reset );
+		Button saveB = new Button( Stock.SAVE );
+		
+		Button resetB = new Button( "_Reset" );
+		
 		HBox contentControl = new HBox( false, 5 );
 		contentControl.packStart( saveB, false, false, 0 );
 		contentControl.packStart( resetB, false, false, 5 );

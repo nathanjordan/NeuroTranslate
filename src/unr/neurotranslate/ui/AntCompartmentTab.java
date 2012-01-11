@@ -2,15 +2,22 @@ package unr.neurotranslate.ui;
 
 import java.util.ArrayList;
 
+import org.gnome.gtk.Alignment;
 import org.gnome.gtk.AttachOptions;
 import org.gnome.gtk.Box;
+import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
 import org.gnome.gtk.HBox;
 import org.gnome.gtk.Label;
+import org.gnome.gtk.Stock;
 import org.gnome.gtk.Table;
 import org.gnome.gtk.VBox;
 import org.gnome.gtk.Widget;
 
+/**
+ * The AntCompartmentTab class is responsible for handling all the Compartment tab layout and widgets. A Table container is used in order to display the widgets. 
+ * @author nitish/kim
+ */
 public class AntCompartmentTab {
 	
 	// List of all widgets in compartment tab
@@ -88,6 +95,16 @@ public class AntCompartmentTab {
 		
 		// Add table to top level container
 		box.packStart( table, false, false, 0 );
+		
+		// Add save/reset buttons to anatomy tab
+		Alignment balign = new  Alignment( 0.0f, 0.0f, 0.0f, 0.0f );
+		Button saveB = new Button( Stock.SAVE );		
+		Button resetB = new Button( "_Reset" );		
+		HBox contentControl = new HBox( false, 5 );
+		contentControl.packStart( saveB, false, false, 0 );
+		contentControl.packStart( resetB, false, false, 5 );
+		balign.add(contentControl);		
+		box.packEnd( balign, false, false, 0 );
 	}
 
 }

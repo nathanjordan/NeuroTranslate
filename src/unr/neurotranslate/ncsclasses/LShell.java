@@ -4,8 +4,8 @@ public class LShell {
 	
 	public Locator l;
 	
-	public Number lower;
+	public double lower;
 	
-	public Number upper;
+	public double upper;
 	
 	}

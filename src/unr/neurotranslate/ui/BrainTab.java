@@ -19,6 +19,11 @@ import org.gnome.gtk.VBox;
 import org.gnome.gtk.Widget;
 import org.gnome.gtk.Widget.KeyPressEvent;
 
+/**
+ * The BrainTab class is responsible for handling all the Brain tab layout and widgets. A Table container is used in order to display the widgets. 
+ * This tab an overview of the NCS file which has been imported.
+ * @author nitish/kim
+ */
 public class BrainTab {
 
 	// Widgets for brain tab
@@ -117,20 +122,14 @@ public class BrainTab {
 		
 		// Add save/reset buttons
 		Alignment balign = new  Alignment( 0.0f, 0.0f, 0.0f, 0.0f );
-		Button saveB = new Button( );
-		Image save = new Image();
-		save.setImage(Stock.SAVE, IconSize.DND);
-		saveB.setImage(save);
-		Button resetB = new Button();
-		Image reset = new Image();
-		reset.setImage( Stock.REVERT_TO_SAVED, IconSize.DND );
-		resetB.setImage( reset );
+		Button saveB = new Button(Stock.SAVE);		
+		Button resetB = new Button( "_Reset" );	
 		HBox contentControl = new HBox( false, 5 );
 		contentControl.packStart( saveB, false, false, 0 );
 		contentControl.packStart( resetB, false, false, 5 );
 		balign.add(contentControl);
 		
-		// Add buttons to top elvel container
+		// Add buttons to top level container
 		container.packEnd( balign, false, false, 0 );
 	}
 	

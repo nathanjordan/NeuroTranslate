@@ -8,16 +8,20 @@ import org.gnome.gtk.Box;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
 import org.gnome.gtk.HBox;
-import org.gnome.gtk.IconSize;
-import org.gnome.gtk.Image;
 import org.gnome.gtk.Label;
 import org.gnome.gtk.Stock;
 import org.gnome.gtk.Table;
 import org.gnome.gtk.VBox;
 import org.gnome.gtk.Widget;
 
+/**
+ * The Synapse class is responsible for handling all the Synapse tab layout and widgets. A Table layout is used in order to hold all the widgets used
+ * in this tab. 
+ * @author nitish/kim
+ */
 public class SynapseTab {
 
+	// A list of all widgets used in this tab
 	private ArrayList<Widget> widgets;
 	
 	public SynapseTab( VBox container ) {
@@ -135,14 +139,8 @@ public class SynapseTab {
 
 		// Add save/reset buttons
 		Alignment balign = new  Alignment( 0.0f, 0.0f, 0.0f, 0.0f );
-		Button saveB = new Button( );
-		Image save = new Image();
-		save.setImage(Stock.SAVE, IconSize.DND);
-		saveB.setImage(save);
-		Button resetB = new Button();
-		Image reset = new Image();
-		reset.setImage( Stock.REVERT_TO_SAVED, IconSize.DND );
-		resetB.setImage( reset );
+		Button saveB = new Button( Stock.SAVE );		
+		Button resetB = new Button( "_Reset" );		
 		HBox contentControl = new HBox( false, 5 );
 		contentControl.packStart( saveB, false, false, 0 );
 		contentControl.packStart( resetB, false, false, 5 );

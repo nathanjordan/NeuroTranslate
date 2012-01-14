@@ -7,6 +7,8 @@ public class Connect {
 	public char[] fromColName;
 	public char[] fromLayName;
 	public char[] fromCmpName;
+	// TODO kim added because there is no from cell name 
+	public char[] fromCellName; 
 	public char[] toColName;
 	public char[] toLayName;
 	public char[] toCellName;

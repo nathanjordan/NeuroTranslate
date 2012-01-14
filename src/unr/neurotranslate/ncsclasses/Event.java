@@ -16,6 +16,6 @@ public class Event {
 	
 	public char[] file;
 	
-	public Number time;
+	public double time;
 	
 	}

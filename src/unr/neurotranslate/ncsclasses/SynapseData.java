@@ -2,14 +2,14 @@ package unr.neurotranslate.ncsclasses;
 
 public class SynapseData {
 	
-	Locator l;
+	public Locator l;
 	
-	int seed;
+	public long seed;
 	
-	double[] maxG;
+	public double[] maxG;
 	
-	double[] synDelay;
+	public double[] synDelay;
 	
-	double[] synRever;
+	public double[] synRever;
 	
 	}

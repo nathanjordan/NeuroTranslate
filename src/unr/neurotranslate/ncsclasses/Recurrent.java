@@ -2,7 +2,7 @@ package unr.neurotranslate.ncsclasses;
 
 public class Recurrent {
 	
-	Locator l;
+	public Locator l;
 	
 	public char[] colNameA;
 	public char[] layNameA;

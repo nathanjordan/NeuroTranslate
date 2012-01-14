@@ -2,68 +2,68 @@ package unr.neurotranslate.ncsclasses;
 
 public class Brain {
 	
-	Locator l;
+	public Locator l;
 	
-	char[] job;
+	public char[] job;
 	
-	char[] distribute;
+	public char[] distribute;
 	
-	int connectRpt;
+	public int connectRpt;
 	
-	int spikeRpt;
+	public int spikeRpt;
 	
-	double Duration;
+	public double Duration;
 	
-	int FSV;
+	public int FSV;
 	
-	long Seed;
+	public long Seed;
 	
-	int nColumns;
+	public int nColumns;
 	
-	List columnNames;
+	public List columnNames;
 	
-	int[] columns;
+	public int[] columns;
 	
-	int nStInject;
+	public int nStInject;
 	
-	List stInjNames;
+	public List stInjNames;
 	
-	int[] stInject;
+	public int[] stInject;
 	
-	int nReports;
+	public int nReports;
 	
-	List reportNames;
+	public List reportNames;
 	
-	int[] reports;
+	public int[] reports;
 	
-	int nConnect;
+	public int nConnect;
 	
-	Connect cnList;
+	public Connect cnList;
 	
-	Connect[] connects;
+	public Connect[] connects;
 	
-	char[] savefile;
+	public char[] savefile;
 	
-	double savetime;
+	public double savetime;
 	
-	char[] loadfile;
+	public char[] loadfile;
 	
-	int hostport;
+	public int hostport;
 	
-	int port;
+	public int port;
 	
-	char[] hostname;
+	public char[] hostname;
 	
-	int flag;
+	public int flag;
 	
-	int nRecurrent;
+	public int nRecurrent;
 	
-	Recurrent[] recurrentList;
+	public Recurrent[] recurrentList;
 	
-	int nEvents;
+	public int nEvents;
 	
-	List eventNames;
+	public List eventNames;
 	
-	int[] events;
+	public int[] events;
 	
 	}

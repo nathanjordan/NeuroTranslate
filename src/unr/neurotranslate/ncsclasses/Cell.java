@@ -12,13 +12,13 @@ public class Cell {
 	
 	public int[] cmp;
 	
-	public Number[] xpos;
+	public double[] xpos;
 	
-	public Number[] ypos;
+	public double[] ypos;
 	
-	public Number[] zpos;
+	public double[] zpos;
 	
-	public Number[] rpos;
+	public double[] rpos;
 	
 	public int nConnect;
 	

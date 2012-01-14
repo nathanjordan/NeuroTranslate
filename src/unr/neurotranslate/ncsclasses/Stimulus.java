@@ -10,11 +10,11 @@ public class Stimulus {
 	
 	public int same_seed;
 	
-	public int seed;
+	public long seed;
 	
-	public Number amp_start;
+	public double amp_start;
 	
-	public Number amp_end;
+	public double amp_end;
 	
 	public int nTimes;
 	
@@ -22,29 +22,29 @@ public class Stimulus {
 	
 	public int nTStop;
 	
-	public Number[] TStart;
+	public double[] TStart;
 	
-	public Number[] TStop;
+	public double[] TStop;
 	
 	public int[] timeStart;
 	
 	public int[] timeStop;
 	
-	public Number freqStart;
+	public double freqStart;
 	
-	public Number freqEnd;
+	public double freqEnd;
 	
-	public Number widthSec;
+	public double widthSec;
 	
-	public Number phase;
+	public double phase;
 	
-	public Number vertTrans;
+	public double vertTrans;
 	
-	public Number rate;
+	public double rate;
 	
-	public Number tau;
+	public double tau;
 	
-	public Number correl;
+	public double correl;
 	
 	public char[] fileName;
 	
@@ -60,14 +60,14 @@ public class Stimulus {
 	
 	public int nSpikeProb;
 	
-	public Number[] spikeProb;
+	public float[] spikeProb;
 	
-	public Number[] timeFreqIncr;
+	public double[] timeFreqIncr;
 	
-	public Number[] dynRange;
+	public double[] dynRange;
 	
-	public Number dataMax;
+	public double dataMax;
 	
-	public Number dataMin;
+	public double dataMin;
 	
 	}

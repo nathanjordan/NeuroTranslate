@@ -4,7 +4,7 @@ public class Compartment {
 	
 	public Locator l;
 	
-	public int seed;
+	public long seed;
 	
 	public int active;
 	
@@ -18,26 +18,26 @@ public class Compartment {
 	
 	public int[] channels;
 	
-	public Number[] spike_HW;
+	public double[] spike_HW;
 	
-	public Number[] tau_membrane;
+	public double[] tau_membrane;
 	
-	public Number[] r_membrane;
+	public double[] r_membrane;
 	
-	public Number[] threshold;
+	public double[] threshold;
 	
-	public Number[] leak_reversal;
+	public double[] leak_reversal;
 	
-	public Number[] VMREST;
+	public double[] VMREST;
 	
-	public Number[] leak_g;
+	public double[] leak_g;
 	
-	public Number[] caInt;
+	public double[] caInt;
 	
-	public Number[] caExt;
+	public double[] caExt;
 	
-	public Number[] caSpikeInc;
+	public double[] caSpikeInc;
 	
-	public Number[] caTau;
+	public double[] caTau;
 	
 	}

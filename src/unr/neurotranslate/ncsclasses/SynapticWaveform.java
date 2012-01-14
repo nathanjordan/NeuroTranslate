@@ -2,12 +2,12 @@ package unr.neurotranslate.ncsclasses;
 
 public class SynapticWaveform {
 	
-	Locator l;
+	public Locator l;
 	
-	char[] file;
+	public char[] file;
 	
-	int nPSG;
+	public int nPSG;
 	
-	double[] PSG;
+	public double[] PSG;
 	
 	}

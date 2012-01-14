@@ -24,6 +24,6 @@ public class StimulusInject {
 	
 	public int cmp;
 	
-	public Number prob;
+	public double prob;
 	
 	}

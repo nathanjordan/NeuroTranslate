@@ -4,12 +4,12 @@ public class SynapticFD {
 	
 	public Locator l;
 	
-	public int seed;
+	public long seed;
 	
 	public int SFD;
 	
-	public Number[] facil_tau;
+	public double[] facil_tau;
 	
-	public Number[] depr_tau;
+	public double[] depr_tau;
 	
 	}

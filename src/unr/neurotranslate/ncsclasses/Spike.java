@@ -6,6 +6,6 @@ public class Spike {
 	
 	public int nVoltages;
 	
-	public Number[] voltages;
+	public double[] voltages;
 	
 	}

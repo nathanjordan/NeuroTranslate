@@ -2,58 +2,58 @@ package unr.neurotranslate.ncsclasses;
 
 public class Report {
 	
-	Locator l;
+	public Locator l;
 	
-	int seed;
+	public long seed;
 	
-	char[] colName;
+	public char[] colName;
 	
-	char[] layerName;
+	public char[] layerName;
 	
-	char[] cellName;
+	public char[] cellName;
 	
-	char[] cmpName;
+	public char[] cmpName;
 	
-	char[] name;
+	public char[] name;
 	
-	int column;
+	public int column;
 	
-	int layer;
+	public int layer;
 	
-	int cell;
+	public int cell;
 	
-	int cmp;
+	public int cmp;
 	
-	int thing;
+	public int thing;
 	
-	char[] fileName;
+	public char[] fileName;
 	
-	int reportOn;
+	public int reportOn;
 	
-	int callSequence;
+	public int callSequence;
 	
-	int ascii;
+	public int ascii;
 	
-	int port;
+	public int port;
 	
-	double prob;
+	public double prob;
 	
-	int freq;
+	public int freq;
 	
-	int nTimes;
+	public int nTimes;
 	
-	int nTStart;
+	public int nTStart;
 	
-	int nTStop;
+	public int nTStop;
 	
-	double[] tStart;
+	public double[] tStart;
 	
-	double[] tStop;
+	public double[] tStop;
 	
-	int[] timeStart;
+	public int[] timeStart;
 	
-	int[] timeStop;
+	public int[] timeStop;
 	
-	int reportFlag;
+	public int reportFlag;
 	
 	}

@@ -4,29 +4,29 @@ public class Channel {
 	
 	public Locator l;
 	
-	public int seed;
+	public long seed;
 	
 	public int family;
 	
-	public Number[] unitaryG;
+	public double[] unitaryG;
 	
-	public Number[] strength;
+	public double[] strength;
 	
-	public Number[] m_initial;
+	public double[] m_initial;
 	
-	public Number[] m_power;
+	public double[] m_power;
 	
-	public Number[] reversePot;
+	public double[] reversePot;
 	
-	public Number[] strength_range;
+	public double[] strength_range;
 	
-	public Number[] H_initial;
+	public double[] H_initial;
 	
-	public Number[] hPower;
+	public double[] hPower;
 	
-	public Number[] eHalfMinM;
+	public double[] eHalfMinM;
 	
-	public Number[] eHalfMinH;
+	public double[] eHalfMinH;
 	
 	public int nTauM;
 	
@@ -34,13 +34,13 @@ public class Channel {
 	
 	public int nVoltM;
 	
-	public Number[] TauValM;
+	public double[] TauValM;
 	
-	public Number[] TauVoltM;
+	public double[] TauVoltM;
 	
-	public Number ValM_stdev;
+	public double ValM_stdev;
 	
-	public Number VoltM_stdev;
+	public double VoltM_stdev;
 	
 	public int nTauH;
 	
@@ -48,42 +48,42 @@ public class Channel {
 	
 	public int nVoltH;
 	
-	public Number[] TauValH;
+	public double[] TauValH;
 	
-	public Number[] TauVoltH;
+	public double[] TauVoltH;
 	
-	public Number ValH_stdev;
+	public double ValH_stdev;
 	
-	public Number VoltH_stdev;
+	public double VoltH_stdev;
 	
-	public Number[] alphaScaleFactorM;
+	public double[] alphaScaleFactorM;
 	
-	public Number[] betaScaleFactorM;
+	public double[] betaScaleFactorM;
 	
-	public Number[] alphaScaleFactorH;
+	public double[] alphaScaleFactorH;
 	
-	public Number[] betaScaleFactorH;
+	public double[] betaScaleFactorH;
 	
-	public Number[] tauScaleM;
+	public double[] tauScaleM;
 	
-	public Number[] tauScaleH;
+	public double[] tauScaleH;
 	
-	public Number[] slopeM;
+	public double[] slopeM;
 	
-	public Number slopeM_stdev;
+	public double slopeM_stdev;
 	
-	public Number[] slopeH;
+	public double[] slopeH;
 	
-	public Number slopeH_stdev;
+	public double slopeH_stdev;
 	
-	public Number[] CA_EXP;
+	public double[] CA_EXP;
 	
-	public Number[] CA_EXP_RANGE;
+	public double[] CA_EXP_RANGE;
 	
-	public Number[] CA_SCALE;
+	public double[] CA_SCALE;
 	
-	public Number[] CA_HALF_MIN;
+	public double[] CA_HALF_MIN;
 	
-	public Number[] CA_TAU_SCALE;
+	public double[] CA_TAU_SCALE;
 	
 	}

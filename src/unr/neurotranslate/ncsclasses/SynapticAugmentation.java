@@ -4,22 +4,22 @@ public class SynapticAugmentation {
 	
 	public Locator l;
 	
-	public Number[] aug_init;
+	public double[] aug_init;
 	
-	public Number[] CA_init;
+	public double[] CA_init;
 	
-	public Number[] CA_tau;
+	public double[] CA_tau;
 	
-	public Number[] MaxSA;
+	public double[] MaxSA;
 	
-	public Number[] CA_decay;
+	public double[] CA_decay;
 	
-	public Number[] CA_increment;
+	public double[] CA_increment;
 	
-	public Number[] alpha;
+	public double[] alpha;
 	
-	public Number[] aug_tau;
+	public double[] aug_tau;
 	
-	public Number[] SA_delay;
+	public double[] SA_delay;
 	
 	}

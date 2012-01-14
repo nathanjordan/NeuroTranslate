@@ -2,9 +2,9 @@ package unr.neurotranslate.ncsclasses;
 
 public class Synapse {
 	
-	Locator l;
+	public Locator l;
 	
-	public int seed;
+	public long seed;
 	
 	public char[] sfdName;
 	
@@ -26,27 +26,27 @@ public class Synapse {
 	
 	public int augIndex;
 	
-	public Number[] USE;
+	public double[] USE;
 	
-	public Number[] MaxG;
+	public double[] MaxG;
 	
-	public Number[] SynDelay;
+	public double[] SynDelay;
 	
-	public Number[] SynRever;
+	public double[] SynRever;
 	
-	public Number[] InitDeltaT;
+	public double[] InitDeltaT;
 	
-	public Number[] InitRSE;
+	public double[] InitRSE;
 	
 	public int nToggles;
 	
-	public Number[] toggleTimes;
+	public double[] toggleTimes;
 	
 	public int[] toggleModes;
 	
 	public int nSfdToggles;
 	
-	public Number[] sfdToggleTimes;
+	public double[] sfdToggleTimes;
 	
 	public int[] sfdToggleModes;
 	

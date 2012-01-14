@@ -8,26 +8,26 @@ public class SynapticLearner {
 	
 	public int learningShape;
 	
-	public int seed;
+	public long seed;
 	
-	public Number[] Neg_Heb_Peak_Delta_Use;
+	public double[] Neg_Heb_Peak_Delta_Use;
 	
-	public Number[] Pos_Heb_Peak_Delta_Use;
+	public double[] Pos_Heb_Peak_Delta_Use;
 	
-	public Number[] Neg_Heb_Peak_Time;
+	public double[] Neg_Heb_Peak_Time;
 	
-	public Number[] Pos_Heb_Peak_Time;
+	public double[] Pos_Heb_Peak_Time;
 	
-	public Number[] DownWind;
+	public double[] DownWind;
 	
-	public Number[] UpWind;
+	public double[] UpWind;
 	
 	public int nPosLearn;
 	
-	public Number[] PosLearnTable;
+	public double[] PosLearnTable;
 	
 	public int nNegLearn;
 	
-	public Number[] NegLearnTable;
+	public double[] NegLearnTable;
 	
 	}

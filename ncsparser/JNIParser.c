@@ -25,6 +25,10 @@ jobject parseConnect( JNIEnv * env , T_CONNECT* con );
 jobject parseRecurrent( JNIEnv * env , T_RECURRENT* r );
 jobject parseCompartmentConnect( JNIEnv * env , T_CMPCONNECT* con );
 jobject parseAnything( JNIEnv * env , T_ANYTHING* a );
+jobject parseCShell( JNIEnv * env , T_CSHELL* cs );
+jobject parseColumn( JNIEnv * env , T_COLUMN* col );
+jobject parseLShell( JNIEnv * env , T_LSHELL* shell );
+jobject parseLayer( JNIEnv * env , T_LAYER* lay );
 
 /***************************************************************************************
  *
@@ -438,7 +442,7 @@ jobject parseLShell( JNIEnv * env , T_LSHELL* shell ) {
 
 	}
 
-/*jobject parseLayer( JNIEnv * env , T_LAYER* lay ) {
+jobject parseLayer( JNIEnv * env , T_LAYER* lay ) {
 
 	jclass c = (*env)->FindClass( env, "unr/neurotranslate/ncsclasses/Layer" );
 
@@ -449,7 +453,16 @@ jobject parseLShell( JNIEnv * env , T_LSHELL* shell ) {
 	if(lay->shellName)
 	setCharArrayField( env , o , "shellName" , strlen( lay->shellName ) , lay->shellName );
 
-	setIntField( env , o , "LShell" , lay->Lower );
+	setIntField( env , o , "LShell" , lay->LShell );
+
+	setIntField( env , o , "nCellTypes" , lay->nCellTypes );
+
+	jobject* cellNames = calloc( sizeof(jobject) , lay->nCellTypes );
+
+	for( int i = 0 ; i < lay->nCellTypes ; i++ ) {
+
+		cellNames[i] = parseList( env , &lay->CellNames[i] );
+
+		}
 
 	}
-*/

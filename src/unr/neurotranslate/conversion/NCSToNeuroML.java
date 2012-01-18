@@ -2,11 +2,13 @@ package unr.neurotranslate.conversion;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.morphml.channelml.schema.DoubleExponentialSynapse;
 import org.morphml.channelml.schema.SynapseType;
 import org.morphml.metadata.schema.Point;
 import org.morphml.morphml.schema.Cell;
+import org.morphml.morphml.schema.Cells;
 import org.morphml.morphml.schema.Cell.Segments;
 import org.morphml.networkml.schema.Population;
 import org.morphml.networkml.schema.Projection;
@@ -27,52 +29,63 @@ public class NCSToNeuroML {
 		
 		}
 	
-	private static Cell convertNCSCell( unr.neurotranslate.ncsclasses.Cell ncs ) {
+	private static Cells generateNeuroMLCells( unr.neurotranslate.ncsclasses.Cell[] ncsCells  ) {
 		
-		Cell c = new Cell();
-		
-		// segments
-		Segments ncsSegments = new Segments();
-		java.util.List<org.morphml.morphml.schema.Segment> segmentList = new ArrayList<org.morphml.morphml.schema.Segment>();
-		org.morphml.morphml.schema.Segment tempSegment = new org.morphml.morphml.schema.Segment();
-		Point tempPoint = new Point();
-		
-		segmentList = ncsSegments.getSegments();
-		
-		BigInteger idIndex = BigInteger.ZERO;
-		
-		
-		// done for a single segment in NCS file
-		for(unr.neurotranslate.ncsclasses.List l : ncs.cmpNames )
-		{
-			// set point to compartment location
-			tempPoint.setX(l.x);
-			tempPoint.setY(l.y);
-			tempPoint.setZ(0.0);
-				
-			// set proximal and distal 
-				// right now we are leaving the distal blank
-				// because there is no end point for a compartment in NCS
-				// this creates a spherical segment in NeuroML 
-			tempSegment.setProximal(tempPoint);
-			tempSegment.setDistal(tempPoint);
+			// NeuroML Cells class
+			Cells neuroMLCells = new Cells();
+			
+			// List of NeuroML cells
+			List<Cell> neuroMLCellList = neuroMLCells.getCells();
+			
+			// segments
+			Segments ncsSegments = new Segments();
+			java.util.List<org.morphml.morphml.schema.Segment> segmentList = ncsSegments.getSegments();
+			org.morphml.morphml.schema.Segment tempSegment = new org.morphml.morphml.schema.Segment();
+			Point tempPoint = new Point();
+			
+			BigInteger idIndex = BigInteger.ZERO;
+			
+			// temp cell
+			Cell tempCell = new Cell();
+			
+			// for each cell in NCS
+			for(unr.neurotranslate.ncsclasses.Cell ncsCell : ncsCells)
+			{
+				// set cell name
+				tempCell.setName(ncsCell.l.name.toString());
+							
+				// for each compartment in that cell
+				for(int i = 0; i < ncsCell.nCmp; i++)
+				{
+					// set point to compartment location
+					tempPoint.setX(ncsCell.xpos[i]);
+					tempPoint.setY(ncsCell.ypos[i]);
+					tempPoint.setZ(ncsCell.zpos[i]);
 					
-			// set ID
-			tempSegment.setId(idIndex);
-			idIndex = idIndex.add(BigInteger.ONE);
-			
-			// set name
-			String tempString = new String(l.label);
-			tempSegment.setName(tempString);
-			
-			segmentList.add(tempSegment);
-		}
+					// set proximal and distal 
+						// right now we are leaving the distal blank
+						// because there is no end point for a compartment in NCS
+						// this creates a spherical segment in NeuroML 
+					tempSegment.setProximal(tempPoint);
+					tempSegment.setDistal(tempPoint);
+					
+					// set segment ID
+					tempSegment.setId(idIndex);
+					idIndex = idIndex.add(BigInteger.ONE);
 	
-		c.setSegments((Segments) segmentList);
-		
-		c.setName( new String (ncs.l.name ) );
-	
-		return c;
+					// set segment name to name of compartment
+					tempSegment.setName(ncsCell.labels[i].toString());
+					
+					// add segment to list of segments
+					segmentList.add(tempSegment);
+				}
+				// set the segments to the temp cell
+				tempCell.setSegments((Segments) segmentList);
+				// add the cell to the cell list
+				neuroMLCellList.add(tempCell);
+			}
+			
+			return neuroMLCells;
 		
 		}
 	

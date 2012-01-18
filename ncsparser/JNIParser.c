@@ -25,6 +25,10 @@ jobject parseConnect( JNIEnv * env , T_CONNECT* con );
 jobject parseRecurrent( JNIEnv * env , T_RECURRENT* r );
 jobject parseCompartmentConnect( JNIEnv * env , T_CMPCONNECT* con );
 jobject parseAnything( JNIEnv * env , T_ANYTHING* a );
+jobject parseCShell( JNIEnv * env , T_CSHELL* cs );
+jobject parseColumn( JNIEnv * env , T_COLUMN* col );
+jobject parseLShell( JNIEnv * env , T_LSHELL* shell );
+jobject parseLayer( JNIEnv * env , T_LAYER* lay );
 
 /***************************************************************************************
  *
@@ -37,14 +41,18 @@ JNIEXPORT jobject JNICALL Java_unr_neurotranslate_util_NCSParser_ParseInput(JNIE
 	jboolean copy = 0;
 
 	char * filename8 = (*env)->GetStringUTFChars( env, filename , &copy );
-	
-	ARRAYS* arrays = ParseInput( node , filename8 , output );
+
+	ARRAYS* arrays = ParseInput( 0 , filename8 , 0 );
+
+	printf("X");
 
 	return parseArrays( env , arrays );
 
 	}
 
 int main() {
+
+	ARRAYS* arrays = ParseInput( 0 , "/home/njordan/Downloads/PrototypeNCS.in" , 0 );
 
 	return 0;
 
@@ -64,7 +72,7 @@ jobject parseArrays( JNIEnv * env , ARRAYS* arr ) {
 	jobject o = (*env)->AllocObject( env, c );
 	//parse the brain
 	jfieldID f = (*env)->GetFieldID( env , c , "brain" , "Lunr/neurotranslate/ncsclasses/Brain;" );
-
+	printf("X");
 	(*env)->SetObjectField( env , o , f , parseBrain( env , arr->Brain ) );
 
 	return o;
@@ -438,7 +446,7 @@ jobject parseLShell( JNIEnv * env , T_LSHELL* shell ) {
 
 	}
 
-/*jobject parseLayer( JNIEnv * env , T_LAYER* lay ) {
+jobject parseLayer( JNIEnv * env , T_LAYER* lay ) {
 
 	jclass c = (*env)->FindClass( env, "unr/neurotranslate/ncsclasses/Layer" );
 
@@ -449,7 +457,18 @@ jobject parseLShell( JNIEnv * env , T_LSHELL* shell ) {
 	if(lay->shellName)
 	setCharArrayField( env , o , "shellName" , strlen( lay->shellName ) , lay->shellName );
 
-	setIntField( env , o , "LShell" , lay->Lower );
+	setIntField( env , o , "LShell" , lay->LShell );
+
+	setIntField( env , o , "nCellTypes" , lay->nCellTypes );
+
+	jobject* cellNames = calloc( sizeof(jobject) , lay->nCellTypes );
+
+	for( int i = 0 ; i < lay->nCellTypes ; i++ ) {
+
+		cellNames[i] = parseList( env , &lay->CellNames[i] );
+
+		}
+
+	setObjArrayField( env , o , "cellNames" , lay->nCellTypes , cellNames , "List;\0" );
 
 	}
-*/

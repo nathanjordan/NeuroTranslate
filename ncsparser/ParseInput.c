@@ -48,18 +48,18 @@ extern ARRAYS *ParseInput (int node, char *filename, int output)
   scanner (fbuf, nbytes);
   free (fbuf);
 
-  print2err ("Input scanned, %d elements, %d syntax errors found\n",
-              TIN->nElements, TIN->nParseErr);
+  /*print2err ("Input scanned, %d elements, %d syntax errors found\n",
+              TIN->nElements, TIN->nParseErr);*/
 
   if (TIN->nParseErr > 0)
   {
-    print2err ("Parsing failed, %d parse errors found.\n", TIN->nParseErr);
+    //print2err ("Parsing failed, %d parse errors found.\n", TIN->nParseErr);
     return (NULL);
   }
 
   if (TIN->nBrain == 0)
   {
-    print2err ("Fatal Error: no BRAIN structure found in input\n");
+    //print2err ("Fatal Error: no BRAIN structure found in input\n");
     return (NULL);
   }
 
@@ -67,7 +67,7 @@ extern ARRAYS *ParseInput (int node, char *filename, int output)
 
   if (SymTree == NULL)
   {
-    print2err ("Fatal error: parser failed to create symbol table\n");
+    //print2err ("Fatal error: parser failed to create symbol table\n");
     return (NULL);
   }
 

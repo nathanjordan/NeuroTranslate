@@ -41,14 +41,18 @@ JNIEXPORT jobject JNICALL Java_unr_neurotranslate_util_NCSParser_ParseInput(JNIE
 	jboolean copy = 0;
 
 	char * filename8 = (*env)->GetStringUTFChars( env, filename , &copy );
-	
-	ARRAYS* arrays = ParseInput( node , filename8 , output );
+
+	ARRAYS* arrays = ParseInput( 0 , filename8 , 0 );
+
+	printf("X");
 
 	return parseArrays( env , arrays );
 
 	}
 
 int main() {
+
+	ARRAYS* arrays = ParseInput( 0 , "/home/njordan/Downloads/PrototypeNCS.in" , 0 );
 
 	return 0;
 
@@ -68,7 +72,7 @@ jobject parseArrays( JNIEnv * env , ARRAYS* arr ) {
 	jobject o = (*env)->AllocObject( env, c );
 	//parse the brain
 	jfieldID f = (*env)->GetFieldID( env , c , "brain" , "Lunr/neurotranslate/ncsclasses/Brain;" );
-
+	printf("X");
 	(*env)->SetObjectField( env , o , f , parseBrain( env , arr->Brain ) );
 
 	return o;
@@ -464,5 +468,7 @@ jobject parseLayer( JNIEnv * env , T_LAYER* lay ) {
 		cellNames[i] = parseList( env , &lay->CellNames[i] );
 
 		}
+
+	setObjArrayField( env , o , "cellNames" , lay->nCellTypes , cellNames , "List;\0" );
 
 	}

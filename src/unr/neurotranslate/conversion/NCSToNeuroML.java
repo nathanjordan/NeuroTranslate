@@ -9,6 +9,7 @@ import org.morphml.channelml.schema.SynapseType;
 import org.morphml.metadata.schema.Point;
 import org.morphml.morphml.schema.Cell;
 import org.morphml.morphml.schema.Cells;
+import org.morphml.morphml.schema.Segment;
 import org.morphml.morphml.schema.Cell.Segments;
 import org.morphml.networkml.schema.Population;
 import org.morphml.networkml.schema.Projection;
@@ -29,18 +30,18 @@ public class NCSToNeuroML {
 		
 		}
 	
-	private static Cells generateNeuroMLCells( unr.neurotranslate.ncsclasses.Cell[] ncsCells  ) {
+	private static Cells generateNeuromlCells( unr.neurotranslate.ncsclasses.Cell[] ncsCells  ) {
 		
 			// NeuroML Cells class
-			Cells neuroMLCells = new Cells();
+			Cells neuromlCells = new Cells();
 			
 			// List of NeuroML cells
-			List<Cell> neuroMLCellList = neuroMLCells.getCells();
+			List<Cell> neuromlCellList = neuromlCells.getCells();
 			
 			// segments
-			Segments ncsSegments = new Segments();
-			java.util.List<org.morphml.morphml.schema.Segment> segmentList = ncsSegments.getSegments();
-			org.morphml.morphml.schema.Segment tempSegment = new org.morphml.morphml.schema.Segment();
+			Segments neuromlSegments = new Segments();
+			List<Segment> segmentList = neuromlSegments.getSegments();
+			Segment tempSegment = new Segment();
 			Point tempPoint = new Point();
 			
 			BigInteger idIndex = BigInteger.ZERO;
@@ -82,11 +83,11 @@ public class NCSToNeuroML {
 				// set the segments to the temp cell
 				tempCell.setSegments((Segments) segmentList);
 				// add the cell to the cell list
-				neuroMLCellList.add(tempCell);
+				neuromlCellList.add(tempCell);
 			}
 			
-			return neuroMLCells;
-		
+			return neuromlCells;
+			
 		}
 	
 	public static Projection convertConnectToProjection( unr.neurotranslate.ncsclasses.Connect ncsConnect ) {

@@ -91,8 +91,7 @@ element:  brain
         | stinject
         | report
         | event
-        | TK_INCLUDE NAME {  }
-//        | TK_INCLUDE NAME { multiInput( $<sval>2 ); }
+        | TK_INCLUDE NAME { multiInput( $<sval>2 ); }
 ; 
 
 /*--------------- Input for the BRAIN structure ------------*/
@@ -735,5 +734,9 @@ value: INTEGER { $<rval>$ = (double) $<ival>1; }
 %%
 
 int yywrap() {
+
+}
+
+int multiInput() {
 
 }

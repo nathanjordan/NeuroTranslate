@@ -3,7 +3,7 @@ package unr.neurotranslate.conversion;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.lang.*;
 import org.morphml.channelml.schema.DoubleExponentialSynapse;
 import org.morphml.channelml.schema.SynapseType;
 import org.morphml.metadata.schema.Point;
@@ -17,6 +17,7 @@ import org.morphml.networkml.schema.RandomArrangement;
 import org.morphml.neuroml.schema.Neuroml;
 
 import unr.neurotranslate.ncsclasses.Arrays;
+import unr.neurotranslate.ncsclasses.Synapse;
 
 public class NCSToNeuroML {
 	
@@ -109,16 +110,64 @@ public class NCSToNeuroML {
 		
 		}
 	
-	public static SynapseType convertSynapse( unr.neurotranslate.ncsclasses.Synapse ncsSynapse ) {
+	public static List<SynapseType> generateNeuromlSynapseTypes( unr.neurotranslate.ncsclasses.Synapse[] ncsSynapses, unr.neurotranslate.ncsclasses.SynapticWaveform[] syn_psgs ) {
 		
-		SynapseType neuroMLSynapse = new SynapseType();
+		List<SynapseType> neuromlSynapseList = new ArrayList<SynapseType>();
+		SynapseType tempNeuromlSynapse = new SynapseType();
 		DoubleExponentialSynapse doubExpSyn = new DoubleExponentialSynapse();
-		String tempString = ncsSynapse.MaxG.toString();
-		double tempDouble = Double.parseDouble(tempString);
-		doubExpSyn.setMaxConductance(tempDouble);
-		neuroMLSynapse.setDoubExpSyn(doubExpSyn);
+		int endIndex;
+		String tempString = null;
+		String tempString2 = null;	
 		
-		return neuroMLSynapse;
+		// for each synapse in NCS
+		for(Synapse ncsSynapse: ncsSynapses)
+		{
+			// set synapse name
+			tempNeuromlSynapse.setName(ncsSynapse.l.name.toString());
+			
+			// set max conductance
+			doubExpSyn.setMaxConductance(ncsSynapse.MaxG[0]);
+			
+			// set rise time
+			doubExpSyn.setRiseTime(.0001);
+			
+			// find which waveform file to parse for decay time
+			for(int i = 0; i < syn_psgs.length; i++)
+			{
+				// find 
+				if(syn_psgs[i].l.name == ncsSynapse.psgName)
+				{
+					endIndex = syn_psgs[i].file.length - 5;
+					
+					while(Character.isDigit(syn_psgs[i].file[endIndex]))
+					{
+						endIndex--;
+					}
+					
+					endIndex++;
+						
+					while(syn_psgs[i].file[endIndex] != '.')
+					{
+						tempString = Character.toString(syn_psgs[i].file[endIndex]);
+						tempString2 += tempString;
+					}
+				}
+			}
+			
+			// set decay time
+			doubExpSyn.setDecayTime(Integer.parseInt(tempString2));
+			
+			// set reversal potential
+			doubExpSyn.setReversalPotential(ncsSynapse.SynRever[0]);
+			
+			// set the double exponential synapse in the synapse object
+			tempNeuromlSynapse.setDoubExpSyn(doubExpSyn);
+			
+			// add the synapse to the list
+			neuromlSynapseList.add(tempNeuromlSynapse);
+		}
+				
+		return neuromlSynapseList;
 		
 		}
 	}

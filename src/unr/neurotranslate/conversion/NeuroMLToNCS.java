@@ -95,35 +95,4 @@ public class NeuroMLToNCS {
 			
 		}
 	
-	public static Projection convertConnectToProjection( unr.neurotranslate.ncsclasses.Connect ncsConnect ) {
-		Projection proj = new Projection();
-		Population pop = new Population();
-		String cellType;
-		BigInteger b = BigInteger.ZERO;
-		cellType = ncsConnect.fromCellName.toString();
-		pop.setCellType(cellType);
-		pop.setName(cellType + "Pop" + popIndex);
-		popIndex++;
-		RandomArrangement ra = new RandomArrangement();
-		ra.setPopulationSize(b);
-		b.add(BigInteger.ONE);
-		
-		// TODO cant assign population size without layer info, how to get layer info. 
-		
-		return proj;
-		
-		}
-	
-	public static SynapseType convertSynapse( unr.neurotranslate.ncsclasses.Synapse ncsSynapse ) {
-		
-		SynapseType neuroMLSynapse = new SynapseType();
-		DoubleExponentialSynapse doubExpSyn = new DoubleExponentialSynapse();
-		String tempString = ncsSynapse.MaxG.toString();
-		double tempDouble = Double.parseDouble(tempString);
-		doubExpSyn.setMaxConductance(tempDouble);
-		neuroMLSynapse.setDoubExpSyn(doubExpSyn);
-		
-		return neuroMLSynapse;
-		
-		}
 	}

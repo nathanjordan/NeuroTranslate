@@ -1,0 +1,124 @@
+<jxb:bindings version="2.1" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:hj="http://hyperjaxb3.jvnet.org/ejb/schemas/customizations"
+  xmlns:pr="http://java.sun.com/xml/ns/persistence"
+  xmlns:orm="http://java.sun.com/xml/ns/persistence/orm"
+  xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" jxb:extensionBindingPrefixes="hj">
+
+  <!-- 
+    This file resolves conflicts between NeuroML level1 and level2 and level3 in version 1.8.1
+    You can find more about this JAXB binding syntax here: http://j.mp/dNMs8y
+    
+    author: Stephen D Larson (stephen.larson@gmail.com)
+  -->
+
+  <jxb:globalBindings>
+    <xjc:simple/>
+    <!--http://weblogs.java.net/blog/kohsuke/archive/2006/03/why_does_jaxb_p.html-->
+  </jxb:globalBindings>
+  
+
+  <jxb:bindings schemaLocation="neuroml/Level1/MorphML_v1.8.1.xsd" node="/xs:schema">
+    <jxb:bindings node="//xs:attribute[@name='fractAlongParent']">
+      <jxb:property name="fractAlongParentValue"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:complexType[@name='Morphology']">
+      <jxb:property name="morphologyType"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:complexType[@name='Cells']">
+      <jxb:property name="cellsType"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:attribute[@name='lengthUnits']">
+      <jxb:property name="MorphMLLengthUnits"/>
+    </jxb:bindings>
+  </jxb:bindings>
+
+  <!-- Metadata bindings -->
+  <jxb:bindings schemaLocation="neuroml/Level1/Metadata_v1.8.1.xsd" node="/xs:schema">
+    <jxb:bindings node="/xs:schema/xs:complexType[11]/xs:all[1]/xs:element[1]">
+      <jxb:property name="tagDeprecated"/>
+    </jxb:bindings>
+    <jxb:bindings node="/xs:schema/xs:complexType[11]/xs:all[1]/xs:element[2]">
+      <jxb:property name="valueDeprecated"/>
+    </jxb:bindings>
+  </jxb:bindings>
+
+  <!-- Biophysics bindings -->
+  <jxb:bindings schemaLocation="neuroml/Level2/Biophysics_v1.8.1.xsd" node="/xs:schema">
+    <jxb:bindings node="//xs:complexType[@name='Biophysics']">
+      <jxb:class name="biophysicsType"/>
+      <jxb:property name="biophysicsType"/>
+    </jxb:bindings>
+    <jxb:bindings node="/xs:schema/xs:complexType[2]/xs:attribute[4]">
+      <jxb:property name="passiveConductanceDeprecated"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:complexType[@name='SpecAxialResistance']//xs:element[@name = 'variable_parameter']">
+      <jxb:property name="AxialVariableParameter"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:complexType[@name='Mechanism']//xs:element[@name = 'variable_parameter']">
+      <jxb:property name="MechanismVariableParameter"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:complexType[@name='SpecCapacitance']//xs:element[@name = 'variable_parameter']">
+      <jxb:property name="CapacitanceVariableParameter"/>
+    </jxb:bindings>
+  </jxb:bindings>
+
+  <!-- Channel ML bindings -->
+  <jxb:bindings schemaLocation="neuroml/Level2/ChannelML_v1.8.1.xsd" node="/xs:schema">
+    <jxb:bindings node="//xs:complexType[@name='ChannelML']">
+      <jxb:class name="channelmlType"/>
+      <jxb:property name="channelmlType"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:element[@name = 'shell_thickness']">
+      <jxb:property name="shellThicknessDeprecated"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:element[@name = 'resting_conc']">
+      <jxb:property name="restingConcDeprecated"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:element[@name = 'decay_constant']">
+      <jxb:property name="decayConstantDeprecated"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:element[@name = 'ceiling']">
+      <jxb:property name="ceilingDeprecated"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:element[@name = 'inv_decay_constant']">
+      <jxb:property name="invDecayConstantDeprecated"/>
+    </jxb:bindings>
+  </jxb:bindings>
+
+  <!-- Network ML bindings -->
+  <jxb:bindings schemaLocation="neuroml/Level3/NetworkML_v1.8.1.xsd" node="/xs:schema">
+    <jxb:bindings node="//xs:element[@name = 'properties']">
+      <jxb:property name="synapticProperties"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:attribute[@name='lengthUnits']">
+      <jxb:property name="NetworkMLLengthUnits"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:element[@name = 'source']">
+      <jxb:property name="ProjectionSource"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:complexType[@name='Projection']//xs:element[@name = 'target']">
+      <jxb:property name="ProjectionTarget"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:complexType[@name='GlobalSynapticProperties']//xs:element[@name='synapse_type']">
+      <jxb:property name="GlobalSynapseType"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:element[@name = 'cell_type']">
+      <jxb:property name="PopulationCellType"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:complexType[@name='PotentialSynapticLocation']//xs:element[@name='group']">
+      <jxb:property name="SynapseGroup"/>
+    </jxb:bindings>
+    <jxb:bindings node="//xs:complexType[@name='PotentialSynLoc']//xs:element[@name='group']">
+      <jxb:property name="SynapseGroup2"/>
+    </jxb:bindings>
+  </jxb:bindings>
+  
+  <!-- Neuro ML Level3 bindings -->
+  <jxb:bindings schemaLocation="neuroml/Level3/NeuroML_Level3_v1.8.1.xsd" node="/xs:schema">
+    <jxb:bindings node="//xs:attribute[@name='length_units']">
+      <jxb:property name="NeuroMLLengthUnits"/>
+    </jxb:bindings>
+  </jxb:bindings>
+
+</jxb:bindings>

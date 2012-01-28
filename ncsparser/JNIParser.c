@@ -1,6 +1,7 @@
 #include "JNIParser.h"
 #include "arrays.h"
 #include "JNIFunctions.h"
+#include <stdio.h>
 #include <string.h>
 
 /***************************************************************************************
@@ -40,7 +41,7 @@ JNIEXPORT jobject JNICALL Java_unr_neurotranslate_util_NCSParser_ParseInput(JNIE
 	
 	jboolean copy = 0;
 
-	char * filename8 = (*env)->GetStringUTFChars( env, filename , &copy );
+	const char * filename8 = (*env)->GetStringUTFChars( env, filename , &copy );
 
 	ARRAYS* arrays = ParseInput( 0 , filename8 , 0 );
 
@@ -72,9 +73,9 @@ jobject parseArrays( JNIEnv * env , ARRAYS* arr ) {
 	jobject o = (*env)->AllocObject( env, c );
 	//parse the brain
 	jfieldID f = (*env)->GetFieldID( env , c , "brain" , "Lunr/neurotranslate/ncsclasses/Brain;" );
-	printf("X");
-	(*env)->SetObjectField( env , o , f , parseBrain( env , arr->Brain ) );
 
+	(*env)->SetObjectField( env , o , f , parseBrain( env , arr->Brain ) );
+	printf(" 10 ");
 	return o;
 
 	}
@@ -84,7 +85,7 @@ jobject parseBrain( JNIEnv * env , T_BRAIN* b ) {
 	jclass c = (*env)->FindClass( env, "unr/neurotranslate/ncsclasses/Brain" );
 
 	jobject brain = (*env)->AllocObject( env, c );
-
+	printf(" 5 ");
 	////  Brain Fields  ////
 
 	setObjField( env , brain , "l" , parseLocator( env , &b->L) , "Locator;\0" );
@@ -94,7 +95,7 @@ jobject parseBrain( JNIEnv * env , T_BRAIN* b ) {
 
 	if(b->distribute)
 	setCharArrayField( env , brain , "distribute" , strlen(b->distribute) , b->distribute );
-
+	printf(" 6 ");
 	setIntField( env , brain , "connectRpt" , b->ConnectRpt );
 
 	setIntField( env , brain , "spikeRpt" , b->SpikeRpt );
@@ -114,9 +115,9 @@ jobject parseBrain( JNIEnv * env , T_BRAIN* b ) {
 	setIntField( env , brain , "nStInject" , b->nStInject );
 
 	//stinjnames
-
+	printf(" 7 ");
 	setIntArrayField( env , brain , "stInject" , b->nStInject , b->StInject );
-
+	printf(" 8 ");
 	setIntField( env , brain , "nReports" , b->nReports );
 
 	//reportNames
@@ -154,7 +155,7 @@ jobject parseBrain( JNIEnv * env , T_BRAIN* b ) {
 	//event names
 
 	setIntArrayField( env , brain , "events" , b->nEvents , b->Events );
-
+	printf(" 9 ");
 	return brain;
 
 	}

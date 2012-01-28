@@ -22,7 +22,7 @@ TMP_INPUT *TIN;       /* This must be global so parse.y can access it */
 char *currentFile = NULL;
 
 
-extern ARRAYS *ParseInput (int node, char *filename, int output)
+extern ARRAYS *ParseInput (int node, const char *filename, int output)
 {
   TREENODE *SymTree;
   ARRAYS *AR;
@@ -46,7 +46,7 @@ extern ARRAYS *ParseInput (int node, char *filename, int output)
   //printerr ("Parsing file...\n");
 
   scanner (fbuf, nbytes);
-  free (fbuf);
+  //free (fbuf);
 
   /*print2err ("Input scanned, %d elements, %d syntax errors found\n",
               TIN->nElements, TIN->nParseErr);*/
@@ -62,9 +62,9 @@ extern ARRAYS *ParseInput (int node, char *filename, int output)
     //print2err ("Fatal Error: no BRAIN structure found in input\n");
     return (NULL);
   }
-
+  printf(" 1 ");
   SymTree = makeSymTree (TIN);
-
+printf(" 2 ");
   if (SymTree == NULL)
   {
     //print2err ("Fatal error: parser failed to create symbol table\n");
@@ -114,8 +114,9 @@ extern ARRAYS *ParseInput (int node, char *filename, int output)
 //    PrintConnect (stdout, AR);
     }
   }
-
+  printf(" 3 ");
   free (TIN);
+  printf(" 4 ");
   return (AR);
 }
 

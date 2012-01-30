@@ -106,9 +106,9 @@ brainvars: brainvar
 
 brainvar:  TK_TYPE         NAME    { brain.type      = strdup ($<sval>2); }
          | TK_JOB          NAME    { brain.job         = strdup ($<sval>2); }
-//         | TK_DISTRIBUTE   NAME    { brain->distribute  = strdup ($<sval>2); }
-//         | TK_CONNECT_RPT          { brain->ConnectRpt  = TRUE; }
-//         | TK_SPIKE_RPT            { brain->SpikeRpt    = TRUE; }
+         | TK_DISTRIBUTE   NAME    {  }
+         | TK_CONNECT_RPT          {  }
+         | TK_SPIKE_RPT            {  }
          | TK_FSV          value   { brain.FSV         = $<rval>2; }
          | TK_DURATION     value   { brain.duration    = $<rval>2; }
          | TK_SEED         INTEGER { brain.seed        = $<ival>2; }
@@ -116,26 +116,20 @@ brainvar:  TK_TYPE         NAME    { brain.type      = strdup ($<sval>2); }
          | TK_ST_INJECT    NAME    { brainStimulusInjects.add( $<sval>2 ); }
          | TK_REPORT       NAME    { brainReports.add( $<sval>2); }
          | TK_CONNECT      NAME NAME NAME NAME NAME NAME NAME NAME NAME value value
-               { brain->CnList = makeConnect (brain->CnList, &(brain->nConnect),
-                                               $<sval>2, $<sval>3, $<sval>4, $<sval>5,
+               { brain.connect.add( new Connect( $<sval>2, $<sval>3, $<sval>4, $<sval>5,
                                                $<sval>6, $<sval>7, $<sval>8, $<sval>9,
-                                               $<sval>10, $<rval>11, $<rval>12);
+                                               $<sval>10, $<rval>11, $<rval>12 ) );
                }
          | TK_CONNECT      NAME NAME NAME NAME NAME NAME NAME NAME NAME value value value
-               { brain->CnList = makeDecayingConnect ( brain->CnList, &(brain->nConnect),
-                                               $<sval>2, $<sval>3, $<sval>4, $<sval>5,
+               { brain.connect.add( new Connect( $<sval>2, $<sval>3, $<sval>4, $<sval>5,
                                                $<sval>6, $<sval>7, $<sval>8, $<sval>9,
-                                               $<sval>10, $<rval>11, $<rval>12, $<rval>13 );
+                                               $<sval>10, $<rval>11, $<rval>12, $<rval>13 ) );
                }
          | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME NAME NAME NAME NAME value value
                {
-                 brain->recurrentList = makeRecurrentConnect( brain->recurrentList, &(brain->nRecurrent),
-                                               $<sval>2, $<sval>3, $<sval>4, $<sval>5,
-                                               $<sval>6, $<sval>7, $<sval>8, $<sval>9,
-                                               $<sval>10,
- $<rval>11,
- $<rval>12
- );
+                 brain.recurrentConnect.add( new RecurrentConnect( $<sval>2, $<sval>3, $<sval>4, $<sval>5,
+					                                               $<sval>6, $<sval>7, $<sval>8, $<sval>9,
+					                                               $<sval>10, $<rval>11, $<rval>12 ) );
                }
 
          | TK_SAVE         NAME    value { brain.savefile = $<sval>2; brain.saveTime = $<rval>3; }

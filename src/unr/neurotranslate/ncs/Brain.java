@@ -1,5 +1,7 @@
 package unr.neurotranslate.ncs;
 
+import java.util.ArrayList;
+
 public class Brain {
 	
 	String type;
@@ -16,17 +18,17 @@ public class Brain {
 	
 	boolean distance;
 	
-	String columnType;
+	ArrayList<Column> columnTypes;
 	
-	String stimulusInject;
+	ArrayList<StimulusInject> stimulusInjects;
 	
-	String report;
+	ArrayList<Report> reports;
 	
-	String event;
+	ArrayList<String> events;
 	
-	Connect connect;
+	ArrayList<Connect> connect;
 	
-	RecurrentConnect recurrentConnect;
+	ArrayList<RecurrentConnect> recurrentConnect;
 	
 	Save save;
 	
@@ -45,5 +47,21 @@ public class Brain {
 	boolean outputCells;
 	
 	boolean outputConnectMap;
+	
+	public Brain() {
+		
+		columnTypes = new ArrayList<Column>();
+		
+		stimulusInjects = new ArrayList<StimulusInject>();
+		
+		reports = new ArrayList<Report>();
+		
+		events = new ArrayList<String>();
+		
+		connect = new ArrayList<Connect>();
+		
+		recurrentConnect = new ArrayList<RecurrentConnect>();
+		
+		}
 	
 	}

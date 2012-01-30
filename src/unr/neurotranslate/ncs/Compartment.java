@@ -6,7 +6,7 @@ public class Compartment {
 	
 	int seed;
 	
-	Spikeshape spikeshape;
+	SpikeShape spikeshape;
 	
 	MeanStdev tauMembrane;
 	

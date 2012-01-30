@@ -30,7 +30,15 @@ public class Brain {
 	
 	Save save;
 	
+	float saveTime;
+	
 	String load;
+	
+	int port;
+	
+	String server;
+	
+	int serverPort;
 	
 	boolean warningsOn;
 	

@@ -1,6 +1,7 @@
 %{
 
 import java.io.*;
+import unr.neurotranslate.ncsclasses.*;
 
 %}
 
@@ -96,27 +97,24 @@ element:  brain
 
 /*--------------- Input for the BRAIN structure ------------*/
 
-brain:    TK_BRAIN { brain = makebrain (); } brainvars TK_END_BRAIN
+brain:    TK_BRAIN { brain = new Brain(); } brainvars TK_END_BRAIN
 ;
 
 brainvars: brainvar
          | brainvars brainvar
 ;
 
-brainvar:  TK_TYPE         NAME    { brain->L.name      = strdup ($<sval>2); }
-         | TK_JOB          NAME    { brain->job         = strdup ($<sval>2); }
-         | TK_DISTRIBUTE   NAME    { brain->distribute  = strdup ($<sval>2); }
-         | TK_CONNECT_RPT          { brain->ConnectRpt  = TRUE; }
-         | TK_SPIKE_RPT            { brain->SpikeRpt    = TRUE; }
-         | TK_FSV          value   { brain->FSV         = $<rval>2; }
-         | TK_DURATION     value   { brain->Duration    = $<rval>2; }
-         | TK_SEED         INTEGER { brain->Seed        = $<ival>2; }
-         | TK_COLUMN_TYPE  NAME    { brain->ColumnNames = AddName (brain->ColumnNames, $<sval>2, 0);
-                                     brain->nColumns++; }
-         | TK_ST_INJECT    NAME    { brain->StInjNames  = AddName (brain->StInjNames,  $<sval>2, 0);
-                                     brain->nStInject++; }
-         | TK_REPORT       NAME    { brain->ReportNames = AddName (brain->ReportNames, $<sval>2, 0);
-                                     brain->nReports++; }
+brainvar:  TK_TYPE         NAME    { brain.type      = strdup ($<sval>2); }
+         | TK_JOB          NAME    { brain.job         = strdup ($<sval>2); }
+//         | TK_DISTRIBUTE   NAME    { brain->distribute  = strdup ($<sval>2); }
+//         | TK_CONNECT_RPT          { brain->ConnectRpt  = TRUE; }
+//         | TK_SPIKE_RPT            { brain->SpikeRpt    = TRUE; }
+         | TK_FSV          value   { brain.FSV         = $<rval>2; }
+         | TK_DURATION     value   { brain.duration    = $<rval>2; }
+         | TK_SEED         INTEGER { brain.seed        = $<ival>2; }
+         | TK_COLUMN_TYPE  NAME    { brainColumns.add( $<sval>2 ); }
+         | TK_ST_INJECT    NAME    { brainStimulusInjects.add( $<sval>2 ); }
+         | TK_REPORT       NAME    { brainReports.add( $<sval>2); }
          | TK_CONNECT      NAME NAME NAME NAME NAME NAME NAME NAME NAME value value
                { brain->CnList = makeConnect (brain->CnList, &(brain->nConnect),
                                                $<sval>2, $<sval>3, $<sval>4, $<sval>5,
@@ -140,36 +138,33 @@ brainvar:  TK_TYPE         NAME    { brain->L.name      = strdup ($<sval>2); }
  );
                }
 
-         | TK_INTERACTIVE  LOGICAL { unused (TK_INTERACTIVE); }
-         | TK_IGNORE_EMPTY LOGICAL { unused (TK_IGNORE_EMPTY); }
-         | TK_SAVE_SYN     NAME    { unused (TK_SAVE_SYN); }
-         | TK_SAVE         NAME    value { brain->savefile = strdup( $<sval>2 ); brain->savetime = $<rval>3; }
-         | TK_LOAD         NAME    { brain->loadfile = strdup( $<sval>2 ); }
-         | TK_PORT         INTEGER { brain->Port = $<ival>2; }
-         | TK_PORT         TK_AUTO { brain->Port = -1; }
-         | TK_PORT         TK_SINGLE { brain->Port = -2; }
-         | TK_SERVER       NAME    { brain->HostName = strdup( $<sval>2 ); }
-         | TK_SERVER_PORT  INTEGER { brain->HostPort = $<ival>2; }
-         | TK_DISTANCE     LOGICAL { if( $<ival>2 ) brain->flag = setFlag( brain->flag, "USE_DISTANCE" ); }
-         | TK_OUTPUT_CELLS LOGICAL { if( $<ival>2 ) brain->flag = setFlag( brain->flag, "OUTPUT_CELLS" ); }
-         | TK_OUTPUT_CONNECT_MAP LOGICAL  { if( $<ival>2 ) brain->flag = setFlag( brain->flag, "OUTPUT_CONNECT_MAP" ); }
-         | TK_OPTION       TK_WARNINGS_OFF  { brain->flag = setFlag( brain->flag, "WARNINGS_OFF" );  }
-         | TK_EVENT        NAME    { brain->EventNames = AddName( brain->EventNames, $<sval>2, 0 ); brain->nEvents++; }
+         | TK_SAVE         NAME    value { brain.savefile = $<sval>2; brain.saveTime = $<rval>3; }
+         | TK_LOAD         NAME    { brain.load = $<sval>2; }
+         | TK_PORT         INTEGER { brain.port = $<ival>2; }
+         | TK_PORT         TK_AUTO { brain.port = -1; }
+         | TK_PORT         TK_SINGLE { brain.port = -2; }
+         | TK_SERVER       NAME    { brain.server = $<sval>2; }
+         | TK_SERVER_PORT  INTEGER { brain.serverPort = $<ival>2; }
+         | TK_DISTANCE     LOGICAL { brain.distance =  $<ival>2; }
+         | TK_OUTPUT_CELLS LOGICAL { brain.outputCells = $<ival>2;  }
+         | TK_OUTPUT_CONNECT_MAP LOGICAL  { brain.outputConnectMap = $<ival>2;  }
+         | TK_OPTION       TK_WARNINGS_OFF  { brain.warningsOn = true;  }
+         | TK_EVENT        NAME    { brainEvents.add( $<sval>2 ); }
 ;
 
 /*--------------- Input for the COLUMN_SHELL structure ------------*/
 
-colshell: TK_CSHELL { csh = makecsh (); } cshvars TK_END_CSHELL
+colshell: TK_CSHELL { columnShell = new ColumnShell(); } cshvars TK_END_CSHELL
 ;
 
 cshvars: cshvar
        | cshvars cshvar
 ;
 
-cshvar: TK_TYPE     NAME        { csh->L.name = strdup ($<sval>2); }
-      | TK_WIDTH    value       { csh->width  = $<rval>2; }
-      | TK_HEIGHT   value       { csh->height = $<rval>2; }
-      | TK_LOCATION value value { csh->x      = $<rval>2; csh->y = $<rval>3; }
+cshvar: TK_TYPE     NAME        { columnShell.type = $<sval>2S; }
+      | TK_WIDTH    value       { columnShell.width  = $<rval>2; }
+      | TK_HEIGHT   value       { columnShell.height = $<rval>2; }
+      | TK_LOCATION value value { columnShell.x = $<rval>2; columnShell.y = $<rval>3; }
 ;
 
 /*--------------- Input for the COLUMN structure ------------*/
@@ -732,6 +727,17 @@ value: INTEGER { $<rval>$ = (double) $<ival>1; }
 ;
 
 %%
+
+//Brain Stuff
+public Brain brain;
+public ArrayList<String> brainColumns;
+public ArrayList<String> brainStimulusInjects;
+public ArrayList<String> brainReports;
+public ArrayList<String> brainEvents;
+
+//Column Shell Stuff
+public ColumnShell columnShell;
+
 
 int yywrap() {
 

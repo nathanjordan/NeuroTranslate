@@ -6,9 +6,6 @@
 package unr.neurotranslate.main;
 
 import org.morphml.neuroml.schema.Neuroml;
-
-import unr.neurotranslate.ncsclasses.Arrays;
-import unr.neurotranslate.util.NCSParser;
 import unr.neurotranslate.util.NeuroMLConverter;
 
 /**
@@ -34,15 +31,6 @@ public class Main {
 		
 		converter.neuromlToXml( test , "/home/njordan/Downloads/Cerebellum_out.xml");
 		
-		@SuppressWarnings("unused")
-		Arrays returned;
-		
-		String filename = "/home/njordan/Downloads/PrototypeNCS.in";
-		
-		//Always node 0 for now...output is 0 otherwise it will start printing stuff
-		returned = NCSParser.ParseInput( 0 , filename , 0 );
-		
-		System.out.println("Good!");
 		
 		}
 

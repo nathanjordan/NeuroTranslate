@@ -2,11 +2,11 @@ package unr.neurotranslate.ncs;
 
 public class MeanStdev {
 	
-	float mean;
+	double mean;
 	
-	float stdev;
+	double stdev;
 	
-	public MeanStdev( float m , float s ) {
+	public MeanStdev( double m , double s ) {
 		
 		mean = m;
 		

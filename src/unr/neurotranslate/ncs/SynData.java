@@ -6,7 +6,7 @@ public class SynData {
 	
 	int seed;
 	
-	float maxConduct;
+	double maxConduct;
 	
 	MeanStdev delay;
 	

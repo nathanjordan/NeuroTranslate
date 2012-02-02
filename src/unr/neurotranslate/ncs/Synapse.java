@@ -12,24 +12,24 @@ public class Synapse {
 	
 	String learnLabel;
 	
-	float hebbStart;
+	double hebbStart;
 	
-	float hebbEnd;
+	double hebbEnd;
 	
 	MeanStdev absoluteUse;
 	
-	float[] rseInit;
+	double[] rseInit;
 	
-	float[] prevSpikeRange;
+	double[] prevSpikeRange;
 	
 	MeanStdev maxConduct;
 	
-	float[] delay;
+	double[] delay;
 	
 	MeanStdev synReversal;
 	
-	float sfdStart;
+	double sfdStart;
 	
-	float sfdEnd;
+	double sfdEnd;
 	
 	}

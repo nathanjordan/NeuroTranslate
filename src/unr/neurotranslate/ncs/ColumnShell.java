@@ -2,11 +2,11 @@ package unr.neurotranslate.ncs;
 
 public class ColumnShell {
 	
-	String type;
+	public String type;
 	
-	float width;
+	double width;
 	
-	float height;
+	double height;
 	
 	Location location;
 	

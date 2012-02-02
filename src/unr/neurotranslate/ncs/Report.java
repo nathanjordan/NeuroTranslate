@@ -6,7 +6,7 @@ public class Report {
 	
 	Object cells;
 	
-	float prob;
+	double prob;
 	
 	String cellSequence;
 	
@@ -24,8 +24,8 @@ public class Report {
 	
 	String filename;
 	
-	float[] timeStart;
+	double[] timeStart;
 	
-	float[] timeEnd;
+	double[] timeEnd;
 	
 	}

@@ -2,10 +2,10 @@ package unr.neurotranslate.ncs;
 
 public class LayerShell {
 	
-	String type;
+	public String type;
 	
-	float lower;
+	double lower;
 	
-	float upper;
+	double upper;
 	
 	}

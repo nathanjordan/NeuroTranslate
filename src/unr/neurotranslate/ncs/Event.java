@@ -6,10 +6,20 @@ public class Event {
 	
 	String filename;
 	
-	float value;
-	
-	Object cells;
+	double value;
 	
 	Synapse synapse;
+	
+	//parser stuff
+	
+	String synapseName;
+	
+	String columnName;
+	
+	String layerName;
+	
+	String cellName;
+	
+	String compartmentName;
 	
 	}

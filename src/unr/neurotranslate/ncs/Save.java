@@ -4,6 +4,6 @@ public class Save {
 	
 	String filename;
 	
-	float value;
+	double value;
 	
 	}

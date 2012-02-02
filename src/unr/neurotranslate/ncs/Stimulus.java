@@ -12,40 +12,40 @@ public class Stimulus {
 	
 	int port;
 	
-	float timeIncrement;
+	double timeIncrement;
 	
 	int freqCols;
 	
 	int cellsPerFreq;
 	
-	float[] dynRange;
+	MeanStdev dynRange;
 	
 	String timing;
 	
 	boolean sameSeed;
 	
-	float ampStart;
+	double ampStart;
 	
-	float ampEnd;
+	double ampEnd;
 	
-	float phase;
+	double phase;
 	
-	float vertTrans;
+	double vertTrans;
 	
-	float width;
+	double width;
 	
-	float[] timeStart;
+	double[] timeStart;
 	
-	float[] timeEnd;
+	double[] timeEnd;
 	
-	float freqStart;
+	double freqStart;
 	
 	int seed;
 	
-	float rate;
+	double rate;
 	
-	float tauNoise;
+	double tauNoise;
 	
-	float correl;
+	double correl;
 	
 	}

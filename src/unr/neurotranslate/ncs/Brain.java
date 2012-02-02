@@ -4,59 +4,59 @@ import java.util.ArrayList;
 
 public class Brain {
 	
-	String type;
+	public String type;
 	
-	String job;
+	public String job;
 	
-	float duration;
+	public double duration;
 	
-	int FSV;
+	public int FSV;
 	
-	boolean interactive;
+	public boolean interactive;
 	
-	int seed;
+	public int seed;
 	
-	boolean distance;
+	public boolean distance;
 	
-	ArrayList<Column> columnTypes;
+	public ArrayList<Column> columnTypes;
 	
-	ArrayList<StimulusInject> stimulusInjects;
+	public ArrayList<StimulusInject> stimulusInjects;
 	
-	ArrayList<Report> reports;
+	public ArrayList<Report> reports;
 	
-	ArrayList<String> events;
+	public ArrayList<String> events;
 	
-	ArrayList<Connect> connect;
+	public ArrayList<Connect> connect;
 	
-	ArrayList<RecurrentConnect> recurrentConnect;
+	public ArrayList<RecurrentConnect> recurrentConnect;
 	
-	Save save;
+	public Save save;
 	
-	float saveTime;
+	public double saveTime;
 	
-	String load;
+	public String load;
 	
-	int port;
+	public int port;
 	
-	String server;
+	public String server;
 	
-	int serverPort;
+	public int serverPort;
 	
-	boolean warningsOn;
+	public boolean warningsOn;
 	
-	boolean outputCells;
+	public boolean outputCells;
 	
-	boolean outputConnectMap;
+	public boolean outputConnectMap;
 	
 	//Parsing stuff
 	
-	ArrayList<String> columnTypeNames;
+	public ArrayList<String> columnTypeNames;
 	
-	ArrayList<String> stimulusInjectNames;
+	public ArrayList<String> stimulusInjectNames;
 	
-	ArrayList<String> reportNames;
+	public ArrayList<String> reportNames;
 	
-	ArrayList<String> eventNames;
+	public ArrayList<String> eventNames;
 	
 	public Brain() {
 		

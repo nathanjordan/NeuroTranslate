@@ -20,8 +20,8 @@ public class RecurrentConnect {
 	
 	Synapse synapseType;
 	
-	float probabilityAtoB;
+	double probabilityAtoB;
 	
-	float probabilityBtoA;
+	double probabilityBtoA;
 	
 	}

@@ -20,11 +20,11 @@ public class Connect {
 	
 	Synapse synapseType;
 	
-	float probability;
+	double probability;
 	
-	float speed;
+	double speed;
 	
-	float decayStep;
+	double decayStep;
 	
 	boolean isDecay;
 	
@@ -45,7 +45,7 @@ public class Connect {
 	String synapseTypeName;
 	
 	//Regular Connection
-	public Connect( String col1 , String lay1 , String cell1, String comp1 , String col2, String lay2, String cell2, String comp2, String synType, float prob , float spd ) {
+	public Connect( String col1 , String lay1 , String cell1, String comp1 , String col2, String lay2, String cell2, String comp2, String synType, double prob , double spd ) {
 		
 		column1Name = col1;
 		layer1Name = lay1;
@@ -68,7 +68,7 @@ public class Connect {
 		}
 	
 	//Decaying Connection
-	public Connect( String col1 , String lay1 , String cell1, String comp1 , String col2, String lay2, String cell2, String comp2, String synType, float prob , float dec, float spd ) {
+	public Connect( String col1 , String lay1 , String cell1, String comp1 , String col2, String lay2, String cell2, String comp2, String synType, double prob , double dec, double spd ) {
 		
 		column1Name = col1;
 		layer1Name = lay1;

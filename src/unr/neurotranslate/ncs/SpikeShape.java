@@ -1,9 +1,11 @@
 package unr.neurotranslate.ncs;
 
+import java.util.ArrayList;
+
 public class SpikeShape {
 	
 	String type;
 	
-	float[] voltages;
+	ArrayList<Double> voltages;
 	
 	}

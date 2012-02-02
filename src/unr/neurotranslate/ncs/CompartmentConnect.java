@@ -8,6 +8,6 @@ public class CompartmentConnect {
 	
 	int speed;
 	
-	float G;
+	double G;
 	
 	}

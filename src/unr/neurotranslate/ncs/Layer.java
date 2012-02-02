@@ -1,15 +1,25 @@
 package unr.neurotranslate.ncs;
 
+import java.util.ArrayList;
+
 public class Layer {
 	
 	String type;
 	
 	LayerShell layerShell;
 	
-	Cell cellType;
+	ArrayList<Cell> cellTypes;
 	
-	int quantity;
+	ArrayList<Number> cellTypeQuantities;
 	
-	Connect connect;
+	ArrayList<Connect> connects;
+	
+	ArrayList<RecurrentConnect> recurrentConnects;
+	
+	//parser stuff
+	
+	String layerShellName;
+	
+	ArrayList<String> cellTypeNames;
 	
 	}

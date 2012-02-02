@@ -1,14 +1,20 @@
 package unr.neurotranslate.ncs;
 
+import java.util.ArrayList;
+
 public class Cell {
 	
 	String type;
 	
-	Compartment[] ggg;
-	String[] labels;
-	float[] x;
-	float[] y;
+	ArrayList<Compartment> compartments;
+	ArrayList<String> compartmentlabels;
+	ArrayList<Number> xList;
+	ArrayList<Number> yList;
 	
-	CompartmentConnect connect;
+	ArrayList<CompartmentConnect> connects;
+	
+	//parser stuff
+	
+	ArrayList<String> compartmentNames;
 	
 	}

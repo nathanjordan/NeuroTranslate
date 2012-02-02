@@ -48,6 +48,16 @@ public class Brain {
 	
 	boolean outputConnectMap;
 	
+	//Parsing stuff
+	
+	ArrayList<String> columnTypeNames;
+	
+	ArrayList<String> stimulusInjectNames;
+	
+	ArrayList<String> reportNames;
+	
+	ArrayList<String> eventNames;
+	
 	public Brain() {
 		
 		columnTypes = new ArrayList<Column>();

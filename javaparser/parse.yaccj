@@ -112,9 +112,9 @@ brainvar:  TK_TYPE         NAME    { brain.type      = strdup ($<sval>2); }
          | TK_FSV          value   { brain.FSV         = $<rval>2; }
          | TK_DURATION     value   { brain.duration    = $<rval>2; }
          | TK_SEED         INTEGER { brain.seed        = $<ival>2; }
-         | TK_COLUMN_TYPE  NAME    { brainColumns.add( $<sval>2 ); }
-         | TK_ST_INJECT    NAME    { brainStimulusInjects.add( $<sval>2 ); }
-         | TK_REPORT       NAME    { brainReports.add( $<sval>2); }
+         | TK_COLUMN_TYPE  NAME    { brain.columnTypeNames.add( $<sval>2 ); }
+         | TK_ST_INJECT    NAME    { brain.stimulusInjectNames.add( $<sval>2 ); }
+         | TK_REPORT       NAME    { brain.reportNames.add( $<sval>2); }
          | TK_CONNECT      NAME NAME NAME NAME NAME NAME NAME NAME NAME value value
                { brain.connect.add( new Connect( $<sval>2, $<sval>3, $<sval>4, $<sval>5,
                                                $<sval>6, $<sval>7, $<sval>8, $<sval>9,
@@ -143,128 +143,112 @@ brainvar:  TK_TYPE         NAME    { brain.type      = strdup ($<sval>2); }
          | TK_OUTPUT_CELLS LOGICAL { brain.outputCells = $<ival>2;  }
          | TK_OUTPUT_CONNECT_MAP LOGICAL  { brain.outputConnectMap = $<ival>2;  }
          | TK_OPTION       TK_WARNINGS_OFF  { brain.warningsOn = true;  }
-         | TK_EVENT        NAME    { brainEvents.add( $<sval>2 ); }
+         | TK_EVENT        NAME    { brain.eventNames.add( $<sval>2 ); }
 ;
 
 /*--------------- Input for the COLUMN_SHELL structure ------------*/
 
-colshell: TK_CSHELL { columnShell = new ColumnShell(); } cshvars TK_END_CSHELL
+colshell: TK_CSHELL {
+
+		columnShellList.add( columnShellList.size() , new ColumnShell() ); 
+		
+		} cshvars TK_END_CSHELL
 ;
 
 cshvars: cshvar
        | cshvars cshvar
 ;
 
-cshvar: TK_TYPE     NAME        { columnShell.type = $<sval>2S; }
-      | TK_WIDTH    value       { columnShell.width  = $<rval>2; }
-      | TK_HEIGHT   value       { columnShell.height = $<rval>2; }
-      | TK_LOCATION value value { columnShell.x = $<rval>2; columnShell.y = $<rval>3; }
+cshvar: TK_TYPE     NAME        { columnShellList[columnShellList.size() - 1].type = $<sval>2; }
+      | TK_WIDTH    value       { columnShellList[columnShellList.size() - 1].width  = $<rval>2; }
+      | TK_HEIGHT   value       { columnShellList[columnShellList.size() - 1].height = $<rval>2; }
+      | TK_LOCATION value value { columnShellList[columnShellList.size() - 1].x = $<rval>2; columnShellList[columnShellList.size() - 1].y = $<rval>3; }
 ;
 
 /*--------------- Input for the COLUMN structure ------------*/
 
-column:   TK_COLUMN { column = makecolumn (); } colvars TK_END_COLUMN
+column:   TK_COLUMN { 
+	
+	columnList.add( columnList.size() , new Column() );
+	
+	} colvars TK_END_COLUMN
 ;
 
 colvars: colvar
        | colvars colvar
 ;
 
-colvar: TK_TYPE       NAME { column->L.name     = strdup ($<sval>2); }
-      | TK_CSHELL     NAME { column->shellName  = strdup ($<sval>2); }
-      | TK_LAYER_TYPE NAME { column->LayerNames = AddName (column->LayerNames, $<sval>2, 0);
-                             column->nLayers++; }
+colvar: TK_TYPE       NAME { columnList[ columnList.size() - 1].type = $<sval>2; }
+      | TK_CSHELL     NAME { columnList[ columnList.size() - 1].shellName  = strdup ($<sval>2); }
+      | TK_LAYER_TYPE NAME { columnList[ columnList.size() - 1].layerNames.add( $<sval>2 ); }
       | TK_CONNECT    NAME NAME NAME NAME NAME NAME NAME value value
-               { column->CnList = makeConnect (column->CnList, &(column->nConnect),
-                                                NULL, $<sval>2, $<sval>3, $<sval>4,
-                                                NULL, $<sval>5, $<sval>6, $<sval>7,
-                                                $<sval>8, $<rval>9, $<rval>10);
+               { columnList[ columnList.size() - 1].connects.add( new Connect( null, $<sval>2, $<sval>3, $<sval>4, null, $<sval>5, $<sval>6, $<sval>7,  $<sval>8, $<rval>9, $<rval>10 ) );
                }
       | TK_CONNECT    NAME NAME NAME NAME NAME NAME NAME value value value
-               { column->CnList = makeDecayingConnect (column->CnList, &(column->nConnect),
-                                                NULL, $<sval>2, $<sval>3, $<sval>4,
-                                                NULL, $<sval>5, $<sval>6, $<sval>7,
-                                                $<sval>8, $<rval>9, $<rval>10, $<rval>11);
+               { columnList[ columnList.size() - 1].connects.add( new Connect ( null, $<sval>2, $<sval>3, $<sval>4, null, $<sval>5, $<sval>6, $<sval>7, $<sval>8, $<rval>9, $<rval>10, $<rval>11 ) );
                }
        | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME NAME NAME value value
                {
-                 column->recurrentList = makeRecurrentConnect( column->recurrentList, &(column->nRecurrent),
-                                               NULL, $<sval>2, $<sval>3, $<sval>4,
-                                               NULL, $<sval>5, $<sval>6, $<sval>7,
-                                               $<sval>8, $<rval>9, $<rval>10 );
+                columnList[ columnList.size() - 1].recurrentConnects.add( new RecurrentConnect( NULL, $<sval>2, $<sval>3, $<sval>4, NULL, $<sval>5, $<sval>6, $<sval>7, $<sval>8, $<rval>9, $<rval>10  ));
                }
 ;
 
 /*--------------- Input for the LAYER_SHELL structure ------------*/
 
-lshell:   TK_LSHELL { lsh = makelsh (); } lsvars TK_END_LSHELL
+lshell:   TK_LSHELL { layerShellList.add( layerShellList.size() , new LayerShell() ); } lsvars TK_END_LSHELL
 ;
 
 lsvars: lsvar
       | lsvars lsvar
 ;
 
-lsvar: TK_TYPE  NAME  { lsh->L.name = strdup ($<sval>2); }
-     | TK_LOWER value { lsh->Lower  = $<rval>2; }
-     | TK_UPPER value { lsh->Upper  = $<rval>2; }
+lsvar: TK_TYPE  NAME  { layerShellList[ layerShellList.size() - 1 ].type = $<sval>2; }
+     | TK_LOWER value { layerShellList[ layerShellList.size() - 1 ].lower  = $<rval>2; }
+     | TK_UPPER value { layerShellList[ layerShellList.size() - 1 ].upper  = $<rval>2; }
 ;
 
 /*--------------- Input for the LAYER structure ------------*/
 
-layer:    TK_LAYER { layer = makelayer (); } lvars TK_END_LAYER
+layer:    TK_LAYER { layerList.add( new Layer() ); } lvars TK_END_LAYER
 ;
 
 lvars:   lvar
        | lvars lvar
 ;
 
-lvar:   TK_TYPE       NAME         { layer->L.name    = strdup ($<sval>2); }
-      | TK_LSHELL     NAME         { layer->shellName = strdup ($<sval>2); }
-      | TK_CELL_TYPE  NAME INTEGER { layer->CellNames = AddName (layer->CellNames, $<sval>2, (int) $<ival>3);
-                                     layer->nCellTypes++; }
+lvar:   TK_TYPE       NAME         { layerList[ layerList.size() - 1 ].type = $<sval>2; }
+      | TK_LSHELL     NAME         { layerList[ layerList.size() - 1 ].layerShellName = $<sval>2; }
+      | TK_CELL_TYPE  NAME INTEGER { layerList[ layerList.size() - 1 ].cellTypeNames.add( $<sval>2 );  layerList[ layerList.size() - 1 ].cellTypeQuantities.add( $<ival>3 ); }
       | TK_CONNECT    NAME NAME NAME NAME NAME value value
-               { layer->CnList = makeConnect (layer->CnList, &(layer->nConnect),
-                                               NULL, NULL, $<sval>2, $<sval>3,
-                                               NULL, NULL, $<sval>4, $<sval>5,
-                                               $<sval>6, $<rval>7, $<rval>8);
+               { layerList[ layerList.size() - 1 ].connects.add( new Connect( NULL, NULL, $<sval>2, $<sval>3, NULL, NULL, $<sval>4, $<sval>5, $<sval>6, $<rval>7, $<rval>8 ) );
                }
       | TK_CONNECT    NAME NAME NAME NAME NAME value value value
-               { layer->CnList = makeDecayingConnect (layer->CnList, &(layer->nConnect),
-                                               NULL, NULL, $<sval>2, $<sval>3,
-                                               NULL, NULL, $<sval>4, $<sval>5,
-                                               $<sval>6, $<rval>7, $<rval>8, $<rval>9);
+               { layerList[ layerList.size() - 1 ].connects.add( new Connect( NULL, NULL, $<sval>2, $<sval>3, NULL, NULL, $<sval>4, $<sval>5, $<sval>6, $<rval>7, $<rval>8, $<rval>9 ) );
                }
       | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME value value
                {
-                 layer->recurrentList = makeRecurrentConnect( layer->recurrentList, &(layer->nRecurrent), 
-                                               NULL, NULL, $<sval>2, $<sval>3,
-                                               NULL, NULL, $<sval>4, $<sval>5,
-                                               $<sval>6, $<rval>7, $<rval>8 );
+                layerList[ layerList.size() - 1 ].recurrentConnects.add( new RecurrentConnect( NULL, NULL, $<sval>2, $<sval>3, NULL, NULL, $<sval>4, $<sval>5,  $<sval>6, $<rval>7, $<rval>8 ) );
                }
 ;
 
 /*--------------- Input for the CELL structure ------------*/
 
-cell: TK_CELL { cell = makecell (); } cellvars TK_END_CELL
+cell: TK_CELL { cellList.add( new Cell() ); } cellvars TK_END_CELL
 ;
 
 cellvars: cellvar
         | cellvars cellvar
 ;
 
-cellvar: TK_TYPE    NAME  { cell->L.name = strdup ($<sval>2); }
+cellvar: TK_TYPE    NAME  { cellList[ cellList.size() - 1 ].type = $<sval>2; }
        | TK_CMP     NAME NAME value value
-                          { cell->CmpNames = AddCmp (cell->CmpNames, $<sval>2, $<sval>3,
-                                                     $<rval>4, $<rval>5, 0);
-                            //pass 0 for z-coord for compatibility ------^
-                            //with older input files
-                            cell->nCmp++;
+                          {  cellList[ cellList.size() - 1 ].compartmentNames.add( $<sval>2 );
+                             cellList[ cellList.size() - 1 ].compartmentLabels.add( $<sval>3 );
+                             cellList[ cellList.size() - 1 ].xList.add( $<rval>4 );
+                             cellList[ cellList.size() - 1 ].xList.add( $<rval>5 );
                           }
        | TK_CMP     NAME NAME value value value
-                          { cell->CmpNames = AddCmp (cell->CmpNames, $<sval>2, $<sval>3,
-                                                     $<rval>4, $<rval>5, $<rval>6 );
-                            cell->nCmp++;
-                          }
+                          {  }
 
        | TK_CONNECT NAME NAME value value value
                           { cell->CnList = makeCmpConn (cell->CnList, $<sval>2, $<sval>3, 
@@ -275,29 +259,27 @@ cellvar: TK_TYPE    NAME  { cell->L.name = strdup ($<sval>2); }
 
 /*--------------- Input for the COMPARTMENT structure ------------*/
 
-compart: TK_CMP  { cmp = makecmp (); } cmpvars TK_END_CMP
+compart: TK_CMP  { compartmentList.add( new Compartment() ); } cmpvars TK_END_CMP
 ;
 
 cmpvars: cmpvar
        | cmpvars cmpvar
 ;
 
-cmpvar:  TK_TYPE          NAME     { cmp->L.name     = strdup ($<sval>2); }
-       | TK_SEED          INTEGER  { cmp->Seed       = $<ival>2; }
-       | TK_SPIKE         NAME     { cmp->SpikeName  = strdup ($2); }
-       | TK_CHANNEL       NAME     { cmp->ChannelNames = AddName (cmp->ChannelNames, $<sval>2, 0);
-                                     cmp->nChannels++; }
-       | TK_SPIKE_HW      { twoptr = cmp->Spike_HW; }      twovalue
-       | TK_TAU_MEMBRANE  { twoptr = cmp->Tau_Membrane; }  twovalue
-       | TK_R_MEMBRANE    { twoptr = cmp->R_Membrane; }    twovalue
-       | TK_THRESHOLD     { twoptr = cmp->Threshold; }     twovalue
-       | TK_LEAK_REVERSAL { twoptr = cmp->Leak_Reversal; } twovalue
-       | TK_LEAK_G        { twoptr = cmp->Leak_G; }        twovalue
-       | TK_VMREST        { twoptr = cmp->VMREST; }        twovalue
-       | TK_CA_INTERNAL   { twoptr = cmp->CaInt; }         twovalue
-       | TK_CA_EXTERNAL   { twoptr = cmp->CaExt; }         twovalue
-       | TK_CA_TAU        { twoptr = cmp->CaTau; }         twovalue
-       | TK_CA_SPIKE_INC  { twoptr = cmp->CaSpikeInc; }    twovalue
+cmpvar:  TK_TYPE          NAME     { compartmentList[ compartmentList.size() - 1].type = $<sval>2; }
+       | TK_SEED          INTEGER  { compartmentList[ compartmentList.size() - 1].seed = $<ival>2; }
+       | TK_SPIKE         NAME     { compartmentList[ compartmentList.size() - 1].spikeshapeName = $<sval>2; }
+       | TK_CHANNEL       NAME     { compartmentList[ compartmentList.size() - 1].channelNames.add( $<sval>2 ); }
+       | TK_TAU_MEMBRANE  { twoPtr = compartmentList[ compartmentList.size() - 1].tauMembrane; }  twovalue
+       | TK_R_MEMBRANE    { twoPtr = compartmentList[ compartmentList.size() - 1].rMembrane; }    twovalue
+       | TK_THRESHOLD     { twoPtr = compartmentList[ compartmentList.size() - 1].threshold; }     twovalue
+       | TK_LEAK_REVERSAL { twoPtr = compartmentList[ compartmentList.size() - 1].leakReversal; } twovalue
+       | TK_LEAK_G        { twoPtr = compartmentList[ compartmentList.size() - 1].leakConductance; }        twovalue
+       | TK_VMREST        { twoPtr = compartmentList[ compartmentList.size() - 1].vmRest; }        twovalue
+       | TK_CA_INTERNAL   { twoPtr = compartmentList[ compartmentList.size() - 1].caInternal; }         twovalue
+       | TK_CA_EXTERNAL   { twoPtr = compartmentList[ compartmentList.size() - 1].caExternal; }         twovalue
+       | TK_CA_TAU        { twoPtr = compartmentList[ compartmentList.size() - 1].caTau; }         twovalue
+       | TK_CA_SPIKE_INC  { twoPtr = compartmentList[ compartmentList.size() - 1].caSpikeIncrement; }    twovalue
 ;
 
 /*--------------- Input for the CHANNEL structure ------------*/
@@ -305,11 +287,11 @@ cmpvar:  TK_TYPE          NAME     { cmp->L.name     = strdup ($<sval>2); }
    specified by a family name following the TK_CHANNEL keyword */
 
 
-channel: TK_CHANNEL TK_Km   { chan = makechan ($<sval>2); } Kmvars   TK_END_CHANNEL
-       | TK_CHANNEL TK_Kahp { chan = makechan ($<sval>2); } Kahpvars TK_END_CHANNEL
-       | TK_CHANNEL TK_Ka   { chan = makechan ($<sval>2); } Kavars   TK_END_CHANNEL
-       | TK_CHANNEL TK_Na   { chan = makechan ($<sval>2); } Navars   TK_END_CHANNEL
-       | TK_CHANNEL TK_Knicd { chan = makechan ($<sval>2); } Knicdvars TK_END_CHANNEL
+channel: TK_CHANNEL TK_Km   { channelList.add new Channel( $<sval>2 ); } Kmvars   TK_END_CHANNEL
+       | TK_CHANNEL TK_Kahp { channelList.add new Channel( $<sval>2 ); } Kahpvars TK_END_CHANNEL
+       | TK_CHANNEL TK_Ka   { channelList.add new Channel( $<sval>2 ); } Kavars   TK_END_CHANNEL
+       | TK_CHANNEL TK_Na   { channelList.add new Channel( $<sval>2 ); } Navars   TK_END_CHANNEL
+       | TK_CHANNEL TK_Knicd { channelList.add new Channel( $<sval>2 ); } Knicdvars TK_END_CHANNEL
 ;
 
 Kmvars: chvar
@@ -338,35 +320,35 @@ Knicdvars: chvar
 
 /* chvars are those that are common to all families */
 
-chvar: TK_TYPE       NAME     { chan->L.name    = strdup ($<sval>2); }
-     | TK_M_POWER    { twoptr = chan->mPower; }     twovalue
-     | TK_UNITARY_G  { twoptr = chan->unitaryG; }   twovalue
-     | TK_STRENGTH   { twoptr = chan->strength ; }  twovalue
-     | TK_STRENGTH_RANGE   { twoptr = chan->strength_range; }  twovalue
-     | TK_M_INITIAL  { twoptr = chan->M_Initial; }  twovalue
-     | TK_REVERSAL   { twoptr = chan->ReversePot; } twovalue 
-     | TK_SEED       INTEGER  { chan->Seed = $<ival>2; }
+chvar: TK_TYPE       NAME     { channelList[ channelList.size() - 1 ].type = $<sval>2; }
+     | TK_M_POWER    { twoPtr = channelList[ channelList.size() - 1 ].mPower; }     twovalue
+     | TK_UNITARY_G  { twoPtr = channelList[ channelList.size() - 1 ].unitaryG; }   twovalue
+     | TK_STRENGTH   { twoPtr = channelList[ channelList.size() - 1 ].strength ; }  twovalue
+     | TK_STRENGTH_RANGE   { }  twovalue
+     | TK_M_INITIAL  { twoPtr = channelList[ channelList.size() - 1 ].mInitial; }  twovalue
+     | TK_REVERSAL   { twoPtr = channelList[ channelList.size() - 1 ].reversePotential; } twovalue 
+     | TK_SEED       INTEGER  { channelList[ channelList.size() - 1 ].seed = $<ival>2; }
 ;
 
-Kmvar: TK_E_HALF_MIN_M  { twoptr = chan->eHalfMinM; } twovalue 
-     | TK_TAU_SCALE_M   { twoptr = chan->tauScaleM; } twovalue
+Kmvar: TK_E_HALF_MIN_M  { twoPtr = channelList[ channelList.size() - 1 ].eHalfMinM; } twovalue 
+     | TK_TAU_SCALE_M   { twoPtr = channelList[ channelList.size() - 1 ].tauScaleFactorM; } twovalue
      | TK_SLOPE_M       value value value { chan->slopeM [0] = $<rval>2;
                                             chan->slopeM [1] = $<rval>3;
                                             chan->slopeM [2] = $<rval>4; }
-     | TK_SLOPE_M_STDEV value { chan->slopeM_stdev = $<rval>2; }
+     | TK_SLOPE_M_STDEV value { }
 ;
 
-Kahpvar: TK_CA_SCALE     { twoptr = chan->CA_SCALE; }     twovalue
-       | TK_CA_EXP       { twoptr = chan->CA_EXP; }       twovalue
-       | TK_CA_EXP_RANGE { twoptr = chan->CA_EXP_RANGE; } twovalue
-       | TK_CA_HALF_MIN  { twoptr = chan->CA_HALF_MIN; }  twovalue
-       | TK_CA_TAU_SCALE { twoptr = chan->CA_TAU_SCALE; } twovalue
+Kahpvar: TK_CA_SCALE     { twoPtr = channelList[ channelList.size() - 1 ].caScaleFactor; }     twovalue
+       | TK_CA_EXP       { twoPtr = channelList[ channelList.size() - 1 ].caExpFactor; }       twovalue
+       | TK_CA_EXP_RANGE {  } twovalue
+       | TK_CA_HALF_MIN  { twoPtr = channelList[ channelList.size() - 1 ].caHalfMin; }  twovalue
+       | TK_CA_TAU_SCALE { twoPtr = channelList[ channelList.size() - 1 ].caTauScaleFactor; } twovalue
 ;
 
-Kavar: TK_H_INITIAL      { twoptr = chan->H_Initial; } twovalue
-     | TK_H_POWER        { twoptr = chan->hPower;    } twovalue
-     | TK_E_HALF_MIN_M   { twoptr = chan->eHalfMinM;  } twovalue
-     | TK_E_HALF_MIN_H   { twoptr = chan->eHalfMinH;  } twovalue
+Kavar: TK_H_INITIAL      { twoPtr = channelList[ channelList.size() - 1 ].hInitial; } twovalue
+     | TK_H_POWER        { twoPtr = channelList[ channelList.size() - 1 ].hPower;    } twovalue
+     | TK_E_HALF_MIN_M   { twoPtr = channelList[ channelList.size() - 1 ].eHalfMinMKa;  } twovalue
+     | TK_E_HALF_MIN_H   { twoPtr = channelList[ channelList.size() - 1 ].eHalfMinH;  } twovalue
      | TK_SLOPE_M          value { chan->slopeM [0] = $<rval>2; }
      | TK_SLOPE_M_STDEV    value { chan->slopeM_stdev = $<rval>2; }
      | TK_SLOPE_H          value { chan->slopeH [0] = $<rval>2; }
@@ -383,47 +365,46 @@ Kavar: TK_H_INITIAL      { twoptr = chan->H_Initial; } twovalue
      | TK_VTAU_VOLT_H { nval = 0; } values { chan->nVoltH = nval; chan->TauVoltH = allocVlist (nval, vlist); }
 ;
 
-Navar: TK_E_HALF_MIN_M  { twoptr = chan->eHalfMinM; } twovalue
-     | TK_E_HALF_MIN_H  { twoptr = chan->eHalfMinH;  } twovalue
-     | TK_H_INITIAL      { twoptr = chan->H_Initial; } twovalue
-     | TK_H_POWER        { twoptr = chan->hPower;    } twovalue
-     | TK_TAU_SCALE_M   { twoptr = chan->tauScaleM; } twovalue
-     | TK_TAU_SCALE_H   { twoptr = chan->tauScaleH; } twovalue
+Navar: TK_E_HALF_MIN_M  { twoPtr = chan->eHalfMinM; } twovalue
+     | TK_E_HALF_MIN_H  { twoPtr = chan->eHalfMinH;  } twovalue
+     | TK_H_INITIAL      { twoPtr = chan->H_Initial; } twovalue
+     | TK_H_POWER        { twoPtr = chan->hPower;    } twovalue
+     | TK_TAU_SCALE_M   { twoPtr = chan->tauScaleM; } twovalue
+     | TK_TAU_SCALE_H   { twoPtr = chan->tauScaleH; } twovalue
      | TK_SLOPE_M       value value { chan->slopeM [0] = $<rval>2;
                                       chan->slopeM [1] = $<rval>3; }
      | TK_SLOPE_H       value value { chan->slopeH [0] = $<rval>2;
                                       chan->slopeH [1] = $<rval>3; }
      | TK_SLOPE_M_STDEV    value { chan->slopeM_stdev = $<rval>2; }
      | TK_SLOPE_H_STDEV    value { chan->slopeH_stdev = $<rval>2; }
-     | TK_ALPHA_SCALE_M { twoptr = chan->alphaScaleFactorM; } twovalue
-     | TK_BETA_SCALE_M { twoptr = chan->betaScaleFactorM; } twovalue
-     | TK_ALPHA_SCALE_H { twoptr = chan->alphaScaleFactorH; } twovalue
-     | TK_BETA_SCALE_H { twoptr = chan->betaScaleFactorH; } twovalue
+     | TK_ALPHA_SCALE_M { twoPtr = chan->alphaScaleFactorM; } twovalue
+     | TK_BETA_SCALE_M { twoPtr = chan->betaScaleFactorM; } twovalue
+     | TK_ALPHA_SCALE_H { twoPtr = chan->alphaScaleFactorH; } twovalue
+     | TK_BETA_SCALE_H { twoPtr = chan->betaScaleFactorH; } twovalue
 ;
 
 /*--------------- Input for the SYNAPSE structure ------------*/
 
-synapse: TK_SYNAPSE { syn = makesynapse (); } synvars TK_END_SYNAPSE
+synapse: TK_SYNAPSE { synapseList.add( new Synapse() ); } synvars TK_END_SYNAPSE
 ;
 
 synvars: synvar
        | synvars synvar
 ;
 
-synvar: TK_TYPE           NAME    { syn->L.name    = strdup ($<sval>2); }
-      | TK_SEED           INTEGER { syn->Seed      = $<ival>2; }
-      | TK_SFD_LABEL      NAME    { syn->SfdName   = strdup ($<sval>2); }
-      | TK_LEARN_LABEL    NAME    { syn->LearnName = strdup ($<sval>2); }
-      | TK_DATA_LABEL     NAME    { syn->DataName  = strdup ($<sval>2); 
-                                    deprecate (TK_DATA_LABEL); }
+synvar: TK_TYPE           NAME    { synapseList[ synapseList.size() - 1].type = $<sval>2; }
+      | TK_SEED           INTEGER { synapseList[ synapseList.size() - 1].seed = $<ival>2; }
+      | TK_SFD_LABEL      NAME    { synapseList[ synapseList.size() - 1].sfdLabel = $<sval>2; }
+      | TK_LEARN_LABEL    NAME    { synapseList[ synapseList.size() - 1].learnLabel = $<sval>2; }
+      | TK_DATA_LABEL     NAME    { }
       | TK_SYN_AUGMENTATION NAME  { syn->AugmentationName = strdup ( $<sval>2 ); }
-      | TK_SYN_PSG        NAME    { syn->PsgName   = strdup ($<sval>2); }
-      | TK_ABSOLUTE_USE  { twoptr = syn->USE; } twovalue
-      | TK_DELAY         { twoptr = syn->SynDelay; } twovalue
-      | TK_SYN_REVERSAL  { twoptr = syn->SynRever; } twovalue
-      | TK_MAX_G         { twoptr = syn->MaxG; } twovalue
-      | TK_RSE_INIT  { twoptr = syn->InitRSE; } twovalue
-      | TK_PREV_SPIKE_RANGE { twoptr = syn->InitDeltaT; } twovalue
+      | TK_SYN_PSG        NAME    { synapseList[ synapseList.size() - 1].synPSG  = $<sval>2; }
+      | TK_ABSOLUTE_USE  { twoPtr = synapseList[ synapseList.size() - 1].absoluteUse; } twovalue
+      | TK_DELAY         { twoPtr = syn->SynDelay; } twovalue
+      | TK_SYN_REVERSAL  { twoPtr = synapseList[ synapseList.size() - 1].synReversal; } twovalue
+      | TK_MAX_G         { twoPtr = syn->MaxG; } twovalue
+      | TK_RSE_INIT  { twoPtr = syn->InitRSE; } twovalue
+      | TK_PREV_SPIKE_RANGE { twoPtr = syn->InitDeltaT; } twovalue
       | TK_HEBB_START  value {
             if( syn->nToggles % 10 == 0 )  //need to allocate more space
             {
@@ -489,8 +470,8 @@ sfvars: sfvar
 sfvar: TK_TYPE      NAME     { syn_fd->L.name = strdup ($<sval>2); }
      | TK_SEED      INTEGER  { syn_fd->Seed   = $<ival>2; }
      | TK_SFD       NAME     { syn_fd->SFD    = SFDCode ($<sval>2); }
-     | TK_FACIL_TAU { twoptr = syn_fd->Facil_Tau; } twovalue 
-     | TK_DEPR_TAU  { twoptr = syn_fd->Depr_Tau; }  twovalue
+     | TK_FACIL_TAU { twoPtr = syn_fd->Facil_Tau; } twovalue 
+     | TK_DEPR_TAU  { twoPtr = syn_fd->Depr_Tau; }  twovalue
 ;
 
 /*--------------- Input for the SYN_LEARNING structure ------------*/
@@ -506,12 +487,12 @@ slvar: TK_TYPE                   NAME     { syn_learn->L.name = strdup ($<sval>2
      | TK_SEED                   INTEGER  { syn_learn->Seed = $<ival>2; }
      | TK_LEARN                  NAME     { syn_learn->Learning = LearnCode ($<sval>2); }
      | TK_LEARN_SHAPE            NAME     { syn_learn->Learning_Shape = LearnShape ($<sval>2); }
-     | TK_NEG_HEB_WINDOW         { twoptr = syn_learn->DownWind; }               twovalue 
-     | TK_POS_HEB_WINDOW         { twoptr = syn_learn->UpWind; }                 twovalue 
-     | TK_NEG_HEB_PEAK_DELTA_USE { twoptr = syn_learn->Neg_Heb_Peak_Delta_Use; } twovalue 
-     | TK_POS_HEB_PEAK_DELTA_USE { twoptr = syn_learn->Pos_Heb_Peak_Delta_Use; } twovalue 
-     | TK_NEG_HEB_PEAK_TIME      { twoptr = syn_learn->Neg_Heb_Peak_Time; }      twovalue
-     | TK_POS_HEB_PEAK_TIME      { twoptr = syn_learn->Pos_Heb_Peak_Time; }      twovalue
+     | TK_NEG_HEB_WINDOW         { twoPtr = syn_learn->DownWind; }               twovalue 
+     | TK_POS_HEB_WINDOW         { twoPtr = syn_learn->UpWind; }                 twovalue 
+     | TK_NEG_HEB_PEAK_DELTA_USE { twoPtr = syn_learn->Neg_Heb_Peak_Delta_Use; } twovalue 
+     | TK_POS_HEB_PEAK_DELTA_USE { twoPtr = syn_learn->Pos_Heb_Peak_Delta_Use; } twovalue 
+     | TK_NEG_HEB_PEAK_TIME      { twoPtr = syn_learn->Neg_Heb_Peak_Time; }      twovalue
+     | TK_POS_HEB_PEAK_TIME      { twoPtr = syn_learn->Pos_Heb_Peak_Time; }      twovalue
 ;
 
 /*--------------- Input for the SYN_DATA structure ------------*/
@@ -526,9 +507,9 @@ sdvars: sdvar
 
 sdvar: TK_TYPE         NAME     { syn_data->L.name = strdup ($<sval>2); }
      | TK_SEED         INTEGER  { syn_data->Seed   = $<ival>2; }
-     | TK_MAX_G        { twoptr = syn_data->MaxG; } twovalue
-     | TK_DELAY        { twoptr = syn_data->SynDelay; } twovalue 
-     | TK_SYN_REVERSAL { twoptr = syn_data->SynRever; } twovalue 
+     | TK_MAX_G        { twoPtr = syn_data->MaxG; } twovalue
+     | TK_DELAY        { twoPtr = syn_data->SynDelay; } twovalue 
+     | TK_SYN_REVERSAL { twoPtr = syn_data->SynRever; } twovalue 
 ;
 
 /*--------------- Input for the SYN_AUGMENTATION structure ------------*/
@@ -540,15 +521,15 @@ savars: savar
       | savars savar
 
 savar: TK_TYPE                 NAME    { syn_augmentation->L.name = strdup ($<sval>2 ); }
-     | TK_CA_INTERNAL          { twoptr = syn_augmentation->CA_init; } twovalue
-     | TK_CA_TAU_DECAY         { twoptr = syn_augmentation->CA_decay; } twovalue
-     | TK_CA_TAU               { twoptr = syn_augmentation->CA_tau; } twovalue
-     | TK_CA_SPIKE_INC         { twoptr = syn_augmentation->CA_increment; } twovalue
-     | TK_MAX_AUGMENTATION     { twoptr = syn_augmentation->MaxSA; } twovalue
-     | TK_ALPHA                { twoptr = syn_augmentation->Alpha; } twovalue
-     | TK_AUGMENTATION_INIT    { twoptr = syn_augmentation->Augmentation_init; } twovalue
-     | TK_AUGMENTATION_TAU     { twoptr = syn_augmentation->Augmentation_tau; } twovalue
-     | TK_AUGMENTATION_DELAY   { twoptr = syn_augmentation->SA_delay; } twovalue
+     | TK_CA_INTERNAL          { twoPtr = syn_augmentation->CA_init; } twovalue
+     | TK_CA_TAU_DECAY         { twoPtr = syn_augmentation->CA_decay; } twovalue
+     | TK_CA_TAU               { twoPtr = syn_augmentation->CA_tau; } twovalue
+     | TK_CA_SPIKE_INC         { twoPtr = syn_augmentation->CA_increment; } twovalue
+     | TK_MAX_AUGMENTATION     { twoPtr = syn_augmentation->MaxSA; } twovalue
+     | TK_ALPHA                { twoPtr = syn_augmentation->Alpha; } twovalue
+     | TK_AUGMENTATION_INIT    { twoPtr = syn_augmentation->Augmentation_init; } twovalue
+     | TK_AUGMENTATION_TAU     { twoPtr = syn_augmentation->Augmentation_tau; } twovalue
+     | TK_AUGMENTATION_DELAY   { twoPtr = syn_augmentation->SA_delay; } twovalue
 ;
 
 /*--------------- Input for the SPIKESHAPE structure ------------*/
@@ -590,8 +571,8 @@ stvar: TK_TYPE           NAME     { stim->L.name          = strdup ($<sval>2); }
      | TK_SEED           INTEGER  { stim->Seed            = $<ival>2; }
      | TK_FREQ_ROWS      INTEGER  { stim->nFreqs          = $<ival>2; }
      | TK_CELLS_PER_FREQ INTEGER  { stim->CellsPerFreq    = $<ival>2; }
-     | TK_TIME_FREQ_INC  { twoptr = stim->Time_Freq_Incr; } twovalue 
-     | TK_DYN_RANGE      { twoptr = stim->DynRange; } twovalue 
+     | TK_TIME_FREQ_INC  { twoPtr = stim->Time_Freq_Incr; } twovalue 
+     | TK_DYN_RANGE      { twoPtr = stim->DynRange; } twovalue 
      | TK_AMP_START      value    { stim->AMP_Start       = $<rval>2; }
      | TK_AMP_END        value    { stim->AMP_End         = $<rval>2; }
      | TK_WIDTH          value    { stim->WidthSec        = $<rval>2; }
@@ -712,8 +693,8 @@ values: value         { if (nval < VSIZE) vlist [nval++] = $<rval>1; }
       | values value  { if (nval < VSIZE) vlist [nval++] = $<rval>2; }
 ;
 
-twovalue: value value  { twoptr [0] = $<rval>1; twoptr [1] = $<rval>2; }
-        | value        { twoptr [0] = $<rval>1; twoptr [1] = 0.0; }
+twovalue: value value  { twoPtr = new MeanStdev( $<rval>1 , $<rval>2 ); }
+        | value        { twoPtr = new MeanStdev( $<rval>1 , 0.0 ); }
 ;
 
 value: INTEGER { $<rval>$ = (double) $<ival>1; }
@@ -724,14 +705,22 @@ value: INTEGER { $<rval>$ = (double) $<ival>1; }
 
 //Brain Stuff
 public Brain brain;
-public ArrayList<String> brainColumns;
-public ArrayList<String> brainStimulusInjects;
-public ArrayList<String> brainReports;
-public ArrayList<String> brainEvents;
 
-//Column Shell Stuff
-public ColumnShell columnShell;
+public ArrayList<ColumnShell> columnShellList;
+public ArrayList<Column> columnList;
 
+public ArrayList<LayerShell> layerShellList;
+public ArrayList<LayerShell> layerList;
+
+public ArrayList<Cell> cellList;
+public ArrayList<Compartment> compartmentList;
+
+public ArrayList<Channel> channelList;
+
+public ArrayList<Synapse> synapseList;
+
+//For all those pesky mean/stdev values
+protected MeanStdev twoPtr;
 
 int yywrap() {
 

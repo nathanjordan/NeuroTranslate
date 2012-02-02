@@ -4,6 +4,8 @@ public class Channel {
 	
 	String type;
 	
+	String channelType;
+	
 	MeanStdev mInitial;
 	
 	MeanStdev mPower;
@@ -55,5 +57,11 @@ public class Channel {
 	float[] vTauValueH;
 	
 	float[] vTauVoltageH;
+	
+	public Channel( String chType ) {
+		
+		channelType = chType;
+		
+		}
 	
 	}

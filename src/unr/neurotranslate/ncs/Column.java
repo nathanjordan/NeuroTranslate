@@ -1,13 +1,21 @@
 package unr.neurotranslate.ncs;
 
+import java.util.ArrayList;
+
 public class Column {
 	
 	String type;
 	
 	ColumnShell columnShell;
 	
-	Layer layer;
+	ArrayList<Layer> layers;
 	
-	Connect connect;
+	ArrayList<Connect> connects;
+	
+	ArrayList<RecurrentConnect> recurrentConnects;
+	
+	//parser stuff
+	
+	ArrayList<String> layerNames;
 	
 	}

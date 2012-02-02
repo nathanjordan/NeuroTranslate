@@ -1,5 +1,7 @@
 package unr.neurotranslate.ncs;
 
+import java.util.ArrayList;
+
 public class Compartment {
 	
 	String type;
@@ -28,6 +30,12 @@ public class Compartment {
 	
 	MeanStdev caTau;
 	
-	Channel channel;
+	ArrayList<Channel> channel;
+	
+	//parser stuff
+	
+	String spikeshapeName;
+	
+	ArrayList<String> channelNames;
 	
 	}

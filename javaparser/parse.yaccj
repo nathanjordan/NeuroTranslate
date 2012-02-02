@@ -400,49 +400,17 @@ synvar: TK_TYPE           NAME    { synapseList[ synapseList.size() - 1].type = 
       | TK_SYN_AUGMENTATION NAME  { syn->AugmentationName = strdup ( $<sval>2 ); }
       | TK_SYN_PSG        NAME    { synapseList[ synapseList.size() - 1].synPSG  = $<sval>2; }
       | TK_ABSOLUTE_USE  { twoPtr = synapseList[ synapseList.size() - 1].absoluteUse; } twovalue
-      | TK_DELAY         { twoPtr = syn->SynDelay; } twovalue
+      | TK_DELAY         {  } twovalue
       | TK_SYN_REVERSAL  { twoPtr = synapseList[ synapseList.size() - 1].synReversal; } twovalue
-      | TK_MAX_G         { twoPtr = syn->MaxG; } twovalue
-      | TK_RSE_INIT  { twoPtr = syn->InitRSE; } twovalue
-      | TK_PREV_SPIKE_RANGE { twoPtr = syn->InitDeltaT; } twovalue
-      | TK_HEBB_START  value {
-            if( syn->nToggles % 10 == 0 )  //need to allocate more space
-            {
-                syn->toggleTimes = (double*) realloc( syn->toggleTimes, sizeof(double)*(syn->nToggles+10) );
-                syn->toggleModes = (int*) realloc( syn->toggleModes, sizeof(int)*(syn->nToggles+10) );
-            }
-            syn->toggleTimes[syn->nToggles] = $<rval>2;
-            syn->toggleModes[syn->nToggles++] = 1;
-        }
-      | TK_HEBB_END  value {
-            if( syn->nToggles % 10 == 0 )  //need to allocate more space
-            {
-                syn->toggleTimes = (double*) realloc( syn->toggleTimes, sizeof(double)*(syn->nToggles+10) );
-                syn->toggleModes = (int*) realloc( syn->toggleModes, sizeof(int)*(syn->nToggles+10) );
-            }
-            syn->toggleTimes[syn->nToggles] = $<rval>2;
-            syn->toggleModes[syn->nToggles++] = 0;
-        }
-        // Added 8/12/10 Joshua Hegie
-      | TK_SFD_START  value {
-            if( syn->nSfdToggles % 10 == 0 )  //need to allocate more space
-            {
-                syn->sfdToggleTimes = (double*) realloc( syn->sfdToggleTimes, sizeof(double)*(syn->nSfdToggles+10) );
-                syn->sfdToggleModes = (int*) realloc( syn->sfdToggleModes, sizeof(int)*(syn->nSfdToggles+10) );
-                printf ("Realloc worked\n");
-            }
-            syn->sfdToggleTimes[syn->nSfdToggles] = $<rval>2;
-            syn->sfdToggleModes[syn->nSfdToggles++] = 1;
-        }
-      | TK_SFD_END  value {
-            if( syn->nSfdToggles % 10 == 0 )  //need to allocate more space
-            {
-                syn->sfdToggleTimes = (double*) realloc( syn->sfdToggleTimes, sizeof(double)*(syn->nSfdToggles+10) );
-                syn->sfdToggleModes = (int*) realloc( syn->sfdToggleModes, sizeof(int)*(syn->nSfdToggles+10) );
-            }
-            syn->sfdToggleTimes[syn->nSfdToggles] = $<rval>2;
-            syn->sfdToggleModes[syn->nSfdToggles++] = 0;
-        }
+      | TK_MAX_G         { twoPtr = synapseList[ synapseList.size() - 1].maxConduct; } twovalue
+      | TK_RSE_INIT  { } twovalue
+      | TK_PREV_SPIKE_RANGE {  } twovalue
+      | TK_HEBB_START  value { synapseList[ synapseList.size() - 1].hebbStart = $<rval>2; }
+      | TK_HEBB_END  value { synapseList[ synapseList.size() - 1].hebbEnd = $<rval>2; }
+      
+      // Added 8/12/10 Joshua Hegie
+      | TK_SFD_START  value { synapseList[ synapseList.size() - 1].sfdStart = $<rval>2; }
+      | TK_SFD_END  value { synapseList[ synapseList.size() - 1].sfdEnd = $<rval>2; }
 ;
 
 /*--------------- Input for the SYN_INPUT_PSG structure ------------*/
@@ -460,76 +428,75 @@ spvar: TK_TYPE     NAME { syn_psg->L.name = strdup ($<sval>2); }
 
 /*--------------- Input for the SYN_FACIL_DEPRESS structure ------------*/
 
-syn_fd:  TK_SYN_FD { syn_fd = makesyn_fd (); } sfvars TK_END_SYN_FD
+syn_fd:  TK_SYN_FD { synFacilDepressList.add( new SynFacilDepress() ); } sfvars TK_END_SYN_FD
 ;
 
 sfvars: sfvar
       | sfvars sfvar
 ;
 
-sfvar: TK_TYPE      NAME     { syn_fd->L.name = strdup ($<sval>2); }
-     | TK_SEED      INTEGER  { syn_fd->Seed   = $<ival>2; }
-     | TK_SFD       NAME     { syn_fd->SFD    = SFDCode ($<sval>2); }
-     | TK_FACIL_TAU { twoPtr = syn_fd->Facil_Tau; } twovalue 
-     | TK_DEPR_TAU  { twoPtr = syn_fd->Depr_Tau; }  twovalue
+sfvar: TK_TYPE      NAME     { synFacilDepressList[ synFacilDepressList.size() - 1 ].type = $<sval>2; }
+     | TK_SEED      INTEGER  { synFacilDepressList[ synFacilDepressList.size() - 1 ].seed = $<ival>2; }
+     | TK_SFD       NAME     { synFacilDepressList[ synFacilDepressList.size() - 1 ].SFD = $<sval>2; }
+     | TK_FACIL_TAU { twoPtr = synFacilDepressList[ synFacilDepressList.size() - 1 ].facilTau; } twovalue 
+     | TK_DEPR_TAU  { twoPtr = synFacilDepressList[ synFacilDepressList.size() - 1 ].deprTau; }  twovalue
 ;
 
 /*--------------- Input for the SYN_LEARNING structure ------------*/
 
-syn_learn: TK_SYN_LEARN { syn_learn = makesyn_learn (); } slvars  TK_END_SYN_LEARN
+syn_learn: TK_SYN_LEARN { synLearningList.add( new SynLearning() ); } slvars  TK_END_SYN_LEARN
 ;
 
 slvars: slvar
       | slvars slvar
 ;
 
-slvar: TK_TYPE                   NAME     { syn_learn->L.name = strdup ($<sval>2); }
-     | TK_SEED                   INTEGER  { syn_learn->Seed = $<ival>2; }
-     | TK_LEARN                  NAME     { syn_learn->Learning = LearnCode ($<sval>2); }
-     | TK_LEARN_SHAPE            NAME     { syn_learn->Learning_Shape = LearnShape ($<sval>2); }
-     | TK_NEG_HEB_WINDOW         { twoPtr = syn_learn->DownWind; }               twovalue 
-     | TK_POS_HEB_WINDOW         { twoPtr = syn_learn->UpWind; }                 twovalue 
-     | TK_NEG_HEB_PEAK_DELTA_USE { twoPtr = syn_learn->Neg_Heb_Peak_Delta_Use; } twovalue 
-     | TK_POS_HEB_PEAK_DELTA_USE { twoPtr = syn_learn->Pos_Heb_Peak_Delta_Use; } twovalue 
-     | TK_NEG_HEB_PEAK_TIME      { twoPtr = syn_learn->Neg_Heb_Peak_Time; }      twovalue
-     | TK_POS_HEB_PEAK_TIME      { twoPtr = syn_learn->Pos_Heb_Peak_Time; }      twovalue
+slvar: TK_TYPE                   NAME     { synLearningList[ synLearningList.size() - 1 ].type = $<sval>2; }
+     | TK_SEED                   INTEGER  { synLearningList[ synLearningList.size() - 1 ].seed = $<ival>2; }
+     | TK_LEARN                  NAME     { synLearningList[ synLearningList.size() - 1 ].learning = $<sval>2; }
+     | TK_LEARN_SHAPE            NAME     { synLearningList[ synLearningList.size() - 1 ].learningShape = $<sval>2; }
+     | TK_NEG_HEB_WINDOW         { twoPtr = synLearningList[ synLearningList.size() - 1 ].negHebWindow; }               twovalue 
+     | TK_POS_HEB_WINDOW         { twoPtr = synLearningList[ synLearningList.size() - 1 ].posHebWindow; }                 twovalue 
+     | TK_NEG_HEB_PEAK_DELTA_USE { twoPtr = synLearningList[ synLearningList.size() - 1 ].negHebPeakDeltaUse; } twovalue 
+     | TK_POS_HEB_PEAK_DELTA_USE { twoPtr = synLearningList[ synLearningList.size() - 1 ].posHebPeakDeltaUse; } twovalue 
+     | TK_NEG_HEB_PEAK_TIME      { twoPtr = synLearningList[ synLearningList.size() - 1 ].posHebPeakTime; }      twovalue
+     | TK_POS_HEB_PEAK_TIME      { twoPtr = synLearningList[ synLearningList.size() - 1 ].negHebPeakTime; }      twovalue
 ;
 
 /*--------------- Input for the SYN_DATA structure ------------*/
 
-syn_data: TK_SYN_DATA { syn_data = makesyn_data (); 
-                        deprecate (TK_SYN_DATA); } sdvars  TK_END_SYN_DATA
+syn_data: TK_SYN_DATA { synDataList.add( new SynData() ); } sdvars  TK_END_SYN_DATA
 ;
 
 sdvars: sdvar
       | sdvars sdvar
 ;
 
-sdvar: TK_TYPE         NAME     { syn_data->L.name = strdup ($<sval>2); }
-     | TK_SEED         INTEGER  { syn_data->Seed   = $<ival>2; }
-     | TK_MAX_G        { twoPtr = syn_data->MaxG; } twovalue
-     | TK_DELAY        { twoPtr = syn_data->SynDelay; } twovalue 
-     | TK_SYN_REVERSAL { twoPtr = syn_data->SynRever; } twovalue 
+sdvar: TK_TYPE         NAME     { synDataList[ synDataList.size() - 1 ].type = $<sval>2; }
+     | TK_SEED         INTEGER  { synDataList[ synDataList.size() - 1 ].seed = $<ival>2; }
+     | TK_MAX_G  value { synDataList[ synDataList.size() - 1 ].maxConduct = $<rval>2; }
+     | TK_DELAY        { twoPtr = synDataList[ synDataList.size() - 1 ].delay; } twovalue 
+     | TK_SYN_REVERSAL { twoPtr = synDataList[ synDataList.size() - 1 ].synReversal; } twovalue 
 ;
 
 /*--------------- Input for the SYN_AUGMENTATION structure ------------*/
 
-syn_augmentation: TK_SYN_AUGMENTATION { syn_augmentation = makesyn_augmentation (); } savars TK_END_SYN_AUGMENTATION
+syn_augmentation: TK_SYN_AUGMENTATION { synAugList.add( new SynAugmentation() ); } savars TK_END_SYN_AUGMENTATION
 ;
 
 savars: savar
       | savars savar
 
-savar: TK_TYPE                 NAME    { syn_augmentation->L.name = strdup ($<sval>2 ); }
-     | TK_CA_INTERNAL          { twoPtr = syn_augmentation->CA_init; } twovalue
-     | TK_CA_TAU_DECAY         { twoPtr = syn_augmentation->CA_decay; } twovalue
-     | TK_CA_TAU               { twoPtr = syn_augmentation->CA_tau; } twovalue
-     | TK_CA_SPIKE_INC         { twoPtr = syn_augmentation->CA_increment; } twovalue
-     | TK_MAX_AUGMENTATION     { twoPtr = syn_augmentation->MaxSA; } twovalue
-     | TK_ALPHA                { twoPtr = syn_augmentation->Alpha; } twovalue
-     | TK_AUGMENTATION_INIT    { twoPtr = syn_augmentation->Augmentation_init; } twovalue
-     | TK_AUGMENTATION_TAU     { twoPtr = syn_augmentation->Augmentation_tau; } twovalue
-     | TK_AUGMENTATION_DELAY   { twoPtr = syn_augmentation->SA_delay; } twovalue
+savar: TK_TYPE                 NAME    { synAugList[ synAugList.size() - 1 ].type = $<sval>2; }
+     | TK_CA_INTERNAL          { twoPtr = synAugList[ synAugList.size() - 1 ].caInternal; } twovalue
+     | TK_CA_TAU_DECAY         {  } twovalue
+     | TK_CA_TAU               { twoPtr = synAugList[ synAugList.size() - 1 ].caTau; } twovalue
+     | TK_CA_SPIKE_INC         { twoPtr = synAugList[ synAugList.size() - 1 ].caSpikeIncrement; } twovalue
+     | TK_MAX_AUGMENTATION     { twoPtr = synAugList[ synAugList.size() - 1 ].maxAugmentation; } twovalue
+     | TK_ALPHA                { twoPtr = synAugList[ synAugList.size() - 1 ].alpha; } twovalue
+     | TK_AUGMENTATION_INIT    { twoPtr = synAugList[ synAugList.size() - 1 ].augmentationInit; } twovalue
+     | TK_AUGMENTATION_TAU     { twoPtr = synAugList[ synAugList.size() - 1 ].augmentationTau; } twovalue
+     | TK_AUGMENTATION_DELAY   {  } twovalue
 ;
 
 /*--------------- Input for the SPIKESHAPE structure ------------*/
@@ -718,6 +685,10 @@ public ArrayList<Compartment> compartmentList;
 public ArrayList<Channel> channelList;
 
 public ArrayList<Synapse> synapseList;
+public ArrayList<SynFacilDepress> synFacilDepressList;
+public ArrayList<SynLearning> synLearningList;
+public ArrayList<SynData> synDataList;
+public ArrayList<SynAugmentation> synAugList;
 
 //For all those pesky mean/stdev values
 protected MeanStdev twoPtr;

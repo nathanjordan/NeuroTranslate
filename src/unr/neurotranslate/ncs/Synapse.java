@@ -28,4 +28,8 @@ public class Synapse {
 	
 	MeanStdev synReversal;
 	
+	float sfdStart;
+	
+	float sfdEnd;
+	
 	}

@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 bin/
 doc/
+=======
+>>>>>>> 4807c4df64f8965ee1cbdebfeba3cfd6364cd90a
 *.class 
 *.so
 *.o

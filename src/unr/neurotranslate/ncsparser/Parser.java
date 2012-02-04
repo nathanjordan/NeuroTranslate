@@ -2119,7 +2119,7 @@ case 94:
 //#line 244 "parse.yaccj"
 { 
        						 cellList.get( cellList.size() - 1 ).compartmentNames.add( val_peek(3).sval );
-                             cellList.get( cellList.size() - 1 ).compartmentLabels.add( val_peek(2).sval );
+                             cellList.get( cellList.size() - 1 ).compartmentNames.add( val_peek(2).sval );
                              cellList.get( cellList.size() - 1 ).xList.add( val_peek(1).dval );
                              cellList.get( cellList.size() - 1 ).xList.add( val_peek(0).dval );
                           }

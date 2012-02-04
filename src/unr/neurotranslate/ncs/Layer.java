@@ -4,22 +4,22 @@ import java.util.ArrayList;
 
 public class Layer {
 	
-	String type;
+	public String type;
 	
-	LayerShell layerShell;
+	public LayerShell layerShell;
 	
-	ArrayList<Cell> cellTypes;
+	public ArrayList<Cell> cellTypes = new ArrayList<Cell>();
 	
-	ArrayList<Number> cellTypeQuantities;
+	public ArrayList<Number> cellTypeQuantities = new ArrayList<Number>();
 	
-	ArrayList<Connect> connects;
+	public ArrayList<Connect> connects = new ArrayList<Connect>();
 	
-	ArrayList<RecurrentConnect> recurrentConnects;
+	public ArrayList<RecurrentConnect> recurrentConnects = new ArrayList<RecurrentConnect>();
 	
 	//parser stuff
 	
-	String layerShellName;
+	public String layerShellName;
 	
-	ArrayList<String> cellTypeNames;
+	public ArrayList<String> cellTypeNames = new ArrayList<String>();
 	
 	}

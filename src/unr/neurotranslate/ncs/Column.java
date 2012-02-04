@@ -4,18 +4,20 @@ import java.util.ArrayList;
 
 public class Column {
 	
-	String type;
+	public String type;
 	
-	ColumnShell columnShell;
+	public ColumnShell columnShell;
 	
-	ArrayList<Layer> layers;
+	public ArrayList<Layer> layers = new ArrayList<Layer>();
 	
-	ArrayList<Connect> connects;
+	public ArrayList<Connect> connects = new ArrayList<Connect>();
 	
-	ArrayList<RecurrentConnect> recurrentConnects;
+	public ArrayList<RecurrentConnect> recurrentConnects = new ArrayList<RecurrentConnect>();
 	
 	//parser stuff
 	
-	ArrayList<String> layerNames;
+	public String columnShellName;
+	
+	public ArrayList<String> layerNames = new ArrayList<String>();
 	
 	}

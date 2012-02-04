@@ -2,8 +2,8 @@ package unr.neurotranslate.ncs;
 
 public class SynPSG {
 	
-	String type;
+	public String type;
 	
-	String filename;
+	public String filename;
 	
 	}

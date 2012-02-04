@@ -2,34 +2,34 @@ package unr.neurotranslate.ncs;
 
 public class Synapse {
 	
-	String type;
+	public String type;
 	
-	int seed;
+	public int seed;
 	
-	String sfdLabel;
+	public String sfdLabel;
 	
-	String synPSG;
+	public String synPSG;
 	
-	String learnLabel;
+	public String learnLabel;
 	
-	double hebbStart;
+	public double hebbStart;
 	
-	double hebbEnd;
+	public double hebbEnd;
 	
-	MeanStdev absoluteUse;
+	public TwoValue absoluteUse = new TwoValue();
 	
-	double[] rseInit;
+	public double[] rseInit;
 	
-	double[] prevSpikeRange;
+	public double[] prevSpikeRange;
 	
-	MeanStdev maxConduct;
+	public TwoValue maxConduct = new TwoValue();
 	
-	double[] delay;
+	public TwoValue delay = new TwoValue();
 	
-	MeanStdev synReversal;
+	public TwoValue synReversal = new TwoValue();
 	
-	double sfdStart;
+	public double sfdStart;
 	
-	double sfdEnd;
+	public double sfdEnd;
 	
 	}

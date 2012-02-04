@@ -4,8 +4,8 @@ public class LayerShell {
 	
 	public String type;
 	
-	double lower;
+	public double lower;
 	
-	double upper;
+	public double upper;
 	
 	}

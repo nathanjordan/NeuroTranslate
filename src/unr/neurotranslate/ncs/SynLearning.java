@@ -2,24 +2,24 @@ package unr.neurotranslate.ncs;
 
 public class SynLearning {
 	
-	String type;
+	public String type;
 	
-	int seed;
+	public int seed;
 	
-	String learning;
+	public String learning;
 	
-	String learningShape;
+	public String learningShape;
 	
-	MeanStdev negHebWindow;
+	public TwoValue negHebWindow = new TwoValue();
 	
-	MeanStdev posHebWindow;
+	public TwoValue posHebWindow = new TwoValue();
 	
-	MeanStdev posHebPeakDeltaUse;
+	public TwoValue posHebPeakDeltaUse = new TwoValue();
 	
-	MeanStdev negHebPeakDeltaUse;
+	public TwoValue negHebPeakDeltaUse = new TwoValue();
 	
-	MeanStdev posHebPeakTime;
+	public TwoValue posHebPeakTime = new TwoValue();
 	
-	MeanStdev negHebPeakTime;
+	public TwoValue negHebPeakTime = new TwoValue();
 	
 	}

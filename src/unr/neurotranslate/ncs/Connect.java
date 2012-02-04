@@ -2,47 +2,47 @@ package unr.neurotranslate.ncs;
 
 public class Connect {
 	
-	Column column1;
+	public Column column1;
 	
-	Layer layer1;
+	public Layer layer1;
 	
-	Cell cellType1;
+	public Cell cellType1;
 	
-	Compartment compartment1;
+	public Compartment compartment1;
 	
-	Column column2;
+	public Column column2;
 	
-	Layer layer2;
+	public Layer layer2;
 	
-	Cell cellType2;
+	public Cell cellType2;
 	
-	Compartment compartment2;
+	public Compartment compartment2;
 	
-	Synapse synapseType;
+	public Synapse synapseType;
 	
-	double probability;
+	public double probability;
 	
-	double speed;
+	public double speed;
 	
-	double decayStep;
+	public double decayStep;
 	
-	boolean isDecay;
+	public boolean isDecay;
 	
 	/* Names( These are needed until the file is completely parsed)
 	 * We need to completely parse the file to figure out which objects
 	 * belong to which other objects (everything is referenced by name in the file)
 	 */
-	String column1Name;
-	String layer1Name;
-	String cellType1Name;
-	String compartment1Name;
+	public String column1Name;
+	public String layer1Name;
+	public String cellType1Name;
+	public String compartment1Name;
 	
-	String column2Name;
-	String layer2Name;
-	String cellType2Name;
-	String compartment2Name;
+	public String column2Name;
+	public String layer2Name;
+	public String cellType2Name;
+	public String compartment2Name;
 	
-	String synapseTypeName;
+	public String synapseTypeName;
 	
 	//Regular Connection
 	public Connect( String col1 , String lay1 , String cell1, String comp1 , String col2, String lay2, String cell2, String comp2, String synType, double prob , double spd ) {

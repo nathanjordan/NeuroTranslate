@@ -2,30 +2,30 @@ package unr.neurotranslate.ncs;
 
 public class Report {
 	
-	String type;
+	public String type;
 	
-	Object cells;
+	public Object cells;
 	
-	double prob;
+	public double prob;
 	
-	String cellSequence;
+	public String cellSequence;
 	
-	int frequency;
+	public int frequency;
 	
-	String reportOn;
+	public String reportOn;
 	
-	Channel channel;
+	public Channel channel;
 	
-	Synapse synapse;
+	public Synapse synapse;
 	
 	//TODO: Other values that go here
 	
-	String ascii;
+	public String ascii;
 	
-	String filename;
+	public String filename;
 	
-	double[] timeStart;
+	public double[] timeStart;
 	
-	double[] timeEnd;
+	public double[] timeEnd;
 	
 	}

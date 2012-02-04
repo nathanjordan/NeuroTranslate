@@ -4,17 +4,17 @@ import java.util.ArrayList;
 
 public class Cell {
 	
-	String type;
+	public String type;
 	
-	ArrayList<Compartment> compartments;
-	ArrayList<String> compartmentlabels;
-	ArrayList<Number> xList;
-	ArrayList<Number> yList;
+	public ArrayList<Compartment> compartments = new ArrayList<Compartment>();
+	public ArrayList<String> compartmentLabels = new ArrayList<String>();
+	public ArrayList<Number> xList = new ArrayList<Number>();
+	public ArrayList<Number> yList = new ArrayList<Number>();
 	
-	ArrayList<CompartmentConnect> connects;
+	public ArrayList<CompartmentConnect> connects = new ArrayList<CompartmentConnect>();
 	
 	//parser stuff
 	
-	ArrayList<String> compartmentNames;
+	public ArrayList<String> compartmentNames = new ArrayList<String>();
 	
 	}

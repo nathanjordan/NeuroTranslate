@@ -2,50 +2,50 @@ package unr.neurotranslate.ncs;
 
 public class Stimulus {
 	
-	String type;
+	public String type;
 	
-	String mode;
+	public String mode;
 	
-	String pattern;
+	public String pattern;
 	
-	String filename;
+	public String filename;
 	
-	int port;
+	public int port;
 	
-	double timeIncrement;
+	public double timeIncrement;
 	
-	int freqCols;
+	public int freqCols;
 	
-	int cellsPerFreq;
+	public int cellsPerFreq;
 	
-	MeanStdev dynRange;
+	public TwoValue dynRange = new TwoValue();
 	
-	String timing;
+	public String timing;
 	
-	boolean sameSeed;
+	public int sameSeed;
 	
-	double ampStart;
+	public double ampStart;
 	
-	double ampEnd;
+	public double ampEnd;
 	
-	double phase;
+	public double phase;
 	
-	double vertTrans;
+	public double vertTrans;
 	
-	double width;
+	public double width;
 	
-	double[] timeStart;
+	public double[] timeStart;
 	
-	double[] timeEnd;
+	public double[] timeEnd;
 	
-	double freqStart;
+	public double freqStart;
 	
-	int seed;
+	public int seed;
 	
-	double rate;
+	public double rate;
 	
-	double tauNoise;
+	public double tauNoise;
 	
-	double correl;
+	public double correl;
 	
 	}

@@ -2,12 +2,12 @@ package unr.neurotranslate.ncs;
 
 public class CompartmentConnect {
 	
-	Compartment compartment1;
+	public Compartment compartment1;
 	
-	Compartment compartment2;
+	public Compartment compartment2;
 	
-	int speed;
+	public int speed;
 	
-	double G;
+	public double G;
 	
 	}

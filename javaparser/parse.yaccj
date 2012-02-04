@@ -105,8 +105,8 @@ brainvars: brainvar
          | brainvars brainvar
 ;
 
-brainvar:  TK_TYPE         NAME    { brain.type      = strdup ($<sval>2); }
-         | TK_JOB          NAME    { brain.job         = strdup ($<sval>2); }
+brainvar:  TK_TYPE         NAME    { brain.type = $<sval>2; }
+         | TK_JOB          NAME    { brain.job = $<sval>2; }
          | TK_DISTRIBUTE   NAME    {  }
          | TK_CONNECT_RPT          {  }
          | TK_SPIKE_RPT            {  }
@@ -126,8 +126,7 @@ brainvar:  TK_TYPE         NAME    { brain.type      = strdup ($<sval>2); }
                                                $<sval>6, $<sval>7, $<sval>8, $<sval>9,
                                                $<sval>10, $<dval>11, $<dval>12, $<dval>13 ) );
                }
-         | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME NAME NAME NAME NAME value value
-               {
+         | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME NAME NAME NAME NAME value value {
                  brain.recurrentConnect.add( new RecurrentConnect( $<sval>2, $<sval>3, $<sval>4, $<sval>5,
 					                                               $<sval>6, $<sval>7, $<sval>8, $<sval>9,
 					                                               $<sval>10, $<dval>11, $<dval>12 ) );
@@ -180,7 +179,7 @@ colvars: colvar
 ;
 
 colvar: TK_TYPE       NAME { columnList.get( columnList.size() - 1).type = $<sval>2; }
-      | TK_CSHELL     NAME { columnList.get( columnList.size() - 1).shellName  = strdup ($<sval>2); }
+      | TK_CSHELL     NAME { columnList.get( columnList.size() - 1).columnShellName  = $<sval>2; }
       | TK_LAYER_TYPE NAME { columnList.get( columnList.size() - 1).layerNames.add( $<sval>2 ); }
       | TK_CONNECT    NAME NAME NAME NAME NAME NAME NAME value value
                { columnList.get( columnList.size() - 1).connects.add( new Connect( null, $<sval>2, $<sval>3, $<sval>4, null, $<sval>5, $<sval>6, $<sval>7,  $<sval>8, $<dval>9, $<dval>10 ) );
@@ -190,7 +189,7 @@ colvar: TK_TYPE       NAME { columnList.get( columnList.size() - 1).type = $<sva
                }
        | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME NAME NAME value value
                {
-                columnList.get( columnList.size() - 1).recurrentConnects.add( new RecurrentConnect( NULL, $<sval>2, $<sval>3, $<sval>4, NULL, $<sval>5, $<sval>6, $<sval>7, $<sval>8, $<dval>9, $<dval>10  ));
+                columnList.get( columnList.size() - 1).recurrentConnects.add( new RecurrentConnect( null, $<sval>2, $<sval>3, $<sval>4, null, $<sval>5, $<sval>6, $<sval>7, $<sval>8, $<dval>9, $<dval>10  ));
                }
 ;
 
@@ -221,14 +220,14 @@ lvar:   TK_TYPE       NAME         { layerList.get( layerList.size() - 1 ).type 
       | TK_LSHELL     NAME         { layerList.get( layerList.size() - 1 ).layerShellName = $<sval>2; }
       | TK_CELL_TYPE  NAME INTEGER { layerList.get( layerList.size() - 1 ).cellTypeNames.add( $<sval>2 );  layerList.get( layerList.size() - 1 ).cellTypeQuantities.add( $<ival>3 ); }
       | TK_CONNECT    NAME NAME NAME NAME NAME value value
-               { layerList.get( layerList.size() - 1 ).connects.add( new Connect( NULL, NULL, $<sval>2, $<sval>3, NULL, NULL, $<sval>4, $<sval>5, $<sval>6, $<dval>7, $<dval>8 ) );
+               { layerList.get( layerList.size() - 1 ).connects.add( new Connect( null, null, $<sval>2, $<sval>3, null, null, $<sval>4, $<sval>5, $<sval>6, $<dval>7, $<dval>8 ) );
                }
       | TK_CONNECT    NAME NAME NAME NAME NAME value value value
-               { layerList.get( layerList.size() - 1 ).connects.add( new Connect( NULL, NULL, $<sval>2, $<sval>3, NULL, NULL, $<sval>4, $<sval>5, $<sval>6, $<dval>7, $<dval>8, $<dval>9 ) );
+               { layerList.get( layerList.size() - 1 ).connects.add( new Connect( null, null, $<sval>2, $<sval>3, null, null, $<sval>4, $<sval>5, $<sval>6, $<dval>7, $<dval>8, $<dval>9 ) );
                }
       | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME value value
                {
-                layerList.get( layerList.size() - 1 ).recurrentConnects.add( new RecurrentConnect( NULL, NULL, $<sval>2, $<sval>3, NULL, NULL, $<sval>4, $<sval>5,  $<sval>6, $<dval>7, $<dval>8 ) );
+                layerList.get( layerList.size() - 1 ).recurrentConnects.add( new RecurrentConnect( null, null, $<sval>2, $<sval>3, null, null, $<sval>4, $<sval>5,  $<sval>6, $<dval>7, $<dval>8 ) );
                }
 ;
 
@@ -241,21 +240,15 @@ cellvars: cellvar
         | cellvars cellvar
 ;
 
-cellvar: TK_TYPE    NAME  { cellList.get( cellList.size() - 1 ].type = $<sval>2; }
-       | TK_CMP     NAME NAME value value
-                          {  cellList.get( cellList.size() - 1 ).compartmentNames.add( $<sval>2 );
+cellvar: TK_TYPE    NAME  { cellList.get( cellList.size() - 1 ).type = $<sval>2; }
+       | TK_CMP     NAME NAME value value { 
+       						 cellList.get( cellList.size() - 1 ).compartmentNames.add( $<sval>2 );
                              cellList.get( cellList.size() - 1 ).compartmentLabels.add( $<sval>3 );
                              cellList.get( cellList.size() - 1 ).xList.add( $<dval>4 );
                              cellList.get( cellList.size() - 1 ).xList.add( $<dval>5 );
                           }
-       | TK_CMP     NAME NAME value value value
-                          {  }
-
-       | TK_CONNECT NAME NAME value value value
-                          { cell->CnList = makeCmpConn (cell->CnList, $<sval>2, $<sval>3, 
-                                                         $<dval>4, $<dval>5, $<dval>6); 
-                            cell->nConnect++;
-                          }
+       | TK_CMP     NAME NAME value value value  {  }
+       | TK_CONNECT NAME NAME value value value {  }
 ;
 
 /*--------------- Input for the COMPARTMENT structure ------------*/
@@ -288,11 +281,11 @@ cmpvar:  TK_TYPE          NAME     { compartmentList.get( compartmentList.size()
    specified by a family name following the TK_CHANNEL keyword */
 
 
-channel: TK_CHANNEL TK_Km   { channelList.add new Channel( $<sval>2 ); } Kmvars   TK_END_CHANNEL
-       | TK_CHANNEL TK_Kahp { channelList.add new Channel( $<sval>2 ); } Kahpvars TK_END_CHANNEL
-       | TK_CHANNEL TK_Ka   { channelList.add new Channel( $<sval>2 ); } Kavars   TK_END_CHANNEL
-       | TK_CHANNEL TK_Na   { channelList.add new Channel( $<sval>2 ); } Navars   TK_END_CHANNEL
-       | TK_CHANNEL TK_Knicd { channelList.add new Channel( $<sval>2 ); } Knicdvars TK_END_CHANNEL
+channel: TK_CHANNEL TK_Km   { channelList.add( new Channel( $<sval>2 )); } Kmvars   TK_END_CHANNEL
+       | TK_CHANNEL TK_Kahp { channelList.add( new Channel( $<sval>2 )); } Kahpvars TK_END_CHANNEL
+       | TK_CHANNEL TK_Ka   { channelList.add( new Channel( $<sval>2 )); } Kavars   TK_END_CHANNEL
+       | TK_CHANNEL TK_Na   { channelList.add( new Channel( $<sval>2 )); } Navars   TK_END_CHANNEL
+       | TK_CHANNEL TK_Knicd { channelList.add( new Channel( $<sval>2 )); } Knicdvars TK_END_CHANNEL
 ;
 
 Kmvars: chvar
@@ -327,61 +320,57 @@ chvar: TK_TYPE       NAME     { channelList.get( channelList.size() - 1 ).type =
      | TK_STRENGTH   { twoPtr = channelList.get( channelList.size() - 1 ).strength ; }  twovalue
      | TK_STRENGTH_RANGE   { }  twovalue
      | TK_M_INITIAL  { twoPtr = channelList.get( channelList.size() - 1 ).mInitial; }  twovalue
-     | TK_REVERSAL   { twoPtr = channelList.get( channelList.size() - 1 ).reversePotential; } twovalue 
+     | TK_REVERSAL   { twoPtr = channelList.get( channelList.size() - 1 ).reversalPotential; } twovalue 
      | TK_SEED       INTEGER  { channelList.get( channelList.size() - 1 ).seed = $<ival>2; }
 ;
 
 Kmvar: TK_E_HALF_MIN_M  { twoPtr = channelList.get( channelList.size() - 1 ).eHalfMinM; } twovalue 
      | TK_TAU_SCALE_M   { twoPtr = channelList.get( channelList.size() - 1 ).tauScaleFactorM; } twovalue
-     | TK_SLOPE_M       value value value { chan->slopeM [0] = $<dval>2;
-                                            chan->slopeM [1] = $<dval>3;
-                                            chan->slopeM [2] = $<dval>4; }
-     | TK_SLOPE_M_STDEV value { }
+     | TK_SLOPE_M       value value value {  }
+     | TK_SLOPE_M_STDEV value {  }
 ;
 
-Kahpvar: TK_CA_SCALE     { twoPtr = channelList.get( channelList.size() - 1 ].caScaleFactor; }     twovalue
-       | TK_CA_EXP       { twoPtr = channelList.get( channelList.size() - 1 ].caExpFactor; }       twovalue
+Kahpvar: TK_CA_SCALE     { twoPtr = channelList.get( channelList.size() - 1 ).caScaleFactor; }     twovalue
+       | TK_CA_EXP       { twoPtr = channelList.get( channelList.size() - 1 ).caExpFactor; }       twovalue
        | TK_CA_EXP_RANGE {  } twovalue
-       | TK_CA_HALF_MIN  { twoPtr = channelList.get( channelList.size() - 1 ].caHalfMin; }  twovalue
-       | TK_CA_TAU_SCALE { twoPtr = channelList.get( channelList.size() - 1 ].caTauScaleFactor; } twovalue
+       | TK_CA_HALF_MIN  { twoPtr = channelList.get( channelList.size() - 1 ).caHalfMin; }  twovalue
+       | TK_CA_TAU_SCALE { twoPtr = channelList.get( channelList.size() - 1 ).caTauScaleFactor; } twovalue
 ;
 
 Kavar: TK_H_INITIAL      { twoPtr = channelList.get( channelList.size() - 1 ).hInitial; } twovalue
      | TK_H_POWER        { twoPtr = channelList.get( channelList.size() - 1 ).hPower;    } twovalue
      | TK_E_HALF_MIN_M   { twoPtr = channelList.get( channelList.size() - 1 ).eHalfMinMKa;  } twovalue
      | TK_E_HALF_MIN_H   { twoPtr = channelList.get( channelList.size() - 1 ).eHalfMinH;  } twovalue
-     | TK_SLOPE_M          value { chan->slopeM [0] = $<dval>2; }
-     | TK_SLOPE_M_STDEV    value { chan->slopeM_stdev = $<dval>2; }
-     | TK_SLOPE_H          value { chan->slopeH [0] = $<dval>2; }
-     | TK_SLOPE_H_STDEV    value { chan->slopeH_stdev = $<dval>2; }
+     | TK_SLOPE_M          value {  }
+     | TK_SLOPE_M_STDEV    value {  }
+     | TK_SLOPE_H          value {  }
+     | TK_SLOPE_H_STDEV    value {  }
 
-     | TK_VAL_M_STDEV      value { chan->ValM_stdev  = $<dval>2; }
-     | TK_VOLT_M_STDEV     value { chan->VoltM_stdev = $<dval>2; }
-     | TK_VAL_H_STDEV      value { chan->ValH_stdev  = $<dval>2; }
-     | TK_VOLT_H_STDEV     value { chan->VoltH_stdev = $<dval>2; }
+     | TK_VAL_M_STDEV      value {  }
+     | TK_VOLT_M_STDEV     value {  }
+     | TK_VAL_H_STDEV      value {  }
+     | TK_VOLT_H_STDEV     value {  }
 
-     | TK_VTAU_VAL_M  { nval = 0; } values { chan->nValM  = nval; chan->TauValM  = allocVlist (nval, vlist); }
-     | TK_VTAU_VOLT_M { nval = 0; } values { chan->nVoltM = nval; chan->TauVoltM = allocVlist (nval, vlist); }
-     | TK_VTAU_VAL_H  { nval = 0; } values { chan->nValH  = nval; chan->TauValH  = allocVlist (nval, vlist); }
-     | TK_VTAU_VOLT_H { nval = 0; } values { chan->nVoltH = nval; chan->TauVoltH = allocVlist (nval, vlist); }
+     | TK_VTAU_VAL_M  {  } values {  }
+     | TK_VTAU_VOLT_M {  } values {  }
+     | TK_VTAU_VAL_H  {  } values {  }
+     | TK_VTAU_VOLT_H {  } values {  }
 ;
 
-Navar: TK_E_HALF_MIN_M  { twoPtr = chan->eHalfMinM; } twovalue
-     | TK_E_HALF_MIN_H  { twoPtr = chan->eHalfMinH;  } twovalue
-     | TK_H_INITIAL      { twoPtr = chan->H_Initial; } twovalue
-     | TK_H_POWER        { twoPtr = chan->hPower;    } twovalue
-     | TK_TAU_SCALE_M   { twoPtr = chan->tauScaleM; } twovalue
-     | TK_TAU_SCALE_H   { twoPtr = chan->tauScaleH; } twovalue
-     | TK_SLOPE_M       value value { chan->slopeM [0] = $<dval>2;
-                                      chan->slopeM [1] = $<dval>3; }
-     | TK_SLOPE_H       value value { chan->slopeH [0] = $<dval>2;
-                                      chan->slopeH [1] = $<dval>3; }
-     | TK_SLOPE_M_STDEV    value { chan->slopeM_stdev = $<dval>2; }
-     | TK_SLOPE_H_STDEV    value { chan->slopeH_stdev = $<dval>2; }
-     | TK_ALPHA_SCALE_M { twoPtr = chan->alphaScaleFactorM; } twovalue
-     | TK_BETA_SCALE_M { twoPtr = chan->betaScaleFactorM; } twovalue
-     | TK_ALPHA_SCALE_H { twoPtr = chan->alphaScaleFactorH; } twovalue
-     | TK_BETA_SCALE_H { twoPtr = chan->betaScaleFactorH; } twovalue
+Navar: TK_E_HALF_MIN_M  {  } twovalue
+     | TK_E_HALF_MIN_H  {  } twovalue
+     | TK_H_INITIAL      {  } twovalue
+     | TK_H_POWER        {  } twovalue
+     | TK_TAU_SCALE_M   {  } twovalue
+     | TK_TAU_SCALE_H   {  } twovalue
+     | TK_SLOPE_M       value value {  }
+     | TK_SLOPE_H       value value {  }
+     | TK_SLOPE_M_STDEV    value {  }
+     | TK_SLOPE_H_STDEV    value {  }
+     | TK_ALPHA_SCALE_M {  } twovalue
+     | TK_BETA_SCALE_M {  } twovalue
+     | TK_ALPHA_SCALE_H {  } twovalue
+     | TK_BETA_SCALE_H {  } twovalue
 ;
 
 /*--------------- Input for the SYNAPSE structure ------------*/
@@ -397,11 +386,11 @@ synvar: TK_TYPE           NAME    { synapseList.get( synapseList.size() - 1).typ
       | TK_SEED           INTEGER { synapseList.get( synapseList.size() - 1).seed = $<ival>2; }
       | TK_SFD_LABEL      NAME    { synapseList.get( synapseList.size() - 1).sfdLabel = $<sval>2; }
       | TK_LEARN_LABEL    NAME    { synapseList.get( synapseList.size() - 1).learnLabel = $<sval>2; }
-      | TK_DATA_LABEL     NAME    { }
-      | TK_SYN_AUGMENTATION NAME  { syn->AugmentationName = strdup ( $<sval>2 ); }
+      | TK_DATA_LABEL     NAME    {  }
+      | TK_SYN_AUGMENTATION NAME  {  }
       | TK_SYN_PSG        NAME    { synapseList.get( synapseList.size() - 1).synPSG  = $<sval>2; }
       | TK_ABSOLUTE_USE  { twoPtr = synapseList.get( synapseList.size() - 1).absoluteUse; } twovalue
-      | TK_DELAY         {  } twovalue
+      | TK_DELAY         { twoPtr = synapseList.get( synapseList.size() - 1).delay; } twovalue
       | TK_SYN_REVERSAL  { twoPtr = synapseList.get( synapseList.size() - 1).synReversal; } twovalue
       | TK_MAX_G         { twoPtr = synapseList.get( synapseList.size() - 1).maxConduct; } twovalue
       | TK_RSE_INIT  { } twovalue
@@ -416,15 +405,15 @@ synvar: TK_TYPE           NAME    { synapseList.get( synapseList.size() - 1).typ
 
 /*--------------- Input for the SYN_INPUT_PSG structure ------------*/
 
-syn_psg: TK_SYN_PSG { syn_psg = makesyn_psg (); } spvars  TK_END_SYN_PSG
+syn_psg: TK_SYN_PSG {  } spvars  TK_END_SYN_PSG
 ;
 
 spvars: spvar
       | spvars spvar
 ;
 
-spvar: TK_TYPE     NAME { syn_psg->L.name = strdup ($<sval>2); }
-     | TK_PSG_FILE NAME { syn_psg->File   = strdup ($<sval>2); }
+spvar: TK_TYPE     NAME {  }
+     | TK_PSG_FILE NAME {  }
 ;
 
 /*--------------- Input for the SYN_FACIL_DEPRESS structure ------------*/
@@ -452,16 +441,16 @@ slvars: slvar
       | slvars slvar
 ;
 
-slvar: TK_TYPE                   NAME     { synLearningList[ synLearningList.size() - 1 ].type = $<sval>2; }
-     | TK_SEED                   INTEGER  { synLearningList[ synLearningList.size() - 1 ].seed = $<ival>2; }
-     | TK_LEARN                  NAME     { synLearningList[ synLearningList.size() - 1 ].learning = $<sval>2; }
-     | TK_LEARN_SHAPE            NAME     { synLearningList[ synLearningList.size() - 1 ].learningShape = $<sval>2; }
-     | TK_NEG_HEB_WINDOW         { twoPtr = synLearningList[ synLearningList.size() - 1 ].negHebWindow; }               twovalue 
-     | TK_POS_HEB_WINDOW         { twoPtr = synLearningList[ synLearningList.size() - 1 ].posHebWindow; }                 twovalue 
-     | TK_NEG_HEB_PEAK_DELTA_USE { twoPtr = synLearningList[ synLearningList.size() - 1 ].negHebPeakDeltaUse; } twovalue 
-     | TK_POS_HEB_PEAK_DELTA_USE { twoPtr = synLearningList[ synLearningList.size() - 1 ].posHebPeakDeltaUse; } twovalue 
-     | TK_NEG_HEB_PEAK_TIME      { twoPtr = synLearningList[ synLearningList.size() - 1 ].posHebPeakTime; }      twovalue
-     | TK_POS_HEB_PEAK_TIME      { twoPtr = synLearningList[ synLearningList.size() - 1 ].negHebPeakTime; }      twovalue
+slvar: TK_TYPE                   NAME     { synLearningList.get( synLearningList.size() - 1 ).type = $<sval>2; }
+     | TK_SEED                   INTEGER  { synLearningList.get( synLearningList.size() - 1 ).seed = $<ival>2; }
+     | TK_LEARN                  NAME     { synLearningList.get( synLearningList.size() - 1 ).learning = $<sval>2; }
+     | TK_LEARN_SHAPE            NAME     { synLearningList.get( synLearningList.size() - 1 ).learningShape = $<sval>2; }
+     | TK_NEG_HEB_WINDOW         { twoPtr = synLearningList.get( synLearningList.size() - 1 ).negHebWindow; }               twovalue 
+     | TK_POS_HEB_WINDOW         { twoPtr = synLearningList.get( synLearningList.size() - 1 ).posHebWindow; }                 twovalue 
+     | TK_NEG_HEB_PEAK_DELTA_USE { twoPtr = synLearningList.get( synLearningList.size() - 1 ).negHebPeakDeltaUse; } twovalue 
+     | TK_POS_HEB_PEAK_DELTA_USE { twoPtr = synLearningList.get( synLearningList.size() - 1 ).posHebPeakDeltaUse; } twovalue 
+     | TK_NEG_HEB_PEAK_TIME      { twoPtr = synLearningList.get( synLearningList.size() - 1 ).posHebPeakTime; }      twovalue
+     | TK_POS_HEB_PEAK_TIME      { twoPtr = synLearningList.get( synLearningList.size() - 1 ).negHebPeakTime; }      twovalue
 ;
 
 /*--------------- Input for the SYN_DATA structure ------------*/
@@ -473,11 +462,11 @@ sdvars: sdvar
       | sdvars sdvar
 ;
 
-sdvar: TK_TYPE         NAME     { synDataList[ synDataList.size() - 1 ].type = $<sval>2; }
-     | TK_SEED         INTEGER  { synDataList[ synDataList.size() - 1 ].seed = $<ival>2; }
-     | TK_MAX_G  value { synDataList[ synDataList.size() - 1 ].maxConduct = $<dval>2; }
-     | TK_DELAY        { twoPtr = synDataList[ synDataList.size() - 1 ].delay; } twovalue 
-     | TK_SYN_REVERSAL { twoPtr = synDataList[ synDataList.size() - 1 ].synReversal; } twovalue 
+sdvar: TK_TYPE         NAME     { synDataList.get( synDataList.size() - 1 ).type = $<sval>2; }
+     | TK_SEED         INTEGER  { synDataList.get( synDataList.size() - 1 ).seed = $<ival>2; }
+     | TK_MAX_G  value { synDataList.get( synDataList.size() - 1 ).maxConduct = $<dval>2; }
+     | TK_DELAY        { twoPtr = synDataList.get( synDataList.size() - 1 ).delay; } twovalue 
+     | TK_SYN_REVERSAL { twoPtr = synDataList.get( synDataList.size() - 1 ).synReversal; } twovalue 
 ;
 
 /*--------------- Input for the SYN_AUGMENTATION structure ------------*/
@@ -488,15 +477,15 @@ syn_augmentation: TK_SYN_AUGMENTATION { synAugList.add( new SynAugmentation() );
 savars: savar
       | savars savar
 
-savar: TK_TYPE                 NAME    { synAugList[ synAugList.size() - 1 ].type = $<sval>2; }
-     | TK_CA_INTERNAL          { twoPtr = synAugList[ synAugList.size() - 1 ].caInternal; } twovalue
+savar: TK_TYPE                 NAME    { synAugList.get( synAugList.size() - 1 ).type = $<sval>2; }
+     | TK_CA_INTERNAL          { twoPtr = synAugList.get( synAugList.size() - 1 ).caInternal; } twovalue
      | TK_CA_TAU_DECAY         {  } twovalue
-     | TK_CA_TAU               { twoPtr = synAugList[ synAugList.size() - 1 ].caTau; } twovalue
-     | TK_CA_SPIKE_INC         { twoPtr = synAugList[ synAugList.size() - 1 ].caSpikeIncrement; } twovalue
-     | TK_MAX_AUGMENTATION     { twoPtr = synAugList[ synAugList.size() - 1 ].maxAugmentation; } twovalue
-     | TK_ALPHA                { twoPtr = synAugList[ synAugList.size() - 1 ].alpha; } twovalue
-     | TK_AUGMENTATION_INIT    { twoPtr = synAugList[ synAugList.size() - 1 ].augmentationInit; } twovalue
-     | TK_AUGMENTATION_TAU     { twoPtr = synAugList[ synAugList.size() - 1 ].augmentationTau; } twovalue
+     | TK_CA_TAU               { twoPtr = synAugList.get( synAugList.size() - 1 ).caTau; } twovalue
+     | TK_CA_SPIKE_INC         { twoPtr = synAugList.get( synAugList.size() - 1 ).caSpikeIncrement; } twovalue
+     | TK_MAX_AUGMENTATION     { twoPtr = synAugList.get( synAugList.size() - 1 ).maxAugmentation; } twovalue
+     | TK_ALPHA                { twoPtr = synAugList.get( synAugList.size() - 1 ).alpha; } twovalue
+     | TK_AUGMENTATION_INIT    { twoPtr = synAugList.get( synAugList.size() - 1 ).augmentationInit; } twovalue
+     | TK_AUGMENTATION_TAU     { twoPtr = synAugList.get( synAugList.size() - 1 ).augmentationTau; } twovalue
      | TK_AUGMENTATION_DELAY   {  } twovalue
 ;
 
@@ -509,8 +498,8 @@ spikevars: spikevar
          | spikevars spikevar
 ;
 
-spikevar: TK_TYPE NAME { spikeshapeList[ spikeshapeList.size() - 1 ].type = $<sval>2; }
-        | TK_VOLTAGES  { nval = 0; } values { spike->nVoltages = nval; spike->Voltages  = allocRVlist (nval, vlist); }
+spikevar: TK_TYPE NAME { spikeshapeList.get( spikeshapeList.size() - 1 ).type = $<sval>2; }
+        | TK_VOLTAGES  {  } values {  }
 ;
 
 /*--------------- Input for the STIMULUS structure ------------*/
@@ -522,32 +511,30 @@ stvars: stvar
       | stvars stvar
 ;
 
-stvar: TK_TYPE           NAME     { stimulusList[ stimulusList.size() - 1 ].type = $<sval>2; }
-     | TK_MODE           NAME     { stimulusList[ stimulusList.size() - 1 ].mode = $<sval>2; }
-     | TK_PATTERN        NAME     { stimulusList[ stimulusList.size() - 1 ].pattern = $<sval>2; }
-     | TK_VERT_TRANS     value    { stimulusList[ stimulusList.size() - 1 ].vertTrans = $<dval>2; }
-     | TK_PHASE_SHIFT    value    { stimulusList[ stimulusList.size() - 1 ].phase = $<dval>2; }
-     | TK_RATE           value    { stimulusList[ stimulusList.size() - 1 ].rate = $<dval>2;}
-     | TK_TAU_NOISE      value    { stimulusList[ stimulusList.size() - 1 ].tauNoise = $<dval>2; }
-     | TK_CORREL         value    { stimulusList[ stimulusList.size() - 1 ].correl = $<dval>2;}
-     | TK_TIMING         NAME     { stimulusList[ stimulusList.size() - 1 ].timing = $<sval>2; }
-     | TK_FILENAME       NAME     { stimulusList[ stimulusList.size() - 1 ].filename = $<sval>2; }
-     | TK_PORT           INTEGER  { stimulusList[ stimulusList.size() - 1 ].port = $<ival>2; }
-     | TK_PORT           TK_AUTO  { stimulusList[ stimulusList.size() - 1 ].port = -1; }
-     | TK_SAMESEED       LOGICAL  { stimulusList[ stimulusList.size() - 1 ].sameSeed = $<ival>2; }
-     | TK_SEED           INTEGER  { stimulusList[ stimulusList.size() - 1 ].seed = $<ival>2;}
+stvar: TK_TYPE           NAME     { stimulusList.get( stimulusList.size() - 1 ).type = $<sval>2; }
+     | TK_MODE           NAME     { stimulusList.get( stimulusList.size() - 1 ).mode = $<sval>2; }
+     | TK_PATTERN        NAME     { stimulusList.get( stimulusList.size() - 1 ).pattern = $<sval>2; }
+     | TK_VERT_TRANS     value    { stimulusList.get( stimulusList.size() - 1 ).vertTrans = $<dval>2; }
+     | TK_PHASE_SHIFT    value    { stimulusList.get( stimulusList.size() - 1 ).phase = $<dval>2; }
+     | TK_RATE           value    { stimulusList.get( stimulusList.size() - 1 ).rate = $<dval>2;}
+     | TK_TAU_NOISE      value    { stimulusList.get( stimulusList.size() - 1 ).tauNoise = $<dval>2; }
+     | TK_CORREL         value    { stimulusList.get( stimulusList.size() - 1 ).correl = $<dval>2;}
+     | TK_TIMING         NAME     { stimulusList.get( stimulusList.size() - 1 ).timing = $<sval>2; }
+     | TK_FILENAME       NAME     { stimulusList.get( stimulusList.size() - 1 ).filename = $<sval>2; }
+     | TK_PORT           INTEGER  { stimulusList.get( stimulusList.size() - 1 ).port = $<ival>2; }
+     | TK_PORT           TK_AUTO  { stimulusList.get( stimulusList.size() - 1 ).port = -1; }
+     | TK_SAMESEED       LOGICAL  { stimulusList.get( stimulusList.size() - 1 ).sameSeed = $<ival>2; }
+     | TK_SEED           INTEGER  { stimulusList.get( stimulusList.size() - 1 ).seed = $<ival>2;}
      | TK_FREQ_ROWS      INTEGER  {  }
-     | TK_CELLS_PER_FREQ INTEGER  { stimulusList[ stimulusList.size() - 1 ].cellsPerFreq = $<ival>2; }
-     | TK_TIME_FREQ_INC  value    { stimulusList[ stimulusList.size() - 1 ].timeIncrement = $<dval>2; } 
-     | TK_DYN_RANGE      	      { twoPtr = stimulusList[ stimulusList.size() - 1 ].dynRange } twovalue 
-     | TK_AMP_START      value    { stimulusList[ stimulusList.size() - 1 ].ampStart = $<dval>2; }
-     | TK_AMP_END        value    { stimulusList[ stimulusList.size() - 1 ].ampEnd = $<dval>2; }
-     | TK_WIDTH          value    { stimulusList[ stimulusList.size() - 1 ].width = $<dval>2; }
-     | TK_FREQ_START     value    { stimulusList[ stimulusList.size() - 1 ].freqStart = $<dval>2; }
-     | TK_TIME_START { nval = 0; } values { stim->nTStart = nval; 
-                                            stim->TStart  = allocVlist (nval, vlist); }
-     | TK_TIME_END   { nval = 0; } values { stim->nTStop  = nval;
-                                            stim->TStop   = allocVlist (nval, vlist); }
+     | TK_CELLS_PER_FREQ INTEGER  { stimulusList.get( stimulusList.size() - 1 ).cellsPerFreq = $<ival>2; }
+     | TK_TIME_FREQ_INC  value    { stimulusList.get( stimulusList.size() - 1 ).timeIncrement = $<dval>2; } 
+     | TK_DYN_RANGE      	      { twoPtr = stimulusList.get( stimulusList.size() - 1 ).dynRange; } twovalue 
+     | TK_AMP_START      value    { stimulusList.get( stimulusList.size() - 1 ).ampStart = $<dval>2; }
+     | TK_AMP_END        value    { stimulusList.get( stimulusList.size() - 1 ).ampEnd = $<dval>2; }
+     | TK_WIDTH          value    { stimulusList.get( stimulusList.size() - 1 ).width = $<dval>2; }
+     | TK_FREQ_START     value    { stimulusList.get( stimulusList.size() - 1 ).freqStart = $<dval>2; }
+     | TK_TIME_START {  } values {  }
+     | TK_TIME_END   {  } values {  }
 ;
 
 /*--------------- Input for the ST_INJECT structure ------------*/
@@ -559,14 +546,14 @@ stivars: stivar
        | stivars stivar
 ;
 
-stivar: TK_TYPE      NAME { stimulusInjectList[ stimulusInjectList.size() - 1 ].type = $<sval>2; }
-      | TK_STIM_TYPE NAME { stimulusInjectList[ stimulusInjectList.size() - 1 ].stimulusName = $<sval>2; }
+stivar: TK_TYPE      NAME { stimulusInjectList.get( stimulusInjectList.size() - 1 ).type = $<sval>2; }
+      | TK_STIM_TYPE NAME { stimulusInjectList.get( stimulusInjectList.size() - 1 ).stimulusName = $<sval>2; }
       | TK_INJECT    NAME NAME NAME NAME value { 
-      		stimulusInjectList[ stimulusInjectList.size() - 1 ].columnName = $<sval>2;
-            stimulusInjectList[ stimulusInjectList.size() - 1 ].layerName = $<sval>2;
-            stimulusInjectList[ stimulusInjectList.size() - 1 ].cellName = $<sval>2;
-            stimulusInjectList[ stimulusInjectList.size() - 1 ].compartmentName = $<sval>2;
-            stimulusInjectList[ stimulusInjectList.size() - 1 ].probability = $<dval>2;
+      		stimulusInjectList.get( stimulusInjectList.size() - 1 ).columnName = $<sval>2;
+            stimulusInjectList.get( stimulusInjectList.size() - 1 ).layerName = $<sval>2;
+            stimulusInjectList.get( stimulusInjectList.size() - 1 ).cellName = $<sval>2;
+            stimulusInjectList.get( stimulusInjectList.size() - 1 ).compartmentName = $<sval>2;
+            stimulusInjectList.get( stimulusInjectList.size() - 1 ).probability = $<dval>2;
             }
 ;
 
@@ -579,48 +566,26 @@ reportvars: reportvar
           | reportvars reportvar
 ;
 
-reportvar: TK_TYPE       NAME    { reportList[ reportList.size() - 1 ].type = $<sval>2; }
+reportvar: TK_TYPE       NAME    { reportList.get( reportList.size() - 1 ).type = $<sval>2; }
          | TK_CELLS      NAME NAME NAME NAME
-                                 { report->ColName   = strdup ($<sval>2);
-                                   report->LayName   = strdup ($<sval>3);
-                                   report->CellName  = strdup ($<sval>4);
-                                   report->CmpName   = strdup ($<sval>5); }
-         | TK_FILENAME   NAME    { reportList[ reportList.size() - 1 ].filename = $<sval>2; }
+                                 {  }
+         | TK_FILENAME   NAME    { reportList.get( reportList.size() - 1 ).filename = $<sval>2; }
          | TK_PORT       INTEGER {  }
          | TK_PORT       TK_AUTO {  }
-         | TK_ASCII              { report->ASCII     = TRUE; }
-         | TK_ASCII      TK_EXP  { report->reportFlag |= 1; report->ASCII     = TRUE; }
-         | TK_CHANNEL    NAME    { report->ReportOn  = ReportCode ("CHANNEL_RPT");
-                                   report->Name      = strdup ($<sval>2); 
-                                   printf ("Report Channel: code = %x, name = '%s'\n", report->ReportOn, report->Name); }
-         | TK_REPORT_ON  NAME    { report->ReportOn  = ReportCode ($<sval>2); }
-         | TK_CELL_SEQUENCE NAME { report->CellSequence = CellSequenceCode ($<sval>2); }
-         | TK_PROB       value   { reportList[ reportList.size() - 1 ].prob = $<dval>2; }
-         | TK_FREQUENCY  value   { reportList[ reportList.size() - 1 ].frequency = $<dval>2; }
-         | TK_TIME_START { nval = 0; } values 
-                                 { report->nTStart = nval;
-                                   report->TStart  = allocVlist (nval, vlist); }
-         | TK_TIME_END   { nval = 0; } values 
-                                 { report->nTStop  = nval;
-                                   report->TStop   = allocVlist (nval, vlist); }
-         | TK_SYNAPSE    NAME    { report->ReportOn = ReportCode ("SYNAPSE_USE");
-                                   report->Name     = strdup ($<sval>2); }
-         | TK_SYNAPSE_RSE NAME   {
-                                   report->ReportOn = ReportCode ("SYNAPSE_RSE");
-                                   report->Name     = strdup ($<sval>2);
-                                 }
-         | TK_SYNAPSE_UF  NAME   {
-                                   report->ReportOn = ReportCode ("SYNAPSE_UF");
-                                   report->Name     = strdup ($<sval>2);
-                                 }
-         | TK_SYN_AUGMENTATION NAME  {
-                                       report->ReportOn = ReportCode ("SYNAPSE_SA");
-                                       report->Name     = strdup ($<sval>2);
-                                     }
-         | TK_SYN_CALCIUM NAME       {
-                                       report->ReportOn = ReportCode ("SYNAPSE_CA");
-                                       report->Name     = strdup ($<sval>2);
-                                     }
+         | TK_ASCII              {  }
+         | TK_ASCII      TK_EXP  {  }
+         | TK_CHANNEL    NAME    {  }
+         | TK_REPORT_ON  NAME    {  }
+         | TK_CELL_SEQUENCE NAME {  }
+         | TK_PROB       value   {  }
+         | TK_FREQUENCY  value   {  }
+         | TK_TIME_START {  } values {  }
+         | TK_TIME_END   {  } values {  }
+         | TK_SYNAPSE    NAME    {  }
+         | TK_SYNAPSE_RSE NAME   {  }
+         | TK_SYNAPSE_UF  NAME   {  }
+         | TK_SYN_AUGMENTATION NAME  {  }
+         | TK_SYN_CALCIUM NAME       {  }
          | TK_SEED INTEGER       {  }
          | TK_SEED TK_SELECT_FRONT  {  }
          | TK_VERSION INTEGER    {  }
@@ -634,17 +599,17 @@ eventvars: eventvar
     | eventvars eventvar
 ;
 
-eventvar: TK_TYPE NAME { eventList[ eventList.size() - 1 ].type = $<sval>2; }
-    | TK_SYNAPSE NAME { eventList[ eventList.size() - 1 ].synapseName = $<sval>2; }
+eventvar: TK_TYPE NAME { eventList.get( eventList.size() - 1 ).type = $<sval>2; }
+    | TK_SYNAPSE NAME { eventList.get( eventList.size() - 1 ).synapseName = $<sval>2; }
     | TK_CELLS NAME NAME NAME NAME {
-            eventList[ eventList.size() - 1 ].columnName = $<sval>2;
-            eventList[ eventList.size() - 1 ].layerName = $<sval>3;
-            eventList[ eventList.size() - 1 ].cellName = $<sval>4;
-            eventList[ eventList.size() - 1 ].compartmentName = $<sval>5;
+            eventList.get( eventList.size() - 1 ).columnName = $<sval>2;
+            eventList.get( eventList.size() - 1 ).layerName = $<sval>3;
+            eventList.get( eventList.size() - 1 ).cellName = $<sval>4;
+            eventList.get( eventList.size() - 1 ).compartmentName = $<sval>5;
         }
     | TK_OVERRIDE NAME value { 
-    	eventList[ eventList.size() - 1 ].filename = $<sval>2;
-    	eventList[ eventList.size() - 1 ].value = $<dval>3; 
+    	eventList.get( eventList.size() - 1 ).filename = $<sval>2;
+    	eventList.get( eventList.size() - 1 ).value = $<dval>3; 
     	}
 ;
 
@@ -653,18 +618,18 @@ reportoptions: singleoption
              | reportoptions singleoption
 ;
 
-singleoption: TK_AVERAGE_SYN { report->reportFlag |= AVERAGE_SYN; }
-            | TK_HIDE_TIMESTEP { report->reportFlag |= HIDE_STEP; }
+singleoption: TK_AVERAGE_SYN {  }
+            | TK_HIDE_TIMESTEP {  }
 ;
 
 /*--------------- These rules collect a list of numeric values ------------*/
 
-values: value         { if (nval < VSIZE) vlist [nval++] = $<dval>1; }
-      | values value  { if (nval < VSIZE) vlist [nval++] = $<dval>2; }
+values: value         {  }
+      | values value  {  }
 ;
 
-twovalue: value value  { twoPtr = new MeanStdev( $<dval>1 , $<dval>2 ); }
-        | value        { twoPtr = new MeanStdev( $<dval>1 , 0.0 ); }
+twovalue: value value  { twoPtr.set( $<dval>1 , $<dval>2 ); twoPtr = null; }
+        | value        { twoPtr.set( $<dval>1 , 0.0 ); twoPtr = null; }
 ;
 
 value: INTEGER { $<dval>$ = (double) $<ival>1; }
@@ -676,43 +641,98 @@ value: INTEGER { $<dval>$ = (double) $<ival>1; }
 //Brain Stuff
 public Brain brain;
 
-public ArrayList<ColumnShell> columnShellList;
-public ArrayList<Column> columnList;
+public ArrayList<ColumnShell> columnShellList = new ArrayList<ColumnShell>();
+public ArrayList<Column> columnList = new ArrayList<Column>();
 
-public ArrayList<LayerShell> layerShellList;
-public ArrayList<LayerShell> layerList;
+public ArrayList<LayerShell> layerShellList = new ArrayList<LayerShell>();
+public ArrayList<Layer> layerList = new ArrayList<Layer>();
 
-public ArrayList<Cell> cellList;
-public ArrayList<Compartment> compartmentList;
+public ArrayList<Cell> cellList = new ArrayList<Cell>();
+public ArrayList<Compartment> compartmentList = new ArrayList<Compartment>();
 
-public ArrayList<Channel> channelList;
+public ArrayList<Channel> channelList = new ArrayList<Channel>();
 
-public ArrayList<Synapse> synapseList;
-public ArrayList<SynFacilDepress> synFacilDepressList;
-public ArrayList<SynLearning> synLearningList;
-public ArrayList<SynData> synDataList;
-public ArrayList<SynAugmentation> synAugList;
+public ArrayList<Synapse> synapseList = new ArrayList<Synapse>();
+public ArrayList<SynFacilDepress> synFacilDepressList = new ArrayList<SynFacilDepress>();
+public ArrayList<SynLearning> synLearningList = new ArrayList<SynLearning>();
+public ArrayList<SynData> synDataList = new ArrayList<SynData>();
+public ArrayList<SynAugmentation> synAugList = new ArrayList<SynAugmentation>();
 
-public ArrayList<SpikeShape> spikeshapeList;
+public ArrayList<SpikeShape> spikeshapeList = new ArrayList<SpikeShape>();
 
-public ArrayList<Stimulus> stimulusList;
-public ArrayList<StimulusInject> stimulusInjectList;
+public ArrayList<Stimulus> stimulusList = new ArrayList<Stimulus>();
+public ArrayList<StimulusInject> stimulusInjectList = new ArrayList<StimulusInject>();
 
-public ArrayList<Report> reportList;
+public ArrayList<Report> reportList = new ArrayList<Report>();
 
-public ArrayList<Event> eventList;
+public ArrayList<Event> eventList = new ArrayList<Event>();
 
 //For all those pesky mean/stdev values
-protected MeanStdev twoPtr;
+protected TwoValue twoPtr;
 
 private int yywrap() {
-return 0;
-}
 
-private int multiInput() {
-return 0;
-}
+	return 0;
+	
+	}
+
+private int multiInput( String filename ) {
+
+	return 0;
+	
+	}
 
 private void yyerror(String string) {
+	
+	
+	
+	}
 
+private int yylex() {
+	
+	try {
+		
+		return scan.yylex();
+		
+		}
+	
+	catch (IOException e) {
+		
+		e.printStackTrace();
+		
+		}
+	
+	return 0;
+	
+	}
+
+public Parser( String filename ) {
+	
+	String fileContents = new String();
+	try {
+		fileContents = readFileAsString( filename );
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	scan = new Scanner( new StringReader( fileContents ) , this );
+	
+	
+	
+	}
+	
+private Scanner scan;
+	
+private static String readFileAsString(String filePath) throws java.io.IOException{
+    byte[] buffer = new byte[(int) new File(filePath).length()];
+    BufferedInputStream f = null;
+    try {
+        f = new BufferedInputStream(new FileInputStream(filePath));
+        f.read(buffer);
+    } finally {
+        if (f != null) try { f.close(); } catch (IOException ignored) { }
+    }
+    return new String(buffer);
 }
+	

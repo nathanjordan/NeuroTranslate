@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class SpikeShape {
 	
-	String type;
+	public String type;
 	
-	ArrayList<Double> voltages;
+	public ArrayList<Double> voltages = new ArrayList<Double>();
 	
 	}

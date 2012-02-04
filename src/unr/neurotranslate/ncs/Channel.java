@@ -2,61 +2,61 @@ package unr.neurotranslate.ncs;
 
 public class Channel {
 	
-	String type;
+	public String type;
 	
-	String channelType;
+	public String channelType;
 	
-	MeanStdev mInitial;
+	public TwoValue mInitial = new TwoValue();
 	
-	MeanStdev mPower;
+	public TwoValue mPower = new TwoValue();
 	
-	MeanStdev reversalPotential;
+	public TwoValue reversalPotential = new TwoValue();
 	
-	MeanStdev unitaryG;
+	public TwoValue unitaryG = new TwoValue();
 	
-	MeanStdev strength;
+	public TwoValue strength = new TwoValue();
 	
 	//Km channel
 	
-	MeanStdev eHalfMinM;
+	public TwoValue eHalfMinM = new TwoValue();
 	
-	float[] slopeFactorM;
+	public float[] slopeFactorM;
 	
-	MeanStdev tauScaleFactorM;
+	public TwoValue tauScaleFactorM = new TwoValue();
 	
-	int seed;
+	public int seed;
 	
 	//Kahp channel
 	
-	MeanStdev caScaleFactor;
+	public TwoValue caScaleFactor = new TwoValue();
 	
-	MeanStdev caExpFactor;
+	public TwoValue caExpFactor = new TwoValue();
 	
-	MeanStdev caHalfMin;
+	public TwoValue caHalfMin = new TwoValue();
 	
-	MeanStdev caTauScaleFactor;
+	public TwoValue caTauScaleFactor = new TwoValue();
 	
 	//Ka channel
 	
-	MeanStdev hInitial;
+	public TwoValue hInitial = new TwoValue();
 	
-	MeanStdev hPower;
+	public TwoValue hPower = new TwoValue();
 	
-	MeanStdev eHalfMinMKa;
+	public TwoValue eHalfMinMKa = new TwoValue();
 	
-	MeanStdev eHalfMinH;
+	public TwoValue eHalfMinH = new TwoValue();
 	
-	MeanStdev slopeFactorMKa;
+	public TwoValue slopeFactorMKa = new TwoValue();
 	
-	MeanStdev slopeFactorH;
+	public TwoValue slopeFactorH = new TwoValue();
 	
-	float[] vTauValueM;
+	public float[] vTauValueM;
 	
-	float[] vTauVoltageM;
+	public float[] vTauVoltageM;
 	
-	float[] vTauValueH;
+	public float[] vTauValueH;
 	
-	float[] vTauVoltageH;
+	public float[] vTauVoltageH;
 	
 	public Channel( String chType ) {
 		

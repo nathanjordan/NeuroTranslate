@@ -2,20 +2,20 @@ package unr.neurotranslate.ncs;
 
 public class SynAugmentation {
 	
-	String type;
+	public String type;
 	
-	MeanStdev augmentationInit;
+	public TwoValue augmentationInit;
 	
-	MeanStdev augmentationTau;
+	public TwoValue augmentationTau;
 	
-	MeanStdev maxAugmentation;
+	public TwoValue maxAugmentation;
 	
-	MeanStdev caInternal;
+	public TwoValue caInternal;
 	
-	MeanStdev caSpikeIncrement;
+	public TwoValue caSpikeIncrement;
 	
-	MeanStdev caTau;
+	public TwoValue caTau;
 	
-	MeanStdev alpha;
+	public TwoValue alpha;
 	
 	}

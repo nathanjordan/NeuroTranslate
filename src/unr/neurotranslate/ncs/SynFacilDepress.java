@@ -2,14 +2,14 @@ package unr.neurotranslate.ncs;
 
 public class SynFacilDepress {
 	
-	String type;
+	public String type;
 	
-	int seed;
+	public int seed;
 	
-	String SFD;
+	public String SFD;
 	
-	MeanStdev facilTau;
+	public TwoValue facilTau = new TwoValue();
 	
-	MeanStdev deprTau;
+	public TwoValue deprTau = new TwoValue();
 	
 	}

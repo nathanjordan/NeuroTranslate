@@ -2,14 +2,14 @@ package unr.neurotranslate.ncs;
 
 public class SynData {
 	
-	String type;
+	public String type;
 	
-	int seed;
+	public int seed;
 	
-	double maxConduct;
+	public double maxConduct;
 	
-	MeanStdev delay;
+	public TwoValue delay = new TwoValue();
 	
-	MeanStdev synReversal;
+	public TwoValue synReversal = new TwoValue();
 	
 	}

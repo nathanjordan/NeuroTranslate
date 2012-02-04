@@ -4,38 +4,38 @@ import java.util.ArrayList;
 
 public class Compartment {
 	
-	String type;
+	public String type;
 	
-	int seed;
+	public int seed;
 	
-	SpikeShape spikeshape;
+	public SpikeShape spikeshape;
 	
-	MeanStdev tauMembrane;
+	public TwoValue tauMembrane = new TwoValue();
 	
-	MeanStdev rMembrane;
+	public TwoValue rMembrane = new TwoValue();
 	
-	MeanStdev threshold;
+	public TwoValue threshold = new TwoValue();
 	
-	MeanStdev leakReversal;
+	public TwoValue leakReversal = new TwoValue();
 	
-	MeanStdev leakConductance;
+	public TwoValue leakConductance = new TwoValue();
 	
-	MeanStdev vmRest;
+	public TwoValue vmRest = new TwoValue();
 	
-	MeanStdev caInternal;
+	public TwoValue caInternal = new TwoValue();
 	
-	MeanStdev caExternal;
+	public TwoValue caExternal = new TwoValue();
 	
-	MeanStdev caSpikeIncrement;
+	public TwoValue caSpikeIncrement = new TwoValue();
 	
-	MeanStdev caTau;
+	public TwoValue caTau = new TwoValue();
 	
-	ArrayList<Channel> channel;
+	public ArrayList<Channel> channel = new ArrayList<Channel>();
 	
 	//parser stuff
 	
-	String spikeshapeName;
+	public String spikeshapeName;
 	
-	ArrayList<String> channelNames;
+	public ArrayList<String> channelNames = new ArrayList<String>();
 	
 	}

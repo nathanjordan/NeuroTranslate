@@ -2,24 +2,24 @@ package unr.neurotranslate.ncs;
 
 public class Event {
 	
-	String type;
+	public String type;
 	
-	String filename;
+	public String filename;
 	
-	double value;
+	public double value;
 	
-	Synapse synapse;
+	public Synapse synapse;
 	
 	//parser stuff
 	
-	String synapseName;
+	public String synapseName;
 	
-	String columnName;
+	public String columnName;
 	
-	String layerName;
+	public String layerName;
 	
-	String cellName;
+	public String cellName;
 	
-	String compartmentName;
+	public String compartmentName;
 	
 	}

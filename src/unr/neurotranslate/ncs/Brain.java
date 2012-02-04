@@ -10,27 +10,27 @@ public class Brain {
 	
 	public double duration;
 	
-	public int FSV;
+	public double FSV;
 	
 	public boolean interactive;
 	
 	public int seed;
 	
-	public boolean distance;
+	public int distance;
 	
-	public ArrayList<Column> columnTypes;
+	public ArrayList<Column> columnTypes = new ArrayList<Column>();
 	
-	public ArrayList<StimulusInject> stimulusInjects;
+	public ArrayList<StimulusInject> stimulusInjects = new ArrayList<StimulusInject>();
 	
-	public ArrayList<Report> reports;
+	public ArrayList<Report> reports = new ArrayList<Report>();
 	
-	public ArrayList<String> events;
+	public ArrayList<String> events = new ArrayList<String>();
 	
-	public ArrayList<Connect> connect;
+	public ArrayList<Connect> connect = new ArrayList<Connect>();
 	
-	public ArrayList<RecurrentConnect> recurrentConnect;
+	public ArrayList<RecurrentConnect> recurrentConnect = new ArrayList<RecurrentConnect>();
 	
-	public Save save;
+	public String savefile;
 	
 	public double saveTime;
 	
@@ -44,19 +44,19 @@ public class Brain {
 	
 	public boolean warningsOn;
 	
-	public boolean outputCells;
+	public int outputCells;
 	
-	public boolean outputConnectMap;
+	public int outputConnectMap;
 	
 	//Parsing stuff
 	
-	public ArrayList<String> columnTypeNames;
+	public ArrayList<String> columnTypeNames = new ArrayList<String>();
 	
-	public ArrayList<String> stimulusInjectNames;
+	public ArrayList<String> stimulusInjectNames = new ArrayList<String>();
 	
-	public ArrayList<String> reportNames;
+	public ArrayList<String> reportNames = new ArrayList<String>();
 	
-	public ArrayList<String> eventNames;
+	public ArrayList<String> eventNames = new ArrayList<String>();
 	
 	public Brain() {
 		

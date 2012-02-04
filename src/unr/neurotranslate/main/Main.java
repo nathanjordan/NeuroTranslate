@@ -6,6 +6,8 @@
 package unr.neurotranslate.main;
 
 import org.morphml.neuroml.schema.Neuroml;
+
+import unr.neurotranslate.ncsparser.Parser;
 import unr.neurotranslate.util.NeuroMLConverter;
 
 /**
@@ -31,6 +33,11 @@ public class Main {
 		
 		converter.neuromlToXml( test , "/home/njordan/Downloads/Cerebellum_out.xml");
 		
+		Parser p = new Parser("/home/njordan/Downloads/PrototypeNCS.in");
+		
+		p.run();
+		
+		System.out.println("weeee");
 		
 		}
 

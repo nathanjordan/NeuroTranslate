@@ -4,10 +4,12 @@ public class ColumnShell {
 	
 	public String type;
 	
-	double width;
+	public double width;
 	
-	double height;
+	public double height;
 	
-	Location location;
+	public double x;
+	
+	public double y;
 	
 	}

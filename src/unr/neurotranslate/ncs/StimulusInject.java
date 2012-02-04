@@ -2,22 +2,22 @@ package unr.neurotranslate.ncs;
 
 public class StimulusInject {
 	
-	String type;
+	public String type;
 	
-	Stimulus stimulus;
+	public Stimulus stimulus;
 	
-	String columnName;
+	public String columnName;
 	
-	String layerName;
+	public String layerName;
 	
-	String cellName;
+	public String cellName;
 	
-	String compartmentName;
+	public String compartmentName;
 	
-	double probability;
+	public double probability;
 	
 	//parser stuff
 	
-	String stimulusName;
+	public String stimulusName;
 	
 	}

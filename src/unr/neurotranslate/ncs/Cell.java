@@ -6,6 +6,7 @@ public class Cell {
 	
 	public String type;
 	
+	// TODO not sure if you need this
 	public ArrayList<Compartment> compartments = new ArrayList<Compartment>();
 	public ArrayList<String> compartmentLabels = new ArrayList<String>();
 	public ArrayList<Number> xList = new ArrayList<Number>();

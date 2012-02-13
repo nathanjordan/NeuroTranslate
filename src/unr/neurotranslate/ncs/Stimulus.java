@@ -1,5 +1,7 @@
 package unr.neurotranslate.ncs;
 
+import java.util.ArrayList;
+
 public class Stimulus {
 	
 	public String type;
@@ -34,9 +36,9 @@ public class Stimulus {
 	
 	public double width;
 	
-	public double[] timeStart;
+	public ArrayList<Double> timeStart;
 	
-	public double[] timeEnd;
+	public ArrayList<Double> timeEnd;
 	
 	public double freqStart;
 	

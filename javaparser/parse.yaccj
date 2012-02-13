@@ -533,8 +533,8 @@ stvar: TK_TYPE           NAME     { stimulusList.get( stimulusList.size() - 1 ).
      | TK_AMP_END        value    { stimulusList.get( stimulusList.size() - 1 ).ampEnd = $<dval>2; }
      | TK_WIDTH          value    { stimulusList.get( stimulusList.size() - 1 ).width = $<dval>2; }
      | TK_FREQ_START     value    { stimulusList.get( stimulusList.size() - 1 ).freqStart = $<dval>2; }
-     | TK_TIME_START {  } values {  }
-     | TK_TIME_END   {  } values {  }
+     | TK_TIME_START { listPtr = stimulusList.get( stimulusList.size() - 1 ).timeStart; } values
+     | TK_TIME_END   { listPtr = stimulusList.get( stimulusList.size() - 1 ).timeEnd; } values
 ;
 
 /*--------------- Input for the ST_INJECT structure ------------*/
@@ -624,8 +624,8 @@ singleoption: TK_AVERAGE_SYN {  }
 
 /*--------------- These rules collect a list of numeric values ------------*/
 
-values: value         {  }
-      | values value  {  }
+values: value { listPtr.add( $<dval>1 ); } 
+	  | values value  { listPtr.add( $<dval>1 ); }
 ;
 
 twovalue: value value  { twoPtr.set( $<dval>1 , $<dval>2 ); twoPtr = null; }
@@ -669,6 +669,8 @@ public ArrayList<Event> eventList = new ArrayList<Event>();
 
 //For all those pesky mean/stdev values
 protected TwoValue twoPtr;
+
+protected ArrayList<Number> listPtr;
 
 private int yywrap() {
 

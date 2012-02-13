@@ -1,43 +1,84 @@
 package unr.neurotranslate.conversion;
 
 import java.math.BigInteger;
-import java.lang.Object;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.morphml.channelml.schema.DoubleExponentialSynapse;
 import org.morphml.channelml.schema.SynapseType;
 import org.morphml.metadata.schema.Point;
 import org.morphml.metadata.schema.RectangularBox;
+import org.morphml.metadata.schema.Units;
 import org.morphml.metadata.schema.RectangularBox.Size;
 import org.morphml.morphml.schema.Cell;
 import org.morphml.morphml.schema.Cells;
 import org.morphml.morphml.schema.Segment;
 import org.morphml.morphml.schema.Cell.Segments;
+import org.morphml.networkml.schema.ConnectivityPattern;
+import org.morphml.networkml.schema.GlobalSynapticProperties;
+import org.morphml.networkml.schema.Input;
+import org.morphml.networkml.schema.InputSitePattern;
+import org.morphml.networkml.schema.InputTarget;
+import org.morphml.networkml.schema.Inputs;
 import org.morphml.networkml.schema.Population;
 import org.morphml.networkml.schema.PopulationLocation;
 import org.morphml.networkml.schema.Populations;
 import org.morphml.networkml.schema.Projection;
+import org.morphml.networkml.schema.Projections;
+import org.morphml.networkml.schema.PulseInput;
 import org.morphml.networkml.schema.RandomArrangement;
-import org.morphml.neuroml.schema.Neuroml;
+import org.morphml.networkml.schema.ConnectivityPattern.FixedProbability;
+import org.morphml.networkml.schema.InputSitePattern.PercentageCells;
+import unr.neurotranslate.ncs.Column;
+import unr.neurotranslate.ncs.Connect;
+import unr.neurotranslate.ncs.Layer;
+import unr.neurotranslate.ncs.StimulusInject;
 
-import unr.neurotranslate.ncs.LayerShell;
-import unr.neurotranslate.ncs.Synapse;
 
+final class PopulationRef
+{
+	private String popName;
+	private String layerName;
+	private String cellName;	
+	
+	public String getPopName()
+	{
+		return popName;
+	}
+	
+	public void setPopName(String popName)
+	{
+		this.popName = popName;
+	}
+	
+	public String getLayerName()
+	{
+		return this.layerName;
+	}
+	
+	public void setLayerName(String layerName)
+	{
+		this.layerName = layerName;
+	}
+	
+	public String getCellName()
+	{
+		return this.cellName;
+	}
+	
+	public void setCellName(String cellName)
+	{
+		this.cellName = cellName;
+	}
+		
+}
 
 public class NCSToNeuroml {
 	
+	static private List<PopulationRef> PopulationReference = new ArrayList<PopulationRef>();
+	
 	static int popIndex = 1;
-	
-	//public static Neuroml convert( Arrays arrays ) {
 		
-	//	Neuroml neuroml = new Neuroml();
-		
-	//	return neuroml;
-		
-	//	}
-	
-	private static Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell> ncsCells ) {
+private static Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell> ncsCells ) {
 		
 			// NeuroML Cells class
 			Cells neuromlCells = new Cells();
@@ -97,27 +138,177 @@ public class NCSToNeuroml {
 			
 		}
 	
-	public static Projection convertConnectToProjection( unr.neurotranslate.ncs.Connect ncsConnect ) {
+	// TODO expecting this to break, will clean it up once its working 
+	public static Projections generateNeuromlProjections(unr.neurotranslate.ncs.Brain ncsBrain) {
+		
+		Projections neuromlProjs = new Projections();
 		Projection proj = new Projection();
-		Population pop = new Population();
-		String cellType;
-		BigInteger b = BigInteger.ZERO;
-		//cellType = ncsConnect.fromCellName.toString();
-		//pop.setCellType(cellType);
-		//pop.setName(cellType + "Pop" + popIndex);
-		popIndex++;
-		RandomArrangement ra = new RandomArrangement();
-		ra.setPopulationSize(b);
-		b.add(BigInteger.ONE);
+		GlobalSynapticProperties synProps = new GlobalSynapticProperties();
+		ConnectivityPattern cp = new ConnectivityPattern();
+		FixedProbability fp = new FixedProbability();
 		
+		// set units
+		neuromlProjs.setUnits(Units.fromValue("Physiological Units"));
+	    // TODO set xmlns?
 		
-		// TODO cant assign population size without layer info, how to get layer info. 
-		
-		return proj;
-		
+		// loop through connects in brain
+		for( Connect connect: ncsBrain.connect)
+		{
+			for( PopulationRef popRef : PopulationReference )
+			{
+				if(popRef.getLayerName() == connect.layer1Name && popRef.getCellName() == connect.cellType1Name)
+				{
+					proj.setSource(popRef.getPopName());
+				}
+				if( popRef.getLayerName() == connect.layer2Name && popRef.getCellName() == connect.cellType2Name)
+				{
+					proj.setTarget(popRef.getPopName());
+				}
+			}
+			proj.setName("brain"+ proj.getSource() + proj.getTarget());
+			synProps.setSynapseType(connect.synapseTypeName);
+			// TODO Ask Laurence about internal delay
+			synProps.setInternalDelay(.001);
+			// TODO Ask Laurence about weight
+			synProps.setWeight(0.0);
+			// TODO might have to change later, grab a threshold 
+			synProps.setThreshold(ncsBrain.connect.get(0).cellType1.compartments.get(0).threshold.mean);
+			// set syn props
+			proj.getSynapseProps().add(synProps);
+			// set the probability
+			fp.setProbability(connect.probability * 100.0);
+			cp.setFixedProbability(fp);
+			// set porbability in projection
+			proj.setConnectivityPattern(cp);
+			// add projection to the list
+			neuromlProjs.getProjections().add(proj);
 		}
+		
+		// loop through connects in columns
+		for( Column column: ncsBrain.columnTypes)
+		{
+			for( Connect connect: column.connects)
+			{
+				for( PopulationRef popRef : PopulationReference )
+				{
+					if(popRef.getLayerName() == connect.layer1Name && popRef.getCellName() == connect.cellType1Name)
+					{
+						proj.setSource(popRef.getPopName());
+					}
+					if( popRef.getLayerName() == connect.layer2Name && popRef.getCellName() == connect.cellType2Name)
+					{
+						proj.setTarget(popRef.getPopName());
+					}
+				}
+				proj.setName("column"+ proj.getSource() + proj.getTarget());
+				synProps.setSynapseType(connect.synapseTypeName);
+				// TODO Ask Laurence about internal delay
+				synProps.setInternalDelay(.001);
+				// TODO Ask Laurence about weight
+				synProps.setWeight(0.0);
+				// TODO might have to change later, grab a threshold 
+				synProps.setThreshold(column.connects.get(0).cellType1.compartments.get(0).threshold.mean);
+				// set syn props
+				proj.getSynapseProps().add(synProps);
+				// set the probability
+				fp.setProbability(connect.probability * 100.0);
+				cp.setFixedProbability(fp);
+				// set porbability in projection
+				proj.setConnectivityPattern(cp);
+				// add projection to the list
+				neuromlProjs.getProjections().add(proj);
+				
+				// loop through the layers in each column
+				for( Layer layer: column.layers)
+				{
+					for( Connect layerConnect: layer.connects)
+					{
+						for( PopulationRef popRef : PopulationReference )
+						{
+							if(popRef.getLayerName() == layerConnect.layer1Name && popRef.getCellName() == layerConnect.cellType1Name)
+							{
+								proj.setSource(popRef.getPopName());
+							}
+							if( popRef.getLayerName() == layerConnect.layer2Name && popRef.getCellName() == layerConnect.cellType2Name)
+							{
+								proj.setTarget(popRef.getPopName());
+							}
+						}
+						proj.setName("layer"+ proj.getSource() + proj.getTarget());
+						synProps.setSynapseType(layerConnect.synapseTypeName);
+						// TODO Ask Laurence about internal delay
+						synProps.setInternalDelay(.001);
+						// TODO Ask Laurence about weight
+						synProps.setWeight(0.0);
+						// TODO might have to change later, grab a threshold 
+						synProps.setThreshold(layer.connects.get(0).cellType1.compartments.get(0).threshold.mean);
+						// set syn props
+						proj.getSynapseProps().add(synProps);
+						// set the probability
+						fp.setProbability(connect.probability * 100.0);
+						cp.setFixedProbability(fp);
+						// set porbability in projection
+						proj.setConnectivityPattern(cp);
+						// add projection to the list
+						neuromlProjs.getProjections().add(proj);
+					}
+				}
+			}
+		}
+		return neuromlProjs;
+	}
 	
-	public static Populations generateNeuromlPopulations(unr.neurotranslate.ncs.Brain ncsBrain)
+	public static Inputs generateNeuromlInputs(unr.neurotranslate.ncs.Brain ncsBrain)
+	{
+		Inputs inputs = new Inputs();
+		// TODO figure out units
+		
+		Input input = new Input();
+		PulseInput pulseInput = new PulseInput();
+		InputTarget inputTarget = new InputTarget();
+		InputSitePattern sitePattern = new InputSitePattern();
+		PercentageCells percentageCells = new PercentageCells();
+		
+		// for each stimulus inject in the brain
+		for( StimulusInject stimInject : ncsBrain.stimulusInjects)
+		{
+		
+			// set input name
+			input.setName(stimInject.type);
+			// set delay
+			pulseInput.setDelay(0.0);
+			// set duration
+			pulseInput.setDuration(stimInject.stimulus.width);
+			// set amplitude
+			pulseInput.setAmplitude(stimInject.stimulus.ampStart);
+			// set the pulse input in the input
+			input.setPulseInput(pulseInput);
+			// find the population being used
+			for( PopulationRef popRef : PopulationReference)
+			{
+				if( popRef.getLayerName() == stimInject.layerName && popRef.getCellName() == stimInject.cellName)
+				{
+					// set the population name
+					inputTarget.setPopulation(popRef.getPopName());
+				}
+			}
+			
+			// set the percentage in a Percentage Cells object
+			percentageCells.setPercentage(stimInject.probability);
+			// set the percentage cells in site pattern
+			sitePattern.setPercentageCells(percentageCells);
+			// set the site pattern in the input target
+			inputTarget.setSitePattern(sitePattern);
+			// set the inout target in the input 
+			input.setTarget(inputTarget);
+			// add the input the the list of inputs
+			inputs.getInputs().add(input);
+		}
+		
+		return inputs;
+	}
+	
+	public static Populations generateNeuromlPopulations(unr.neurotranslate.ncs.Brain ncsBrain )
 	{
 		Populations neuromlPops = new Populations();
 		Population neuromlPop = new Population();
@@ -131,6 +322,7 @@ public class NCSToNeuroml {
 		Point tempPoint = new Point();
 		Size tempSize = new Size();
 		double boxHeight = 0;
+		PopulationRef popRef = new PopulationRef();
 		
 		// for each column 
 		for( unr.neurotranslate.ncs.Column column : ncsBrain.columnTypes)
@@ -172,10 +364,16 @@ public class NCSToNeuroml {
 						neuromlPop.setName(cell.type + "Pop" + index);
 						// add the population to the list 
 						neuromlPops.getPopulations().add(neuromlPop);
+						// add to PopulationReference for later use
+						popRef.setPopName(cell.type + "Pop" + index);
+						popRef.setLayerName(layer.type);
+						popRef.setCellName(cell.type);
 					}
 				}
 				// add layer to completed list so its cell groups aren't repeated
 				completedLayers.add(layer.type);
+				// add popRef to array list
+				PopulationReference.add(popRef);
 			}
 		}
 		

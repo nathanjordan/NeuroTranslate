@@ -1657,6 +1657,7 @@ public ArrayList<Event> eventList = new ArrayList<Event>();
 //For all those pesky mean/stdev values
 protected TwoValue twoPtr;
 
+@SuppressWarnings("unused")
 private int yywrap() {
 
 	return 0;

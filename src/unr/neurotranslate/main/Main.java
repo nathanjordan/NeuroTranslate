@@ -8,7 +8,8 @@ package unr.neurotranslate.main;
 import org.morphml.neuroml.schema.Neuroml;
 
 import unr.neurotranslate.ncsparser.Parser;
-import unr.neurotranslate.util.NeuroMLConverter;
+import unr.neurotranslate.ncsparser.ParserValInterpolater;
+import unr.neurotranslate.neuromlparser.NeuroMLConverter;
 
 /**
  * @author njordan
@@ -25,17 +26,19 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception {
 		
-		Neuroml test;
+		//Neuroml test;
 		
-		NeuroMLConverter converter = new NeuroMLConverter();
+		//NeuroMLConverter converter = new NeuroMLConverter();
 		
-		test = converter.readNeuroML("/home/njordan/Downloads/Cerebellum.xml");
+		//test = converter.readNeuroML("/home/njordan/Downloads/Cerebellum.xml");
 		
-		converter.neuromlToXml( test , "/home/njordan/Downloads/Cerebellum_out.xml");
+		//converter.neuromlToXml( test , "/home/njordan/Downloads/Cerebellum_out.xml");
 		
 		Parser p = new Parser("/home/njordan/Downloads/PrototypeNCS.in");
 		
 		p.run();
+		
+		ParserValInterpolater g = new ParserValInterpolater(p);
 		
 		System.out.println("weeee");
 		

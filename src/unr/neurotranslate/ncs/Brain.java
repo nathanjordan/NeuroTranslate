@@ -2,9 +2,7 @@ package unr.neurotranslate.ncs;
 
 import java.util.ArrayList;
 
-public class Brain {
-	
-	public String type;
+public class Brain extends TypedElement {
 	
 	public String job;
 	
@@ -24,7 +22,7 @@ public class Brain {
 	
 	public ArrayList<Report> reports = new ArrayList<Report>();
 	
-	public ArrayList<String> events = new ArrayList<String>();
+	public ArrayList<Event> events = new ArrayList<Event>();
 	
 	public ArrayList<Connect> connect = new ArrayList<Connect>();
 	
@@ -66,7 +64,7 @@ public class Brain {
 		
 		reports = new ArrayList<Report>();
 		
-		events = new ArrayList<String>();
+		events = new ArrayList<Event>();
 		
 		connect = new ArrayList<Connect>();
 		

@@ -1,8 +1,6 @@
 package unr.neurotranslate.ncs;
 
-public class ColumnShell {
-	
-	public String type;
+public class ColumnShell extends TypedElement {
 	
 	public double width;
 	

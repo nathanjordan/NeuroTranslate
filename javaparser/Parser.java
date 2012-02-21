@@ -1,5 +1,3 @@
-package unr.neurotranslate.ncsparser;
-
 //### This file created by BYACC 1.8(/Java extension  1.15)
 //### Java capabilities added 7 Jan 97, Bob Jamison
 //### Updated : 27 Nov 97  -- Bob Jamison, Joe Nieten
@@ -1658,7 +1656,6 @@ protected TwoValue twoPtr;
 
 protected ArrayList<? super Double> listPtr;
 
-@SuppressWarnings("unused")
 private int yywrap() {
 
 	return 0;

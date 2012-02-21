@@ -2,9 +2,7 @@ package unr.neurotranslate.ncs;
 
 import java.util.ArrayList;
 
-public class Cell {
-	
-	public String type;
+public class Cell extends TypedElement {
 	
 	// TODO not sure if you need this
 	public ArrayList<Compartment> compartments = new ArrayList<Compartment>();

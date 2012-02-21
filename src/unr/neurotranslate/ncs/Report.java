@@ -1,8 +1,6 @@
 package unr.neurotranslate.ncs;
 
-public class Report {
-	
-	public String type;
+public class Report extends TypedElement {
 	
 	public Object cells;
 	

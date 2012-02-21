@@ -1,8 +1,6 @@
 package unr.neurotranslate.ncs;
 
-public class Synapse {
-	
-	public String type;
+public class Synapse extends TypedElement {
 	
 	public int seed;
 	

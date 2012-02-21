@@ -1,4 +1,4 @@
-package unr.neurotranslate.util;
+package unr.neurotranslate.neuromlparser;
 
 import java.io.*;
 

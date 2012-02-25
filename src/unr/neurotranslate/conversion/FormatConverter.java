@@ -1,5 +1,22 @@
 package unr.neurotranslate.conversion;
 
-public class FormatConverter {
+import org.morphml.neuroml.schema.Neuroml;
 
-}
+import unr.neurotranslate.ncs.NCSData;
+
+public class FormatConverter {
+	
+	public static NeuroMLConversionData convertToNeuroML( NCSData d ) {
+		
+		
+		return null;
+		
+		}
+	
+	public static NCSConversionData convertToNCS( Neuroml m ) {
+		
+		return null;
+		
+		}
+	
+	}

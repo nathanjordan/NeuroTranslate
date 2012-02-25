@@ -8,9 +8,7 @@ import unr.neurotranslate.neuromlparser.NeuroMLConverter;
 
 public class FileController {
 	
-	
-	
-	public NCSData loadNCSFile( String location ) {
+	public static NCSData loadNCSFile( String location ) {
 		
 		Parser p = new Parser( location );
 		
@@ -59,7 +57,7 @@ public class FileController {
 		return d;
 		}
 	
-	public Neuroml loadNeuroMLFile( String location ) {
+	public static Neuroml loadNeuroMLFile( String location ) {
 		
 		NeuroMLConverter n = null;
 		

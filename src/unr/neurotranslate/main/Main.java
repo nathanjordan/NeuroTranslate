@@ -5,6 +5,8 @@
  */
 package unr.neurotranslate.main;
 
+import org.gnome.gtk.Builder;
+import org.gnome.gtk.Gtk;
 import org.morphml.neuroml.schema.Neuroml;
 
 import unr.neurotranslate.model.FileController;
@@ -37,9 +39,14 @@ public class Main {
 		//converter.neuromlToXml( test , "/home/njordan/Downloads/Cerebellum_out.xml");
 
 		
-		NCSData d = FileController.loadNCSFile( "/home/njordan/Downloads/NCS.in" );
+		//NCSData d = FileController.loadNCSFile( "/home/njordan/Downloads/NCS.in" );
 		
 		
+		Gtk.init(args);
+		
+		Builder b = new Builder();
+		
+		b.addFromFile("/home/njordan/workspace/NeuroTranslate/ui/test.glade");
 		
 		}
 

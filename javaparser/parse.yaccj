@@ -501,7 +501,7 @@ spikevars: spikevar
 ;
 
 spikevar: TK_TYPE NAME { spikeshapeList.get( spikeshapeList.size() - 1 ).type = $<sval>2; }
-        | TK_VOLTAGES  {  } values {  }
+        | TK_VOLTAGES  { listPtr. } values {  }
 ;
 
 /*--------------- Input for the STIMULUS structure ------------*/

@@ -1,5 +1,7 @@
 %{
 
+package unr.neurotranslate.ncsparser;
+
 import java.io.*;
 import java.util.ArrayList;
 import unr.neurotranslate.ncs.*;
@@ -499,7 +501,7 @@ spikevars: spikevar
 ;
 
 spikevar: TK_TYPE NAME { spikeshapeList.get( spikeshapeList.size() - 1 ).type = $<sval>2; }
-        | TK_VOLTAGES  {  } values {  }
+        | TK_VOLTAGES  { listPtr. } values {  }
 ;
 
 /*--------------- Input for the STIMULUS structure ------------*/
@@ -670,8 +672,9 @@ public ArrayList<Event> eventList = new ArrayList<Event>();
 //For all those pesky mean/stdev values
 protected TwoValue twoPtr;
 
-protected ArrayList<Number> listPtr;
+protected ArrayList<? super Double> listPtr;
 
+@SuppressWarnings("unused")
 private int yywrap() {
 
 	return 0;
@@ -689,7 +692,80 @@ private void yyerror(String string) {
 	
 	
 	}
+	
+public void populateObjects( ) {
+		
+	//Fill out the Brains object fields
+	fillArrays( brain.columnTypeNames , columnList , brain.columnTypes );
+	
+	fillArrays( brain.stimulusInjectNames , stimulusInjectList , brain.stimulusInjects );
+	
+	fillArrays( brain.reportNames , reportList , brain.reports );
+	
+	fillArrays( brain.eventNames , eventList , brain.events );
+	
+	//fill columns
+	
+	for( Column c : columnList) {
+		
+		fillValue( c.columnShellName, columnShellList, c.columnShell );
+		
+		fillArrays( c.layerNames , layerList , c.layers );
+		
+		}
+	
+	//fill layers
+	
+	for( Layer l : layerList ) {
+		
+		fillValue( l.layerShellName , layerShellList , l.layerShell );
+		
+		fillArrays( l.cellTypeNames , cellList, l.cellTypes );
+		
+		}
+	
+	//fill cells
+	
+	for( Cell c : cellList ) {
+		
+		fillArrays(c.compartmentNames, compartmentList, c.compartments );
+		
+		}
+	
+	//compartments
+	for( Compartment c : compartmentList ) {
+		
+		fillValue( c.spikeshapeName , spikeshapeList, c.spikeshape );
+		
+		fillArrays( c.channelNames , channelList , c.channels);
+		
+		}
+		
+	
+	}
+	
+@SuppressWarnings({ "unchecked", "rawtypes" })
+public void fillArrays( ArrayList<String> typeList , ArrayList objList , ArrayList destList ) {
+	
+	for( int i = 0 ; i < typeList.size() ; i++ )
+		for( int j = 0 ; j < objList.size() ; j ++ )
+			if( typeList.get(i).equals( ( (TypedElement) objList.get(j) ).type ) ) {
+				( (ArrayList) destList).add( (TypedElement) objList.get(j) );
+				break;
+				}
+	}
 
+@SuppressWarnings("rawtypes")
+public void fillValue( String type , ArrayList objList , TypedElement dest ) {
+	
+	for( int j = 0 ; j < objList.size() ; j ++ )
+		if( type.equals( ((TypedElement) objList.get(j) ).type ) ) {
+			dest = (TypedElement) objList.get(j);
+			break;
+			}
+	
+	}
+		
 private int yylex() {
 	
 	try {

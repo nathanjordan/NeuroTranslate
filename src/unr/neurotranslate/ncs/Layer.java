@@ -2,9 +2,7 @@ package unr.neurotranslate.ncs;
 
 import java.util.ArrayList;
 
-public class Layer {
-	
-	public String type;
+public class Layer extends TypedElement {
 	
 	public LayerShell layerShell;
 	

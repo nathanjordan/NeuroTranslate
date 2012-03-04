@@ -1,0 +1,251 @@
+############################## Define Brain ################################
+
+BRAIN
+        TYPE                    PrototypeNCS
+        JOB                     PrototypeNCS
+        DURATION                3
+	FSV             	1e3
+	DISTANCE		NO
+	SEED			-20
+
+        STIMULUS_INJECT         StInject1
+	STIMULUS_INJECT		StInject2
+
+        COLUMN_TYPE             column_1
+        COLUMN_TYPE             column_2
+
+        CONNECT
+                                column_1 layer_A    Excitatory      s1
+                                column_2 layer_B    Excitatory      s1
+                                ExcitSyn1       1             3
+	CONNECT
+                                column_1 layer_B    Inhibitory      s1
+                                column_2 layer_A    Excitatory      s1
+                                InhibSyn1       1             3
+
+        REPORT                  Report2AE
+        REPORT                  Report2AI
+	REPORT                  Report2BE
+        REPORT                  Report2BI
+
+END_BRAIN
+
+############################### Define Column Shells #########################
+
+COLUMN_SHELL
+        TYPE                    column_shell
+	WIDTH          		300
+    	HEIGHT         		800
+    	LOCATION       		0             800
+END_COLUMN_SHELL
+
+############################### Fill Columns #################################
+
+COLUMN
+        TYPE                    column_1
+        COLUMN_SHELL            column_shell
+        LAYER_TYPE              layer_A
+        LAYER_TYPE              layer_B                      
+END_COLUMN
+
+COLUMN
+        TYPE                    column_2
+        COLUMN_SHELL            column_shell
+        LAYER_TYPE              layer_A
+        LAYER_TYPE              layer_B
+END_COLUMN
+
+############################### Define Layer Shells #########################
+
+LAYER_SHELL
+        TYPE                    layer_shell_A
+        LOWER                   0
+        UPPER                   35
+END_LAYER_SHELL
+
+LAYER_SHELL
+        TYPE                    layer_shell_B
+        LOWER                   35
+        UPPER                   65
+END_LAYER_SHELL
+
+############################### Fill Layers ##################################
+
+LAYER
+        TYPE                    layer_A
+        LAYER_SHELL             layer_shell_A
+        CELL_TYPE               Excitatory      50
+        CELL_TYPE               Inhibitory      10
+END_LAYER
+
+LAYER
+        TYPE                    layer_B
+        LAYER_SHELL             layer_shell_B
+        CELL_TYPE               Excitatory      50
+        CELL_TYPE               Inhibitory      10
+END_LAYER
+
+############################### Define Cells ################################
+
+CELL
+        TYPE                    Excitatory
+        COMPARTMENT             soma        s1      0       0		0
+END_CELL
+
+CELL
+        TYPE                    Inhibitory
+        COMPARTMENT             soma         s1      0       0		0
+END_CELL
+
+############################### Define Compartments ##########################
+
+COMPARTMENT
+        TYPE                    soma
+        SPIKESHAPE              spikeshape_1k_default
+        THRESHOLD               -50         0
+	TAU_MEMBRANE      	0.020       0.0
+    	R_MEMBRANE        	200         0
+    	VMREST            	-60         0
+    	LEAK_REVERSAL     	0.0         0.0
+    	LEAK_CONDUCTANCE  	0.0         0.0
+END_COMPARTMENT
+
+############################### Define Synapse ##############################
+
+SYNAPSE
+        TYPE                    ExcitSyn1
+        SFD_LABEL               NO_SFD
+        SYN_PSG                 PSGexcit
+        LEARN_LABEL             NO_LEARN
+	MAX_CONDUCT   		0.5
+    	SYN_REVERSAL  		0    0
+    	ABSOLUTE_USE  		0.25    0.1
+        DELAY                   0.0008          0.0012
+END_SYNAPSE
+
+SYNAPSE
+        TYPE                    InhibSyn1
+        SFD_LABEL               NO_SFD
+        SYN_PSG                 PSGinhib
+        LEARN_LABEL             NO_LEARN
+	MAX_CONDUCT   		0.5
+    	SYN_REVERSAL  		-80    0
+    	ABSOLUTE_USE  		0.25    0.1
+        DELAY                   0.0008          0.0012
+END_SYNAPSE
+
+############################### Short-term Synaptic Dynamics ###############
+
+SYN_FACIL_DEPRESS
+        TYPE                    NO_SFD
+	SFD                     NONE
+END_SYN_FACIL_DEPRESS
+
+############################## Long-term Synaptic Dynamics ###############
+
+SYN_LEARNING
+        TYPE                    NO_LEARN
+	LEARNING                NONE
+END_SYN_LEARNING
+
+############################### Synaptic waveform #########################
+
+SYN_PSG
+        TYPE                    PSGexcit
+        PSG_FILE                ./input/EPSG_Vogels_FSV1k_TAU05.inc
+END_SYN_PSG
+
+SYN_PSG
+        TYPE                    PSGinhib
+        PSG_FILE                ./input/IPSG_Vogels_FSV1k_TAU10.inc
+END_SYN_PSG
+
+############################### Define spikeshapes #######################
+
+SPIKESHAPE
+  TYPE		spikeshape_1k_default
+  VOLTAGES	-38 30 -43 -60
+END_SPIKESHAPE
+
+############################### Define Stimulus ##########################
+
+
+STIMULUS
+        TYPE                    Stim1
+	MODE			CURRENT
+	PATTERN         	PULSE
+	TIME_INCREMENT		0.1
+	FREQ_COLS		100
+	CELLS_PER_FREQ		1
+	DYN_RANGE		0	400
+	AMP_START		3
+        WIDTH           	.01
+        TIME_START      	0
+        TIME_END        	1
+END_STIMULUS
+
+############################### Define Inject  ###########################
+
+STIMULUS_INJECT
+        TYPE                    StInject1
+        STIM_TYPE               Stim1
+        INJECT                  column_1 layer_A Excitatory s1 1.0
+END_STIMULUS_INJECT
+
+STIMULUS_INJECT
+        TYPE                    StInject2
+        STIM_TYPE               Stim1
+        INJECT                  column_1 layer_B Inhibitory s1 1.0
+END_STIMULUS_INJECT
+
+############################### Define Reports ###########################
+
+REPORT
+        TYPE                    Report2AE
+        ASCII
+        CELLS                   column_2 layer_A Excitatory s1
+	FILENAME            	2AE.txt
+	PROB                	0.2
+    	REPORT_ON           	VOLTAGE
+	FREQUENCY           	1
+	TIME_START              0
+        TIME_END                3
+END_REPORT
+
+REPORT
+        TYPE                    Report2AI
+        ASCII
+        CELLS                   column_2 layer_A Inhibitory s1
+	FILENAME            	2AI.txt
+	PROB                	1.0
+    	REPORT_ON           	VOLTAGE
+	FREQUENCY           	1
+	TIME_START              0
+        TIME_END                3
+END_REPORT
+
+REPORT
+        TYPE                    Report2BE
+        ASCII
+        CELLS                   column_2 layer_B Excitatory s1
+	FILENAME            	2BE.txt
+	PROB                	0.2
+    	REPORT_ON           	VOLTAGE
+	FREQUENCY           	1
+	TIME_START              0
+        TIME_END                3
+END_REPORT
+
+REPORT
+        TYPE                    Report2BI
+        ASCII
+        CELLS                   column_2 layer_B Inhibitory s1
+	FILENAME            	2BI.txt
+	PROB                	1.0
+    	REPORT_ON           	VOLTAGE
+	FREQUENCY           	1
+	TIME_START              0
+        TIME_END                3
+END_REPORT
+
+

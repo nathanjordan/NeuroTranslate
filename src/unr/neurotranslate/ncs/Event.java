@@ -1,8 +1,6 @@
 package unr.neurotranslate.ncs;
 
-public class Event {
-	
-	public String type;
+public class Event extends TypedElement {
 	
 	public String filename;
 	

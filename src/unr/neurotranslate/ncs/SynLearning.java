@@ -1,8 +1,6 @@
 package unr.neurotranslate.ncs;
 
-public class SynLearning {
-	
-	public String type;
+public class SynLearning extends TypedElement {
 	
 	public int seed;
 	

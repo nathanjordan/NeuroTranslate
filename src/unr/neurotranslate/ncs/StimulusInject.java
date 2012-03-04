@@ -1,8 +1,6 @@
 package unr.neurotranslate.ncs;
 
-public class StimulusInject {
-	
-	public String type;
+public class StimulusInject extends TypedElement {
 	
 	public Stimulus stimulus;
 	

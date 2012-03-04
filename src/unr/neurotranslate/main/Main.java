@@ -5,10 +5,17 @@
  */
 package unr.neurotranslate.main;
 
+import org.gnome.gtk.Builder;
+import org.gnome.gtk.Gtk;
 import org.morphml.neuroml.schema.Neuroml;
 
+import unr.neurotranslate.conversion.FormatConverter;
+import unr.neurotranslate.conversion.NeuroMLConversionData;
+import unr.neurotranslate.model.FileController;
+import unr.neurotranslate.ncs.NCSData;
 import unr.neurotranslate.ncsparser.Parser;
-import unr.neurotranslate.util.NeuroMLConverter;
+import unr.neurotranslate.ncsparser.ParserValInterpolater;
+import unr.neurotranslate.neuromlparser.NeuroMLConverter;
 
 /**
  * @author njordan
@@ -25,19 +32,21 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception {
 		
-		Neuroml test;
+		//Neuroml test;
 		
 		NeuroMLConverter converter = new NeuroMLConverter();
 		
-		test = converter.readNeuroML("/home/njordan/Downloads/Cerebellum.xml");
+		//test = converter.readNeuroML("/home/njordan/Downloads/Cerebellum.xml");
 		
-		converter.neuromlToXml( test , "/home/njordan/Downloads/Cerebellum_out.xml");
+		//converter.neuromlToXml( test , "/home/njordan/Downloads/Cerebellum_out.xml");
+
+		NCSData d = FileController.loadNCSFile( "/home/njordan/workspace/NeuroTranslate/samples/PrototypeNCS.in" );
 		
-		Parser p = new Parser("/home/njordan/Downloads/PrototypeNCS.in");
+		NeuroMLConversionData n = FormatConverter.convertToNeuroML(d);
 		
-		p.run();
+		Neuroml nm = (Neuroml) n.getData();
 		
-		System.out.println("weeee");
+		converter.neuromlToXml( nm , "/home/njordan/workspace/NeuroTranslate/samples/out.xml" );
 		
 		}
 

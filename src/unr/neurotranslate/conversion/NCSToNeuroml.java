@@ -78,7 +78,7 @@ public class NCSToNeuroml {
 	
 	static int popIndex = 1;
 		
-private static Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell> ncsCells ) {
+public static Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell> ncsCells ) {
 		
 			// NeuroML Cells class
 			Cells neuromlCells = new Cells();
@@ -380,7 +380,7 @@ private static Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell
 		return neuromlPops;
 	}
 	
-	public static List<SynapseType> generateNeuromlSynapseTypes( ArrayList<unr.neurotranslate.ncs.Synapse> ncsSynapses, ArrayList<unr.neurotranslate.ncs.SynPSG> syn_psgs ) {
+	public static List<SynapseType> generateNeuromlSynapseTypes( ArrayList<unr.neurotranslate.ncs.Synapse> ncsSynapses, ArrayList<String> syn_psgs ) {
 		
 		List<SynapseType> neuromlSynapseList = new ArrayList<SynapseType>();
 		SynapseType tempNeuromlSynapse = new SynapseType();
@@ -410,9 +410,9 @@ private static Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell
 			for(int j = 0; j < syn_psgs.size(); j++)
 			{
 				// find 
-				if(syn_psgs.get(j).type == ncsSynapses.get(i).synPSG)
+				if(syn_psgs.get(j) == ncsSynapses.get(i).synPSG)
 				{
-					char fileArr[] = syn_psgs.get(j).filename.toCharArray();
+					char fileArr[] = syn_psgs.get(j).toCharArray();
 					
 					endIndex = fileArr.length - 5;
 					

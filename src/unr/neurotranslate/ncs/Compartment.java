@@ -2,9 +2,7 @@ package unr.neurotranslate.ncs;
 
 import java.util.ArrayList;
 
-public class Compartment {
-	
-	public String type;
+public class Compartment extends TypedElement {
 	
 	public int seed;
 	
@@ -30,7 +28,7 @@ public class Compartment {
 	
 	public TwoValue caTau = new TwoValue();
 	
-	public ArrayList<Channel> channel = new ArrayList<Channel>();
+	public ArrayList<Channel> channels = new ArrayList<Channel>();
 	
 	//parser stuff
 	

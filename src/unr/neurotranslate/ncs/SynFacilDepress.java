@@ -1,8 +1,6 @@
 package unr.neurotranslate.ncs;
 
-public class SynFacilDepress {
-	
-	public String type;
+public class SynFacilDepress extends TypedElement {
 	
 	public int seed;
 	

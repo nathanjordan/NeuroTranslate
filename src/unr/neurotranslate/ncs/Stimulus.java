@@ -2,9 +2,7 @@ package unr.neurotranslate.ncs;
 
 import java.util.ArrayList;
 
-public class Stimulus {
-	
-	public String type;
+public class Stimulus extends TypedElement {
 	
 	public String mode;
 	

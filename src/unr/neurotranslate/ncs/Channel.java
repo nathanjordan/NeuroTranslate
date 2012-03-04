@@ -1,8 +1,6 @@
 package unr.neurotranslate.ncs;
 
-public class Channel {
-	
-	public String type;
+public class Channel extends TypedElement {
 	
 	public String channelType;
 	

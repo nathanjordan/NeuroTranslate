@@ -2,9 +2,7 @@ package unr.neurotranslate.ncs;
 
 import java.util.ArrayList;
 
-public class Column {
-	
-	public String type;
+public class Column extends TypedElement {
 	
 	public ColumnShell columnShell;
 	

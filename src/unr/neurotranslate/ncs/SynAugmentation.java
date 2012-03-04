@@ -1,8 +1,6 @@
 package unr.neurotranslate.ncs;
 
-public class SynAugmentation {
-	
-	public String type;
+public class SynAugmentation extends TypedElement {
 	
 	public TwoValue augmentationInit;
 	

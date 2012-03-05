@@ -3,6 +3,7 @@ package unr.neurotranslate.conversion;
 import java.util.ArrayList;
 
 import org.morphml.channelml.schema.ChannelmlType;
+import org.morphml.channelml.schema.SynapseType;
 import org.morphml.metadata.schema.Properties;
 import org.morphml.morphml.schema.Cells;
 import org.morphml.morphml.schema.Morphml;
@@ -22,6 +23,7 @@ public class FormatConverter {
 		
 		// list of syn_psg filenames
 		ArrayList<String> synFileList = new ArrayList<String>();
+		ArrayList<SynapseType> synapseList = new ArrayList<SynapseType>();
 		
 		// NeuroMLConversionData object
 		NeuroMLConversionData neuromlData = new NeuroMLConversionData();
@@ -32,7 +34,8 @@ public class FormatConverter {
 		Inputs inputs = new Inputs();
 		
 		// what to do with cells?
-		Cells cells = new Cells();
+		Level3Cells cells = new Level3Cells();
+		ChannelmlType channelml = new ChannelmlType();
 		
 		// get/set projections
 		projections = NCSToNeuroml.generateNeuromlProjections(d.brain);
@@ -48,7 +51,7 @@ public class FormatConverter {
 		
 		// get/set cells
 		cells = NCSToNeuroml.generateNeuromlCells(d.cellList);
-	    // need to add cells to neuroml/morphml
+		neuromlData.neuroml.setCells(cells);
 		
 		// get all of the synapse files names
 		for( Synapse syn : d.synapseList)
@@ -57,10 +60,15 @@ public class FormatConverter {
 		}
 		
 		// get/set synapses
-		NCSToNeuroml.generateNeuromlSynapseTypes(d.synapseList, synFileList);
-		// same deal with synapses, will have to find what level to set in
+		synapseList = NCSToNeuroml.generateNeuromlSynapseTypes(d.synapseList, synFileList);
+		for( SynapseType st : synapseList )
+		{
+			channelml.getSynapseTypes().add(st);
+		}
 		
-		
+		neuromlData.neuroml.setChannels(channelml);
+	
+		// finished converting
 		return neuromlData;
 		}
 	

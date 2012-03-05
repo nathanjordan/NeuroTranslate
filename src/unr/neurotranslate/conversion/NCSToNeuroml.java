@@ -28,6 +28,9 @@ import org.morphml.networkml.schema.PulseInput;
 import org.morphml.networkml.schema.RandomArrangement;
 import org.morphml.networkml.schema.ConnectivityPattern.FixedProbability;
 import org.morphml.networkml.schema.InputSitePattern.PercentageCells;
+import org.morphml.neuroml.schema.Level3Cell;
+import org.morphml.neuroml.schema.Level3Cells;
+
 import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.Connect;
 import unr.neurotranslate.ncs.Layer;
@@ -74,28 +77,28 @@ final class PopulationRef
 
 public class NCSToNeuroml {
 	
-	static private List<PopulationRef> PopulationReference = new ArrayList<PopulationRef>();
+	static private ArrayList<PopulationRef> PopulationReference = new ArrayList<PopulationRef>();
 	
 	static int popIndex = 1;
 		
-public static Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell> ncsCells ) {
+public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell> ncsCells ) {
 		
 			// NeuroML Cells class
-			Cells neuromlCells = new Cells();
+	        Level3Cells neuromlCells = new Level3Cells();
 			
 			// List of NeuroML cells
-			List<Cell> neuromlCellList = neuromlCells.getCells();
+			ArrayList<Level3Cell> neuromlCellList = (ArrayList<Level3Cell>) neuromlCells.getCells();
 			
 			// segments
 			Segments neuromlSegments = new Segments();
-			List<Segment> segmentList = neuromlSegments.getSegments();
+			ArrayList<Segment> segmentList = (ArrayList<Segment>) neuromlSegments.getSegments();
 			Segment tempSegment = new Segment();
 			Point tempPoint = new Point();
 			
 			BigInteger idIndex = BigInteger.ZERO;
 			
 			// temp cell
-			Cell tempCell = new Cell();
+			Level3Cell tempCell = new Level3Cell();
 			
 			// for each cell in NCS
 			for(unr.neurotranslate.ncs.Cell ncsCell : ncsCells)
@@ -128,8 +131,14 @@ public static Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell>
 					// add segment to list of segments
 					segmentList.add(tempSegment);
 				}
+				
 				// set the segments to the temp cell
-				tempCell.setSegments((Segments) segmentList);
+				for(Segment segInstance : segmentList)
+				{
+					neuromlSegments.getSegments().add(segInstance);
+				}
+				
+				tempCell.setSegments(neuromlSegments);
 				// add the cell to the cell list
 				neuromlCellList.add(tempCell);
 			}
@@ -178,7 +187,7 @@ public static Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell>
 			// set the probability
 			fp.setProbability(connect.probability * 100.0);
 			cp.setFixedProbability(fp);
-			// set porbability in projection
+			// set probability in projection
 			proj.setConnectivityPattern(cp);
 			// add projection to the list
 			neuromlProjs.getProjections().add(proj);
@@ -380,9 +389,9 @@ public static Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell>
 		return neuromlPops;
 	}
 	
-	public static List<SynapseType> generateNeuromlSynapseTypes( ArrayList<unr.neurotranslate.ncs.Synapse> ncsSynapses, ArrayList<String> syn_psgs ) {
+	public static ArrayList<SynapseType> generateNeuromlSynapseTypes( ArrayList<unr.neurotranslate.ncs.Synapse> ncsSynapses, ArrayList<String> syn_psgs ) {
 		
-		List<SynapseType> neuromlSynapseList = new ArrayList<SynapseType>();
+		ArrayList<SynapseType> neuromlSynapseList = new ArrayList<SynapseType>();
 		SynapseType tempNeuromlSynapse = new SynapseType();
 		DoubleExponentialSynapse doubExpSyn = new DoubleExponentialSynapse();
 		int endIndex;

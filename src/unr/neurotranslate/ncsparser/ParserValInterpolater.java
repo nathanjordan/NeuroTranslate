@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import unr.neurotranslate.ncs.Cell;
 import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.Compartment;
+import unr.neurotranslate.ncs.Connect;
 import unr.neurotranslate.ncs.Layer;
 import unr.neurotranslate.ncs.TypedElement;
 
 public class ParserValInterpolater {
 	
-	public ParserValInterpolater( Parser p ) {
+	public static void makeReferencesFromStrings( Parser p ) {
 		
 		//Fill out the Brains object fields
 		fillArrays( p.brain.columnTypeNames , p.columnList , p.brain.columnTypes );
@@ -58,11 +59,35 @@ public class ParserValInterpolater {
 			
 			}
 		
+		//fill connections
+		
+		for( Connect c : p.brain.connect ) {
+			
+			fillValue( c.column1Name , p.columnList , c.column1 );
+			
+			fillValue( c.layer1Name , p.layerList , c.layer1 );
+			
+			fillValue( c.cellType1Name , p.cellList , c.cellType1 );
+			
+			fillValue( c.compartment1Name , p.compartmentList , c.compartment1 );
+			
+			fillValue( c.column2Name , p.columnList , c.column2 );
+			
+			fillValue( c.layer2Name , p.layerList , c.layer2 );
+			
+			fillValue( c.cellType2Name , p.cellList , c.cellType2 );
+			
+			fillValue( c.compartment2Name , p.compartmentList , c.compartment2 );
+			
+			fillValue( c.synapseTypeName , p.synapseList , c.synapseType );
+			
+			}
+		
 	
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void fillArrays( ArrayList<String> typeList , ArrayList objList , ArrayList destList ) {
+	public static void fillArrays( ArrayList<String> typeList , ArrayList objList , ArrayList destList ) {
 		
 		for( int i = 0 ; i < typeList.size() ; i++ )
 			for( int j = 0 ; j < objList.size() ; j ++ )
@@ -73,7 +98,7 @@ public class ParserValInterpolater {
 		}
 	
 	@SuppressWarnings("rawtypes")
-	public void fillValue( String type , ArrayList objList , TypedElement dest ) {
+	public static void fillValue( String type , ArrayList objList , TypedElement dest ) {
 		
 		for( int j = 0 ; j < objList.size() ; j ++ )
 			if( type.equals( ((TypedElement) objList.get(j) ).type ) ) {

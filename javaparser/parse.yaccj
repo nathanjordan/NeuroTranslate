@@ -501,7 +501,7 @@ spikevars: spikevar
 ;
 
 spikevar: TK_TYPE NAME { spikeshapeList.get( spikeshapeList.size() - 1 ).type = $<sval>2; }
-        | TK_VOLTAGES  { listPtr. } values {  }
+        | TK_VOLTAGES  { listPtr = spikeshapeList.get( spikeshapeList.size() - 1 ).voltages; } values
 ;
 
 /*--------------- Input for the STIMULUS structure ------------*/
@@ -672,7 +672,8 @@ public ArrayList<Event> eventList = new ArrayList<Event>();
 //For all those pesky mean/stdev values
 protected TwoValue twoPtr;
 
-protected ArrayList<? super Double> listPtr;
+@SuppressWarnings("rawtypes")
+protected ArrayList listPtr;
 
 @SuppressWarnings("unused")
 private int yywrap() {

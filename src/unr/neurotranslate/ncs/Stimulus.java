@@ -48,4 +48,12 @@ public class Stimulus extends TypedElement {
 	
 	public double correl;
 	
+	public Stimulus() {
+		
+		timeEnd = new ArrayList<Double>();
+		
+		timeStart = new ArrayList<Double>();
+		
+		}
+	
 	}

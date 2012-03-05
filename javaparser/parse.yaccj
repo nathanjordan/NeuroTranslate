@@ -122,16 +122,25 @@ brainvar:  TK_TYPE         NAME    { brain.type = $<sval>2; }
                { brain.connect.add( new Connect( $<sval>2, $<sval>3, $<sval>4, $<sval>5,
                                                $<sval>6, $<sval>7, $<sval>8, $<sval>9,
                                                $<sval>10, $<dval>11, $<dval>12 ) );
+                                               
+                 connectList.add( brain.connect.get( brain.connect.size() - 1 ) );
+                 
                }
          | TK_CONNECT      NAME NAME NAME NAME NAME NAME NAME NAME NAME value value value
                { brain.connect.add( new Connect( $<sval>2, $<sval>3, $<sval>4, $<sval>5,
                                                $<sval>6, $<sval>7, $<sval>8, $<sval>9,
                                                $<sval>10, $<dval>11, $<dval>12, $<dval>13 ) );
+                                               
+               connectList.add( brain.connect.get( brain.connect.size() - 1 ) );
+               
                }
          | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME NAME NAME NAME NAME value value {
                  brain.recurrentConnect.add( new RecurrentConnect( $<sval>2, $<sval>3, $<sval>4, $<sval>5,
 					                                               $<sval>6, $<sval>7, $<sval>8, $<sval>9,
 					                                               $<sval>10, $<dval>11, $<dval>12 ) );
+					                                               
+				recurrentConnectList.add( brain.recurrentConnect.get( brain.recurrentConnect.size() - 1 ) );
+				
                }
 
          | TK_SAVE         NAME    value { brain.savefile = $<sval>2; brain.saveTime = $<dval>3; }
@@ -185,13 +194,29 @@ colvar: TK_TYPE       NAME { columnList.get( columnList.size() - 1).type = $<sva
       | TK_LAYER_TYPE NAME { columnList.get( columnList.size() - 1).layerNames.add( $<sval>2 ); }
       | TK_CONNECT    NAME NAME NAME NAME NAME NAME NAME value value
                { columnList.get( columnList.size() - 1).connects.add( new Connect( null, $<sval>2, $<sval>3, $<sval>4, null, $<sval>5, $<sval>6, $<sval>7,  $<sval>8, $<dval>9, $<dval>10 ) );
+               
+                 ArrayList<Connect> l = columnList.get( columnList.size() - 1).connects;
+                 
+                 connectList.add( l.get( l.size() - 1 ) );
+             
                }
       | TK_CONNECT    NAME NAME NAME NAME NAME NAME NAME value value value
                { columnList.get( columnList.size() - 1).connects.add( new Connect ( null, $<sval>2, $<sval>3, $<sval>4, null, $<sval>5, $<sval>6, $<sval>7, $<sval>8, $<dval>9, $<dval>10, $<dval>11 ) );
+               
+                 ArrayList<Connect> l = columnList.get( columnList.size() - 1).connects;
+                 
+                 connectList.add( l.get( l.size() - 1 ) );
+               
                }
        | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME NAME NAME value value
                {
+                
                 columnList.get( columnList.size() - 1).recurrentConnects.add( new RecurrentConnect( null, $<sval>2, $<sval>3, $<sval>4, null, $<sval>5, $<sval>6, $<sval>7, $<sval>8, $<dval>9, $<dval>10  ));
+               
+                ArrayList<RecurrentConnect> l = columnList.get( columnList.size() - 1).recurrentConnects;
+                 
+                recurrentConnectList.add( l.get( l.size() - 1 ) );
+               
                }
 ;
 
@@ -223,13 +248,28 @@ lvar:   TK_TYPE       NAME         { layerList.get( layerList.size() - 1 ).type 
       | TK_CELL_TYPE  NAME INTEGER { layerList.get( layerList.size() - 1 ).cellTypeNames.add( $<sval>2 );  layerList.get( layerList.size() - 1 ).cellTypeQuantities.add( $<ival>3 ); }
       | TK_CONNECT    NAME NAME NAME NAME NAME value value
                { layerList.get( layerList.size() - 1 ).connects.add( new Connect( null, null, $<sval>2, $<sval>3, null, null, $<sval>4, $<sval>5, $<sval>6, $<dval>7, $<dval>8 ) );
+              
+                 ArrayList<Connect> l = layerList.get( layerList.size() - 1).connects;
+                 
+                 connectList.add( l.get( l.size() - 1 ) );
+              
                }
       | TK_CONNECT    NAME NAME NAME NAME NAME value value value
                { layerList.get( layerList.size() - 1 ).connects.add( new Connect( null, null, $<sval>2, $<sval>3, null, null, $<sval>4, $<sval>5, $<sval>6, $<dval>7, $<dval>8, $<dval>9 ) );
+               
+                 ArrayList<Connect> l = layerList.get( layerList.size() - 1).connects;
+                 
+                 connectList.add( l.get( l.size() - 1 ) );
+               
                }
       | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME value value
                {
                 layerList.get( layerList.size() - 1 ).recurrentConnects.add( new RecurrentConnect( null, null, $<sval>2, $<sval>3, null, null, $<sval>4, $<sval>5,  $<sval>6, $<dval>7, $<dval>8 ) );
+               
+                ArrayList<RecurrentConnect> l = layerList.get( layerList.size() - 1).recurrentConnects;
+                 
+                recurrentConnectList.add( l.get( l.size() - 1 ) );
+               
                }
 ;
 
@@ -668,6 +708,9 @@ public ArrayList<StimulusInject> stimulusInjectList = new ArrayList<StimulusInje
 public ArrayList<Report> reportList = new ArrayList<Report>();
 
 public ArrayList<Event> eventList = new ArrayList<Event>();
+
+public ArrayList<Connect> connectList = new ArrayList<Connect>();
+public ArrayList<RecurrentConnect> recurrentConnectList = new ArrayList<RecurrentConnect>();
 
 //For all those pesky mean/stdev values
 protected TwoValue twoPtr;

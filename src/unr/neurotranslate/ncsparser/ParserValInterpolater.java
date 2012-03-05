@@ -61,7 +61,7 @@ public class ParserValInterpolater {
 		
 		//fill connections
 		
-		for( Connect c : p.brain.connect ) {
+		for( Connect c : p.connectList ) {
 			
 			fillValue( c.column1Name , p.columnList , c.column1 );
 			

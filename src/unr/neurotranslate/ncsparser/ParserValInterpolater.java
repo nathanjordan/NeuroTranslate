@@ -2,6 +2,8 @@ package unr.neurotranslate.ncsparser;
 
 import java.util.ArrayList;
 
+import org.morphml.networkml.schema.Population;
+
 import unr.neurotranslate.ncs.Cell;
 import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.Compartment;
@@ -83,7 +85,6 @@ public class ParserValInterpolater {
 			
 			}
 		
-	
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })

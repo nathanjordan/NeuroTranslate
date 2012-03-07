@@ -3,7 +3,10 @@ package unr.neurotranslate.conversion;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.morphml.channelml.schema.CurrentVoltageRelation;
 import org.morphml.channelml.schema.DoubleExponentialSynapse;
+import org.morphml.channelml.schema.IntegrateAndFire;
 import org.morphml.channelml.schema.SynapseType;
 import org.morphml.metadata.schema.Point;
 import org.morphml.metadata.schema.RectangularBox;
@@ -31,10 +34,12 @@ import org.morphml.networkml.schema.InputSitePattern.PercentageCells;
 import org.morphml.neuroml.schema.Level3Cell;
 import org.morphml.neuroml.schema.Level3Cells;
 
+import unr.neurotranslate.ncs.Brain;
 import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.Connect;
 import unr.neurotranslate.ncs.Layer;
 import unr.neurotranslate.ncs.StimulusInject;
+import unr.neurotranslate.ncs.Synapse;
 
 
 final class PopulationRef
@@ -147,15 +152,28 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			
 		}
 	
+
+	// TODO current voltage relation, integrate and fire - should have for each something? i.e. more than one?
+    public static CurrentVoltageRelation generateNeuromlCurrentVoltageRelation(unr.neurotranslate.ncs.Brain ncsBrain)
+    {
+    	CurrentVoltageRelation cvr = new CurrentVoltageRelation();
+    	IntegrateAndFire integrateAndFire = new IntegrateAndFire();
+    	// ncs
+    	// threshold
+    	// TODO t_refrac
+    	// v_reset 	
+    	return cvr;
+    }
+
 	// TODO expecting this to break, will clean it up once its working 
-	public static Projections generateNeuromlProjections(unr.neurotranslate.ncs.Brain ncsBrain) {
+	public static Projections generateNeuromlProjections(unr.neurotranslate.ncs.Brain ncsBrain, ArrayList<unr.neurotranslate.ncs.Synapse> ncsSynapses) {
 		
 		Projections neuromlProjs = new Projections();
 		Projection proj = new Projection();
 		GlobalSynapticProperties synProps = new GlobalSynapticProperties();
 		ConnectivityPattern cp = new ConnectivityPattern();
 		FixedProbability fp = new FixedProbability();
-		
+		int i;
 		// set units
 		neuromlProjs.setUnits(Units.fromValue("Physiological Units"));
 	    // TODO set xmlns?
@@ -176,10 +194,17 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			}
 			proj.setName("brain"+ proj.getSource() + proj.getTarget());
 			synProps.setSynapseType(connect.synapseTypeName);
-			// TODO Ask Laurence about internal delay
-			synProps.setInternalDelay(.001);
-			// TODO Ask Laurence about weight
-			synProps.setWeight(0.0);
+			for( i = 0; i < ncsSynapses.size(); i++)
+			{
+				if( ncsSynapses.get(i).type == connect.synapseTypeName )
+						break;
+			}
+			
+			// TODO delay is min/max, not mean/stdev
+			// average of min/max
+			synProps.setInternalDelay((ncsSynapses.get(i).delay.mean+ncsSynapses.get(i).delay.stdev)/2);
+			// set weight to absolute use mean
+			synProps.setWeight(ncsSynapses.get(i).absoluteUse.mean);
 			// TODO might have to change later, grab a threshold 
 			synProps.setThreshold(ncsBrain.connect.get(0).cellType1.compartments.get(0).threshold.mean);
 			// set syn props
@@ -211,10 +236,16 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 				}
 				proj.setName("column"+ proj.getSource() + proj.getTarget());
 				synProps.setSynapseType(connect.synapseTypeName);
-				// TODO Ask Laurence about internal delay
-				synProps.setInternalDelay(.001);
-				// TODO Ask Laurence about weight
-				synProps.setWeight(0.0);
+				
+				for( i = 0; i < ncsSynapses.size(); i++)
+				{
+					if( ncsSynapses.get(i).type == connect.synapseTypeName )
+							break;
+				}
+				// TODO should be min/max
+				synProps.setInternalDelay((ncsSynapses.get(i).delay.mean+ncsSynapses.get(i).delay.stdev)/2);
+			    // set weight
+				synProps.setWeight(ncsSynapses.get(i).absoluteUse.mean);
 				// TODO might have to change later, grab a threshold 
 				synProps.setThreshold(column.connects.get(0).cellType1.compartments.get(0).threshold.mean);
 				// set syn props
@@ -222,7 +253,7 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 				// set the probability
 				fp.setProbability(connect.probability * 100.0);
 				cp.setFixedProbability(fp);
-				// set porbability in projection
+				// set probability in projection
 				proj.setConnectivityPattern(cp);
 				// add projection to the list
 				neuromlProjs.getProjections().add(proj);
@@ -245,10 +276,16 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 						}
 						proj.setName("layer"+ proj.getSource() + proj.getTarget());
 						synProps.setSynapseType(layerConnect.synapseTypeName);
-						// TODO Ask Laurence about internal delay
-						synProps.setInternalDelay(.001);
-						// TODO Ask Laurence about weight
-						synProps.setWeight(0.0);
+
+						for( i = 0; i < ncsSynapses.size(); i++)
+						{
+							if( ncsSynapses.get(i).type == connect.synapseTypeName )
+									break;
+						}
+						// should be min/max
+						synProps.setInternalDelay((ncsSynapses.get(i).delay.mean+ncsSynapses.get(i).delay.stdev)/2);
+						// set weight
+						synProps.setWeight(ncsSynapses.get(i).absoluteUse.mean);
 						// TODO might have to change later, grab a threshold 
 						synProps.setThreshold(layer.connects.get(0).cellType1.compartments.get(0).threshold.mean);
 						// set syn props
@@ -308,7 +345,7 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			sitePattern.setPercentageCells(percentageCells);
 			// set the site pattern in the input target
 			inputTarget.setSitePattern(sitePattern);
-			// set the inout target in the input 
+			// set the input target in the input 
 			input.setTarget(inputTarget);
 			// add the input the the list of inputs
 			inputs.getInputs().add(input);
@@ -456,4 +493,6 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 		return neuromlSynapseList;
 		
 		}
+
+	
 	}

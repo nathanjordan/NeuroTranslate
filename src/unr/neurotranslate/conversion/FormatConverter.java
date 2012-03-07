@@ -7,13 +7,16 @@ import org.morphml.channelml.schema.SynapseType;
 import org.morphml.metadata.schema.Properties;
 import org.morphml.morphml.schema.Cells;
 import org.morphml.morphml.schema.Morphml;
+import org.morphml.morphml.schema.Segment;
 import org.morphml.networkml.schema.Inputs;
 import org.morphml.networkml.schema.Population;
 import org.morphml.networkml.schema.Populations;
 import org.morphml.networkml.schema.Projections;
+import org.morphml.neuroml.schema.Level3Cell;
 import org.morphml.neuroml.schema.Level3Cells;
 import org.morphml.neuroml.schema.Neuroml;
 
+import unr.neurotranslate.ncs.Cell;
 import unr.neurotranslate.ncs.NCSData;
 import unr.neurotranslate.ncs.Synapse;
 
@@ -38,7 +41,7 @@ public class FormatConverter {
 		ChannelmlType channelml = new ChannelmlType();
 		
 		// get/set projections
-		projections = NCSToNeuroml.generateNeuromlProjections(d.brain);
+		projections = NCSToNeuroml.generateNeuromlProjections(d.brain, d.synapseList);
 		neuromlData.neuroml.setProjections(projections);
 		
 		// get/set inputs
@@ -74,7 +77,26 @@ public class FormatConverter {
 	
 	public static NCSConversionData convertToNCS( Neuroml m ) {
 		
-		return null;
+		NCSConversionData ncsConversionData = new NCSConversionData();
+	
+		ncsConversionData.ncs.cellList = NeuromlToNCS.generateNCSCells(m.getCells());
+		
+		int index = 0;
+		int i;
+		for( Level3Cell cell : m.getCells().getCells())
+		{
+			for(Segment seg: cell.getSegments().getSegments())
+			{
+				ncsConversionData.ncs.compartmentList.add(NeuromlToNCS.generateNCSCompartments(seg, m.getProjections()));
+			}
+			
+			index++;
+		}
+		
+		
+		
+
+		return ncsConversionData;
 		
 		}
 	

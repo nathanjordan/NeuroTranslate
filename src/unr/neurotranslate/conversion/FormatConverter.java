@@ -17,6 +17,7 @@ import org.morphml.neuroml.schema.Level3Cells;
 import org.morphml.neuroml.schema.Neuroml;
 
 import unr.neurotranslate.ncs.Cell;
+import unr.neurotranslate.ncs.Compartment;
 import unr.neurotranslate.ncs.NCSData;
 import unr.neurotranslate.ncs.Synapse;
 
@@ -78,24 +79,12 @@ public class FormatConverter {
 	public static NCSConversionData convertToNCS( Neuroml m ) {
 		
 		NCSConversionData ncsConversionData = new NCSConversionData();
-	
-		ncsConversionData.ncs.cellList = NeuromlToNCS.generateNCSCells(m.getCells());
+	    ArrayList<Compartment> tempCompartmentList = new ArrayList<Compartment>();
 		
-		int index = 0;
-		int i;
-		for( Level3Cell cell : m.getCells().getCells())
-		{
-			for(Segment seg: cell.getSegments().getSegments())
-			{
-				ncsConversionData.ncs.compartmentList.add(NeuromlToNCS.generateNCSCompartments(seg, m.getProjections()));
-			}
-			
-			index++;
-		}
+	    // get cells and compartments
+		ncsConversionData.ncs.cellList = NeuromlToNCS.generateNCSCells(m.getCells(), m.getProjections(), m.getPopulations(), tempCompartmentList);
+		ncsConversionData.ncs.compartmentList = tempCompartmentList;
 		
-		
-		
-
 		return ncsConversionData;
 		
 		}

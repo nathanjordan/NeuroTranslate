@@ -91,5 +91,26 @@ public class Connect {
 		isDecay = true;
 		
 		}
+
+	public Connect(String sval, String sval2, String sval3, String sval4,
+			String sval5, String sval6, String sval7, double dval,
+			double dval2, double dval3) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Connect(String sval, String sval2, String sval3, String sval4,
+			String sval5, double dval, double dval2, double dval3) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Connect(String sval, String sval2, String sval3, String sval4,
+			String sval5, String sval6, String sval7, double dval, double dval2) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Connect(String sval, String sval2, String sval3, String sval4,
+			String sval5, double dval, double dval2) {
+		// TODO Auto-generated constructor stub
+	}
 	
 	}

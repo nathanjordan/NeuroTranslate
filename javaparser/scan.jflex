@@ -243,6 +243,6 @@ YES          { yyparser.yylval.ival = 1; return (Parser.LOGICAL); }
 
 {NAME}       { yyparser.yylval.sval = yytext(); return (Parser.NAME); }
 
-[ \t\x0d]+   { System.out.println("whitespaceeater"); } /* eat up whitespace - including accidental ^M's from MSWord! */
+[ \t\x0d]+   { }
 
-[\n]        { System.out.println("newline"); }
+[\n]        { }

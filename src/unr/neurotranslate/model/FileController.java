@@ -4,6 +4,7 @@ import org.morphml.neuroml.schema.Neuroml;
 
 import unr.neurotranslate.ncs.NCSData;
 import unr.neurotranslate.ncsparser.Parser;
+import unr.neurotranslate.ncsparser.ParserValInterpolater;
 import unr.neurotranslate.neuromlparser.NeuroMLConverter;
 
 public class FileController {
@@ -14,7 +15,7 @@ public class FileController {
 		
 		p.run();
 		
-		p.populateObjects();
+		ParserValInterpolater.makeReferencesFromStrings(p);
 		
 		NCSData d = new NCSData();
 		

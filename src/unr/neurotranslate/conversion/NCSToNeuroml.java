@@ -493,6 +493,4 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 		return neuromlSynapseList;
 		
 		}
-
-	
 	}

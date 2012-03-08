@@ -9,14 +9,23 @@ BRAIN
 	SEED			-20
 
         STIMULUS_INJECT         StInject1
-		STIMULUS_INJECT		StInject2
+	STIMULUS_INJECT		StInject2
 
         COLUMN_TYPE             column_1
         COLUMN_TYPE             column_2
 
+        CONNECT
+                                column_1 layer_A    Excitatory      s1
+                                column_2 layer_B    Excitatory      s1
+                                ExcitSyn1       1             3
+	CONNECT
+                                column_1 layer_B    Inhibitory      s1
+                                column_2 layer_A    Excitatory      s1
+                                InhibSyn1       1             3
+
         REPORT                  Report2AE
         REPORT                  Report2AI
-		REPORT                  Report2BE
+	REPORT                  Report2BE
         REPORT                  Report2BI
 
 END_BRAIN
@@ -25,7 +34,7 @@ END_BRAIN
 
 COLUMN_SHELL
         TYPE                    column_shell
-		WIDTH          		300
+	WIDTH          		300
     	HEIGHT         		800
     	LOCATION       		0             800
 END_COLUMN_SHELL
@@ -36,8 +45,7 @@ COLUMN
         TYPE                    column_1
         COLUMN_SHELL            column_shell
         LAYER_TYPE              layer_A
-        LAYER_TYPE              layer_B   
-        CONNECT column_1 layer_A Excitatory s1 column_2 layer_B Excitatory s1 ExcitSyn1 1 3             
+        LAYER_TYPE              layer_B                      
 END_COLUMN
 
 COLUMN
@@ -68,7 +76,6 @@ LAYER
         LAYER_SHELL             layer_shell_A
         CELL_TYPE               Excitatory      50
         CELL_TYPE               Inhibitory      10
-        CONNECT column_1 layer_A Excitatory s1 column_2 layer_B Excitatory s1 ExcitSyn1 1 3
 END_LAYER
 
 LAYER
@@ -156,7 +163,7 @@ END_SYN_PSG
 ############################### Define spikeshapes #######################
 
 SPIKESHAPE
-  TYPE		spikeshape_1k_default
+  TYPE		spikeshape_1k_default 
   VOLTAGES	-38 30 -43 -60
 END_SPIKESHAPE
 

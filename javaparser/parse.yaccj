@@ -128,16 +128,6 @@ brainvar:  TK_TYPE         NAME    { brain.type = $<sval>2; }
                connectList.add( i );
                  
                }
-         | TK_CONNECT      NAME NAME NAME NAME NAME NAME NAME NAME NAME value value value
-               {
-               
-               Connect i = new Connect( $<sval>2, $<sval>3, $<sval>4, $<sval>5,  $<sval>6, $<sval>7, $<sval>8, $<sval>9, $<sval>10, $<dval>11, $<dval>12 , $<dval>13);
-               
-               brain.connect.add( i );
-                                               
-               connectList.add( i );
-               
-               }
          | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME NAME NAME NAME NAME value value
          	{
          	
@@ -198,8 +188,7 @@ colvars: colvar
 colvar: TK_TYPE       NAME { columnList.get( columnList.size() - 1).type = $<sval>2; }
       | TK_CSHELL     NAME { columnList.get( columnList.size() - 1).columnShellName  = $<sval>2; }
       | TK_LAYER_TYPE NAME { columnList.get( columnList.size() - 1).layerNames.add( $<sval>2 ); }
-      | TK_CONNECT    NAME NAME NAME NAME NAME NAME NAME value value
-               { 
+      | TK_CONNECT    NAME NAME NAME NAME NAME NAME NAME value value { 
                
                Connect i = new Connect( $<sval>2, $<sval>3, $<sval>4, $<sval>5,  $<sval>6, $<sval>7, $<sval>8, $<dval>9, $<dval>10 );
                
@@ -208,17 +197,7 @@ colvar: TK_TYPE       NAME { columnList.get( columnList.size() - 1).type = $<sva
                connectList.add( i );
              
                }
-      | TK_CONNECT    NAME NAME NAME NAME NAME NAME NAME value value value
-               { 
-               Connect i = new Connect( $<sval>2, $<sval>3, $<sval>4, $<sval>5,  $<sval>6, $<sval>7, $<sval>8, $<dval>9, $<dval>10, $<dval>11 );
-               
-               columnList.get( columnList.size() - 1).connects.add( i );
-               
-               connectList.add( i );
-               
-               }
-       | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME NAME NAME value value
-               {
+       | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME NAME NAME value value {
                
                RecurrentConnect r = new RecurrentConnect( null, null, $<sval>2, $<sval>3, null, null, $<sval>4, $<sval>5,  $<sval>6, $<dval>7, $<dval>8 );
                
@@ -257,22 +236,13 @@ lvar:   TK_TYPE       NAME         { layerList.get( layerList.size() - 1 ).type 
       | TK_CELL_TYPE  NAME INTEGER { layerList.get( layerList.size() - 1 ).cellTypeNames.add( $<sval>2 );  layerList.get( layerList.size() - 1 ).cellTypeQuantities.add( $<ival>3 ); }
       | TK_CONNECT    NAME NAME NAME NAME NAME value value
                { 
-               Connect i = new Connect( $<sval>2, $<sval>3, $<sval>4, $<sval>5,  $<sval>6, $<dval>7, $<dval>8 );
+               Connect i = new Connect( $<sval>2, $<sval>3, $<sval>4, $<sval>5, $<sval>6, $<dval>7, $<dval>8 );
                
                layerList.get( layerList.size() - 1 ).connects.add( i );
                	
                connectList.add( i );
                }
-      | TK_CONNECT    NAME NAME NAME NAME NAME value value value
-               {
                
-               Connect i = new Connect( $<sval>2, $<sval>3, $<sval>4, $<sval>5,  $<sval>6, $<dval>7, $<dval>8, $<dval>9 );
-               
-               layerList.get( layerList.size() - 1).connects.add( i );
-               
-               connectList.add( i );
-               
-               }
       | TK_RECURRENT_CONNECT NAME NAME NAME NAME NAME value value
                {
                
@@ -302,7 +272,15 @@ cellvar: TK_TYPE    NAME  { cellList.get( cellList.size() - 1 ).type = $<sval>2;
                              cellList.get( cellList.size() - 1 ).xList.add( $<dval>5 );
                           }
        | TK_CMP     NAME NAME value value value  {  }
-       | TK_CONNECT NAME NAME value value value {  }
+       | TK_CONNECT NAME NAME value value {
+			
+			CompartmentConnect i = new CompartmentConnect( $<sval>2, $<sval>3, $<ival>4, $<dval>5 );
+			       
+			cellList.get( cellList.size() - 1).connects.add( i );
+			   
+			compConnectList.add( i );
+				
+			}
 ;
 
 /*--------------- Input for the COMPARTMENT structure ------------*/
@@ -425,7 +403,8 @@ Navar: TK_E_HALF_MIN_M  {  } twovalue
      | TK_BETA_SCALE_M {  } twovalue
      | TK_ALPHA_SCALE_H {  } twovalue
      | TK_BETA_SCALE_H {  } twovalue
-;
+;         
+
 
 /*--------------- Input for the SYNAPSE structure ------------*/
 
@@ -723,6 +702,7 @@ public ArrayList<Event> eventList = new ArrayList<Event>();
 
 public ArrayList<Connect> connectList = new ArrayList<Connect>();
 public ArrayList<RecurrentConnect> recurrentConnectList = new ArrayList<RecurrentConnect>();
+public ArrayList<CompartmentConnect> compConnectList = new ArrayList<CompartmentConnect>();
 
 //For all those pesky mean/stdev values
 protected TwoValue twoPtr;
@@ -746,79 +726,6 @@ private int multiInput( String filename ) {
 private void yyerror(String string) {
 	
 	
-	
-	}
-	
-public void populateObjects( ) {
-		
-	//Fill out the Brains object fields
-	fillArrays( brain.columnTypeNames , columnList , brain.columnTypes );
-	
-	fillArrays( brain.stimulusInjectNames , stimulusInjectList , brain.stimulusInjects );
-	
-	fillArrays( brain.reportNames , reportList , brain.reports );
-	
-	fillArrays( brain.eventNames , eventList , brain.events );
-	
-	//fill columns
-	
-	for( Column c : columnList) {
-		
-		fillValue( c.columnShellName, columnShellList, c.columnShell );
-		
-		fillArrays( c.layerNames , layerList , c.layers );
-		
-		}
-	
-	//fill layers
-	
-	for( Layer l : layerList ) {
-		
-		fillValue( l.layerShellName , layerShellList , l.layerShell );
-		
-		fillArrays( l.cellTypeNames , cellList, l.cellTypes );
-		
-		}
-	
-	//fill cells
-	
-	for( Cell c : cellList ) {
-		
-		fillArrays(c.compartmentNames, compartmentList, c.compartments );
-		
-		}
-	
-	//compartments
-	for( Compartment c : compartmentList ) {
-		
-		fillValue( c.spikeshapeName , spikeshapeList, c.spikeshape );
-		
-		fillArrays( c.channelNames , channelList , c.channels);
-		
-		}
-		
-	
-	}
-	
-@SuppressWarnings({ "unchecked", "rawtypes" })
-public void fillArrays( ArrayList<String> typeList , ArrayList objList , ArrayList destList ) {
-	
-	for( int i = 0 ; i < typeList.size() ; i++ )
-		for( int j = 0 ; j < objList.size() ; j ++ )
-			if( typeList.get(i).equals( ( (TypedElement) objList.get(j) ).type ) ) {
-				( (ArrayList) destList).add( (TypedElement) objList.get(j) );
-				break;
-				}
-	}
-
-@SuppressWarnings("rawtypes")
-public void fillValue( String type , ArrayList objList , TypedElement dest ) {
-	
-	for( int j = 0 ; j < objList.size() ; j ++ )
-		if( type.equals( ((TypedElement) objList.get(j) ).type ) ) {
-			dest = (TypedElement) objList.get(j);
-			break;
-			}
 	
 	}
 		
@@ -851,8 +758,6 @@ public Parser( String filename ) {
 	}
 	
 	scan = new Scanner( new StringReader( fileContents ) , this );
-	
-	
 	
 	}
 	

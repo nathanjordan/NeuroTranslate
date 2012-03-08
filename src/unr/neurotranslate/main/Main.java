@@ -42,8 +42,6 @@ public class Main {
 
 		NCSData d = FileController.loadNCSFile( "/home/njordan/workspace/NeuroTranslate/samples/PrototypeNCS.in" );
 		
-		
-		
 		NeuroMLConversionData n = FormatConverter.convertToNeuroML(d);
 		
 		Neuroml nm = (Neuroml) n.getData();

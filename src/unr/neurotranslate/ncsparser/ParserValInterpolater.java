@@ -6,9 +6,14 @@ import org.morphml.networkml.schema.Population;
 
 import unr.neurotranslate.ncs.Cell;
 import unr.neurotranslate.ncs.Column;
+import unr.neurotranslate.ncs.ColumnShell;
 import unr.neurotranslate.ncs.Compartment;
+import unr.neurotranslate.ncs.CompartmentConnect;
 import unr.neurotranslate.ncs.Connect;
 import unr.neurotranslate.ncs.Layer;
+import unr.neurotranslate.ncs.LayerShell;
+import unr.neurotranslate.ncs.SpikeShape;
+import unr.neurotranslate.ncs.Synapse;
 import unr.neurotranslate.ncs.TypedElement;
 
 public class ParserValInterpolater {
@@ -28,7 +33,7 @@ public class ParserValInterpolater {
 		
 		for( Column c : p.columnList) {
 			
-			fillValue( c.columnShellName, p.columnShellList, c.columnShell );
+			c.columnShell = (ColumnShell) fillValue( c.columnShellName, p.columnShellList  );
 			
 			fillArrays( c.layerNames , p.layerList , c.layers );
 			
@@ -38,7 +43,7 @@ public class ParserValInterpolater {
 		
 		for( Layer l : p.layerList ) {
 			
-			fillValue( l.layerShellName , p.layerShellList , l.layerShell );
+			l.layerShell = (LayerShell) fillValue( l.layerShellName , p.layerShellList  );
 			
 			fillArrays( l.cellTypeNames , p.cellList, l.cellTypes );
 			
@@ -55,7 +60,7 @@ public class ParserValInterpolater {
 		//compartments
 		for( Compartment c : p.compartmentList ) {
 			
-			fillValue( c.spikeshapeName , p.spikeshapeList, c.spikeshape );
+			c.spikeshape = (SpikeShape) fillValue( c.spikeshapeName , p.spikeshapeList );
 			
 			fillArrays( c.channelNames , p.channelList , c.channels);
 			
@@ -65,23 +70,33 @@ public class ParserValInterpolater {
 		
 		for( Connect c : p.connectList ) {
 			
-			fillValue( c.column1Name , p.columnList , c.column1 );
+			c.column1 = (Column) fillValue( c.column1Name , p.columnList );
 			
-			fillValue( c.layer1Name , p.layerList , c.layer1 );
+			c.layer1 = (Layer) fillValue( c.layer1Name , p.layerList );
 			
-			fillValue( c.cellType1Name , p.cellList , c.cellType1 );
+			c.cellType1 = (Cell) fillValue( c.cellType1Name , p.cellList );
 			
-			fillValue( c.compartment1Name , p.compartmentList , c.compartment1 );
+			c.compartment1 = (Compartment) fillValue( c.compartment1Name , p.compartmentList );
 			
-			fillValue( c.column2Name , p.columnList , c.column2 );
+			c.column2 = (Column) fillValue( c.column2Name , p.columnList );
 			
-			fillValue( c.layer2Name , p.layerList , c.layer2 );
+			c.layer2 = (Layer) fillValue( c.layer2Name , p.layerList );
 			
-			fillValue( c.cellType2Name , p.cellList , c.cellType2 );
+			c.cellType2 = (Cell) fillValue( c.cellType2Name , p.cellList );
 			
-			fillValue( c.compartment2Name , p.compartmentList , c.compartment2 );
+			c.compartment2 = (Compartment) fillValue( c.compartment2Name , p.compartmentList );
 			
-			fillValue( c.synapseTypeName , p.synapseList , c.synapseType );
+			c.synapseType = (Synapse) fillValue( c.synapseTypeName , p.synapseList );
+			
+			}
+		
+		//fill compartment connects
+		
+		for( CompartmentConnect c : p.compConnectList ) {
+			
+			c.compartment1 = (Compartment) fillValue( c.compartment1Name , p.compartmentList );
+			
+			c.compartment2 = (Compartment) fillValue( c.compartment2Name , p.compartmentList );
 			
 			}
 		
@@ -99,13 +114,14 @@ public class ParserValInterpolater {
 		}
 	
 	@SuppressWarnings("rawtypes")
-	public static void fillValue( String type , ArrayList objList , TypedElement dest ) {
+	public static TypedElement fillValue( String type , ArrayList objList ) {
 		
 		for( int j = 0 ; j < objList.size() ; j ++ )
-			if( type.equals( ((TypedElement) objList.get(j) ).type ) ) {
-				dest = (TypedElement) objList.get(j);
-				break;
+			if( type.equals(((TypedElement)objList.get(j)).type) ) {
+				return (TypedElement) objList.get(j);
 				}
+		
+		return null;
 		
 		}
 }

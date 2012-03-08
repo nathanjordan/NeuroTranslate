@@ -1,10 +1,12 @@
 
+package unr.neurotranslate.ncsparser;
+
 %%         
 
 %class Scanner
 %line
 %byaccj
-%debug
+//%debug
 
 %{
 

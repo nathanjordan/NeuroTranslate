@@ -196,7 +196,7 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			synProps.setSynapseType(connect.synapseTypeName);
 			for( i = 0; i < ncsSynapses.size(); i++)
 			{
-				if( ncsSynapses.get(i).type == connect.synapseTypeName )
+				if( ncsSynapses.get(i).type.equals(connect.synapseTypeName))
 						break;
 			}
 			
@@ -357,16 +357,17 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 	public static Populations generateNeuromlPopulations(unr.neurotranslate.ncs.Brain ncsBrain )
 	{
 		Populations neuromlPops = new Populations();
-		Population neuromlPop = new Population();
-		PopulationLocation neuromlPopLoc = new PopulationLocation();
-		RandomArrangement ra = new RandomArrangement();
-		int index = 1;
+		Population neuromlPop;
+		PopulationLocation neuromlPopLoc;
+		RandomArrangement ra;
+		int index = 0;
+		int popCounter = 1;
 		BigInteger bI;
 		double yloc;
 		List<String> completedLayers = new ArrayList<String>();
-		RectangularBox rb = new RectangularBox();
-		Point tempPoint = new Point();
-		Size tempSize = new Size();
+		RectangularBox rb;
+		Point tempPoint;
+		Size tempSize;
 		double boxHeight = 0;
 		PopulationRef popRef = new PopulationRef();
 		
@@ -376,12 +377,19 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			// for each layer in the column
 			for( unr.neurotranslate.ncs.Layer layer : column.layers )
 			{   
+				index = 0;
 				// if this layer hasn't been added already
 				if( !completedLayers.contains(layer.type))
 				{
 					// for each cell in the layer
 					for( unr.neurotranslate.ncs.Cell cell : layer.cellTypes )
 					{
+						neuromlPop = new Population();
+						ra = new RandomArrangement();
+						rb = new RectangularBox();
+						tempPoint = new Point();
+						tempSize = new Size();
+						neuromlPopLoc = new PopulationLocation();
 						// set cell_type
 						neuromlPop.setCellType(cell.type);
 						// set population size
@@ -407,13 +415,15 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 						// set the pop location
 						neuromlPop.setPopLocation(neuromlPopLoc);
 						// set the name
-						neuromlPop.setName(cell.type + "Pop" + index);
+						neuromlPop.setName(cell.type + "Pop" + popCounter);
 						// add the population to the list 
 						neuromlPops.getPopulations().add(neuromlPop);
 						// add to PopulationReference for later use
-						popRef.setPopName(cell.type + "Pop" + index);
+						popRef.setPopName(cell.type + "Pop" + popCounter);
 						popRef.setLayerName(layer.type);
 						popRef.setCellName(cell.type);
+						index++;
+						popCounter++;
 					}
 				}
 				// add layer to completed list so its cell groups aren't repeated

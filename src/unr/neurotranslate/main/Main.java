@@ -40,13 +40,13 @@ public class Main {
 		
 		//converter.neuromlToXml( test , "/home/njordan/Downloads/Cerebellum_out.xml");
 
-		NCSData d = FileController.loadNCSFile( "/home/njordan/workspace/NeuroTranslate/samples/PrototypeNCS.in" );
+		NCSData d = FileController.loadNCSFile( "/home/kimperry/Documents/PrototypeNCS.in" );
 		
 		NeuroMLConversionData n = FormatConverter.convertToNeuroML(d);
 		
 		Neuroml nm = (Neuroml) n.getData();
 		
-		converter.neuromlToXml( nm , "/home/njordan/workspace/NeuroTranslate/samples/out.xml" );
+		converter.neuromlToXml( nm , "/home/kperry/workspace/NeuroTranslate/samples/out.xml" );
 		
 		}
 

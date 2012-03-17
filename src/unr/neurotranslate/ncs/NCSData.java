@@ -27,6 +27,7 @@ public class NCSData {
 
 	public ArrayList<Stimulus> stimulusList = new ArrayList<Stimulus>();
 	public ArrayList<StimulusInject> stimulusInjectList = new ArrayList<StimulusInject>();
+	public ArrayList<SynPSG> synpsgList = new ArrayList<SynPSG>();
 
 	public ArrayList<Report> reportList = new ArrayList<Report>();
 

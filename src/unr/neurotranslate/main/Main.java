@@ -5,16 +5,11 @@
  */
 package unr.neurotranslate.main;
 
-import org.gnome.gtk.Builder;
-import org.gnome.gtk.Gtk;
 import org.morphml.neuroml.schema.Neuroml;
-
 import unr.neurotranslate.conversion.FormatConverter;
 import unr.neurotranslate.conversion.NeuroMLConversionData;
 import unr.neurotranslate.model.FileController;
 import unr.neurotranslate.ncs.NCSData;
-import unr.neurotranslate.ncsparser.Parser;
-import unr.neurotranslate.ncsparser.ParserValInterpolater;
 import unr.neurotranslate.neuromlparser.NeuroMLConverter;
 
 /**

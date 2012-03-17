@@ -271,7 +271,12 @@ cellvar: TK_TYPE    NAME  { cellList.get( cellList.size() - 1 ).type = $<sval>2;
                              cellList.get( cellList.size() - 1 ).xList.add( $<dval>4 );
                              cellList.get( cellList.size() - 1 ).xList.add( $<dval>5 );
                           }
-       | TK_CMP     NAME NAME value value value  {  }
+       | TK_CMP     NAME NAME value value value  {
+       						 cellList.get( cellList.size() - 1 ).compartmentNames.add( $<sval>2 );
+                             cellList.get( cellList.size() - 1 ).compartmentLabels.add( $<sval>3 );
+                             cellList.get( cellList.size() - 1 ).xList.add( $<dval>4 );
+                             cellList.get( cellList.size() - 1 ).xList.add( $<dval>5 );
+       						}
        | TK_CONNECT NAME NAME value value {
 			
 			CompartmentConnect i = new CompartmentConnect( $<sval>2, $<sval>3, $<ival>4, $<dval>5 );
@@ -438,15 +443,15 @@ synvar: TK_TYPE           NAME    { synapseList.get( synapseList.size() - 1).typ
 
 /*--------------- Input for the SYN_INPUT_PSG structure ------------*/
 
-syn_psg: TK_SYN_PSG {  } spvars  TK_END_SYN_PSG
+syn_psg: TK_SYN_PSG { synpsgList.add( new SynPSG() ); } spvars  TK_END_SYN_PSG
 ;
 
 spvars: spvar
       | spvars spvar
 ;
 
-spvar: TK_TYPE     NAME {  }
-     | TK_PSG_FILE NAME {  }
+spvar: TK_TYPE     NAME { synpsgList.get( synpsgList.size() - 1).type = $<sval>2; }
+     | TK_PSG_FILE NAME { synpsgList.get( synpsgList.size() - 1).filename = $<sval>2; }
 ;
 
 /*--------------- Input for the SYN_FACIL_DEPRESS structure ------------*/
@@ -703,6 +708,7 @@ public ArrayList<Event> eventList = new ArrayList<Event>();
 public ArrayList<Connect> connectList = new ArrayList<Connect>();
 public ArrayList<RecurrentConnect> recurrentConnectList = new ArrayList<RecurrentConnect>();
 public ArrayList<CompartmentConnect> compConnectList = new ArrayList<CompartmentConnect>();
+public ArrayList<SynPSG> synpsgList = new ArrayList<SynPSG>();
 
 //For all those pesky mean/stdev values
 protected TwoValue twoPtr;

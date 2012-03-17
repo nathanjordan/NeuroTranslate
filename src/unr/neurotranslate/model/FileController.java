@@ -4,7 +4,7 @@ import org.morphml.neuroml.schema.Neuroml;
 
 import unr.neurotranslate.ncs.NCSData;
 import unr.neurotranslate.ncsparser.Parser;
-import unr.neurotranslate.ncsparser.ParserValInterpolater;
+import unr.neurotranslate.ncsparser.PostParser;
 import unr.neurotranslate.neuromlparser.NeuroMLConverter;
 
 public class FileController {
@@ -15,7 +15,7 @@ public class FileController {
 		
 		p.run();
 		
-		ParserValInterpolater.makeReferencesFromStrings(p);
+		PostParser.makeReferencesFromStrings(p);
 		
 		NCSData d = new NCSData();
 		
@@ -54,6 +54,8 @@ public class FileController {
 		d.synFacilDepressList = p.synFacilDepressList;
 		
 		d.synLearningList = p.synLearningList;
+		
+		d.synpsgList = p.synpsgList;
 		
 		return d;
 		}

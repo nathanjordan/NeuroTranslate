@@ -13,10 +13,12 @@ import unr.neurotranslate.ncs.Connect;
 import unr.neurotranslate.ncs.Layer;
 import unr.neurotranslate.ncs.LayerShell;
 import unr.neurotranslate.ncs.SpikeShape;
+import unr.neurotranslate.ncs.Stimulus;
+import unr.neurotranslate.ncs.StimulusInject;
 import unr.neurotranslate.ncs.Synapse;
 import unr.neurotranslate.ncs.TypedElement;
 
-public class ParserValInterpolater {
+public class PostParser {
 	
 	public static void makeReferencesFromStrings( Parser p ) {
 		
@@ -97,6 +99,13 @@ public class ParserValInterpolater {
 			c.compartment1 = (Compartment) fillValue( c.compartment1Name , p.compartmentList );
 			
 			c.compartment2 = (Compartment) fillValue( c.compartment2Name , p.compartmentList );
+			
+			}
+		
+		//fill stim injects
+		for( StimulusInject s : p.stimulusInjectList ) {
+			
+			s.stimulus = (Stimulus) fillValue( s.stimulusName , p.stimulusList );
 			
 			}
 		

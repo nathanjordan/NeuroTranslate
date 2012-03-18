@@ -49,7 +49,7 @@ public class FormatConverter {
 				neuromlData.neuroml.setPopulations(populations);
 				//}
 		// get/set cells
-		//cells = NCSToNeuroml.generateNeuromlCells(d.cellList);
+		cells = NCSToNeuroml.generateNeuromlCells(d.cellList);
 		//neuromlData.neuroml.setCells(cells);
 		
 		// get/set inputs

@@ -4,9 +4,9 @@ import org.morphml.neuroml.schema.Neuroml;
 
 public class NeuroMLConversionData implements ConversionData {
 	
-	Neuroml neuroml;
+	Neuroml neuroml = new Neuroml();
 	
-	ConversionNotes notes;
+	ConversionNotes notes = new ConversionNotes();
 
 	@Override
 	public Object getData() {

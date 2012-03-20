@@ -1,0 +1,65 @@
+package unr.neurotranslate.ncs;
+
+public class Channel extends TypedElement {
+	
+	public String channelType;
+	
+	public TwoValue mInitial = new TwoValue();
+	
+	public TwoValue mPower = new TwoValue();
+	
+	public TwoValue reversalPotential = new TwoValue();
+	
+	public TwoValue unitaryG = new TwoValue();
+	
+	public TwoValue strength = new TwoValue();
+	
+	//Km channel
+	
+	public TwoValue eHalfMinM = new TwoValue();
+	
+	public float[] slopeFactorM;
+	
+	public TwoValue tauScaleFactorM = new TwoValue();
+	
+	public int seed;
+	
+	//Kahp channel
+	
+	public TwoValue caScaleFactor = new TwoValue();
+	
+	public TwoValue caExpFactor = new TwoValue();
+	
+	public TwoValue caHalfMin = new TwoValue();
+	
+	public TwoValue caTauScaleFactor = new TwoValue();
+	
+	//Ka channel
+	
+	public TwoValue hInitial = new TwoValue();
+	
+	public TwoValue hPower = new TwoValue();
+	
+	public TwoValue eHalfMinMKa = new TwoValue();
+	
+	public TwoValue eHalfMinH = new TwoValue();
+	
+	public TwoValue slopeFactorMKa = new TwoValue();
+	
+	public TwoValue slopeFactorH = new TwoValue();
+	
+	public float[] vTauValueM;
+	
+	public float[] vTauVoltageM;
+	
+	public float[] vTauValueH;
+	
+	public float[] vTauVoltageH;
+	
+	public Channel( String chType ) {
+		
+		channelType = chType;
+		
+		}
+	
+	}

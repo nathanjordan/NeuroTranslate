@@ -2,9 +2,6 @@ package unr.neurotranslate.ui;
 import java.util.ArrayList;
 
 import org.gnome.glade.XML;
-import org.gnome.gtk.CellRendererText;
-import org.gnome.gtk.ComboBox;
-import org.gnome.gtk.DataColumn;
 import org.gnome.gtk.DataColumnString;
 import org.gnome.gtk.Entry;
 import org.gnome.gtk.ListStore;
@@ -72,6 +69,7 @@ public class MorphologyHandler {
 		TreeViewColumn treeSegment2 = segmentView.appendColumn();
 		TreeViewColumn treeCable1 = cableView.appendColumn();
 		TreeViewColumn treeCable2 = cableView.appendColumn();
+		DataColumnString cellHeader = null;
 		
 		treeCell.setTitle("Name");
 		
@@ -143,7 +141,7 @@ public class MorphologyHandler {
 		}*/
 
 		// Build models and set views
-		cellModel = Utils.buildListModel( morphologyCellList, treeCell );		
+		cellModel = Utils.buildListModel( morphologyCellList, treeCell, cellHeader );		
 		cellView.setModel( cellModel );
 		segmentModel = Utils.buildListModel2( morphologySegmentList, list2, treeSegment, treeSegment2 ); 
 		segmentView.setModel( segmentModel );

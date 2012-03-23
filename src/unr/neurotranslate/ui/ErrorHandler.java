@@ -18,17 +18,17 @@ public class ErrorHandler {
 	};
 	
 	// TODO - Use glade for UI if I'm ambitious
-	public ErrorHandler( XML translatePopup ) {	
+	public ErrorHandler() {	
 		
 		// Build the error dialog
-		initUI( translatePopup );
+		initUI();
 
 	}
 		
-	public void initUI( XML translatePopup ) {			
+	public void initUI() {			
 		
 		// Build the translate dialog
-		TreeView view = (TreeView) translatePopup.getWidget("errorlist");
+		TreeView view = (TreeView) GladeParseUtil.grabWidget( "errorlist", "window3" );
 	    ListStore model;
 		TreeIter row;
 		CellRendererText renderer;

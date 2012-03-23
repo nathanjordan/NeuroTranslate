@@ -13,32 +13,34 @@ import org.gnome.gtk.TreeViewColumn;
 
 public class Utils {
 	
-	public static Boolean startup = true;
-	
-	public static void updateModel( ArrayList<String> list, ListStore model, DataColumnString column ) {
+	public static void updateModel( ArrayList<String> list, ListStore model, TreeViewColumn column, DataColumnString header ) {
 		
 		// Use a temporary row iter
 		TreeIter row;		
-		row = model.getIterFirst();
-		
-		
+		model.clear();
+	    CellRendererText renderer;
+
+        model = new ListStore(new DataColumn[] {
+        		header = new DataColumnString(),          
+            });
 		
 		// Update model 
 		for (String s: list) {
-			model.setValue(row, column, s);
-
+			row = model.appendRow();
+			model.setValue( row, header, s );
 		}
 		
+	    renderer = new CellRendererText(column);
+        renderer.setText(header);              		
 	}
 	
-	public static ListStore buildListModel( ArrayList<String> list, TreeViewColumn column ) {	
+	public static ListStore buildListModel( ArrayList<String> list, TreeViewColumn column, DataColumnString header ) {	
 		
 		// Create a model for list
 		ListStore model = null;
 		
 		// Initialize row iterator and column headers
         TreeIter row;
-        DataColumnString header;	
         
         // Cell Renderer shoves stuff into a row
         CellRendererText renderer;

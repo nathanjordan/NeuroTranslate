@@ -3,35 +3,64 @@ import java.io.FileNotFoundException;
 
 import org.gnome.glade.Glade;
 import org.gnome.glade.XML;
+import org.gnome.gtk.Notebook;
 import org.gnome.gtk.Widget;
 
 
 public class GladeParseUtil {
 
-	private static XML ui;
+	// Reference each window with a difference XML reference
+	private static XML mainUI;
+	private static XML modifyUI;
+	private static XML translateUIW;
+	private static XML translateUIE;
 	
-	// parses the file given by filename, root is the window element
-	public GladeParseUtil( String filename, String root ) throws FileNotFoundException {
-		
-		// parse the filename with root as window element
-		setUi(Glade.parse( filename, root ));
-		
+	// Roots enum keeps track of each window used in .glade file 
+	private enum roots {
+		window1, window2, window3, window4;
 	}
 	
-	// get a specific widget
-	public static Widget getWidget( String widgetName ) {
+	// Parse each window file 
+	public GladeParseUtil( String filename ) throws FileNotFoundException {
+		
+		// Parse the filename with the root window element	
+		mainUI = Glade.parse( filename, "window1" );	
+	
+		modifyUI = Glade.parse( filename, "window2" );
 
-		// return widget
-		return ui.getWidget(widgetName);
+		translateUIW = Glade.parse( filename, "window3" );
+
+	    translateUIE = Glade.parse( filename, "window4" );
+
+		mainUI = Glade.parse( filename, "window1" );	
+
+	}
+	
+	// Get a specific widget
+	public static Widget grabWidget( String widgetName, String root ) {
+
+		// return widget	
+		switch ( roots.valueOf(root) ) {
+			case window1:
+				return mainUI.getWidget(widgetName);
+			case window2:
+				return modifyUI.getWidget(widgetName);		
+			case window3:
+				return translateUIW.getWidget(widgetName);		
+			case window4:
+				return translateUIE.getWidget(widgetName);	
+			default:
+				return mainUI.getWidget(widgetName);		
+		}
 	}
 		
-	// set the xml reference
+	// Set a xml reference (keeps java happy)
 	public static void setUi(XML ui) {
-		GladeParseUtil.ui = ui;
+		GladeParseUtil.mainUI = ui;
 	}
 
-	// get the xml reference
+	// Get a xml reference (keeps java happy)
 	public static XML getUi() {
-		return ui;
-	}	
+		return mainUI;
+	}
 }

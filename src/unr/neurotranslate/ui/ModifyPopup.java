@@ -3,7 +3,11 @@ import java.util.ArrayList;
 
 import org.gnome.glade.XML;
 import org.gnome.gtk.Button;
+import org.gnome.gtk.DataColumn;
+import org.gnome.gtk.DataColumnString;
 import org.gnome.gtk.ListStore;
+import org.gnome.gtk.TreeIter;
+import org.gnome.gtk.TreePath;
 import org.gnome.gtk.TreeView;
 import org.gnome.gtk.TreeViewColumn;
 import org.gnome.gtk.Window;
@@ -19,18 +23,22 @@ public class ModifyPopup {
 	private static TreeView availableView;
 	private static TreeViewColumn activeColumn;
 	private static TreeViewColumn availableColumn;
+	private static DataColumnString activeHeader;
+	private static DataColumnString availableHeader;
 	private static ArrayList<String> activeList;
 	private static ArrayList<String> availableList;
 	private static Window popupWin;
 	
-	public ModifyPopup( XML popup ) {
+	public ModifyPopup( ) {
 
 		// create button references for the modify popup
-		final Button cancelButton = (Button) popup.getWidget( "modifyCancel" );
-		final Button confirmButton = (Button) popup.getWidget( "modifyConfirm" );
-		final Button addButton = (Button) popup.getWidget( "modifyAdd" );
-		final Button removeButton = (Button) popup.getWidget( "modifyRemove" );
-		popupWin = (Window) popup.getWidget("window2");
+		final Button cancelButton = (Button) GladeParseUtil.grabWidget( "modifyCancel", "window2" );
+		final Button confirmButton = (Button) GladeParseUtil.grabWidget( "modifyConfirm", "window2" );
+		final Button addButton = (Button) GladeParseUtil.grabWidget( "modifyAdd", "window2" );
+		final Button removeButton = (Button) GladeParseUtil.grabWidget( "modifyRemove", "window2" );
+		
+		//popupWin = (Window) popup.getWidget("window2");
+		popupWin = (Window) GladeParseUtil.grabWidget( "window2", "window2" );			
 		
 		// Set connects for handling each button event
 		// Set cancel event		
@@ -54,11 +62,11 @@ public class ModifyPopup {
 	}
 	
 	// Call this static function to build the popup
-	public static void buildPopup( XML popup ) {
+	public static void buildPopup() {
 		
 		// Grab the two treeview widgets
-		activeView = (TreeView) popup.getWidget( "activeList" );
-		availableView = (TreeView) popup.getWidget( "availableList" );
+		activeView = (TreeView) GladeParseUtil.grabWidget( "activeList", "window2" );
+		availableView = (TreeView) GladeParseUtil.grabWidget( "availableList", "window2" );
 		
 		// Append columns to views
 		activeColumn = activeView.appendColumn();
@@ -69,8 +77,8 @@ public class ModifyPopup {
 		availableList = new ArrayList<String>();
 		
 		// Build and set models
-		activeModel = Utils.buildListModel( activeList, activeColumn );
-		availableModel = Utils.buildListModel( availableList, availableColumn );
+		activeModel = Utils.buildListModel( activeList, activeColumn, activeHeader );
+		availableModel = Utils.buildListModel( availableList, availableColumn, availableHeader );
 		activeView.setModel( activeModel );
 		availableView.setModel( availableModel );
 	}
@@ -82,7 +90,10 @@ public class ModifyPopup {
 		popupWin.setTitle( "Adding " + header );
 		activeColumn.setTitle( header );
 		availableColumn.setTitle( header );
-		
+	
+		//activeModel.setValue( row, activeHeader, "hey" );
+		active.add("hey");
+		Utils.updateModel(active, activeModel, activeColumn, activeHeader);
 		
 	}
 	

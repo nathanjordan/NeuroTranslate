@@ -17,14 +17,17 @@ import org.gnome.gtk.Button.Clicked;
 public class ModifyPopup {
 
 	// Reference the two ListStores for active and available 
-	private static ListStore activeModel;
+	private static ListEntity activeModel;
+	private static ListEntity availableModel;
+	
+	/*private static ListStore activeModel;
 	private static ListStore availableModel;
 	private static TreeView activeView;
 	private static TreeView availableView;
 	private static TreeViewColumn activeColumn;
 	private static TreeViewColumn availableColumn;
 	private static DataColumnString activeHeader;
-	private static DataColumnString availableHeader;
+	private static DataColumnString availableHeader;*/
 	private static ArrayList<String> activeList;
 	private static ArrayList<String> availableList;
 	private static Window popupWin;
@@ -64,7 +67,15 @@ public class ModifyPopup {
 	// Call this static function to build the popup
 	public static void buildPopup() {
 		
-		// Grab the two treeview widgets
+		// Create lists for each view
+		activeList = new ArrayList<String>();		
+		availableList = new ArrayList<String>();
+		
+		// Create the active and available tree views
+		activeModel = new ListEntity( activeList, "activeTree" );
+		//availableModel = new ListEntity( availableList, "available")
+		
+		/*// Grab the two treeview widgets
 		activeView = (TreeView) GladeParseUtil.grabWidget( "activeList", "window2" );
 		availableView = (TreeView) GladeParseUtil.grabWidget( "availableList", "window2" );
 		
@@ -72,15 +83,15 @@ public class ModifyPopup {
 		activeColumn = activeView.appendColumn();
 		availableColumn = availableView.appendColumn();
 		
-		// Create lists for each view
-		activeList = new ArrayList<String>();		
-		availableList = new ArrayList<String>();
-		
+	
 		// Build and set models
 		activeModel = Utils.buildListModel( activeList, activeColumn, activeHeader );
 		availableModel = Utils.buildListModel( availableList, availableColumn, availableHeader );
 		activeView.setModel( activeModel );
-		availableView.setModel( availableModel );
+		availableView.setModel( availableModel );*/
+		
+		
+		
 	}
 	
 	// Call this function in order to modify and update the popup
@@ -88,12 +99,12 @@ public class ModifyPopup {
 		
 		// Update headers based on what's passed in
 		popupWin.setTitle( "Adding " + header );
-		activeColumn.setTitle( header );
-		availableColumn.setTitle( header );
+		//activeColumn.setTitle( header );
+		//availableColumn.setTitle( header );
 	
 		//activeModel.setValue( row, activeHeader, "hey" );
-		active.add("hey");
-		Utils.updateModel(active, activeModel, activeColumn, activeHeader);
+		//active.add("hey");
+		//Utils.updateModel(active, activeModel, activeColumn, activeHeader);
 		
 	}
 	

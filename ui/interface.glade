@@ -409,7 +409,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="brainAddColumn">
+                              <widget class="GtkButton" id="bModColumn">
                                 <property name="label" translatable="yes">Add/Remove</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -7809,7 +7809,7 @@ Population&lt;/b&gt;</property>
             <property name="visible">True</property>
             <property name="spacing">10</property>
             <child>
-              <widget class="GtkTreeView" id="activeList">
+              <widget class="GtkTreeView" id="activeTree">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
               </widget>
@@ -7860,7 +7860,7 @@ Population&lt;/b&gt;</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkTreeView" id="availableList">
+              <widget class="GtkTreeView" id="availableTree">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
               </widget>

@@ -31,25 +31,10 @@ public class BrainHandler {
 		
 		setEntries( );
 
-		modifyHandler( );
-		
+		modifyHandler( );		
 	}
 	
 	public void setLists() {
-		
-		/*// grab all widgets TODO - remove
-		columnView = (TreeView) GladeParseUtil.grabWidget( "brainColumnList", "window1" );		
-		stimulusView = (TreeView) GladeParseUtil.grabWidget( "brainStimulusList", "window1" );		
-		reportsView = (TreeView) GladeParseUtil.grabWidget( "brainReportsList", "window1" );		
-		connectionView = (TreeView) GladeParseUtil.grabWidget( "brainConnectionList", "window1" );*/		
-		
-		// Initialize all List Store models to build widget lists TODO - remove 
-		/*ListStore columnModel, stimulusModel, reportsModel, connectionModel;
-		TreeViewColumn treeColumn = columnView.appendColumn();
-		TreeViewColumn treeStimulus = stimulusView.appendColumn();
-		TreeViewColumn treeReport = reportsView.appendColumn();
-		TreeViewColumn treeConnection = connectionView.appendColumn();
-		DataColumnString columnHeader = null, stimulusHeader = null, reportsHeader = null, connectionHeader = null;	*/
 		
 		// TODO - Get arraylists from data model
 		actBrainColumnList = new ArrayList<String>();
@@ -67,24 +52,12 @@ public class BrainHandler {
 		brainConnectionList.add("visual_hypothalamus");
 		brainConnectionList.add("visual_parietal");	
 		brainConnectionList.add("parietal_hypothalamus");	
-		
-		// Build models and set views TODO - remove
-		/*columnModel = Utils.buildListModel( actBrainColumnList, treeColumn, columnHeader );		
-		columnView.setModel( columnModel );
-		stimulusModel = Utils.buildListModel( brainStimulusList, treeStimulus, stimulusHeader );		
-		stimulusView.setModel( stimulusModel );
-		reportsModel = Utils.buildListModel( brainReportsList, treeReport, reportsHeader );		
-		reportsView.setModel( reportsModel );
-		connectionModel = Utils.buildListModel( brainConnectionList, treeConnection, connectionHeader );		
-		connectionView.setModel( connectionModel );*/
-		
+
 		// Build models and set views
 		ListEntity columnTypes = new ListEntity( actBrainColumnList, "bColTypes" );
 		ListEntity stimulusInjects = new ListEntity( brainStimulusList, "bStimInjects" );
 		ListEntity reports = new ListEntity( brainReportsList, "bReports" );
-		ListEntity connections = new ListEntity( brainConnectionList, "bConnections" );
-		
-		columnTypes.updateModel();
+		ListEntity connections = new ListEntity( brainConnectionList, "bConnections" );		
 	}
 	
 	public void setEntries () {
@@ -106,16 +79,16 @@ public class BrainHandler {
 	
 	public void modifyHandler() {
 		
-		// grab all widgets
-		Button addColumn = (Button)  GladeParseUtil.grabWidget( "brainAddColumn", "window1" );
+		// Grab all button and window widgets
+		Button modifyColumn = (Button)  GladeParseUtil.grabWidget( "bModColumn", "window1" );
 		Button addStimulus = (Button)  GladeParseUtil.grabWidget( "brainAddStimulus", "window1" );
 		Button addReport = (Button)  GladeParseUtil.grabWidget( "brainAddReport", "window1" );
 		Button addConnection = (Button) GladeParseUtil.grabWidget( "brainAddConnection", "window1" );
 		final Window popup = (Window) GladeParseUtil.grabWidget( "window2", "window2" );
 		final Window main = (Window)GladeParseUtil.grabWidget( "window1", "window1" );
 		
-		// set up connects 
-		addColumn.connect( new Clicked() {
+		// Set up connects for modifying a column
+		modifyColumn.connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {

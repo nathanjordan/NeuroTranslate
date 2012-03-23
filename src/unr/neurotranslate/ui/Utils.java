@@ -107,7 +107,7 @@ public class Utils {
 		return model;
 	}	
 	
-	public static void handlePopup( ArrayList<String> Active, ArrayList<String> Available, XML popup ) {
+	public static void handlePopup( ) {
 		
 		
 	}

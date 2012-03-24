@@ -1,4 +1,5 @@
 package unr.neurotranslate.ui;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import org.gnome.gtk.CellRendererText;
@@ -6,24 +7,29 @@ import org.gnome.gtk.DataColumn;
 import org.gnome.gtk.DataColumnString;
 import org.gnome.gtk.ListStore;
 import org.gnome.gtk.TreeIter;
+import org.gnome.gtk.TreeSelection;
 import org.gnome.gtk.TreeView;
 import org.gnome.gtk.TreeViewColumn;
+import org.gnome.gtk.TreeSelection.Changed;
 
 public class ListEntity {
 	
-	// All the variables needed to create a list view
+	// All the variables needed to create a tree view
 	private ListStore model;
 	private TreeView view;
 	private TreeIter row;
+	private TreeSelection rowSelection;
 	private DataColumnString header;
 	private TreeViewColumn column;
 	private CellRendererText renderer;
+	private String selected;
+
 	
 	// Constructor builds a tree view model with list as the data source
-	public ListEntity( ArrayList<String> list, String widgetName ) {
+	public ListEntity( ArrayList<String> list, String widgetName, String root ) throws FileNotFoundException {
 
 		// Grab the required widget
-		view = (TreeView) GladeParseUtil.grabWidget( widgetName, "window1");	
+		view = (TreeView) GladeParseUtil.grabWidget( widgetName, root );	
 		
 		// Append header to view
 		column = view.appendColumn();
@@ -39,22 +45,35 @@ public class ListEntity {
             model.setValue( row, header, s );         
         }
        
-       // Set renderer to display column 
-       renderer = new CellRendererText(column);
-       renderer.setText(header);
+        // Set renderer to display column 
+        renderer = new CellRendererText(column);
+        renderer.setText(header);
        
-       // Set the model to the view
-       view.setModel( model );
+        // Set the model to the view
+        view.setModel( model ); 	
+       
+        selectionHandler();
 	}
 	
-	// Add an element to the model
-	public void addData( String element ) {
-		
+	// Add new data to the model
+	public void addData( String newData ) {
+					
 		// Append a new row to the model
 		row = model.appendRow();
 		
-		// Set the new element 
-		model.setValue( row, header, element );	
+		// Set the new value 
+		model.setValue( row, header, newData );
+
+	}
+	
+	// Remove the selected row from the view/model
+	public void removeData() {
+		
+		// Use a temporary pointer to row and remove selected row
+		TreeSelection tempSelected = view.getSelection();
+		if( tempSelected.getSelected() != null ) {
+			model.removeRow( tempSelected.getSelected() );
+		}
 	}
 	
 	// Getter for model
@@ -83,7 +102,8 @@ public class ListEntity {
 		} while (tempRow.iterNext() );
 	}
 	
-	public void updateModel( ArrayList<String> list) {
+	// Replace the current model with passed in list
+	public void listToModel( ArrayList<String> list) {
 		
 		// Clear current model first
 		model.clear();			
@@ -102,4 +122,38 @@ public class ListEntity {
 		view.setModel(model);
 	}
 	
+	// Set column headers to passed in value
+	public void setColumnHeader( String name ) {
+		column.setTitle( name );
+	}
+	
+	// Refresh the view when changes occur
+	public void refreshView() {		
+		view.setModel(model);
+	}
+	
+	// Getter for returning selected value in the tree view
+	public String getSelected() {				
+		return selected;
+	}
+	
+	public void selectionHandler() {
+		// Temporary value for getting selected string
+		selected = new String();
+		
+		// Connect for getting selected row in tree view		
+		rowSelection = view.getSelection();
+		rowSelection.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+				
+				// Get selected string
+				if( rowSelection.getSelected() != null ) { 
+				selected = model.getValue(rowSelection.getSelected(), header);				
+				}							
+			}
+		});
+		
+	}
 }

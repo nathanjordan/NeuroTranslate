@@ -1,13 +1,11 @@
 package unr.neurotranslate.ui;
 import java.util.ArrayList;
 
-import org.gnome.glade.XML;
 import org.gnome.gtk.CellRendererText;
 import org.gnome.gtk.DataColumn;
 import org.gnome.gtk.DataColumnString;
 import org.gnome.gtk.ListStore;
 import org.gnome.gtk.TreeIter;
-import org.gnome.gtk.TreeView;
 import org.gnome.gtk.TreeViewColumn;
 
 

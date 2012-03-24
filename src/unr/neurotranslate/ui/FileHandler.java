@@ -1,5 +1,6 @@
 package unr.neurotranslate.ui;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import org.gnome.gdk.Color;
 import org.gnome.glade.XML;
@@ -33,7 +34,7 @@ public class FileHandler {
 	public Notebook nmlTabs;
 	
 	// Constructor
-	public FileHandler() {
+	public FileHandler() throws FileNotFoundException {
 		
 		// Get all required widgets
 		statusbar = (Statusbar) GladeParseUtil.grabWidget( "statusbar", "window1" ); ;			
@@ -155,7 +156,7 @@ public class FileHandler {
 		return importedFile;
 	}
 	
-	public void buttonHandler() {
+	public void buttonHandler() throws FileNotFoundException {
 
 		// Build translation error dialog
 		new ErrorHandler();

@@ -16,21 +16,10 @@ import unr.neurotranslate.ncs.Connect;
 
 public class gladeTest {
 
-    public gladeTest() throws FileNotFoundException {    
-    	
-    	// Instantiate each XML object list window used in our program 
-    	new GladeParseUtil( "ui/interface.glade" );
+    public gladeTest() throws FileNotFoundException {        	
 
     	// Parse UI file
     	Window top = (Window) GladeParseUtil.grabWidget( "window1", "window1" );    	    	
-        
-    	//final XML mainApp = Glade.parse( "ui/interface.glade", "window1" );            	
-        //final XML modifyPopup = Glade.parse( "ui/interface.glade", "window2" );
-        //final XML translatePopup = Glade.parse( "ui/interface.glade", "window3" );                           
-        
-    	// Initialize window and get widgets from XML file object        
-        //final Window top = (Window) mainApp.getWidget( "window1" );             
-        //final Window popup = (Window) modifyPopup.getWidget( "window2" );   
 
         // Set default window attributes and display 
         top.setTitle("NeuroTranslate");

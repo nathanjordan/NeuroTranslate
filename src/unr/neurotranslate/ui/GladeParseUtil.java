@@ -3,42 +3,43 @@ import java.io.FileNotFoundException;
 
 import org.gnome.glade.Glade;
 import org.gnome.glade.XML;
-import org.gnome.gtk.Notebook;
 import org.gnome.gtk.Widget;
 
-
+// This class holds the XML references for global scope
 public class GladeParseUtil {
 
 	// Reference each window with a difference XML reference
-	private static XML mainUI;
-	private static XML modifyUI;
-	private static XML translateUIW;
-	private static XML translateUIE;
+	private static XML mainUI = null;
+	private static XML modifyUI = null;
+	private static XML translateUIW = null;
+	private static XML translateUIE = null;
 	
 	// Roots enum keeps track of each window used in .glade file 
 	private enum roots {
 		window1, window2, window3, window4;
 	}
 	
-	// Parse each window file 
-	public GladeParseUtil( String filename ) throws FileNotFoundException {
-		
-		// Parse the filename with the root window element	
-		mainUI = Glade.parse( filename, "window1" );	
-	
-		modifyUI = Glade.parse( filename, "window2" );
-
-		translateUIW = Glade.parse( filename, "window3" );
-
-	    translateUIE = Glade.parse( filename, "window4" );
-
-		mainUI = Glade.parse( filename, "window1" );	
+	// Prevent instantiation of this singleton
+	private GladeParseUtil() throws FileNotFoundException {	
 
 	}
 	
 	// Get a specific widget
-	public static Widget grabWidget( String widgetName, String root ) {
+	public static Widget grabWidget( String widgetName, String root ) throws FileNotFoundException {
 
+		if( (mainUI == null) && (modifyUI == null) && (translateUIW == null) && (translateUIE == null) ) {
+			
+			// Parse the filename with the root window element	
+			mainUI = Glade.parse( "ui/interface.glade", "window1" );	
+			
+			modifyUI = Glade.parse( "ui/interface.glade", "window2" );
+
+			translateUIW = Glade.parse( "ui/interface.glade", "window3" );
+
+			translateUIE = Glade.parse( "ui/interface.glade", "window4" );
+		}
+		
+		
 		// return widget	
 		switch ( roots.valueOf(root) ) {
 			case window1:

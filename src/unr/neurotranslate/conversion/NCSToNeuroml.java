@@ -95,34 +95,36 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			ArrayList<Level3Cell> neuromlCellList = (ArrayList<Level3Cell>) neuromlCells.getCells();
 			
 			// segments
-			Segments neuromlSegments = new Segments();
-			ArrayList<Segment> segmentList = (ArrayList<Segment>) neuromlSegments.getSegments();
-			Segment tempSegment = new Segment();
-			Point tempPoint = new Point();
+			Segments neuromlSegments;
+			ArrayList<Segment> segmentList = new ArrayList<Segment>();
+			Segment tempSegment;
+			Point tempPoint;
 			
-			BigInteger idIndex = BigInteger.ZERO;
+			BigInteger idIndex = new BigInteger("0");
 			
 			// temp cell
-			Level3Cell tempCell = new Level3Cell();
+			Level3Cell tempCell;
 			
 			// for each cell in NCS
 			for(unr.neurotranslate.ncs.Cell ncsCell : ncsCells)
 			{
+				neuromlSegments = new Segments();
+				tempCell = new Level3Cell();
 				// set cell name
 				tempCell.setName(ncsCell.type);
 							
 				// for each compartment in that cell
 				for(int i = 0; i < ncsCell.compartmentLabels.size(); i++)
 				{
+					tempSegment = new Segment();
+					tempPoint = new Point();
 					// set point to compartment location
 					tempPoint.setX(ncsCell.xList.get(i).intValue());
-					tempPoint.setY(ncsCell.yList.get(i).intValue());
+					//tempPoint.setY(ncsCell.yList.get(i).intValue());
 					tempPoint.setZ(0);
 					
 					// set proximal and distal 
-						// right now we are leaving the distal blank
-						// because there is no end point for a compartment in NCS
-						// this creates a spherical segment in NeuroML 
+						// distal is the same as the proximal, making a spherical segment
 					tempSegment.setProximal(tempPoint);
 					tempSegment.setDistal(tempPoint);
 					
@@ -142,6 +144,8 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 				{
 					neuromlSegments.getSegments().add(segInstance);
 				}
+				
+				segmentList.clear();
 				
 				tempCell.setSegments(neuromlSegments);
 				// add the cell to the cell list

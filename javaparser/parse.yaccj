@@ -5,6 +5,7 @@ package unr.neurotranslate.ncsparser;
 import java.io.*;
 import java.util.ArrayList;
 import unr.neurotranslate.ncs.*;
+import java.util.Stack;
 
 %}
 
@@ -95,7 +96,7 @@ element:  brain
         | stinject
         | report
         | event
-        | TK_INCLUDE NAME { multiInput( $<sval>2 ); }
+        | TK_INCLUDE NAME { addFile( $<sval>2 ); }
 ; 
 
 /*--------------- Input for the BRAIN structure ------------*/
@@ -716,6 +717,8 @@ protected TwoValue twoPtr;
 @SuppressWarnings("rawtypes")
 protected ArrayList listPtr;
 
+protected Stack<String> filestack = new Stack<String>();
+
 @SuppressWarnings("unused")
 private int yywrap() {
 
@@ -723,15 +726,7 @@ private int yywrap() {
 	
 	}
 
-private int multiInput( String filename ) {
-
-	return 0;
-	
-	}
-
 private void yyerror(String string) {
-	
-	
 	
 	}
 		
@@ -755,19 +750,55 @@ private int yylex() {
 
 public Parser( String filename ) {
 	
+	addFile(filename);
+	
+	}
+
+public void addFile( String filename ) {
+	
+	filestack.push( filename );
+	
+	}
+
+public void loadFile( String filename ) {
+	
 	String fileContents = new String();
+	
 	try {
+		
 		fileContents = readFileAsString( filename );
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
+		
+		}
+	
+	catch (IOException e){
+		
 		e.printStackTrace();
+		
+		}
+	
+	if(scan == null)
+		
+		scan = new Scanner(new StringReader( fileContents ));
+	
+	else
+		
+		scan.yyreset( new StringReader( fileContents ) );
+	
 	}
-	
-	scan = new Scanner( new StringReader( fileContents ) , this );
-	
-	}
-	
+
 private Scanner scan;
+
+public void run() {
+	
+	while( !filestack.empty() ) {
+		
+		loadFile( filestack.pop() );
+		
+		yyparse();
+		
+		}
+	
+	}
 	
 private static String readFileAsString(String filePath) throws java.io.IOException{
     byte[] buffer = new byte[(int) new File(filePath).length()];
@@ -780,4 +811,4 @@ private static String readFileAsString(String filePath) throws java.io.IOExcepti
     }
     return new String(buffer);
 }
-	
+

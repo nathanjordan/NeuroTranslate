@@ -3,7 +3,7 @@ package unr.neurotranslate.ncs;
 import java.util.ArrayList;
 
 public class NCSData {
-	
+
 	public Brain brain;
 
 	public ArrayList<ColumnShell> columnShellList = new ArrayList<ColumnShell>();
@@ -32,5 +32,5 @@ public class NCSData {
 	public ArrayList<Report> reportList = new ArrayList<Report>();
 
 	public ArrayList<Event> eventList = new ArrayList<Event>();
-	
+
 	}

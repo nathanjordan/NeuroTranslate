@@ -15,12 +15,12 @@ BRAIN
         COLUMN_TYPE             column_2
 
         CONNECT
-                                column_1 layer_A    Excitatory      s1
-                                column_2 layer_B    Excitatory      s1
+                                column_1 layer_A    Excitatory      soma
+                                column_2 layer_B    Excitatory      soma
                                 ExcitSyn1       1             3
 	CONNECT
-                                column_1 layer_B    Inhibitory      s1
-                                column_2 layer_A    Excitatory      s1
+                                column_1 layer_B    Inhibitory      soma
+                                column_2 layer_A    Excitatory      soma
                                 InhibSyn1       1             3
 
         REPORT                  Report2AE

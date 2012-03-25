@@ -129,13 +129,13 @@ void val_push(ParserVal val)
 {
   if (valptr>=YYSTACKSIZE)
     return;
-  valstk[++valptr]=val;
+  valstk[++valptr]=dup_yyval(val);
 }
 ParserVal val_pop()
 {
   if (valptr<0)
     return new ParserVal();
-  return valstk[valptr--];
+  return dup_yyval(valstk[valptr--]);
 }
 void val_drop(int cnt)
 {
@@ -1950,26 +1950,26 @@ break;
 case 39:
 //#line 123 "parse.yaccj"
 {
-               
-               Connect i = new Connect( val_peek(10).sval, val_peek(9).sval, val_peek(8).sval, val_peek(7).sval,  val_peek(6).sval, val_peek(5).sval, val_peek(4).sval, val_peek(3).sval, val_peek(2).sval, val_peek(1).dval, val_peek(0).dval );
-               
-               brain.connect.add( i );
-                                               
-               connectList.add( i );
-                 
-               }
+		   
+		   Connect i = new Connect( val_peek(10).sval, val_peek(9).sval, val_peek(8).sval, val_peek(7).sval,  val_peek(6).sval, val_peek(5).sval, val_peek(4).sval, val_peek(3).sval, val_peek(2).sval, val_peek(1).dval, val_peek(0).dval );
+		   
+		   brain.connect.add( i );
+		                                   
+		   connectList.add( i );
+		     
+		   }
 break;
 case 40:
 //#line 133 "parse.yaccj"
 {
-         	
+			
 			RecurrentConnect r = new RecurrentConnect( null, null, val_peek(10).sval, val_peek(9).sval, null, null, val_peek(8).sval, val_peek(7).sval,  val_peek(6).sval, val_peek(5).dval, val_peek(4).dval );
-               
-            layerList.get( layerList.size() - 1 ).recurrentConnects.add( r );
-               
-            recurrentConnectList.add( r );
-            
-            }
+			   
+			layerList.get( layerList.size() - 1 ).recurrentConnects.add( r );
+			   
+			recurrentConnectList.add( r );
+			
+			}
 break;
 case 41:
 //#line 143 "parse.yaccj"
@@ -2155,7 +2155,7 @@ case 91:
        						 cellList.get( cellList.size() - 1 ).compartmentNames.add( val_peek(3).sval );
                              cellList.get( cellList.size() - 1 ).compartmentLabels.add( val_peek(2).sval );
                              cellList.get( cellList.size() - 1 ).xList.add( val_peek(1).dval );
-                             cellList.get( cellList.size() - 1 ).xList.add( val_peek(0).dval );
+                             cellList.get( cellList.size() - 1 ).yList.add( val_peek(0).dval );
                           }
 break;
 case 92:
@@ -2164,7 +2164,7 @@ case 92:
        						 cellList.get( cellList.size() - 1 ).compartmentNames.add( val_peek(4).sval );
                              cellList.get( cellList.size() - 1 ).compartmentLabels.add( val_peek(3).sval );
                              cellList.get( cellList.size() - 1 ).xList.add( val_peek(2).dval );
-                             cellList.get( cellList.size() - 1 ).xList.add( val_peek(1).dval );
+                             cellList.get( cellList.size() - 1 ).yList.add( val_peek(1).dval );
        						}
 break;
 case 93:

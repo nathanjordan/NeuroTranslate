@@ -107,6 +107,14 @@ public class PostParser {
 			
 			s.stimulus = (Stimulus) fillValue( s.stimulusName , p.stimulusList );
 			
+			s.cell = (Cell) fillValue( s.cellName , p.cellList );
+			
+			s.column = (Column) fillValue( s.columnName , p.columnList );
+			
+			s.layer = (Layer) fillValue( s.layerName , p.layerList );
+			
+			s.compartment = (Compartment) fillValue( s.compartmentName , p.compartmentList );
+			
 			}
 		
 	}

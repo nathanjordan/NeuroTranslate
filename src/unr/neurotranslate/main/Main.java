@@ -35,7 +35,7 @@ public class Main {
 		
 		//converter.neuromlToXml( test , "/home/njordan/Downloads/Cerebellum_out.xml");
 
-		NCSData d = FileController.loadNCSFile( "/home/kimperry/Documents/PrototypeNCS.in" );
+		NCSData d = FileController.loadNCSFile( "/home/njordan/workspace/NeuroTranslate/samples/PrototypeNCS.in" );
 		
 		NeuroMLConversionData n = FormatConverter.convertToNeuroML(d);
 		

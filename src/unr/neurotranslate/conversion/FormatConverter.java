@@ -52,21 +52,14 @@ public class FormatConverter {
 	
 		// get/set projections
 			// still bad connects
-		//projections = NCSToNeuroml.generateNeuromlProjections(d.brain, d.synapseList);
-	//	neuromlData.neuroml.setProjections(projections);
+		projections = NCSToNeuroml.generateNeuromlProjections(d.brain, d.synapseList);
+		neuromlData.neuroml.setProjections(projections);
 		
 		// get/set inputs
 		inputs = NCSToNeuroml.generateNeuromlInputs(d.brain);
 		neuromlData.neuroml.setInputs(inputs);		
 		
-		/*
-		// get all of the synapse files names
-		for( Synapse syn : d.synapseList)
-		{
-			synFileList.add(syn.synPSG);
-		}
-		*/
-		// get/set synapses
+		
 		synapseList = NCSToNeuroml.generateNeuromlSynapseTypes(d.synapseList, d.synpsgList);
 		for( SynapseType st : synapseList )
 		{

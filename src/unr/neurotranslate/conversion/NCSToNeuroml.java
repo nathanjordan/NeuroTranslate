@@ -174,11 +174,12 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 	public static Projections generateNeuromlProjections(unr.neurotranslate.ncs.Brain ncsBrain, ArrayList<unr.neurotranslate.ncs.Synapse> ncsSynapses) {
 		
 		Projections neuromlProjs = new Projections();
-		Projection proj = new Projection();
-		GlobalSynapticProperties synProps = new GlobalSynapticProperties();
-		ConnectivityPattern cp = new ConnectivityPattern();
-		FixedProbability fp = new FixedProbability();
+		Projection proj;
+		GlobalSynapticProperties synProps;
+		ConnectivityPattern cp;
+		FixedProbability fp;
 		int i;
+		
 		// set units
 		neuromlProjs.setUnits(Units.fromValue("Physiological Units"));
 	    // TODO set xmlns?
@@ -186,13 +187,17 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 		// loop through connects in brain
 		for( Connect connect: ncsBrain.connect)
 		{
+			proj = new Projection();
+			synProps = new GlobalSynapticProperties();
+			cp = new ConnectivityPattern();
+			fp = new FixedProbability();
 			for( PopulationRef popRef : PopulationReference )
 			{
-				if(popRef.getLayerName() == connect.layer1Name && popRef.getCellName() == connect.cellType1Name)
+				if(popRef.getLayerName().equals(connect.layer1Name) && popRef.getCellName().equals(connect.cellType1Name))
 				{
 					proj.setSource(popRef.getPopName());
 				}
-				if( popRef.getLayerName() == connect.layer2Name && popRef.getCellName() == connect.cellType2Name)
+				if( popRef.getLayerName().equals(connect.layer2Name) && popRef.getCellName().equals(connect.cellType2Name))
 				{
 					proj.setTarget(popRef.getPopName());
 				}
@@ -228,13 +233,17 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 		{
 			for( Connect connect: column.connects)
 			{
+				proj = new Projection();
+				synProps = new GlobalSynapticProperties();
+				cp = new ConnectivityPattern();
+				fp = new FixedProbability();
 				for( PopulationRef popRef : PopulationReference )
 				{
-					if(popRef.getLayerName() == connect.layer1Name && popRef.getCellName() == connect.cellType1Name)
+					if(popRef.getLayerName().equals(connect.layer1Name) && popRef.getCellName().equals(connect.cellType1Name) )
 					{
 						proj.setSource(popRef.getPopName());
 					}
-					if( popRef.getLayerName() == connect.layer2Name && popRef.getCellName() == connect.cellType2Name)
+					if( popRef.getLayerName().equals(connect.layer2Name) && popRef.getCellName().equals(connect.cellType2Name) )
 					{
 						proj.setTarget(popRef.getPopName());
 					}
@@ -244,7 +253,7 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 				
 				for( i = 0; i < ncsSynapses.size(); i++)
 				{
-					if( ncsSynapses.get(i).type == connect.synapseTypeName )
+					if( ncsSynapses.get(i).type.equals(connect.synapseTypeName) )
 							break;
 				}
 				// TODO should be min/max
@@ -268,13 +277,17 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 				{
 					for( Connect layerConnect: layer.connects)
 					{
+						proj = new Projection();
+						synProps = new GlobalSynapticProperties();
+						cp = new ConnectivityPattern();
+						fp = new FixedProbability();
 						for( PopulationRef popRef : PopulationReference )
 						{
-							if(popRef.getLayerName() == layerConnect.layer1Name && popRef.getCellName() == layerConnect.cellType1Name)
+							if(popRef.getLayerName().equals(layerConnect.layer1Name) && popRef.getCellName().equals(layerConnect.cellType1Name) )
 							{
 								proj.setSource(popRef.getPopName());
 							}
-							if( popRef.getLayerName() == layerConnect.layer2Name && popRef.getCellName() == layerConnect.cellType2Name)
+							if( popRef.getLayerName().equals(layerConnect.layer2Name) && popRef.getCellName().equals(layerConnect.cellType2Name) )
 							{
 								proj.setTarget(popRef.getPopName());
 							}

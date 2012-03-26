@@ -1707,7 +1707,7 @@ public void loadFile( String filename ) {
 	
 	if(scan == null)
 		
-		scan = new Scanner(new StringReader( fileContents ));
+		scan = new Scanner(new StringReader( fileContents ), this );
 	
 	else
 		
@@ -2811,9 +2811,9 @@ case 366:
 //#line 590 "parse.yaccj"
 { 
       		stimulusInjectList.get( stimulusInjectList.size() - 1 ).columnName = val_peek(4).sval;
-            stimulusInjectList.get( stimulusInjectList.size() - 1 ).layerName = val_peek(4).sval;
-            stimulusInjectList.get( stimulusInjectList.size() - 1 ).cellName = val_peek(4).sval;
-            stimulusInjectList.get( stimulusInjectList.size() - 1 ).compartmentName = val_peek(4).sval;
+            stimulusInjectList.get( stimulusInjectList.size() - 1 ).layerName = val_peek(3).sval;
+            stimulusInjectList.get( stimulusInjectList.size() - 1 ).cellName = val_peek(2).sval;
+            stimulusInjectList.get( stimulusInjectList.size() - 1 ).compartmentName = val_peek(1).sval;
             stimulusInjectList.get( stimulusInjectList.size() - 1 ).probability = val_peek(4).dval;
             }
 break;

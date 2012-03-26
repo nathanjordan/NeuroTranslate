@@ -189,13 +189,13 @@ END_STIMULUS
 STIMULUS_INJECT
         TYPE                    StInject1
         STIM_TYPE               Stim1
-        INJECT                  column_1 layer_A Excitatory s1 1.0
+        INJECT                  column_1 layer_A Excitatory soma 1.0
 END_STIMULUS_INJECT
 
 STIMULUS_INJECT
         TYPE                    StInject2
         STIM_TYPE               Stim1
-        INJECT                  column_1 layer_B Inhibitory s1 1.0
+        INJECT                  column_1 layer_B Inhibitory soma 1.0
 END_STIMULUS_INJECT
 
 ############################### Define Reports ###########################
@@ -203,7 +203,7 @@ END_STIMULUS_INJECT
 REPORT
         TYPE                    Report2AE
         ASCII
-        CELLS                   column_2 layer_A Excitatory s1
+        CELLS                   column_2 layer_A Excitatory soma
 	FILENAME            	2AE.txt
 	PROB                	0.2
     	REPORT_ON           	VOLTAGE
@@ -215,7 +215,7 @@ END_REPORT
 REPORT
         TYPE                    Report2AI
         ASCII
-        CELLS                   column_2 layer_A Inhibitory s1
+        CELLS                   column_2 layer_A Inhibitory soma
 	FILENAME            	2AI.txt
 	PROB                	1.0
     	REPORT_ON           	VOLTAGE
@@ -227,7 +227,7 @@ END_REPORT
 REPORT
         TYPE                    Report2BE
         ASCII
-        CELLS                   column_2 layer_B Excitatory s1
+        CELLS                   column_2 layer_B Excitatory soma
 	FILENAME            	2BE.txt
 	PROB                	0.2
     	REPORT_ON           	VOLTAGE
@@ -239,7 +239,7 @@ END_REPORT
 REPORT
         TYPE                    Report2BI
         ASCII
-        CELLS                   column_2 layer_B Inhibitory s1
+        CELLS                   column_2 layer_B Inhibitory soma
 	FILENAME            	2BI.txt
 	PROB                	1.0
     	REPORT_ON           	VOLTAGE

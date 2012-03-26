@@ -589,9 +589,9 @@ stivar: TK_TYPE      NAME { stimulusInjectList.get( stimulusInjectList.size() - 
       | TK_STIM_TYPE NAME { stimulusInjectList.get( stimulusInjectList.size() - 1 ).stimulusName = $<sval>2; }
       | TK_INJECT    NAME NAME NAME NAME value { 
       		stimulusInjectList.get( stimulusInjectList.size() - 1 ).columnName = $<sval>2;
-            stimulusInjectList.get( stimulusInjectList.size() - 1 ).layerName = $<sval>2;
-            stimulusInjectList.get( stimulusInjectList.size() - 1 ).cellName = $<sval>2;
-            stimulusInjectList.get( stimulusInjectList.size() - 1 ).compartmentName = $<sval>2;
+            stimulusInjectList.get( stimulusInjectList.size() - 1 ).layerName = $<sval>3;
+            stimulusInjectList.get( stimulusInjectList.size() - 1 ).cellName = $<sval>4;
+            stimulusInjectList.get( stimulusInjectList.size() - 1 ).compartmentName = $<sval>5;
             stimulusInjectList.get( stimulusInjectList.size() - 1 ).probability = $<dval>2;
             }
 ;

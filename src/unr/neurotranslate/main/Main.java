@@ -41,7 +41,7 @@ public class Main {
 		
 		Neuroml nm = (Neuroml) n.getData();
 		
-		converter.neuromlToXml( nm , "/home/kperry/workspace/NeuroTranslate/samples/out.xml" );
+		converter.neuromlToXml( nm , "/home/njordan/workspace/NeuroTranslate/samples/out.xml" );
 		
 		}
 

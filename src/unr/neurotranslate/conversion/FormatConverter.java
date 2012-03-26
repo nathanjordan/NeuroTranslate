@@ -19,6 +19,7 @@ import org.morphml.neuroml.schema.Neuroml;
 import unr.neurotranslate.ncs.Cell;
 import unr.neurotranslate.ncs.Compartment;
 import unr.neurotranslate.ncs.NCSData;
+import unr.neurotranslate.ncs.SynPSG;
 import unr.neurotranslate.ncs.Synapse;
 
 public class FormatConverter {
@@ -50,21 +51,23 @@ public class FormatConverter {
 		neuromlData.neuroml.setPopulations(populations);
 	
 		// get/set projections
-		projections = NCSToNeuroml.generateNeuromlProjections(d.brain, d.synapseList);
-		neuromlData.neuroml.setProjections(projections);
+			// still bad connects
+		//projections = NCSToNeuroml.generateNeuromlProjections(d.brain, d.synapseList);
+	//	neuromlData.neuroml.setProjections(projections);
 		
 		// get/set inputs
-//		inputs = NCSToNeuroml.generateNeuromlInputs(d.brain);
-	//	neuromlData.neuroml.setInputs(inputs);		
+		inputs = NCSToNeuroml.generateNeuromlInputs(d.brain);
+		neuromlData.neuroml.setInputs(inputs);		
+		
 		/*
 		// get all of the synapse files names
 		for( Synapse syn : d.synapseList)
 		{
 			synFileList.add(syn.synPSG);
 		}
-		
+		*/
 		// get/set synapses
-		synapseList = NCSToNeuroml.generateNeuromlSynapseTypes(d.synapseList, synFileList);
+		synapseList = NCSToNeuroml.generateNeuromlSynapseTypes(d.synapseList, d.synpsgList);
 		for( SynapseType st : synapseList )
 		{
 			channelml.getSynapseTypes().add(st);
@@ -73,7 +76,7 @@ public class FormatConverter {
 		neuromlData.neuroml.setChannels(channelml);		
 		
 		
-	*/
+	
 		// finished converting
 		return neuromlData;
 		}

@@ -39,6 +39,7 @@ import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.Connect;
 import unr.neurotranslate.ncs.Layer;
 import unr.neurotranslate.ncs.StimulusInject;
+import unr.neurotranslate.ncs.SynPSG;
 import unr.neurotranslate.ncs.Synapse;
 
 
@@ -313,8 +314,8 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 		Inputs inputs = new Inputs();
 		// TODO figure out units
 		
-		Input input = new Input();
-		PulseInput pulseInput = new PulseInput();
+		Input input;
+		PulseInput pulseInput;
 		InputTarget inputTarget = new InputTarget();
 		InputSitePattern sitePattern = new InputSitePattern();
 		PercentageCells percentageCells = new PercentageCells();
@@ -322,7 +323,8 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 		// for each stimulus inject in the brain
 		for( StimulusInject stimInject : ncsBrain.stimulusInjects)
 		{
-		
+			input = new Input();
+			pulseInput = new PulseInput();
 			// set input name
 			input.setName(stimInject.type);
 			// set delay
@@ -333,7 +335,7 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			pulseInput.setAmplitude(stimInject.stimulus.ampStart);
 			// set the pulse input in the input
 			input.setPulseInput(pulseInput);
-			// find the population being used
+			// find the population being used *****
 			for( PopulationRef popRef : PopulationReference)
 			{
 				if( popRef.getLayerName() == stimInject.layerName && popRef.getCellName() == stimInject.cellName)
@@ -344,7 +346,7 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			}
 			
 			// set the percentage in a Percentage Cells object
-			percentageCells.setPercentage(stimInject.probability);
+			percentageCells.setPercentage(stimInject.probability*100);
 			// set the percentage cells in site pattern
 			sitePattern.setPercentageCells(percentageCells);
 			// set the site pattern in the input target
@@ -373,7 +375,7 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 		Point tempPoint;
 		Size tempSize;
 		double boxHeight = 0;
-		PopulationRef popRef = new PopulationRef();
+		PopulationRef popRef;
 		
 		// for each column 
 		for( unr.neurotranslate.ncs.Column column : ncsBrain.columnTypes)
@@ -382,12 +384,14 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			for( unr.neurotranslate.ncs.Layer layer : column.layers )
 			{   
 				index = 0;
+				
 				// if this layer hasn't been added already
 				if( !completedLayers.contains(layer.type))
 				{
 					// for each cell in the layer
 					for( unr.neurotranslate.ncs.Cell cell : layer.cellTypes )
 					{
+						popRef = new PopulationRef();
 						neuromlPop = new Population();
 						ra = new RandomArrangement();
 						rb = new RectangularBox();
@@ -428,25 +432,27 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 						popRef.setCellName(cell.type);
 						index++;
 						popCounter++;
+						PopulationReference.add(popRef);
 					}
 				}
 				// add layer to completed list so its cell groups aren't repeated
 				completedLayers.add(layer.type);
 				// add popRef to array list
-				PopulationReference.add(popRef);
+				
 			}
 		}
 		
 		return neuromlPops;
 	}
 	
-	public static ArrayList<SynapseType> generateNeuromlSynapseTypes( ArrayList<unr.neurotranslate.ncs.Synapse> ncsSynapses, ArrayList<String> syn_psgs ) {
+	public static ArrayList<SynapseType> generateNeuromlSynapseTypes( ArrayList<unr.neurotranslate.ncs.Synapse> ncsSynapses, ArrayList<SynPSG> synpsgList ) {
 		
 		ArrayList<SynapseType> neuromlSynapseList = new ArrayList<SynapseType>();
-		SynapseType tempNeuromlSynapse = new SynapseType();
-		DoubleExponentialSynapse doubExpSyn = new DoubleExponentialSynapse();
+		SynapseType tempNeuromlSynapse;
+		DoubleExponentialSynapse doubExpSyn;
 		int endIndex;
-		String tempString = null;
+		char[] tempArr = new char[10];
+		int tempIndex = 0;
 		String tempString2 = null;	
 		//unr.neurotranslate.ncs.Synapse tempSyn = new unr.neurotranslate.ncs.Synapse(); 
 		
@@ -455,6 +461,8 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 		// for each synapse in NCS
 		for(int i = 0; i < ncsSynapses.size(); i++ )
 		{
+			tempNeuromlSynapse = new SynapseType();
+			doubExpSyn = new DoubleExponentialSynapse();
 			//tempSyn = ncsSynapses.get(ncsIndex);
 			
 			// set synapse name
@@ -467,12 +475,12 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			doubExpSyn.setRiseTime(.0001);
 		
 			// find which waveform file to parse for decay time
-			for(int j = 0; j < syn_psgs.size(); j++)
+			for(int j = 0; j < synpsgList.size(); j++)
 			{
 				// find 
-				if(syn_psgs.get(j) == ncsSynapses.get(i).synPSG)
+				if(synpsgList.get(j).type.equals(ncsSynapses.get(i).synPSG))
 				{
-					char fileArr[] = syn_psgs.get(j).toCharArray();
+					char fileArr[] = synpsgList.get(j).filename.toCharArray();
 					
 					endIndex = fileArr.length - 5;
 					
@@ -485,14 +493,16 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 						
 					while(fileArr[endIndex] != '.')
 					{
-						tempString = Character.toString(fileArr[endIndex]);
-						tempString2 += tempString;
+						tempArr[tempIndex] = fileArr[endIndex];
+						tempIndex++;
+						endIndex++;
 					}
+					tempIndex = 0;
 				}
 			}
 			
 			// set decay time
-			doubExpSyn.setDecayTime(Integer.parseInt(tempString2));
+			doubExpSyn.setDecayTime(Double.parseDouble((new String(tempArr)))/10000);
 			
 			// set reversal potential
 			doubExpSyn.setReversalPotential(ncsSynapses.get(i).synReversal.mean);

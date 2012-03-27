@@ -626,7 +626,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="treeview7">
+                              <widget class="GtkTreeView" id="cColShells">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -645,7 +645,7 @@
                                 <property name="visible">True</property>
                                 <property name="spacing">5</property>
                                 <child>
-                                  <widget class="GtkButton" id="button5">
+                                  <widget class="GtkButton" id="cShellAdd">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -662,7 +662,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button6">
+                                  <widget class="GtkButton" id="cShellRem">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -699,7 +699,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="entry7">
+                              <widget class="GtkEntry" id="csLocX">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">•</property>
@@ -713,7 +713,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="entry8">
+                              <widget class="GtkEntry" id="csHeight">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">•</property>
@@ -727,7 +727,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="entry9">
+                              <widget class="GtkEntry" id="csWidth">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">•</property>
@@ -741,7 +741,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="entry10">
+                              <widget class="GtkEntry" id="csType">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">•</property>
@@ -768,7 +768,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkEntry" id="entry11">
+                              <widget class="GtkEntry" id="csLocY">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">•</property>
@@ -887,7 +887,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="treeview10">
+                              <widget class="GtkTreeView" id="cColumnView">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -905,7 +905,7 @@
                                 <property name="visible">True</property>
                                 <property name="spacing">5</property>
                                 <child>
-                                  <widget class="GtkButton" id="button14">
+                                  <widget class="GtkButton" id="cColAdd">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -921,7 +921,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button15">
+                                  <widget class="GtkButton" id="cColRem">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -1014,7 +1014,7 @@
                               <widget class="GtkVBox" id="vbox13">
                                 <property name="visible">True</property>
                                 <child>
-                                  <widget class="GtkTreeView" id="treeview11">
+                                  <widget class="GtkTreeView" id="lLayerList">
                                     <property name="height_request">100</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
@@ -1156,7 +1156,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="treeview8">
+                              <widget class="GtkTreeView" id="lLayerShells">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -1175,7 +1175,7 @@
                                 <property name="visible">True</property>
                                 <property name="spacing">5</property>
                                 <child>
-                                  <widget class="GtkButton" id="button7">
+                                  <widget class="GtkButton" id="lShellAdd">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -1192,7 +1192,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button8">
+                                  <widget class="GtkButton" id="lShellRem">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -1302,7 +1302,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="treeview9">
+                              <widget class="GtkTreeView" id="lLayers">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -1320,7 +1320,7 @@
                                 <property name="visible">True</property>
                                 <property name="spacing">5</property>
                                 <child>
-                                  <widget class="GtkButton" id="button13">
+                                  <widget class="GtkButton" id="lLayAdd">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -1336,7 +1336,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button17">
+                                  <widget class="GtkButton" id="lLayRem">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -1429,7 +1429,7 @@
                               <widget class="GtkVBox" id="vbox15">
                                 <property name="visible">True</property>
                                 <child>
-                                  <widget class="GtkTreeView" id="treeview12">
+                                  <widget class="GtkTreeView" id="CellTypeList">
                                     <property name="height_request">100</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
@@ -1571,7 +1571,7 @@ Label&lt;/b&gt;</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="treeview15">
+                              <widget class="GtkTreeView" id="cCells">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -1590,7 +1590,7 @@ Label&lt;/b&gt;</property>
                                 <property name="visible">True</property>
                                 <property name="spacing">5</property>
                                 <child>
-                                  <widget class="GtkButton" id="button23">
+                                  <widget class="GtkButton" id="cCellAdd">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -1607,7 +1607,7 @@ Label&lt;/b&gt;</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button24">
+                                  <widget class="GtkButton" id="cCellRem">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -1778,7 +1778,7 @@ Y Location&lt;/b&gt;</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="treeview16">
+                              <widget class="GtkTreeView" id="Compartments">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -1796,7 +1796,7 @@ Y Location&lt;/b&gt;</property>
                                 <property name="visible">True</property>
                                 <property name="spacing">5</property>
                                 <child>
-                                  <widget class="GtkButton" id="button27">
+                                  <widget class="GtkButton" id="cCompAdd">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -1812,7 +1812,7 @@ Y Location&lt;/b&gt;</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button28">
+                                  <widget class="GtkButton" id="cCompRem">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -2408,7 +2408,7 @@ Potential&lt;/b&gt;</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="treeview17">
+                              <widget class="GtkTreeView" id="SpikeShapes">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -2427,7 +2427,7 @@ Potential&lt;/b&gt;</property>
                                 <property name="visible">True</property>
                                 <property name="spacing">5</property>
                                 <child>
-                                  <widget class="GtkButton" id="button29">
+                                  <widget class="GtkButton" id="cSpikeAdd">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -2444,7 +2444,7 @@ Potential&lt;/b&gt;</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button30">
+                                  <widget class="GtkButton" id="cSpikeRem">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -2566,7 +2566,7 @@ Potential&lt;/b&gt;</property>
                             <property name="width_request">120</property>
                             <property name="visible">True</property>
                             <property name="xalign">0</property>
-                            <property name="label" translatable="yes">&lt;b&gt;new&lt;/b&gt;</property>
+                            <property name="label" translatable="yes">&lt;b&gt;New&lt;/b&gt;</property>
                             <property name="use_markup">True</property>
                           </widget>
                           <packing>
@@ -3050,7 +3050,7 @@ Potential&lt;/b&gt;</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="treeview18">
+                              <widget class="GtkTreeView" id="SynapseList">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -3069,7 +3069,7 @@ Potential&lt;/b&gt;</property>
                                 <property name="visible">True</property>
                                 <property name="spacing">5</property>
                                 <child>
-                                  <widget class="GtkButton" id="button25">
+                                  <widget class="GtkButton" id="sSynapseAdd">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -3086,7 +3086,7 @@ Potential&lt;/b&gt;</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button26">
+                                  <widget class="GtkButton" id="sSynapseRem">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -3585,7 +3585,7 @@ Conductance&lt;/b&gt;</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="treeview19">
+                              <widget class="GtkTreeView" id="SFDLabels">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -3603,7 +3603,7 @@ Conductance&lt;/b&gt;</property>
                                 <property name="visible">True</property>
                                 <property name="spacing">5</property>
                                 <child>
-                                  <widget class="GtkButton" id="button31">
+                                  <widget class="GtkButton" id="sSFDAdd">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -3619,7 +3619,7 @@ Conductance&lt;/b&gt;</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button32">
+                                  <widget class="GtkButton" id="sSFDRem">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -3888,7 +3888,7 @@ Conductance&lt;/b&gt;</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="treeview20">
+                              <widget class="GtkTreeView" id="LearnLabels">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -3906,7 +3906,7 @@ Conductance&lt;/b&gt;</property>
                                 <property name="visible">True</property>
                                 <property name="spacing">5</property>
                                 <child>
-                                  <widget class="GtkButton" id="button33">
+                                  <widget class="GtkButton" id="sLearnAdd">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -3922,7 +3922,7 @@ Conductance&lt;/b&gt;</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button34">
+                                  <widget class="GtkButton" id="sLearnRem">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -4561,7 +4561,7 @@ Peak Time&lt;/b&gt;</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="treeview13">
+                              <widget class="GtkTreeView" id="Stimulus Injects">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -4580,7 +4580,7 @@ Peak Time&lt;/b&gt;</property>
                                 <property name="visible">True</property>
                                 <property name="spacing">5</property>
                                 <child>
-                                  <widget class="GtkButton" id="button19">
+                                  <widget class="GtkButton" id="sSimInAdd">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -4597,7 +4597,7 @@ Peak Time&lt;/b&gt;</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button20">
+                                  <widget class="GtkButton" id="sSimInRem">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -4875,7 +4875,7 @@ Peak Time&lt;/b&gt;</property>
                                 <property name="visible">True</property>
                                 <property name="spacing">5</property>
                                 <child>
-                                  <widget class="GtkButton" id="button21">
+                                  <widget class="GtkButton" id="sSimAdd">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -4891,7 +4891,7 @@ Peak Time&lt;/b&gt;</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button22">
+                                  <widget class="GtkButton" id="sSimRem">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -4915,7 +4915,7 @@ Peak Time&lt;/b&gt;</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="treeview14">
+                              <widget class="GtkTreeView" id="Stimuli">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -5463,7 +5463,7 @@ Peak Time&lt;/b&gt;</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="treeview21">
+                              <widget class="GtkTreeView" id="ReportsList">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -5482,7 +5482,7 @@ Peak Time&lt;/b&gt;</property>
                                 <property name="visible">True</property>
                                 <property name="spacing">5</property>
                                 <child>
-                                  <widget class="GtkButton" id="button35">
+                                  <widget class="GtkButton" id="rRepAdd">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
@@ -5499,7 +5499,7 @@ Peak Time&lt;/b&gt;</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button36">
+                                  <widget class="GtkButton" id="rRepRem">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>

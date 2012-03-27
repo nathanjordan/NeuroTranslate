@@ -12,12 +12,14 @@ import org.gnome.gtk.WindowPosition;
 import org.gnome.gtk.Window.DeleteEvent;
 
 import unr.neurotranslate.ncs.Connect;
+import unr.neurotranslate.ncs.NCSData;
 
 
 public class gladeTest {
 
     public gladeTest() throws FileNotFoundException {        	
 
+    	
     	// Parse UI file
     	Window top = (Window) GladeParseUtil.grabWidget( "window1", "window1" );    	    	
 
@@ -32,7 +34,15 @@ public class gladeTest {
         
         // Create handlers for each of the tabs and menu
         new FileHandler();
-        new BrainHandler();    
+        new BrainHandler();  
+        new ColumnHandler();
+        new LayerHandler();
+        new CellHandler();
+        new ConnectionHandler();
+        new SynapseHandler();
+        new StimuliHandler();
+        new ReportHandler();
+        
         //new MorphologyHandler( mainApp, modifyPopup );        
         
         // Make sure we're shutting down correctly 

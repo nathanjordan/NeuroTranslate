@@ -26,7 +26,7 @@ public class ListEntity {
 
 	
 	// Constructor builds a tree view model with list as the data source
-	public ListEntity( ArrayList<String> list, String widgetName, String root ) throws FileNotFoundException {
+	public ListEntity( ArrayList<String> dataSource, String widgetName, String root ) throws FileNotFoundException {
 
 		// Grab the required widget
 		view = (TreeView) GladeParseUtil.grabWidget( widgetName, root );	
@@ -40,7 +40,7 @@ public class ListEntity {
         });
         
         // Iterate through list and set each row
-        for (String s : list ) {
+        for (String s : dataSource ) {
             row = model.appendRow();
             model.setValue( row, header, s );         
         }
@@ -81,11 +81,21 @@ public class ListEntity {
 		return model;		
 	}
 	
+	// Getter for view
+	public TreeView getView() {
+		return view;
+	}
+	
+	// Getter for header
+	public DataColumnString getHeader() {
+		return header;
+	}
+	
 	// Set list = to model elements
-	public void modelToList( ArrayList<String> list ) {
+	public void modelToList( ArrayList<String> dataSource ) {
 		
 		// Clear passed in list first
-		list.clear();
+		dataSource.clear();
 		
 		// Use a temporary row iterator and temporary String
 		TreeIter tempRow = model.getIterFirst();
@@ -97,13 +107,13 @@ public class ListEntity {
 			tempData = model.getValue( tempRow, header );
 			
 			// Add the value to list
-			list.add(tempData);
+			dataSource.add(tempData);
 						
 		} while (tempRow.iterNext() );
 	}
 	
 	// Replace the current model with passed in list
-	public void listToModel( ArrayList<String> list) {
+	public void listToModel( ArrayList<String> dataSource) {
 		
 		// Clear current model first
 		model.clear();			
@@ -112,7 +122,7 @@ public class ListEntity {
 		row = model.getIterFirst();
 		
 		// Iterate through list and set each row
-        for (String s : list ) {
+        for (String s : dataSource ) {
         	// Make sure to append a new row and set new value
             row = model.appendRow();
             model.setValue( row, header, s );         

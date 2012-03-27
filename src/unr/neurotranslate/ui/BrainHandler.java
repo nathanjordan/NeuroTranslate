@@ -8,6 +8,8 @@ import org.gnome.gtk.TreeView;
 import org.gnome.gtk.Window;
 import org.gnome.gtk.Button.Clicked;
 
+import unr.neurotranslate.ncs.NCSData;
+
 public class BrainHandler {
 	
 	public TreeView columnView;
@@ -77,12 +79,12 @@ public class BrainHandler {
 		Entry brainDuration = (Entry) GladeParseUtil.grabWidget( "brainDuration", "window1" );
 		Entry brainSeed = (Entry) GladeParseUtil.grabWidget( "brainSeed", "window1" );
 		
-		// Set all entry widgets
-		brainType.setText("brain_model_input");
-		brainJob.setText("brain_model_output");
-		brainFSV.setText("1000");
-		brainDuration.setText("10");
-		brainSeed.setText("-20");
+		// Set all entry widgets		
+		brainType.setText("");					
+		brainJob.setText("");
+		brainFSV.setText( "" );		
+		brainDuration.setText( "" );
+		brainSeed.setText( ""  );
 	}
 	
 	public void modifyHandler() throws FileNotFoundException {

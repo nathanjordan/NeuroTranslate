@@ -26,6 +26,8 @@ public class FormatConverter {
 	
 	public static NeuroMLConversionData convertToNeuroML( NCSData d ) {
 		
+	
+		
 		// list of syn_psg filenames
 		ArrayList<String> synFileList = new ArrayList<String>();
 		ArrayList<SynapseType> synapseList = new ArrayList<SynapseType>();
@@ -75,7 +77,7 @@ public class FormatConverter {
 		}
 	
 	public static NCSConversionData convertToNCS( Neuroml m ) {
-		
+			
 		NCSConversionData ncsConversionData = new NCSConversionData();
 	    ArrayList<Compartment> tempCompartmentList = new ArrayList<Compartment>();
 		

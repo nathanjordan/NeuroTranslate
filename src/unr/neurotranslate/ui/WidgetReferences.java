@@ -13,5 +13,9 @@ public class WidgetReferences {
 	}
 	
 	
-	
+	public ListEntity getList() {
+		
+		return null;
+		
+	}
 }

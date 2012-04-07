@@ -10,6 +10,7 @@ import unr.neurotranslate.conversion.FormatConverter;
 import unr.neurotranslate.conversion.NeuroMLConversionData;
 import unr.neurotranslate.model.FileController;
 import unr.neurotranslate.ncs.NCSData;
+import unr.neurotranslate.ncsparser.NCSWriter;
 import unr.neurotranslate.neuromlparser.NeuroMLConverter;
 
 /**
@@ -22,7 +23,7 @@ public class Main {
 
 	/**
 	 * @param args
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	
 	public static void main(String[] args) throws Exception {
@@ -37,11 +38,13 @@ public class Main {
 
 		NCSData d = FileController.loadNCSFile( "/home/kimperry/Documents/PrototypeNCS.in" );
 		
-		NeuroMLConversionData n = FormatConverter.convertToNeuroML(d);
+		//NeuroMLConversionData n = FormatConverter.convertToNeuroML(d);
 		
-		Neuroml nm = (Neuroml) n.getData();
+		//Neuroml nm = (Neuroml) n.getData();
 		
-		converter.neuromlToXml( nm , "/home/kimperry/Documents/NeuroMLTest.xml" );
+		//converter.neuromlToXml( nm , "/home/kimperry/Documents/NeuroMLTest.xml" );
+		
+		NCSWriter.writeNCS(d, "/home/njordan/Desktop/ggg.in" );
 		
 		}
 

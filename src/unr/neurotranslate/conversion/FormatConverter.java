@@ -17,7 +17,9 @@ import org.morphml.neuroml.schema.Level3Cells;
 import org.morphml.neuroml.schema.Neuroml;
 
 import unr.neurotranslate.ncs.Cell;
+import unr.neurotranslate.ncs.ColumnShell;
 import unr.neurotranslate.ncs.Compartment;
+import unr.neurotranslate.ncs.LayerShell;
 import unr.neurotranslate.ncs.NCSData;
 import unr.neurotranslate.ncs.SynPSG;
 import unr.neurotranslate.ncs.Synapse;
@@ -25,6 +27,8 @@ import unr.neurotranslate.ncs.Synapse;
 public class FormatConverter {
 	
 	public static NeuroMLConversionData convertToNeuroML( NCSData d ) {
+		
+	
 		
 		// list of syn_psg filenames
 		ArrayList<String> synFileList = new ArrayList<String>();
@@ -75,14 +79,16 @@ public class FormatConverter {
 		}
 	
 	public static NCSConversionData convertToNCS( Neuroml m ) {
-		
+			
 		NCSConversionData ncsConversionData = new NCSConversionData();
 	    ArrayList<Compartment> tempCompartmentList = new ArrayList<Compartment>();
-		
+	    
 	    // get cells and compartments
 		ncsConversionData.ncs.cellList = NeuromlToNCS.generateNCSCells(m.getCells(), m.getProjections(), m.getPopulations(), tempCompartmentList);
 		ncsConversionData.ncs.compartmentList = tempCompartmentList;
-		
+		ncsConversionData.ncs.columnShellList = NeuromlToNCS.generateNCSColumnShells(m.getPopulations());
+		ncsConversionData.ncs.layerShellList = NeuromlToNCS.generateNCSLayerShell(m.getPopulations(), ncsConversionData.ncs.columnShellList);
+		ncsConversionData.ncs.layerList =  NeuromlToNCS.generateNCSLayer(m.getPopulations(), ncsConversionData.ncs.layerShellList, ncsConversionData.ncs.columnShellList);
 		return ncsConversionData;
 		
 		}

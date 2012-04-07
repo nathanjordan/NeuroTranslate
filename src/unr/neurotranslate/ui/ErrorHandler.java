@@ -1,4 +1,6 @@
 package unr.neurotranslate.ui;
+import java.io.FileNotFoundException;
+
 import org.gnome.glade.XML;
 import org.gnome.gtk.CellRendererText;
 import org.gnome.gtk.DataColumn;
@@ -18,17 +20,17 @@ public class ErrorHandler {
 	};
 	
 	// TODO - Use glade for UI if I'm ambitious
-	public ErrorHandler( XML translatePopup ) {	
+	public ErrorHandler() throws FileNotFoundException {	
 		
 		// Build the error dialog
-		initUI( translatePopup );
+		initUI();
 
 	}
 		
-	public void initUI( XML translatePopup ) {			
+	public void initUI() throws FileNotFoundException {			
 		
 		// Build the translate dialog
-		TreeView view = (TreeView) translatePopup.getWidget("errorlist");
+		TreeView view = (TreeView) GladeParseUtil.grabWidget( "errorlist", "window3" );
 	    ListStore model;
 		TreeIter row;
 		CellRendererText renderer;

@@ -1,5 +1,6 @@
 package unr.neurotranslate.ui;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import org.gnome.gdk.Color;
 import org.gnome.glade.XML;
@@ -33,20 +34,20 @@ public class FileHandler {
 	public Notebook nmlTabs;
 	
 	// Constructor
-	public FileHandler( XML glade, XML translatePopup ) {
+	public FileHandler() throws FileNotFoundException {
 		
 		// Get all required widgets
-		statusbar = (Statusbar) glade.getWidget( "statusbar" );			
-		importOption = (MenuItem) glade.getWidget( "importOption" );
-		exportOption = (MenuItem) glade.getWidget( "exportOption" );
-		mainWindow = (Window) glade.getWidget( "window1" );
-		ncsTButton = (ToggleButton) glade.getWidget( "toggleNCS");
-		nmlTButton = (ToggleButton) glade.getWidget( "toggleNML");  
-		ncsTabs = (Notebook) glade.getWidget( "notebook1" );
-		nmlTabs = (Notebook) glade.getWidget( "notebook2" );
+		statusbar = (Statusbar) GladeParseUtil.grabWidget( "statusbar", "window1" ); ;			
+		importOption = (MenuItem) GladeParseUtil.grabWidget( "importOption", "window1" );
+		exportOption = (MenuItem) GladeParseUtil.grabWidget( "exportOption", "window1" );
+		mainWindow = (Window) GladeParseUtil.grabWidget( "window1", "window1" );
+		ncsTButton = (ToggleButton) GladeParseUtil.grabWidget( "toggleNCS", "window1" );
+		nmlTButton = (ToggleButton) GladeParseUtil.grabWidget( "toggleNML", "window1" );  
+		ncsTabs = (Notebook) GladeParseUtil.grabWidget( "notebook1", "window1" );
+		nmlTabs = (Notebook) GladeParseUtil.grabWidget( "notebook2", "window1" );
 		// set file menu and toggle buttons
 		initMenu();
-		buttonHandler( translatePopup );
+		buttonHandler();
 		
 	}
 	
@@ -155,23 +156,21 @@ public class FileHandler {
 		return importedFile;
 	}
 	
-	public void buttonHandler( XML translatePopup ) {
+	public void buttonHandler() throws FileNotFoundException {
 
 		// Build translation error dialog
-		new ErrorHandler( translatePopup );
+		new ErrorHandler();
 		
 		// Grab the translate dialog window to show and hide when toggle button is pushed
-		final Window translateDialog = (Window) translatePopup.getWidget( "window3" );
-
+		final Window translateDialog = (Window) GladeParseUtil.grabWidget( "window3", "window3" );		
+		
 		// Set ncs view active on program start      
 		ncsTButton.setSensitive( false );       
        
 		// Messing around with color
-        Color activeGreen = new Color(44880, 55552, 36608 );
-        
+        Color activeGreen = new Color(44880, 55552, 36608 );        
 		nmlTButton.modifyBackground(StateType.NORMAL, activeGreen );
-		nmlTButton.modifyBackground(StateType.SELECTED, activeGreen );
-		
+		nmlTButton.modifyBackground(StateType.SELECTED, activeGreen );		
 		
         // Hide ncs/nml tabs for debugging
         nmlTabs.hide();
@@ -188,7 +187,7 @@ public class FileHandler {
 					translateDialog.show();
 				}				
 			}
-		});
+		} );
         
         // Set nmlToggle button connect
         nmlTButton.connect( new Toggled() {			
@@ -202,6 +201,6 @@ public class FileHandler {
 				   translateDialog.show();
 				}				
 			}
-		});       
+		} );       
 	}
 }

@@ -5,33 +5,63 @@ import org.gnome.glade.Glade;
 import org.gnome.glade.XML;
 import org.gnome.gtk.Widget;
 
-
+// This class holds the XML references for global scope
 public class GladeParseUtil {
 
-	private static XML ui;
+	// Reference each window with a difference XML reference
+	private static XML mainUI = null;
+	private static XML modifyUI = null;
+	private static XML translateUIW = null;
+	private static XML translateUIE = null;
 	
-	// parses the file given by filename, root is the window element
-	public GladeParseUtil( String filename, String root ) throws FileNotFoundException {
-		
-		// parse the filename with root as window element
-		setUi(Glade.parse( filename, root ));
-		
+	// Roots enum keeps track of each window used in .glade file 
+	private enum roots {
+		window1, window2, window3, window4;
 	}
 	
-	// get a specific widget
-	public static Widget getWidget( String widgetName ) {
+	// Prevent instantiation of this singleton
+	private GladeParseUtil() throws FileNotFoundException {	
 
-		// return widget
-		return ui.getWidget(widgetName);
+	}
+	
+	// Get a specific widget
+	public static Widget grabWidget( String widgetName, String root ) throws FileNotFoundException {
+
+		if( (mainUI == null) && (modifyUI == null) && (translateUIW == null) && (translateUIE == null) ) {
+			
+			// Parse the filename with the root window element	
+			mainUI = Glade.parse( "ui/interface.glade", "window1" );	
+			
+			modifyUI = Glade.parse( "ui/interface.glade", "window2" );
+
+			translateUIW = Glade.parse( "ui/interface.glade", "window3" );
+
+			translateUIE = Glade.parse( "ui/interface.glade", "window4" );
+		}
+		
+		
+		// return widget	
+		switch ( roots.valueOf(root) ) {
+			case window1:
+				return mainUI.getWidget(widgetName);
+			case window2:
+				return modifyUI.getWidget(widgetName);		
+			case window3:
+				return translateUIW.getWidget(widgetName);		
+			case window4:
+				return translateUIE.getWidget(widgetName);	
+			default:
+				return mainUI.getWidget(widgetName);		
+		}
 	}
 		
-	// set the xml reference
+	// Set a xml reference (keeps java happy)
 	public static void setUi(XML ui) {
-		GladeParseUtil.ui = ui;
+		GladeParseUtil.mainUI = ui;
 	}
 
-	// get the xml reference
+	// Get a xml reference (keeps java happy)
 	public static XML getUi() {
-		return ui;
-	}	
+		return mainUI;
+	}
 }

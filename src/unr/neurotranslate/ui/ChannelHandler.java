@@ -2,9 +2,9 @@ package unr.neurotranslate.ui;
 import org.gnome.glade.XML;
 
 
-public class ChannelsHandler {
+public class ChannelHandler {
 
-	public ChannelsHandler( XML glade ) {
+	public ChannelHandler( XML glade ) {
 		
 	}
 }

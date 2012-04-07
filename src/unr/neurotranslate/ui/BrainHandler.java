@@ -1,128 +1,126 @@
 package unr.neurotranslate.ui;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import org.gnome.glade.XML;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
-import org.gnome.gtk.ListStore;
 import org.gnome.gtk.TreeView;
-import org.gnome.gtk.TreeViewColumn;
 import org.gnome.gtk.Window;
 import org.gnome.gtk.Button.Clicked;
 
+import unr.neurotranslate.ncs.NCSData;
+
 public class BrainHandler {
 	
-	public XML glade;
-	public XML glade2;
 	public TreeView columnView;
 	public TreeView stimulusView;
 	public TreeView reportsView;
 	public TreeView connectionView;
+	
+	// All array lists are for debugging!
 	public ArrayList<String> actBrainColumnList;
 	public ArrayList<String> availBrainColumnList;
-	public ArrayList<String> activeL;		// for debugging
-	public ArrayList<String> availL;		// for debugging
+	public ArrayList<String> brainStimulusList;
+	public ArrayList<String> brainConnectionList;
+	public ArrayList<String> brainReportsList;
+	public ArrayList<String> activeL;		
+	public ArrayList<String> availL;		
 	
-	public BrainHandler( XML gladeObject, XML popupObject ) {
+	public BrainHandler() throws FileNotFoundException {
 		
-		glade = gladeObject;
-		glade2 = popupObject;
-		
+		// Create array lists
 		activeL = new ArrayList<String>();
 		availL = new ArrayList<String>();
-
-		setLists( ); 	
+		actBrainColumnList = new ArrayList<String>();
+		availBrainColumnList = new ArrayList<String>();
+		brainStimulusList = new ArrayList<String>();
+		brainReportsList = new ArrayList<String>();
+		brainConnectionList = new ArrayList<String>();
 		
-		setEntries( );
-
-		modifyHandler( );
+		setLists(); 	
 		
+		setEntries();
+
+		modifyHandler();		
 	}
 	
-	public void setLists() {
+	public void setLists() throws FileNotFoundException {
+
+		// Build models and set views		
+		WidgetReferences.columnTypes = new ListEntity( actBrainColumnList, "bColTypes", "window1" ); // debugging
+		ListEntity stimulusInjects = new ListEntity( brainStimulusList, "bStimInjects", "window1" );
+		ListEntity reports = new ListEntity( brainReportsList, "bReports", "window1" );
+		ListEntity connections = new ListEntity( brainConnectionList, "bConnections", "window1" );
 		
-		// grab all widgets
-		columnView = (TreeView) glade.getWidget( "brainColumnList" );		
-		stimulusView = (TreeView) glade.getWidget( "brainStimulusList" );		
-		reportsView = (TreeView) glade.getWidget( "brainReportsList" );		
-		connectionView = (TreeView) glade.getWidget( "brainConnectionList" );		
 		
-		// Initialize all List Store models to build widget lists
-		ListStore columnModel, stimulusModel, reportsModel, connectionModel;
-		TreeViewColumn treeColumn = columnView.appendColumn();
-		TreeViewColumn treeStimulus = stimulusView.appendColumn();
-		TreeViewColumn treeReport = reportsView.appendColumn();
-		TreeViewColumn treeConnection = connectionView.appendColumn();
-		
-		// TODO - Get brainColumnTypes ArrayList
-		actBrainColumnList = new ArrayList<String>();
-		actBrainColumnList.add("visual_cortex");
-		actBrainColumnList.add("hypothalamus");
-		actBrainColumnList.add("parietal_cortex");		
-		ArrayList<String> brainStimulusList = new ArrayList<String>();
+		// TODO - Get array lists from data model
+		availBrainColumnList.add("visual_cortex");
+		availBrainColumnList.add("hypothalamus");
+		availBrainColumnList.add("parietal_cortex");		
+
 		brainStimulusList.add("visual");
-		brainStimulusList.add("proprioceptive");
-		//brainStimulusList.add("emily");
-		ArrayList<String> brainReportsList = new ArrayList<String>();
+		brainStimulusList.add("proprioceptive");	
+	
 		brainReportsList.add("hypothalamus_learning");
 		brainReportsList.add("visual_voltage");
 		brainReportsList.add("parietal_voltage");
-		ArrayList<String> brainConnectionList = new ArrayList<String>();
+	
 		brainConnectionList.add("visual_hypothalamus");
 		brainConnectionList.add("visual_parietal");	
-		brainConnectionList.add("parietal_hypothalamus");	
-		
-		// Build models and set views
-		columnModel = Utils.buildListModel( actBrainColumnList, treeColumn );		
-		columnView.setModel( columnModel );
-		stimulusModel = Utils.buildListModel( brainStimulusList, treeStimulus );		
-		stimulusView.setModel( stimulusModel );
-		reportsModel = Utils.buildListModel( brainReportsList, treeReport );		
-		reportsView.setModel( reportsModel );
-		connectionModel = Utils.buildListModel( brainConnectionList, treeConnection );		
-		connectionView.setModel( connectionModel );	
+		brainConnectionList.add("parietal_hypothalamus");
 	}
 	
-	public void setEntries () {
+	public void setEntries () throws FileNotFoundException {
 		
 		// Grab all entry widgets
-		Entry brainType = (Entry) glade.getWidget( "brainType" );
-		Entry brainJob = (Entry) glade.getWidget( "brainJob" );
-		Entry brainFSV = (Entry) glade.getWidget( "brainFSV" );
-		Entry brainDuration = (Entry) glade.getWidget( "brainDuration" );
-		Entry brainSeed = (Entry) glade.getWidget( "brainSeed" );
+		Entry brainType = (Entry) GladeParseUtil.grabWidget( "brainType", "window1" );
+		Entry brainJob = (Entry) GladeParseUtil.grabWidget( "brainJob", "window1" );
+		Entry brainFSV = (Entry) GladeParseUtil.grabWidget( "brainFSV", "window1" );
+		Entry brainDuration = (Entry) GladeParseUtil.grabWidget( "brainDuration", "window1" );
+		Entry brainSeed = (Entry) GladeParseUtil.grabWidget( "brainSeed", "window1" );
 		
-		// Set all entry widgets
-		brainType.setText("brain_model_input");
-		brainJob.setText("brain_model_output");
-		brainFSV.setText("1000");
-		brainDuration.setText("10");
-		brainSeed.setText("-20");
+		// Set all entry widgets		
+		brainType.setText("");					
+		brainJob.setText("");
+		brainFSV.setText( "" );		
+		brainDuration.setText( "" );
+		brainSeed.setText( ""  );
 	}
 	
-	public void modifyHandler() {
+	public void modifyHandler() throws FileNotFoundException {
 		
-		// grab all widgets
-		Button addColumn = (Button) glade.getWidget( "brainAddColumn" );
-		Button addStimulus = (Button) glade.getWidget( "brainAddStimulus" );
-		Button addReport = (Button) glade.getWidget( "brainAddReport" );
-		Button addConnection = (Button) glade.getWidget( "brainAddConnection" );
-		final Window popup = (Window) glade2.getWidget( "window2" );
-		final Window main = (Window) glade.getWidget("window1");
+		// Grab all button and window widgets
+		Button modifyColumn = (Button)  GladeParseUtil.grabWidget( "bModColumn", "window1" );
+		Button modifyStimulus = (Button)  GladeParseUtil.grabWidget( "brainAddStimulus", "window1" );
+		Button modifyeport = (Button)  GladeParseUtil.grabWidget( "brainAddReport", "window1" );
+		Button modifyConnection = (Button) GladeParseUtil.grabWidget( "brainAddConnection", "window1" );
+		final Window popup = (Window) GladeParseUtil.grabWidget( "window2", "window2" );
+		final Window main = (Window)GladeParseUtil.grabWidget( "window1", "window1" );
 		
-		// set up connects 
-		addColumn.connect( new Clicked() {
+		// Set up connect for modifying a column
+		modifyColumn.connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 						
+				// Show popup and update the views
 				popup.show();
-				ModifyPopup.updatePopup( "Column Types", actBrainColumnList, availBrainColumnList );
-
+				ModifyPopup.updateViews( "Column Types", actBrainColumnList, availBrainColumnList );		
 			}
 		});	
 		
-		
-	
+		// Set up connect for modifying a stimulus inject
+		modifyStimulus.connect( new Clicked() {
+			
+			@Override
+			public void onClicked(Button arg0) {
+				
+				// Show popup and update the views
+				popup.show();
+				ModifyPopup.updateViews( "Stimulus Injects", brainStimulusList, brainStimulusList );
+				
+			}
+		});
+
 	}
 }

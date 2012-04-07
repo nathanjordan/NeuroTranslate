@@ -4,9 +4,9 @@ import unr.neurotranslate.ncs.NCSData;
 
 public class NCSConversionData implements ConversionData {
 	
-	NCSData ncs;
+	NCSData ncs = new NCSData();
 	
-	ConversionNotes notes;
+	ConversionNotes notes = new ConversionNotes();
 
 	@Override
 	public Object getData() {

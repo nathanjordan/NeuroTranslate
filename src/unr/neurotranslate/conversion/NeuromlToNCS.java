@@ -20,8 +20,14 @@ import org.morphml.neuroml.schema.Level3Cell;
 import org.morphml.neuroml.schema.Level3Cells;
 import org.morphml.neuroml.schema.Neuroml;
 
+import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.ColumnShell;
 import unr.neurotranslate.ncs.Compartment;
+import unr.neurotranslate.ncs.Layer;
+import unr.neurotranslate.ncs.LayerShell;
+import unr.neurotranslate.ncs.SynFacilDepress;
+import unr.neurotranslate.ncs.SynLearning;
+import unr.neurotranslate.ncs.SynPSG;
 
 
 public class NeuromlToNCS {
@@ -30,11 +36,11 @@ public class NeuromlToNCS {
 	
 	// TODO set all stdev to 0
 	
-	public static ArrayList<unr.neurotranslate.ncs.Cell> generateNCSCells( Level3Cells neuromlCells, Projections projections, Populations populations, ArrayList<Compartment> compartments ) {
+	public static ArrayList<unr.neurotranslate.ncs.Cell> generateNCSCells(Level3Cells neuromlCells, Projections projections, Populations populations, ArrayList<Compartment> compartments) {
 		
 			// NCS cells array
 		    ArrayList<unr.neurotranslate.ncs.Cell> ncsCellsList = new ArrayList<unr.neurotranslate.ncs.Cell>();
-		    unr.neurotranslate.ncs.Cell tempNCSCell = new unr.neurotranslate.ncs.Cell();
+		    unr.neurotranslate.ncs.Cell tempNCSCell;
 			
 			// segments
 			Segments neuromlSegments = new Segments();
@@ -42,14 +48,15 @@ public class NeuromlToNCS {
 			
 			// compartments
 			ArrayList<String> compNameList = new ArrayList<String>();
-			Compartment tempComp = new Compartment();
+			Compartment tempComp;
 			
 			// temp Point
-			Point tempPoint = new Point();
+			Point tempPoint;
 			
 			// for each cell in NeuroML
 			for(Level3Cell neuromlCell : neuromlCells.getCells())
 			{
+				tempNCSCell = new unr.neurotranslate.ncs.Cell();
 				// set cell name
 				tempNCSCell.type = neuromlCell.getName();	
 							
@@ -64,6 +71,8 @@ public class NeuromlToNCS {
 			    //for each segment in that cell
 				for(Segment seg : seglist)
 				{
+					tempPoint = new Point();
+					tempComp = new Compartment();
 					// make new compartment
 					if( !compartments.contains(seg.getName()) )
 					{
@@ -99,7 +108,7 @@ public class NeuromlToNCS {
 		}
 	
 
-    public static Compartment generateNCSCompartments( Segment segment, Projections projections, Populations populations, Level3Cell level3Cell ){
+    public static Compartment generateNCSCompartments(Segment segment, Projections projections, Populations populations, Level3Cell level3Cell){
     	
     	//ArrayList<Compartment> compartmentList = new ArrayList<Compartment>();
         Compartment tempComp = new Compartment();	    
@@ -159,11 +168,179 @@ public class NeuromlToNCS {
     	return tempComp;
     }
     
-    public static ColumnShell generateNCSColumnShells( Segment segment, Projections projections ){
-    	ColumnShell columnShell = new ColumnShell();
+    public static ArrayList<ColumnShell> generateNCSColumnShells(Populations populations){
     	
+    	ArrayList<ColumnShell> cShellList = new ArrayList<ColumnShell>();
+    	ColumnShell columnShell;
+    	int cShellIndex = 0;
+    	Double tempD = 0.0;
+    	ArrayList<Double> xList = new ArrayList<Double>();
+ 
+    	// get list of non repeating x coordinates
+    	for(Population pop : populations.getPopulations())
+    	{
+    		if(!xList.contains(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX()))
+    		{
+    			xList.add(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX());
+    		}
+    	}
     	
-    	return columnShell;
+    	// for each unique x create column shell
+        for(Double d : xList)
+    	{
+        	columnShell = new ColumnShell();
+        	columnShell.type = "columnShell" + d.intValue();
+        	columnShell.x = d;
+        	columnShell.y = 0;
+        	cShellList.add(columnShell);  
+        }
+    		      		
+    	// getting max width and height
+    	for(Population population: populations.getPopulations())
+    	{
+    		// get correct column shell
+    		for( ColumnShell cShell : cShellList)
+    		{
+    			tempD = population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX();
+    			
+    			if(("columnShell" + tempD.intValue()).equals(cShell.type) )
+    			{
+    				cShellIndex = cShellList.indexOf(cShell);
+    				break;
+    			}
+    		}
+    	
+    		// get max height and min
+    		if(population.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getWidth() > cShellList.get(cShellIndex).width)
+    		{
+    			cShellList.get(cShellIndex).width = population.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getWidth();
+    		}
+    		if( population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() + 
+    				population.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getHeight() > cShellList.get(cShellIndex).height)
+    		{
+    			cShellList.get(cShellIndex).height = population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() + 
+        				population.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getHeight();
+    		}
+    	}	   	 
+    	return cShellList;
+    }
+    
+    public static Column generateNCSColumn()
+    {
+    	Column column = new Column();
+    	
+    	return column;
+    	
+    }
+    		
+    public static ArrayList<LayerShell> generateNCSLayerShell(Populations populations, ArrayList<ColumnShell> cShells)
+    {
+    	ArrayList<LayerShell> lShellList = new ArrayList<LayerShell>();
+    	LayerShell layerShell = new LayerShell(); 
+    	ArrayList<Double> yList = new ArrayList<Double>();
+    	int lSIndex = 1;
+    	Double temp;
+    	
+    	// for each population
+    	for(ColumnShell cShell : cShells)
+    	{
+    		for(Population pop : populations.getPopulations())
+    		{
+    			// if we are on the right column shell
+    			if(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX() == cShell.x)
+    			{
+    				// if we haven't hit that y yet we need to make a new layer shell
+    				if(!yList.contains(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY()))
+    			    {    					
+    					yList.add(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY());
+    					layerShell = new LayerShell();
+    					temp = pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX();
+    					layerShell.type = "layerShell" + lSIndex + "_at" + temp.intValue();
+    					layerShell.lower = pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() / cShell.height * 100;
+    					layerShell.upper = (pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() + 
+    							pop.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getHeight()) / cShell.height * 100;
+    					lShellList.add(layerShell);
+    					lSIndex++;
+    				}
+    			}
+    		}
+    		lSIndex = 1;
+    		yList.clear();
+    	}
+    			// for each unique y per that x
+    				// make layer shell
+    	
+    	return lShellList;
+    	
+    }
+    
+    public static ArrayList<Layer> generateNCSLayer(Populations populations, ArrayList<LayerShell> lShells,  ArrayList<ColumnShell> cShells)
+    {
+    	ArrayList<Layer> layerList = new ArrayList<Layer>();
+    	Layer tempLayer;
+    	
+    	// find layer shell for each population
+    	for(Population pop : populations.getPopulations())
+    	{
+    		// first find which column shell its in
+    		for(ColumnShell cShell : cShells)
+    		{
+    			// if the population starts at the same x as a column shell it is in that column shell
+    			if(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX() == cShell.x)
+    			{
+    				// find which layer shell its in
+    				for(LayerShell lShell : lShells)
+    				{    					
+    					// if the y is between the lower and upper layer shell bounds we found the right layer shell
+    					if((pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() + pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY()) / cShell.height *100 == lShell.lower)
+    					{
+    						tempLayer = new Layer();
+    						tempLayer.layerShell = lShell;
+    						tempLayer.layerShellName = lShell.type;
+    						layerList.add(tempLayer);
+    					}				
+    				}
+    			}
+    		}
+    	}
+    	return layerList;
+    	
+    }
+    
+    private static ArrayList<Double> getXList(Populations populations)
+    {
+    	ArrayList<Double> list = new ArrayList<Double>();
+    	
+    	for( Population pop : populations.getPopulations())
+    	{
+    		list.add(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX());
+    	}
+    	   	
+    	return list;
+    }
+    
+    public static SynFacilDepress generateNCSSynFacilDepress()
+    {
+    	SynFacilDepress synFacilDepress = new SynFacilDepress();
+    	synFacilDepress.type = "NO_SFD";
+    	synFacilDepress.SFD = "NONE";
+    	return synFacilDepress;
+    }
+    
+    public static SynLearning generateNCSSynLearning()
+    {
+    	SynLearning synLearning = new SynLearning();
+    	synLearning.type = "NO_LEARN";
+    	synLearning.learning = "NONE";
+    	return synLearning;
+    }
+    
+    public static SynPSG generateNCSSynPSG()
+    {
+    	SynPSG synPsg = new SynPSG();
+    	//synPsg.type 
+    	return synPsg;
     }
 }
+
    

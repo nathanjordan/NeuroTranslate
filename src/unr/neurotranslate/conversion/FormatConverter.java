@@ -86,7 +86,8 @@ public class FormatConverter {
 		ncsConversionData.ncs.compartmentList = tempCompartmentList;
 		ncsConversionData.ncs.columnShellList = NeuromlToNCS.generateNCSColumnShells(m.getPopulations());
 		ncsConversionData.ncs.layerShellList = NeuromlToNCS.generateNCSLayerShell(m.getPopulations(), ncsConversionData.ncs.columnShellList);
-		ncsConversionData.ncs.layerList =  NeuromlToNCS.generateNCSLayer(m.getPopulations(), ncsConversionData.ncs.layerShellList, ncsConversionData.ncs.columnShellList);
+		ncsConversionData.ncs.layerList =  NeuromlToNCS.generateNCSLayer(m.getPopulations(), ncsConversionData.ncs.layerShellList, ncsConversionData.ncs.columnShellList, ncsConversionData.ncs.cellList);
+		ncsConversionData.ncs.columnList = NeuromlToNCS.generateNCSColumns(ncsConversionData.ncs.columnShellList, ncsConversionData.ncs.layerList);
 		return ncsConversionData;
 		
 		}

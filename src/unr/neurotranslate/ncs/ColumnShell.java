@@ -2,12 +2,12 @@ package unr.neurotranslate.ncs;
 
 public class ColumnShell extends TypedElement {
 	
-	public double width;
+	public Double width;
 	
-	public double height;
+	public Double height;
 	
-	public double x;
+	public Double x;
 	
-	public double y;
+	public Double y;
 	
 	}

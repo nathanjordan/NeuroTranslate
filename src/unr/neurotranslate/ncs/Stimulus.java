@@ -10,43 +10,43 @@ public class Stimulus extends TypedElement {
 	
 	public String filename;
 	
-	public int port;
+	public Integer port;
 	
-	public double timeIncrement;
+	public Double timeIncrement;
 	
-	public int freqCols;
+	public Integer freqCols;
 	
-	public int cellsPerFreq;
+	public Integer cellsPerFreq;
 	
 	public TwoValue dynRange = new TwoValue();
 	
 	public String timing;
 	
-	public int sameSeed;
+	public Integer sameSeed;
 	
-	public double ampStart;
+	public Double ampStart;
 	
-	public double ampEnd;
+	public Double ampEnd;
 	
-	public double phase;
+	public Double phase;
 	
-	public double vertTrans;
+	public Double vertTrans;
 	
-	public double width;
+	public Double width;
 	
 	public ArrayList<Double> timeStart;
 	
 	public ArrayList<Double> timeEnd;
 	
-	public double freqStart;
+	public Double freqStart;
 	
-	public int seed;
+	public Integer seed;
 	
-	public double rate;
+	public Double rate;
 	
-	public double tauNoise;
+	public Double tauNoise;
 	
-	public double correl;
+	public Double correl;
 	
 	public Stimulus() {
 		

@@ -2,9 +2,9 @@ package unr.neurotranslate.ncs;
 
 public class SynData extends TypedElement {
 	
-	public int seed;
+	public Integer seed;
 	
-	public double maxConduct;
+	public Double maxConduct;
 	
 	public TwoValue delay = new TwoValue();
 	

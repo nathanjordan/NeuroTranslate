@@ -2,7 +2,7 @@ package unr.neurotranslate.ncs;
 
 public class Synapse extends TypedElement {
 	
-	public int seed;
+	public Integer seed;
 	
 	public String sfdLabel;
 	
@@ -10,15 +10,15 @@ public class Synapse extends TypedElement {
 	
 	public String learnLabel;
 	
-	public double hebbStart;
+	public Double hebbStart;
 	
-	public double hebbEnd;
+	public Double hebbEnd;
 	
 	public TwoValue absoluteUse = new TwoValue();
 	
-	public double[] rseInit;
+	public Double[] rseInit;
 	
-	public double[] prevSpikeRange;
+	public Double[] prevSpikeRange;
 	
 	public TwoValue maxConduct = new TwoValue();
 	
@@ -26,8 +26,8 @@ public class Synapse extends TypedElement {
 	
 	public TwoValue synReversal = new TwoValue();
 	
-	public double sfdStart;
+	public Double sfdStart;
 	
-	public double sfdEnd;
+	public Double sfdEnd;
 	
 	}

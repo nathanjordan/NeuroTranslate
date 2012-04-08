@@ -6,15 +6,15 @@ public class Brain extends TypedElement {
 	
 	public String job;
 	
-	public double duration;
+	public Double duration;
 	
-	public double FSV;
+	public Double FSV;
 	
-	public boolean interactive;
+	public Boolean interactive;
 	
-	public int seed;
+	public Integer seed;
 	
-	public int distance;
+	public Integer distance;
 	
 	public ArrayList<Column> columnTypes = new ArrayList<Column>();
 	
@@ -30,21 +30,21 @@ public class Brain extends TypedElement {
 	
 	public String savefile;
 	
-	public double saveTime;
+	public Double saveTime;
 	
 	public String load;
 	
-	public int port;
+	public Integer port;
 	
 	public String server;
 	
-	public int serverPort;
+	public Integer serverPort;
 	
-	public boolean warningsOn;
+	public Boolean warningsOn;
 	
-	public int outputCells;
+	public Boolean outputCells;
 	
-	public int outputConnectMap;
+	public Boolean outputConnectMap;
 	
 	//Parsing stuff
 	

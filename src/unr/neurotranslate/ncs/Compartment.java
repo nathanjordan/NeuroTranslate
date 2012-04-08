@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Compartment extends TypedElement {
 	
-	public int seed;
+	public Integer seed;
 	
 	public SpikeShape spikeshape;
 	

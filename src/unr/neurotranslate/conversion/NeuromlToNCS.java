@@ -122,8 +122,8 @@ public class NeuromlToNCS {
     		tempComp.spikeshapeName = "spikeshape" + 1;
     		tempComp.tauMembrane.mean = 0.020;
     		tempComp.tauMembrane.stdev = 0.0;
-    		tempComp.rMembrane.mean = 200;
-    		tempComp.rMembrane.stdev = 0;
+    		tempComp.rMembrane.mean = 200.0;
+    		tempComp.rMembrane.stdev = 0.0;
     		// look at target group - find cell - got to segment
     		// get the target cell group in the projection
     		for( Projection proj: projections.getProjections() )
@@ -141,7 +141,7 @@ public class NeuromlToNCS {
     				}
     				// if it's not there, set to default
     				inTargetGroup = false;
-    				tempComp.threshold.mean = 0;
+    				tempComp.threshold.mean = 0.0;
     			}
     				// set this compartment's threshold to the threshold of this projection
     		    	if(level3Cell.getName() == cell && inTargetGroup)
@@ -191,7 +191,7 @@ public class NeuromlToNCS {
         	columnShell = new ColumnShell();
         	columnShell.type = "columnShell" + d.intValue();
         	columnShell.x = d;
-        	columnShell.y = 0;
+        	columnShell.y = 0.0;
         	cShellList.add(columnShell);  
         }
     		      		

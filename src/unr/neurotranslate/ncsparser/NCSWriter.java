@@ -15,6 +15,8 @@ public class NCSWriter {
 		
 		BufferedWriter b = new BufferedWriter(w);
 		
+		printBrain( d.brain , b );
+		
 		b.close();
 		
 		}
@@ -23,16 +25,43 @@ public class NCSWriter {
 		
 		buf.write("BRAIN\n");
 		
-		if(b.job != null)
-			buf.write("\tJOB " + b.job);
+		writeProperty( "JOB", b.job, buf );
 		
-		if(b.duration != 0)
-			buf.write("\tDURATION " + b.duration);
+		writeProperty( "DURATION", b.duration, buf );
 		
-		if(b.FSV == 0)
-			buf.write("\tFSV " + b.FSV);
+		writeProperty( "FSV", b.FSV, buf );
+		
+		writeProperty( "INTERACTIVE", b.interactive, buf );
+		
+		writeProperty( "SEED", b.seed, buf );
+		
+		writeProperty( "DISTANCE", b.distance, buf );
+		
+		//Array Crap
+		
+		//SAVE
+		
+		writeProperty( "LOAD", b.savefile, buf );
+		
+		writeProperty( "WARNINGS_ON", b.warningsOn, buf );
+		
+		writeProperty( "OUTPUT_CELLS", b.outputCells, buf );
+		
+		writeProperty( "OUTPUT_CONNECT_MAP", b.outputConnectMap, buf );
 		
 		buf.write("END_BRAIN\n\n");
+		
+		}
+	
+	protected static void writeProperty( String name , Object o , BufferedWriter b ) throws IOException {
+		
+		if( o != null )
+			
+			b.write( "\t" + name + "\t" + o.toString() + "\n" );
+		
+		}
+	
+	protected static void writeProperties( String name , Object o , BufferedWriter b ) throws IOException {
 		
 		}
 	

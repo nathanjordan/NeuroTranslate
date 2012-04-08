@@ -4,11 +4,11 @@ public class Report extends TypedElement {
 	
 	public Object cells;
 	
-	public double prob;
+	public Double prob;
 	
 	public String cellSequence;
 	
-	public int frequency;
+	public Integer frequency;
 	
 	public String reportOn;
 	
@@ -22,8 +22,8 @@ public class Report extends TypedElement {
 	
 	public String filename;
 	
-	public double[] timeStart;
+	public Double[] timeStart;
 	
-	public double[] timeEnd;
+	public Double[] timeEnd;
 	
 	}

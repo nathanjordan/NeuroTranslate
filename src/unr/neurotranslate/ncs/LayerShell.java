@@ -2,8 +2,8 @@ package unr.neurotranslate.ncs;
 
 public class LayerShell extends TypedElement {
 	
-	public double lower;
+	public Double lower;
 	
-	public double upper;
+	public Double upper;
 	
 	}

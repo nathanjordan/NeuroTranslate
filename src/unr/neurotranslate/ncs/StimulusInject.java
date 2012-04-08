@@ -12,7 +12,7 @@ public class StimulusInject extends TypedElement {
 	
 	public Compartment compartment;
 	
-	public double probability;
+	public Double probability;
 	
 	//parser stuff
 	

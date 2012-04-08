@@ -4,7 +4,7 @@ public class Event extends TypedElement {
 	
 	public String filename;
 	
-	public double value;
+	public Double value;
 	
 	public Synapse synapse;
 	

@@ -2,9 +2,9 @@ package unr.neurotranslate.ncs;
 
 public class TwoValue {
 	
-	public double mean;
+	public Double mean;
 	
-	public double stdev;
+	public Double stdev;
 	
 	public void set( double x , double y ) {
 		

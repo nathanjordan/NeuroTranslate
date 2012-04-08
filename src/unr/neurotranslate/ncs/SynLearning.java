@@ -2,7 +2,7 @@ package unr.neurotranslate.ncs;
 
 public class SynLearning extends TypedElement {
 	
-	public int seed;
+	public Integer seed;
 	
 	public String learning;
 	

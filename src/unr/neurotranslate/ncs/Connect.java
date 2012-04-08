@@ -20,9 +20,9 @@ public class Connect {
 	
 	public Synapse synapseType;
 	
-	public double probability;
+	public Double probability;
 	
-	public double speed;
+	public Double speed;
 	
 	/* Names( These are needed until the file is completely parsed)
 	 * We need to completely parse the file to figure out which objects

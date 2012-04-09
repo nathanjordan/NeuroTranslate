@@ -18,11 +18,11 @@ public class Channel extends TypedElement {
 	
 	public TwoValue eHalfMinM = new TwoValue();
 	
-	public float[] slopeFactorM;
+	public Float[] slopeFactorM;
 	
 	public TwoValue tauScaleFactorM = new TwoValue();
 	
-	public int seed;
+	public Integer seed;
 	
 	//Kahp channel
 	
@@ -48,13 +48,13 @@ public class Channel extends TypedElement {
 	
 	public TwoValue slopeFactorH = new TwoValue();
 	
-	public float[] vTauValueM;
+	public Float[] vTauValueM;
 	
-	public float[] vTauVoltageM;
+	public Float[] vTauVoltageM;
 	
-	public float[] vTauValueH;
+	public Float[] vTauValueH;
 	
-	public float[] vTauVoltageH;
+	public Float[] vTauVoltageH;
 	
 	public Channel( String chType ) {
 		

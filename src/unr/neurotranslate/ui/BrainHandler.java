@@ -2,9 +2,15 @@ package unr.neurotranslate.ui;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import org.gnome.gdk.EventVisibility;
+import org.gnome.gdk.VisibilityState;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
+import org.gnome.gtk.ScrolledWindow;
+import org.gnome.gtk.Table;
 import org.gnome.gtk.TreeView;
+import org.gnome.gtk.Viewport;
+import org.gnome.gtk.Widget;
 import org.gnome.gtk.Window;
 import org.gnome.gtk.Button.Clicked;
 
@@ -28,6 +34,32 @@ public class BrainHandler {
 	
 	public BrainHandler() throws FileNotFoundException {
 		
+	ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow6", "window1");
+		
+		c.connect(new ScrolledWindow.VisibilityNotifyEvent() {
+		
+			@Override
+			public boolean onVisibilityNotifyEvent(Widget arg0, EventVisibility arg1) {
+				
+				if(arg1.getState() == VisibilityState.PARTIAL ){
+					System.out.println("gone");
+				}
+				
+				return false;
+			}
+		});
+
+		c.connect( new ScrolledWindow.Hide() {
+			
+			@Override
+			public void onHide(Widget arg0) {
+				
+				if( arg0.getHasFocus())
+				System.out.println("SJDFKLJDFLSDLKFJSDLJ");
+				
+			}
+		});
+		
 		// Create array lists
 		activeL = new ArrayList<String>();
 		availL = new ArrayList<String>();
@@ -46,11 +78,17 @@ public class BrainHandler {
 	
 	public void setLists() throws FileNotFoundException {
 
-		// Build models and set views		
-		WidgetReferences.columnTypes = new ListEntity( actBrainColumnList, "bColTypes", "window1" ); // debugging
-		ListEntity stimulusInjects = new ListEntity( brainStimulusList, "bStimInjects", "window1" );
-		ListEntity reports = new ListEntity( brainReportsList, "bReports", "window1" );
-		ListEntity connections = new ListEntity( brainConnectionList, "bConnections", "window1" );
+		// Build models and set views
+		WidgetReferences w = new WidgetReferences();
+		w.getT("b1").addData("hey");
+		w.getT("b1").addData("yo");
+		
+		
+		
+		//WidgetReferences.columnTypes = new ListEntity( "bColTypes", "window1" ); // debugging
+		ListEntity stimulusInjects = new ListEntity( "bStimInjects", "window1" );
+		ListEntity reports = new ListEntity( "bReports", "window1" );
+		ListEntity connections = new ListEntity( "bConnections", "window1" );
 		
 		
 		// TODO - Get array lists from data model

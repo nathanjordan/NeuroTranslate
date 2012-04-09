@@ -46,9 +46,9 @@ public class RecurrentConnect {
 	
 	public Synapse synapseType;
 	
-	public double probabilityAtoB;
+	public Double probabilityAtoB;
 	
-	public double probabilityBtoA;
+	public Double probabilityBtoA;
 	
 	//Parser stuff
 	

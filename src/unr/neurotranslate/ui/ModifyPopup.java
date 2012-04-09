@@ -31,7 +31,15 @@ public class ModifyPopup {
 		confirmButton = (Button) GladeParseUtil.grabWidget( "modifyConfirm", "window2" );
 		addButton = (Button) GladeParseUtil.grabWidget( "modifyAdd", "window2" );
 		removeButton = (Button) GladeParseUtil.grabWidget( "modifyRemove", "window2" );			
-		popupWin = (Window) GladeParseUtil.grabWidget( "window2", "window2" );			
+		popupWin = (Window) GladeParseUtil.grabWidget( "window2", "window2" );		
+		
+		// Create lists for each view
+		activeList = new ArrayList<String>();		
+		availableList = new ArrayList<String>();
+		
+		// Create the active and available tree views
+		activeModel = new ListEntity( "activeTree", "window2" );
+		availableModel = new ListEntity( "availableTree", "window2");
 		
 		// Set connects for handling each button event
 		// Set cancel event		
@@ -88,13 +96,7 @@ public class ModifyPopup {
 	// Call this static function to build the popup
 	public static void buildPopup() throws FileNotFoundException {
 		
-		// Create lists for each view
-		activeList = new ArrayList<String>();		
-		availableList = new ArrayList<String>();
 		
-		// Create the active and available tree views
-		activeModel = new ListEntity( activeList, "activeTree", "window2" );
-		availableModel = new ListEntity( availableList, "availableTree", "window2");
 
 	}
 	

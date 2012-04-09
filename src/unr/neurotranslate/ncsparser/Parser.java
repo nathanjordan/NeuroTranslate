@@ -2005,11 +2005,11 @@ case 48:
 break;
 case 49:
 //#line 151 "parse.yaccj"
-{ brain.outputCells = val_peek(0).ival;  }
+{ brain.outputCells = ( val_peek(0).ival != 0 );  }
 break;
 case 50:
 //#line 152 "parse.yaccj"
-{ brain.outputConnectMap = val_peek(0).ival;  }
+{ brain.outputConnectMap = ( val_peek(0).ival != 0 );  }
 break;
 case 51:
 //#line 153 "parse.yaccj"
@@ -2163,8 +2163,8 @@ case 92:
 {
        						 cellList.get( cellList.size() - 1 ).compartmentNames.add( val_peek(4).sval );
                              cellList.get( cellList.size() - 1 ).compartmentLabels.add( val_peek(3).sval );
-                             cellList.get( cellList.size() - 1 ).xList.add( val_peek(2).dval );
-                             cellList.get( cellList.size() - 1 ).yList.add( val_peek(1).dval );
+                             cellList.get( cellList.size() - 1 ).xList.add( new Double(val_peek(2).dval) );
+                             cellList.get( cellList.size() - 1 ).yList.add( new Double(val_peek(1).dval) );
        						}
 break;
 case 93:
@@ -2493,7 +2493,9 @@ case 233:
 break;
 case 234:
 //#line 430 "parse.yaccj"
-{ synapseList.get( synapseList.size() - 1).synPSG  = val_peek(0).sval; }
+{ //synapseList.get( synapseList.size() - 1).synPSG  = val_peek(0).sval; 
+	
+}
 break;
 case 235:
 //#line 431 "parse.yaccj"

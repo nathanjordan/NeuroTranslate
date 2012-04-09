@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    This example shows a Level 3 compliant file, containing a number of connected cell models  
+-->
+
+<neuroml xmlns="http://morphml.org/neuroml/schema"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:net="http://morphml.org/networkml/schema" 
+    xmlns:mml="http://morphml.org/morphml/schema" 
+    xmlns:meta="http://morphml.org/metadata/schema" 
+    xmlns:bio="http://morphml.org/biophysics/schema"   
+    xmlns:cml="http://morphml.org/channelml/schema"  
+    xsi:schemaLocation="http://morphml.org/neuroml/schema http://www.neuroml.org/NeuroMLValidator/NeuroMLFiles/Schemata/v1.8.1/Level3/NeuroML_Level3_v1.8.1.xsd"
+    length_units="micrometer">
+                        
+
+    <meta:notes>A completely specified network in NeuroML Level 3. While this is useful for 
+    exporting/importing/saving from an application, better practice might be to have the cell 
+    definitions, the channel mechanisms, and network specification in separate files.</meta:notes>
+
+    
+    <!-- The cell types present in the network-->                       
+    <cells>
+        <cell name="Excitatory">
+            <segments xmlns="http://morphml.org/morphml/schema">
+                <segment id ="0" name="s1" cable="0">
+                    <proximal x="0" y="0" z="0"/>
+                    <distal x="0" y="0" z="0"/>
+                </segment>
+            </segments>
+
+        </cell>
+
+	<cell name="Inhibitory">
+            <segments xmlns="http://morphml.org/morphml/schema">
+                <segment id ="0" name="s1" cable="1">
+                    <proximal x="5" y="0" z="0"/>
+                    <distal x="0" y="0" z="0"/>
+                </segment>
+            </segments>     
+        </cell>
+    </cells>
+
+    <!-- Synapses -->
+    <channels units="SI Units">
+
+    <synapse_type name="ExcitSyn1" xmlns="http://morphml.org/channelml/schema">
+	<doub_exp_syn max_conductance="0.5" rise_time=".0001" decay_time="0.0005" reversal_potential="0" />
+    </synapse_type>
+
+    <synapse_type name="InhibSyn1" xmlns="http://morphml.org/channelml/schema">
+	<doub_exp_syn max_conductance="0.5" rise_time=".0001" decay_time="0.001" reversal_potential="-80" />		
+    </synapse_type>
+    </channels>
+
+    <!-- The cell populations present in the network-->
+    <populations  xmlns="http://morphml.org/networkml/schema">
+	<!-- layer_A -->        
+	<population name="ExcitatoryPopA" cell_type="Excitatory">
+            <pop_location>
+		<random_arrangement>
+			<population_size>50</population_size>
+			<rectangular_location>
+				<meta:corner x="0" y="0" z="0" />
+				<meta:size width="300" height="280" />
+			</rectangular_location>
+		</random_arrangement>
+            </pop_location>	
+        </population>
+
+	<population name="InhibitoryPopA" cell_type="Inhibitory">
+            <pop_location>
+		<random_arrangement>
+			<population_size>10</population_size>
+			<rectangular_location>
+				<meta:corner x="50" y="0" z="0" />
+				<meta:size width="300" height="280" />
+			</rectangular_location>
+		</random_arrangement>
+            </pop_location>	
+        </population>
+
+	<!-- layer_B -->
+        <population name="ExcitatoryPopB" cell_type="Excitatory">
+            <pop_location>
+		<random_arrangement>
+			<population_size>50</population_size>
+			<rectangular_location>
+				<meta:corner x="0" y="280" z="0" />
+				<meta:size width="300" height="240" />
+			</rectangular_location>
+		</random_arrangement>
+            </pop_location>	
+        </population>
+
+	<population name="InhibitoryPopB" cell_type="Inhibitory">
+            <pop_location>
+		<random_arrangement>
+			<population_size>10</population_size>
+			<rectangular_location>
+				<meta:corner x="0" y="280" z="0" />
+				<meta:size width="300" height="240" />
+			</rectangular_location>
+		</random_arrangement>
+            </pop_location>	
+        </population>
+    </populations>
+    
+    
+    <!-- The projections between populations in the network-->
+    <projections units="Physiological Units" xmlns="http://morphml.org/networkml/schema">
+	<!-- brain_connect_1 -->
+	<projection name="brain_1_ExcitatoryPopA_ExcitatoryPopB" source="ExcitatoryPop1" target="ExcitatoryPop3">
+            <synapse_props synapse_type="ExcitSyn1" internal_delay=".001" weight=".25" threshold="-50"/>
+            <connectivity_pattern>
+		<fixed_probability probability="1" />
+	    </connectivity_pattern>
+        </projection>
+	<!-- brain_connect_2 -->
+	<projection name="brain_2_InhibitoryPopB_ExcitatoryPopA" source="InhibitoryPop4" target="ExcitatoryPop1">
+            <synapse_props synapse_type="InhibSyn1" internal_delay=".001" weight=".25" threshold="-50"/>
+            <connectivity_pattern>
+		<fixed_probability probability="1" />
+	    </connectivity_pattern>
+        </projection>
+
+    </projections>
+    
+    <!-- The electrical inputs to the cells in the network -->
+    <inputs units="SI Units" xmlns="http://morphml.org/networkml/schema">
+        
+        <input name="StInject1">
+            <pulse_input delay="0.0" duration=".01" amplitude="3" />
+            <target population="ExcitatoryPopA">
+		<site_pattern>
+			<percentage_cells percentage="100"/>
+		</site_pattern> 
+            </target>
+        </input>
+	<input name="StInject2">
+            <pulse_input delay="0.0" duration=".01" amplitude="3" />
+            <target population="InhibitoryPopB">
+		<site_pattern>
+			<percentage_cells percentage="100"/>
+		</site_pattern> 
+            </target>
+        </input>
+    </inputs>
+</neuroml>

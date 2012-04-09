@@ -17,6 +17,7 @@ public class LayerHandler {
 	
 	public ListEntity layerShells;
 	public ListEntity layers;
+	public ComboEntity layShellSel;
 	public Entry lsType;
 	public Entry lsLower;
 	public Entry lsUpper;
@@ -35,8 +36,9 @@ public class LayerHandler {
 		lType = (Entry) GladeParseUtil.grabWidget( "entry17", "window1" );
 		
 		// Lists
-		layerShells = new ListEntity( lShells, "lLayerShells", "window1" );
-		layers = new ListEntity( lays, "lLayers", "window1" );		
+		layerShells = new ListEntity( "lLayerShells", "window1" );
+		layers = new ListEntity( "lLayers", "window1" );		
+		layShellSel = new ComboEntity( "combobox1", "window1" );
 		
 		setLists();
 		

@@ -23,10 +23,33 @@ public class ListEntity {
 	private TreeViewColumn column;
 	private CellRendererText renderer;
 	private String selected;
+	
+	// Constructor builds a tree view model without a data source!
+	public ListEntity( String widgetName, String root ) throws FileNotFoundException {
 
+		// Grab the required widget
+		view = (TreeView) GladeParseUtil.grabWidget( widgetName, root );	
+		
+		// Append header to view
+		column = view.appendColumn();
+		
+		// Set model with passed in array list
+        model = new ListStore(new DataColumn[] {
+            header = new DataColumnString(),          
+        });       
+       
+        // Set renderer to display column 
+        renderer = new CellRendererText(column);
+        renderer.setText(header);
+       
+        // Set the model to the view
+        view.setModel( model ); 	
+       
+        selectionHandler();
+	}
 	
 	// Constructor builds a tree view model with list as the data source
-	public ListEntity( ArrayList<String> dataSource, String widgetName, String root ) throws FileNotFoundException {
+	/*public ListEntity( ArrayList<String> dataSource, String widgetName, String root ) throws FileNotFoundException {
 
 		// Grab the required widget
 		view = (TreeView) GladeParseUtil.grabWidget( widgetName, root );	
@@ -53,7 +76,7 @@ public class ListEntity {
         view.setModel( model ); 	
        
         selectionHandler();
-	}
+	}*/
 	
 	// Add new data to the model
 	public void addData( String newData ) {
@@ -74,6 +97,31 @@ public class ListEntity {
 		if( tempSelected.getSelected() != null ) {
 			model.removeRow( tempSelected.getSelected() );
 		}
+	}
+	
+	// Getter for returning selected value in the tree view
+	public String getSelected() {				
+		return selected;
+	}
+	
+	public void selectionHandler() {
+		// Temporary value for getting selected string
+		selected = new String();
+		
+		// Connect for getting selected row in tree view		
+		rowSelection = view.getSelection();
+		rowSelection.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+				
+				// Get selected string
+				if( rowSelection.getSelected() != null ) { 
+				selected = model.getValue(rowSelection.getSelected(), header);				
+				}							
+			}
+		});
+		
 	}
 	
 	// Getter for model
@@ -142,28 +190,5 @@ public class ListEntity {
 		view.setModel(model);
 	}
 	
-	// Getter for returning selected value in the tree view
-	public String getSelected() {				
-		return selected;
-	}
-	
-	public void selectionHandler() {
-		// Temporary value for getting selected string
-		selected = new String();
-		
-		// Connect for getting selected row in tree view		
-		rowSelection = view.getSelection();
-		rowSelection.connect(new Changed() {
-			
-			@Override
-			public void onChanged(TreeSelection arg0) {	
-				
-				// Get selected string
-				if( rowSelection.getSelected() != null ) { 
-				selected = model.getValue(rowSelection.getSelected(), header);				
-				}							
-			}
-		});
-		
-	}
+
 }

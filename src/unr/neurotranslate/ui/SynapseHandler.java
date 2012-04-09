@@ -93,9 +93,9 @@ public class SynapseHandler {
 		ssLLNegStd = (Entry) GladeParseUtil.grabWidget("entry78", "window1");
 		
 		// Lists
-		synapses = new ListEntity( sSynap, "SynapseList", "window1" );
-		SFDLabels = new ListEntity( sfd, "SFDLabels", "window1" );
-		LearnLabels = new ListEntity( ll, "LearnLabels", "window1" );
+		synapses = new ListEntity( "SynapseList", "window1" );
+		SFDLabels = new ListEntity( "SFDLabels", "window1" );
+		LearnLabels = new ListEntity( "LearnLabels", "window1" );
 		
 		setLists();
 		
@@ -103,7 +103,6 @@ public class SynapseHandler {
 		
 		modifyHandlers();
 		
-		Label l = (Label) GladeParseUtil.grabWidget( "label27", "window1" );
 	}
 	
 	public void setLists() throws FileNotFoundException {

@@ -18,9 +18,9 @@ public class CompartmentConnect {
 	
 	public Compartment compartment2;
 	
-	public int speed;
+	public Integer speed;
 	
-	public double G;
+	public Double G;
 	
 	//parser stuff
 	

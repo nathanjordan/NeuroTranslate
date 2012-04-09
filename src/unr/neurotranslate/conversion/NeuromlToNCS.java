@@ -20,6 +20,8 @@ import org.morphml.neuroml.schema.Level3Cell;
 import org.morphml.neuroml.schema.Level3Cells;
 import org.morphml.neuroml.schema.Neuroml;
 
+import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
+
 import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.ColumnShell;
 import unr.neurotranslate.ncs.Compartment;
@@ -31,6 +33,10 @@ import unr.neurotranslate.ncs.SynPSG;
 
 
 public class NeuromlToNCS {
+
+	
+	
+    public static ArrayList<ArrayList<String>> cShellLShellList = new ArrayList<ArrayList<String>>();
 	
 	static int popIndex = 1;
 	
@@ -122,8 +128,8 @@ public class NeuromlToNCS {
     		tempComp.spikeshapeName = "spikeshape" + 1;
     		tempComp.tauMembrane.mean = 0.020;
     		tempComp.tauMembrane.stdev = 0.0;
-    		tempComp.rMembrane.mean = 200;
-    		tempComp.rMembrane.stdev = 0;
+    		tempComp.rMembrane.mean = 200.0;
+    		tempComp.rMembrane.stdev = 0.0;
     		// look at target group - find cell - got to segment
     		// get the target cell group in the projection
     		for( Projection proj: projections.getProjections() )
@@ -141,7 +147,7 @@ public class NeuromlToNCS {
     				}
     				// if it's not there, set to default
     				inTargetGroup = false;
-    				tempComp.threshold.mean = 0;
+    				tempComp.threshold.mean = 0.0;
     			}
     				// set this compartment's threshold to the threshold of this projection
     		    	if(level3Cell.getName() == cell && inTargetGroup)
@@ -175,6 +181,7 @@ public class NeuromlToNCS {
     	int cShellIndex = 0;
     	Double tempD = 0.0;
     	ArrayList<Double> xList = new ArrayList<Double>();
+    	ArrayList<String> e;
  
     	// get list of non repeating x coordinates
     	for(Population pop : populations.getPopulations())
@@ -191,8 +198,10 @@ public class NeuromlToNCS {
         	columnShell = new ColumnShell();
         	columnShell.type = "columnShell" + d.intValue();
         	columnShell.x = d;
-        	columnShell.y = 0;
+        	columnShell.y = 0.0;
         	cShellList.add(columnShell);  
+        	e = new ArrayList<String>();
+			cShellLShellList.add(e);
         }
     		      		
     	// getting max width and height
@@ -225,11 +234,32 @@ public class NeuromlToNCS {
     	return cShellList;
     }
     
-    public static Column generateNCSColumn()
+    public static ArrayList<Column> generateNCSColumns(ArrayList<ColumnShell> cShells, ArrayList<Layer> layers)
     {
-    	Column column = new Column();
+    	Column column = null;
+    	ArrayList<Column> columnList = new ArrayList<Column>();
+    	int colIndex = 1;
+    	int cShellIndex = 0;
     	
-    	return column;
+    	for(ColumnShell cShell : cShells)
+    	{
+    		column = new Column();
+    		column.type = "column_" + colIndex;
+    		column.columnShell = cShell;
+    		column.columnShellName = cShell.type;
+    		for(Layer layer : layers)
+    		{
+    			if(cShellLShellList.get(cShellIndex).contains(layer.layerShell.type))
+    			{
+    				column.layers.add(layer);
+    				column.layerNames.add(layer.type);
+    			}
+    		}
+    		cShellIndex++;
+    		columnList.add(column);
+    	}
+    	
+    	return columnList;
     	
     }
     		
@@ -240,12 +270,15 @@ public class NeuromlToNCS {
     	ArrayList<Double> yList = new ArrayList<Double>();
     	int lSIndex = 1;
     	Double temp;
+    	int cSIndex = 0;
+ 
     	
     	// for each population
     	for(ColumnShell cShell : cShells)
     	{
     		for(Population pop : populations.getPopulations())
     		{
+    			
     			// if we are on the right column shell
     			if(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX() == cShell.x)
     			{
@@ -260,10 +293,12 @@ public class NeuromlToNCS {
     					layerShell.upper = (pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() + 
     							pop.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getHeight()) / cShell.height * 100;
     					lShellList.add(layerShell);
-    					lSIndex++;
+    					cShellLShellList.get(cSIndex).add(layerShell.type);
+    					lSIndex++;   					
     				}
     			}
     		}
+    		cSIndex++;
     		lSIndex = 1;
     		yList.clear();
     	}
@@ -274,10 +309,15 @@ public class NeuromlToNCS {
     	
     }
     
-    public static ArrayList<Layer> generateNCSLayer(Populations populations, ArrayList<LayerShell> lShells,  ArrayList<ColumnShell> cShells)
+    public static ArrayList<Layer> generateNCSLayer(Populations populations, ArrayList<LayerShell> lShells,  ArrayList<ColumnShell> cShells, ArrayList<unr.neurotranslate.ncs.Cell> cells)
     {
     	ArrayList<Layer> layerList = new ArrayList<Layer>();
     	Layer tempLayer;
+    	int layerIndex = 1;
+    	ArrayList<Double> yList = new ArrayList<Double>();
+    	boolean foundShell = false;
+    	int cShellIndex = 0;
+    	int tempI = 0;
     	
     	// find layer shell for each population
     	for(Population pop : populations.getPopulations())
@@ -290,18 +330,35 @@ public class NeuromlToNCS {
     			{
     				// find which layer shell its in
     				for(LayerShell lShell : lShells)
-    				{    					
-    					// if the y is between the lower and upper layer shell bounds we found the right layer shell
-    					if((pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() + pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY()) / cShell.height *100 == lShell.lower)
-    					{
-    						tempLayer = new Layer();
-    						tempLayer.layerShell = lShell;
-    						tempLayer.layerShellName = lShell.type;
-    						layerList.add(tempLayer);
-    					}				
+    				{    		
+    					if(cShellLShellList.get(cShellIndex).contains(lShell.type))
+    					{	
+	    					// if the y is between the lower and upper layer shell bounds we found the right layer shell
+	    					if(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() / cShell.height * 100 == lShell.lower)
+	    					{
+	    						tempLayer = new Layer();
+	    						tempLayer.layerShell = lShell;
+	    						tempLayer.layerShellName = lShell.type;
+	    						tempLayer.cellTypeNames.add(pop.getCellType());
+	    						
+	    						for(unr.neurotranslate.ncs.Cell tCell : cells)
+	    						{
+	    							if(tCell.type.equals(pop.getCellType()))
+	    							{
+	    								tempLayer.cellTypes.add(tCell);
+	    							}
+	    						}
+	    						tempLayer.cellTypeQuantities.add(pop.getPopLocation().getRandomArrangement().getPopulationSize());
+	    						tempLayer.type = "layer_" + layerIndex;	
+	    						layerList.add(tempLayer);
+	    						layerIndex++;
+	    					}		
+    					}
     				}
     			}
+    			cShellIndex++;
     		}
+    		cShellIndex = 0;
     	}
     	return layerList;
     	

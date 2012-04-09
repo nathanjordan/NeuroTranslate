@@ -148,7 +148,7 @@ brainvar:  TK_TYPE         NAME    { brain.type = $<sval>2; }
          | TK_SERVER       NAME    { brain.server = $<sval>2; }
          | TK_SERVER_PORT  INTEGER { brain.serverPort = $<ival>2; }
          | TK_DISTANCE     LOGICAL { brain.distance =  $<ival>2; }
-         | TK_OUTPUT_CELLS LOGICAL { brain.outputCells = ( $<ival>2 != 0 );  }
+         | TK_OUTPUT_CELLS LOGICAL { brain.outputCells = ( $<ival>2 != 0);  }
          | TK_OUTPUT_CONNECT_MAP LOGICAL  { brain.outputConnectMap = ( $<ival>2 != 0 );  }
          | TK_OPTION       TK_WARNINGS_OFF  { brain.warningsOn = true;  }
          | TK_EVENT        NAME    { brain.eventNames.add( $<sval>2 ); }

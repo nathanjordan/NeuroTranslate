@@ -2,9 +2,9 @@ package unr.neurotranslate.ncs;
 
 public class TwoValue {
 	
-	public double mean;
+	public Double mean;
 	
-	public double stdev;
+	public Double stdev;
 	
 	public void set( double x , double y ) {
 		
@@ -19,6 +19,17 @@ public class TwoValue {
 		mean = 0.0;
 		
 		stdev = 0.0;
+		
+		}
+	
+	@Override
+	public String toString() {
+		
+		String s = new String();
+		
+		s = s.concat( mean + "\t" + stdev + "\n" );
+		
+		return s;
 		
 		}
 	

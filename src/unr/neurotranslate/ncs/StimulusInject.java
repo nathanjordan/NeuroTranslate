@@ -1,5 +1,7 @@
 package unr.neurotranslate.ncs;
 
+import unr.neurotranslate.ncsparser.NCSWriter;
+
 public class StimulusInject extends TypedElement {
 	
 	public Stimulus stimulus;
@@ -25,5 +27,24 @@ public class StimulusInject extends TypedElement {
 	public String cellName;
 	
 	public String compartmentName;
+	
+	@Override
+	public String toString() {
+		
+		String s = new String();
+		
+		s = s.concat("STIMULUS_INJECT\n");
+		
+		s = NCSWriter.writeProperty("TYPE", type, s);
+		
+		s = NCSWriter.writeProperty("STIM_TYPE", stimulus.type, s);
+		
+		s = s.concat("\tINJECT\t" + column.type + "\t" + layer.type + "\t" + cell.type + "\t" + compartment.type + "\t" + probability + "\n");
+		
+		s = s.concat("END_STIMULUS_INJECT\n\n");
+		
+		return s;
+		
+		}
 	
 	}

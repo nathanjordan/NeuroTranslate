@@ -96,4 +96,61 @@ public class Connect {
 		
 		}
 	
+	@Override
+	public String toString() {
+		
+		String s = new String();
+		
+		s.concat("\tCONNECT");
+		
+		if( column1 != null)
+			
+			s.concat( "\t" + column1.type );
+		
+		if( layer1 != null)
+			
+			s.concat( "\t" + layer1.type );
+		
+		if( cellType1 != null)
+			
+			s.concat( "\t" + cellType1.type );
+		
+		if( compartment1 != null)
+			
+			s.concat( "\t" + compartment1.type );
+		
+		if( column2 != null)
+			
+			s.concat( "\t" + column2.type );
+		
+		if( layer2 != null)
+			
+			s.concat( "\t" + layer2.type );
+		
+		if( cellType2 != null)
+			
+			s.concat( "\t" + cellType2.type );
+		
+		if( compartment2 != null)
+			
+			s.concat( "\t" + compartment2.type );
+		
+		if( synapseType != null)
+			
+			s.concat( "\t" + synapseType.type );
+		
+		if( probability != null)
+			
+			s.concat( "\t" + probability );
+
+		if( speed != null)
+			
+			s.concat( "\t" + speed );
+		
+		s.concat("\n");
+		
+		return s;
+		
+		}
+	
 	}

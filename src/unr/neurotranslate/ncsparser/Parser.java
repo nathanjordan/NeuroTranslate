@@ -129,7 +129,7 @@ void val_push(ParserVal val)
 {
   if (valptr>=YYSTACKSIZE)
     return;
-  valstk[++valptr]=val;
+  valstk[++valptr]=dup_yyval(val);
 }
 ParserVal val_pop()
 {
@@ -2493,7 +2493,9 @@ case 233:
 break;
 case 234:
 //#line 430 "parse.yaccj"
-{ synapseList.get( synapseList.size() - 1).synPSG  = val_peek(0).sval; }
+{ //synapseList.get( synapseList.size() - 1).synPSG  = val_peek(0).sval; 
+	
+}
 break;
 case 235:
 //#line 431 "parse.yaccj"

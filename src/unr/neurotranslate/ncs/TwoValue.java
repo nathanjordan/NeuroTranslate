@@ -22,4 +22,15 @@ public class TwoValue {
 		
 		}
 	
+	@Override
+	public String toString() {
+		
+		String s = new String();
+		
+		s = s.concat( mean + "\t" + stdev + "\n" );
+		
+		return s;
+		
+		}
+	
 	}

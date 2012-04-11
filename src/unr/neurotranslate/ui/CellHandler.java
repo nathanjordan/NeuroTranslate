@@ -3,15 +3,27 @@ package unr.neurotranslate.ui;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import org.gnome.gdk.EventExpose;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
+import org.gnome.gtk.ScrolledWindow;
+import org.gnome.gtk.TreeSelection;
+import org.gnome.gtk.TreeView;
+import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
+import org.gnome.gtk.TreeSelection.Changed;
+
+import unr.neurotranslate.ncs.Cell;
+import unr.neurotranslate.ncs.Compartment;
+import unr.neurotranslate.ncs.SpikeShape;
 
 public class CellHandler {
 	// All array lists are for debugging
 	public ArrayList<String> cCells;
 	public ArrayList<String> cComps;
 	public ArrayList<String> cSpikes;
+	public TreeSelection rowSelection;
+	public String selectedText;
 	
 	public ListEntity cells;
 	public ListEntity compartments;
@@ -45,14 +57,32 @@ public class CellHandler {
 	public Entry cRPStd;
 	public Entry cSpikeType;
 	public Entry cSpikeVol;
-	
+	public Cell currentCell;
+	public Compartment currentCompartment;
+	public SpikeShape currentSpikes;
 	
 	public CellHandler() throws FileNotFoundException {
+		
+		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow4", "window1");
+		
+		c.connect(new Widget.ExposeEvent() {
+			
+			@Override
+			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
+				
+				// fill out all entries/lists/combo boxes
+				
+				
+				
+				return false;
+			}
+		});
 		
 		// Data sources
 		cCells = new ArrayList<String>();
 		cComps = new ArrayList<String>();
 		cSpikes = new ArrayList<String>();
+		selectedText = new String();
 		
 		// Entries
 		cCellType = (Entry) GladeParseUtil.grabWidget("entry30", "window1");
@@ -105,6 +135,53 @@ public class CellHandler {
 	
 	public void setEntries() {
 		
+		// Entries are set depending on current cell selected
+		TreeView cellView = cells.getView();		
+		
+		// Connect for getting selected row in tree view		
+		rowSelection = cellView.getSelection();
+		rowSelection.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rowSelection.getSelected() != null ) {
+					
+					// Get selected cell
+					selectedText = cells.getModel().getValue(rowSelection.getSelected(), cells.getHeader());
+
+					// Get current cell based on cell
+						// currentCell = Getter(selectedText);									
+				
+					// Set everything else to current 
+				}							
+			}
+		});
+				
+		// Entries are set depending on current compartments selected
+		TreeView compView = compartments.getView();		
+		
+		// Connect for getting selected row in tree view		
+		rowSelection = compView.getSelection();
+		rowSelection.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rowSelection.getSelected() != null ) {
+					
+					// Get selected compartments
+					selectedText = compartments.getModel().getValue(rowSelection.getSelected(), compartments.getHeader());
+
+					// Get current compartments based on compartments
+						// currentCompartment = Getter(selectedText);									
+				
+					// Set everything else to current 
+				}							
+			}
+		});
 	}
 	
 	public void modifyHandlers() throws FileNotFoundException {

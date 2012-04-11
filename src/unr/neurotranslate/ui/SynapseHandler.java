@@ -3,11 +3,18 @@ package unr.neurotranslate.ui;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import org.gnome.gdk.EventExpose;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
 import org.gnome.gtk.Label;
 import org.gnome.gtk.Notebook;
+import org.gnome.gtk.ScrolledWindow;
+import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
+
+import unr.neurotranslate.ncs.SynFacilDepress;
+import unr.neurotranslate.ncs.SynLearning;
+import unr.neurotranslate.ncs.Synapse;
 
 public class SynapseHandler {
 	// All array lists are for debugging
@@ -50,8 +57,26 @@ public class SynapseHandler {
 	public Entry ssLLPosPeakStd;
 	public Entry ssLLNegMean;
 	public Entry ssLLNegStd;
-		
+	public Synapse currentSynapse;	
+	public SynFacilDepress currentSFD;
+	public SynLearning currentLearn;
+	
 	public SynapseHandler() throws FileNotFoundException {
+		
+		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow5", "window1");
+		
+		c.connect(new Widget.ExposeEvent() {
+			
+			@Override
+			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
+				
+				// fill out all entries/lists/combo boxes
+				
+				
+				
+				return false;
+			}
+		});
 		
 		// Debugging model
 		sSynap = new ArrayList<String>();

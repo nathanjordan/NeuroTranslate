@@ -3,15 +3,21 @@ package unr.neurotranslate.ui;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import org.gnome.gdk.EventExpose;
+import org.gnome.gdk.EventFocus;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
+import org.gnome.gtk.ScrolledWindow;
 import org.gnome.gtk.TreeSelection;
 import org.gnome.gtk.TreeView;
+import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
 import org.gnome.gtk.Entry.Activate;
 import org.gnome.gtk.TreeSelection.Changed;
 
+import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.ColumnShell;
+import unr.neurotranslate.ncs.Layer;
 import unr.neurotranslate.ncs.NCSData;
 
 public class ColumnHandler {
@@ -21,6 +27,7 @@ public class ColumnHandler {
 	public ArrayList<String> col;
 	public ListEntity columnShells;
 	public ListEntity columns;
+	public ListEntity layers;
 	public ComboEntity colShellSel;
 	public Entry csType;
 	public Entry csWidth;
@@ -28,8 +35,26 @@ public class ColumnHandler {
 	public Entry csLocX;
 	public Entry csLocY;
 	public String selectedText;
+	public ColumnShell currentColumnShell;
+	public Column currentColumn;
+	public Layer currentLayer;
+	public TreeSelection rowSelection;
 	
 	public ColumnHandler() throws FileNotFoundException {
+		
+		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow6", "window1");
+		
+		c.connect(new Widget.ExposeEvent() {
+			
+			@Override
+			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
+				
+				// fill out all entries/lists/combo boxes
+				 
+				
+				return false;
+			}
+		});
 		
 		// Data sources
 		cShells = new ArrayList<String>();
@@ -50,7 +75,8 @@ public class ColumnHandler {
 		
 		columnShells = new ListEntity( "cColShells", "window1" ); 
 		columns = new ListEntity( "cColumnView", "window1" );
-		colShellSel = new ComboEntity( "combobox2", "window1" );		
+		colShellSel = new ComboEntity( "combobox2", "window1" );						
+		layers = new ListEntity( "lLayerList", "window1" );
 		
 		setLists();
 		
@@ -59,15 +85,13 @@ public class ColumnHandler {
 		modifyHandlers();
 	}
 
-	private void setEntries() throws FileNotFoundException {
-	
-		//final ArrayList<ColumnShell> c = new ArrayList<ColumnShell>(d.columnShellList);
+	private void setEntries() throws FileNotFoundException {		
 				
 		// Entries are set depending on current column shell selected
-		TreeView colView = columnShells.getView();		
+		TreeView colsView = columnShells.getView();		
 		
 		// Connect for getting selected row in tree view		
-		final TreeSelection rowSelection = colView.getSelection();
+		rowSelection = colsView.getSelection();
 		rowSelection.connect(new Changed() {
 			
 			@Override
@@ -76,38 +100,66 @@ public class ColumnHandler {
 				// Get selected string
 				if( rowSelection.getSelected() != null ) {
 					
-					// Set entries to selected column shell data 
-					csType.setText(columnShells.getModel().getValue(rowSelection.getSelected(), columnShells.getHeader()));
+					// Get selected column shell
+					selectedText = columnShells.getModel().getValue(rowSelection.getSelected(), columnShells.getHeader());
 					
-					selectedText = csType.getText();
+					// Get current column shell based on selected column shell
+						// currentColumnShell = colShellGetter(selectedText);									
 					
-					/*for( int i = 0; i < c.size(); i++ ) {
-						if( selectedText.equals(c.get(i).type ) ) {
-							csWidth.setText( Double.toString(c.get(i).width) );
-						}
-						else {
-							csWidth.setText("");
-						}
-					}*/
-					
+					// Set everything else to current column shell				
+			
 				}							
 			}
 		});		
 
+		// Entries are set depending on current column selected
+		TreeView colView = columns.getView();		
 		
-		
-		// Update data model corresponding to user input
-		csType.connect(new Activate() {
+		// Connect for getting selected row in tree view		
+		rowSelection = colView.getSelection();
+		rowSelection.connect(new Changed() {
 			
 			@Override
-			public void onActivate(Entry arg0) {
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rowSelection.getSelected() != null ) {
+					
+					// Get selected column
+					selectedText = columns.getModel().getValue(rowSelection.getSelected(), columns.getHeader());
+
+					// Get current column shell based on selected column 
+						// currentColumn = colGetter(selectedText);									
 				
-				// Update selected data in list...
-				
+					// Set everything else to current column 	
+				}							
 			}
 		});
 		
+		// Entries are set depending on current column selected
+		TreeView layView = layers.getView();		
 		
+		// Connect for getting selected row in tree view		
+		rowSelection = layView.getSelection();
+		rowSelection.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rowSelection.getSelected() != null ) {
+					
+					// Get selected column
+					selectedText = layers.getModel().getValue(rowSelection.getSelected(), layers.getHeader());
+
+					// Get current column shell based on selected column 
+						// currentColumn = colGetter(selectedText);									
+				
+					// Set everything else to current column 	
+				}							
+			}
+		});
+
 	}
 
 	private void setLists() throws FileNotFoundException {				 			

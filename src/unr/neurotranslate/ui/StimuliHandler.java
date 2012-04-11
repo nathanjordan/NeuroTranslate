@@ -3,9 +3,15 @@ package unr.neurotranslate.ui;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import org.gnome.gdk.EventExpose;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
+import org.gnome.gtk.ScrolledWindow;
+import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
+
+import unr.neurotranslate.ncs.Stimulus;
+import unr.neurotranslate.ncs.StimulusInject;
 
 public class StimuliHandler {
 
@@ -28,9 +34,27 @@ public class StimuliHandler {
 	public Entry stWidth;
 	public Entry stTStart;
 	public Entry stTEnd;
+	public StimulusInject currentStimInj;
+	public Stimulus currentStimulus;
 	
-	
+		
 	public StimuliHandler() throws FileNotFoundException {
+		
+		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow3", "window1");
+		
+		c.connect(new Widget.ExposeEvent() {
+			
+			@Override
+			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
+				
+				// fill out all entries/lists/combo boxes
+				
+				
+				
+				return false;
+			}
+		});
+		
 		// Data sources
 		sInjects = new ArrayList<String>();
 		sStimuli = new ArrayList<String>();

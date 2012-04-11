@@ -3,17 +3,29 @@ package unr.neurotranslate.ui;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import org.gnome.gdk.EventExpose;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
 import org.gnome.gtk.Notebook;
+import org.gnome.gtk.ScrolledWindow;
+import org.gnome.gtk.TreeSelection;
+import org.gnome.gtk.TreeView;
+import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
 import org.gnome.gtk.Notebook.ChangeCurrentPage;
+import org.gnome.gtk.TreeSelection.Changed;
+
+import unr.neurotranslate.ncs.Cell;
+import unr.neurotranslate.ncs.Layer;
+import unr.neurotranslate.ncs.LayerShell;
 
 public class LayerHandler {
 
 	// All array lists are for debugging
 	public ArrayList<String> lShells;
 	public ArrayList<String> lays;
+	public TreeSelection rowSelection;
+	public String selectedText;
 	
 	public ListEntity layerShells;
 	public ListEntity layers;
@@ -22,12 +34,31 @@ public class LayerHandler {
 	public Entry lsLower;
 	public Entry lsUpper;
 	public Entry lType;	
+	public LayerShell currentLayerShell;
+	public Layer currentLayer;
+	public Cell currentCell;
 	
 	public LayerHandler() throws FileNotFoundException {
+		
+	
+		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow2", "window1");
+		
+		c.connect(new Widget.ExposeEvent() {
+			
+			@Override
+			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
+				
+				// fill out all entries/lists/combo boxes
+				
+
+				return false;
+			}
+		});
 		
 		// Data sources
 		lShells = new ArrayList<String>();
 		lays = new ArrayList<String>();
+		selectedText = new String();
 		
 		// Entries
 		lsType = (Entry) GladeParseUtil.grabWidget( "entry15", "window1" );
@@ -56,7 +87,54 @@ public class LayerHandler {
 	
 	public void setEntries() throws FileNotFoundException {
 	
+		// Entries are set depending on current layer shell selected
+		TreeView layShView = layerShells.getView();		
 		
+		// Connect for getting selected row in tree view		
+		rowSelection = layShView.getSelection();
+		rowSelection.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rowSelection.getSelected() != null ) {
+					
+					// Get selected layer shell
+					selectedText = layerShells.getModel().getValue(rowSelection.getSelected(), layerShells.getHeader());
+
+					// Get current layer shell based on selected layer shell 
+						// currentLayerShell = Getter(selectedText);									
+				
+					// Set everything else to current 
+				}							
+			}
+		});
+
+	
+		// Entries are set depending on current layer shell selected
+		TreeView layView = layers.getView();		
+		
+		// Connect for getting selected row in tree view		
+		rowSelection = layView.getSelection();
+		rowSelection.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rowSelection.getSelected() != null ) {
+					
+					// Get selected layer 
+					selectedText = layers.getModel().getValue(rowSelection.getSelected(), layers.getHeader());
+
+					// Get current column shell based on selected column 
+						// currentColumn = colGetter(selectedText);									
+				
+					// Set everything else to current column 	
+				}							
+			}
+		});
 	}
 	
 	public void modifyHandlers() throws FileNotFoundException {

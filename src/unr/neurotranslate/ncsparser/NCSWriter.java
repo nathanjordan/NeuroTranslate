@@ -61,10 +61,10 @@ public class NCSWriter {
 			
 			b.write( c.toString() );
 		
-		for( Synapse s : d.synapseList )
+		/*for( Synapse s : d.synapseList )
 			
 			b.write( s.toString() );
-		
+		*/
 		for( SynFacilDepress s : d.synFacilDepressList )
 			
 			b.write( s.toString() );
@@ -93,9 +93,9 @@ public class NCSWriter {
 			
 			b.write( s.toString() );
 		
-		for( Report r : d.reportList )
+		//for( Report r : d.reportList )
 			
-			b.write( r.toString() );
+		//	b.write( r.toString() );
 		
 		for( Event e : d.eventList )
 			

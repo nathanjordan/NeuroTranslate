@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<neuroml xmlns:bio="http://morphml.org/biophysics/schema" xmlns:meta="http://morphml.org/metadata/schema" xmlns:net="http://morphml.org/networkml/schema" xmlns:chan="http://morphml.org/channelml/schema" xmlns:mml="http://morphml.org/morphml/schema" xmlns:nml="http://morphml.org/neuroml/schema">
+    <nml:cells>
+        <nml:cell name="Excitatory">
+            <mml:segments>
+                <mml:segment name="s1" id="0">
+                    <mml:proximal z="0.0" y="0.0" x="0.0"/>
+                    <mml:distal z="0.0" y="0.0" x="0.0"/>
+                </mml:segment>
+            </mml:segments>
+        </nml:cell>
+        <nml:cell name="Inhibitory">
+            <mml:segments>
+                <mml:segment name="s1" id="1">
+                    <mml:proximal z="0.0" y="0.0" x="0.0"/>
+                    <mml:distal z="0.0" y="0.0" x="0.0"/>
+                </mml:segment>
+            </mml:segments>
+        </nml:cell>
+    </nml:cells>
+    <nml:channels units="">
+        <chan:synapse_type name="ExcitSyn1">
+            <chan:doub_exp_syn reversal_potential="0.0" decay_time="5.0E-4" rise_time="1.0E-4" max_conductance="0.5"/>
+        </chan:synapse_type>
+        <chan:synapse_type name="InhibSyn1">
+            <chan:doub_exp_syn reversal_potential="-80.0" decay_time="0.001" rise_time="1.0E-4" max_conductance="0.5"/>
+        </chan:synapse_type>
+    </nml:channels>
+    <net:populations>
+        <net:population cell_type="Excitatory" name="ExcitatoryPop1">
+            <net:pop_location>
+                <net:random_arrangement>
+                    <net:population_size>50</net:population_size>
+                    <net:rectangular_location>
+                        <meta:corner z="0.0" y="0.0" x="0.0"/>
+                        <meta:size height="280.0" width="300.0"/>
+                    </net:rectangular_location>
+                </net:random_arrangement>
+            </net:pop_location>
+        </net:population>
+        <net:population cell_type="Inhibitory" name="InhibitoryPop2">
+            <net:pop_location>
+                <net:random_arrangement>
+                    <net:population_size>10</net:population_size>
+                    <net:rectangular_location>
+                        <meta:corner z="0.0" y="0.0" x="0.0"/>
+                        <meta:size height="280.0" width="300.0"/>
+                    </net:rectangular_location>
+                </net:random_arrangement>
+            </net:pop_location>
+        </net:population>
+        <net:population cell_type="Excitatory" name="ExcitatoryPop3">
+            <net:pop_location>
+                <net:random_arrangement>
+                    <net:population_size>50</net:population_size>
+                    <net:rectangular_location>
+                        <meta:corner z="0.0" y="280.0" x="0.0"/>
+                        <meta:size height="240.0" width="300.0"/>
+                    </net:rectangular_location>
+                </net:random_arrangement>
+            </net:pop_location>
+        </net:population>
+        <net:population cell_type="Inhibitory" name="InhibitoryPop4">
+            <net:pop_location>
+                <net:random_arrangement>
+                    <net:population_size>10</net:population_size>
+                    <net:rectangular_location>
+                        <meta:corner z="0.0" y="280.0" x="0.0"/>
+                        <meta:size height="240.0" width="300.0"/>
+                    </net:rectangular_location>
+                </net:random_arrangement>
+            </net:pop_location>
+        </net:population>
+    </net:populations>
+    <net:inputs units="">
+        <net:input name="StInject1">
+            <net:pulse_input amplitude="3.0" duration="0.01" delay="0.0"/>
+            <net:target>
+                <net:site_pattern>
+                    <net:percentage_cells percentage="100.0"/>
+                </net:site_pattern>
+            </net:target>
+        </net:input>
+        <net:input name="StInject2">
+            <net:pulse_input amplitude="3.0" duration="0.01" delay="0.0"/>
+            <net:target>
+                <net:site_pattern>
+                    <net:percentage_cells percentage="100.0"/>
+                </net:site_pattern>
+            </net:target>
+        </net:input>
+    </net:inputs>
+</neuroml>

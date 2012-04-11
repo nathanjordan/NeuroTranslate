@@ -101,7 +101,7 @@ public class Stimulus extends TypedElement {
 		
 		if( timeStart.size() > 0 ) {
 		
-			s = s.concat("TIME_START");
+			s = s.concat("\tTIME_START");
 			
 			for( Double d : timeStart )
 			
@@ -113,7 +113,7 @@ public class Stimulus extends TypedElement {
 		
 		if( timeEnd.size() > 0 ) {
 			
-			s = s.concat("TIME_END");
+			s = s.concat("\tTIME_END");
 			
 			for( Double d : timeEnd )
 			
@@ -131,7 +131,7 @@ public class Stimulus extends TypedElement {
 		
 		s = NCSWriter.writeProperty("CORREL", correl, s);
 		
-		s = s.concat("END_STIMULUS\n");
+		s = s.concat("END_STIMULUS\n\n");
 		
 		return s;
 		

@@ -22,7 +22,7 @@ public class CellHandler {
 	public ArrayList<String> cCells;
 	public ArrayList<String> cComps;
 	public ArrayList<String> cSpikes;
-	public TreeSelection rowSelection;
+	public TreeSelection rs1, rs2, rs3;
 	public String selectedText;
 	
 	public ListEntity cells;
@@ -70,8 +70,7 @@ public class CellHandler {
 			@Override
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 				
-				// fill out all entries/lists/combo boxes
-				
+				// fill out all entries/lists/combo boxes				
 				
 				
 				return false;
@@ -139,22 +138,26 @@ public class CellHandler {
 		TreeView cellView = cells.getView();		
 		
 		// Connect for getting selected row in tree view		
-		rowSelection = cellView.getSelection();
-		rowSelection.connect(new Changed() {
+		rs1 = cellView.getSelection();
+		rs1.connect(new Changed() {
 			
 			@Override
 			public void onChanged(TreeSelection arg0) {	
 			
 				// Get selected string
-				if( rowSelection.getSelected() != null ) {
+				if( rs1.getSelected() != null ) {
 					
 					// Get selected cell
-					selectedText = cells.getModel().getValue(rowSelection.getSelected(), cells.getHeader());
+					selectedText = cells.getModel().getValue(rs1.getSelected(), cells.getHeader());
 
 					// Get current cell based on cell
-						// currentCell = Getter(selectedText);									
+					// currentCell = getCellByType(selectedText);									
 				
-					// Set everything else to current 
+					// Set everything else to current
+					//cCellType.setText(currentCell.type);
+					// TODO - set compartment name and all the entries
+					
+					
 				}							
 			}
 		});
@@ -163,22 +166,63 @@ public class CellHandler {
 		TreeView compView = compartments.getView();		
 		
 		// Connect for getting selected row in tree view		
-		rowSelection = compView.getSelection();
-		rowSelection.connect(new Changed() {
+		rs2 = compView.getSelection();
+		rs2.connect(new Changed() {
 			
 			@Override
 			public void onChanged(TreeSelection arg0) {	
 			
 				// Get selected string
-				if( rowSelection.getSelected() != null ) {
+				if( rs2.getSelected() != null ) {
 					
 					// Get selected compartments
-					selectedText = compartments.getModel().getValue(rowSelection.getSelected(), compartments.getHeader());
+					selectedText = compartments.getModel().getValue(rs2.getSelected(), compartments.getHeader());
 
 					// Get current compartments based on compartments
-						// currentCompartment = Getter(selectedText);									
+					// currentCompartment = getCompartmentByType(selectedText);									
 				
 					// Set everything else to current 
+					// TODO - Set spike shape
+					/*cComType.setText(currentCompartment.type);
+					cTMMean.setText(currentCompartment.tauMembrane.mean.toString());
+					cTMStd.setText(currentCompartment.tauMembrane.stdev.toString());
+					cRMMean.setText(currentCompartment.rMembrane.mean.toString());
+					cRMStd.setText(currentCompartment.rMembrane.stdev.toString());
+					cTMean.setText(currentCompartment.threshold.mean.toString());
+					cTStd.setText(currentCompartment.threshold.stdev.toString());
+					cLRMean.setText(currentCompartment.leakReversal.mean.toString());
+					cLRStd.setText(currentCompartment.leakReversal.stdev.toString());
+					cLCMean.setText(currentCompartment.leakConductance.mean.toString());
+					cLCStd.setText(currentCompartment.leakConductance.stdev.toString());
+					cRPMean.setText(currentCompartment.vmRest.mean.toString());
+					cRPStd.setText(currentCompartment.vmRest.stdev.toString());*/
+				}							
+			}
+		});
+		
+		// Entries are set depending on spike selected
+		TreeView spikeView = spikeShapes.getView();		
+		
+		// Connect for getting selected row in tree view		
+		rs3 = spikeView.getSelection();
+		rs3.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rs3.getSelected() != null ) {
+					
+					// Get selected spike
+					selectedText = spikeShapes.getModel().getValue(rs3.getSelected(), spikeShapes.getHeader());
+
+					// Get current spike shape based on selected spike
+					// currentSpikes = getSpikeByType(selectedText);									
+				
+					// Set everything else to current
+					/*cSpikeType.setText(currentSpikes.type);
+					cSpikeVol.setText(currentSpikes.voltages.toString());*/
+	
 				}							
 			}
 		});

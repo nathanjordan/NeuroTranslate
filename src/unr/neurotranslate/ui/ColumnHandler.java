@@ -19,6 +19,7 @@ import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.ColumnShell;
 import unr.neurotranslate.ncs.Layer;
 import unr.neurotranslate.ncs.NCSData;
+import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 public class ColumnHandler {
 	
@@ -34,16 +35,19 @@ public class ColumnHandler {
 	public Entry csHeight;
 	public Entry csLocX;
 	public Entry csLocY;
+	public Entry cType;
 	public String selectedText;
 	public ColumnShell currentColumnShell;
 	public Column currentColumn;
 	public Layer currentLayer;
-	public TreeSelection rowSelection;
-	
-	public ColumnHandler() throws FileNotFoundException {
+	public TreeSelection rs1;
+	public TreeSelection rs2;
+	public TreeSelection rowSelection3;
+	public UIControllerNCS u;
+	public ColumnHandler() throws Exception {
 		
 		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow6", "window1");
-		
+		u = new UIControllerNCS();
 		c.connect(new Widget.ExposeEvent() {
 			
 			@Override
@@ -66,17 +70,17 @@ public class ColumnHandler {
 		csWidth = (Entry) GladeParseUtil.grabWidget( "csWidth", "window1" );
 		csHeight = (Entry) GladeParseUtil.grabWidget( "csHeight", "window1" );
 		csLocX = (Entry) GladeParseUtil.grabWidget( "csLocX", "window1" );
-		csLocY = (Entry) GladeParseUtil.grabWidget( "csLocY", "window1" );
-		
-		// Lists
-		/*for( ColumnShell c : d.columnShellList ) {
-			cShells.add(c.type);
-		}*/
+		csLocY = (Entry) GladeParseUtil.grabWidget( "csLocY", "window1" );	
+		cType = (Entry) GladeParseUtil.grabWidget( "entry12", "window1" );
 		
 		columnShells = new ListEntity( "cColShells", "window1" ); 
 		columns = new ListEntity( "cColumnView", "window1" );
 		colShellSel = new ComboEntity( "combobox2", "window1" );						
 		layers = new ListEntity( "lLayerList", "window1" );
+		
+		// Initialize all lists
+		columnShells.listToModel( u.getColumnShells() );		
+		columns.listToModel(u.getColumns());					
 		
 		setLists();
 		
@@ -91,23 +95,33 @@ public class ColumnHandler {
 		TreeView colsView = columnShells.getView();		
 		
 		// Connect for getting selected row in tree view		
-		rowSelection = colsView.getSelection();
-		rowSelection.connect(new Changed() {
+		rs1 = colsView.getSelection();
+		rs1.connect(new Changed() {
 			
 			@Override
 			public void onChanged(TreeSelection arg0) {	
 			
 				// Get selected string
-				if( rowSelection.getSelected() != null ) {
+				if( rs1.getSelected() != null ) {
 					
 					// Get selected column shell
-					selectedText = columnShells.getModel().getValue(rowSelection.getSelected(), columnShells.getHeader());
-					
+					selectedText = columnShells.getModel().getValue(rs1.getSelected(), columnShells.getHeader());
+								
 					// Get current column shell based on selected column shell
-						// currentColumnShell = colShellGetter(selectedText);									
+					try {
+					//	currentColumnShell = u.getColumnShellByType(selectedText);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					
 					// Set everything else to current column shell				
-			
+					/*csType.setText(currentColumnShell.type);
+					csWidth.setText(currentColumnShell.width.toString());
+					csHeight.setText(currentColumnShell.height.toString());
+					csLocX.setText(currentColumnShell.x.toString());
+					csLocY.setText(currentColumnShell.y.toString()); 
+					*/					
 				}							
 			}
 		});		
@@ -116,46 +130,48 @@ public class ColumnHandler {
 		TreeView colView = columns.getView();		
 		
 		// Connect for getting selected row in tree view		
-		rowSelection = colView.getSelection();
-		rowSelection.connect(new Changed() {
+		rs2 = colView.getSelection();
+		rs2.connect(new Changed() {
 			
 			@Override
 			public void onChanged(TreeSelection arg0) {	
 			
 				// Get selected string
-				if( rowSelection.getSelected() != null ) {
+				if( rs2.getSelected() != null ) {
 					
 					// Get selected column
-					selectedText = columns.getModel().getValue(rowSelection.getSelected(), columns.getHeader());
-
+					selectedText = columns.getModel().getValue(rs2.getSelected(), columns.getHeader());
+					
 					// Get current column shell based on selected column 
-						// currentColumn = colGetter(selectedText);									
+					try {
+						// currentColumn = u.getColumnByType(selectedText);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}									
 				
 					// Set everything else to current column 	
+					// cType.setText(currentColumn.type);
 				}							
 			}
 		});
 		
-		// Entries are set depending on current column selected
+		// TODO - Figure out how to update this list
 		TreeView layView = layers.getView();		
 		
 		// Connect for getting selected row in tree view		
-		rowSelection = layView.getSelection();
-		rowSelection.connect(new Changed() {
+		rowSelection3 = layView.getSelection();
+		rowSelection3.connect(new Changed() {
 			
 			@Override
 			public void onChanged(TreeSelection arg0) {	
 			
 				// Get selected string
-				if( rowSelection.getSelected() != null ) {
+				if( rowSelection3.getSelected() != null ) {
 					
-					// Get selected column
-					selectedText = layers.getModel().getValue(rowSelection.getSelected(), layers.getHeader());
-
-					// Get current column shell based on selected column 
-						// currentColumn = colGetter(selectedText);									
-				
-					// Set everything else to current column 	
+					// Get selected layer type
+					selectedText = layers.getModel().getValue(rowSelection3.getSelected(), layers.getHeader());
+									
 				}							
 			}
 		});

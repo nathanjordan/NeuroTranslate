@@ -24,7 +24,7 @@ public class LayerHandler {
 	// All array lists are for debugging
 	public ArrayList<String> lShells;
 	public ArrayList<String> lays;
-	public TreeSelection rowSelection;
+	public TreeSelection rs1, rs2;
 	public String selectedText;
 	
 	public ListEntity layerShells;
@@ -91,47 +91,51 @@ public class LayerHandler {
 		TreeView layShView = layerShells.getView();		
 		
 		// Connect for getting selected row in tree view		
-		rowSelection = layShView.getSelection();
-		rowSelection.connect(new Changed() {
+		rs1 = layShView.getSelection();
+		rs1.connect(new Changed() {
 			
 			@Override
 			public void onChanged(TreeSelection arg0) {	
 			
 				// Get selected string
-				if( rowSelection.getSelected() != null ) {
+				if( rs1.getSelected() != null ) {
 					
 					// Get selected layer shell
-					selectedText = layerShells.getModel().getValue(rowSelection.getSelected(), layerShells.getHeader());
+					selectedText = layerShells.getModel().getValue(rs1.getSelected(), layerShells.getHeader());
 
 					// Get current layer shell based on selected layer shell 
-						// currentLayerShell = Getter(selectedText);									
+					// currentLayerShell = getLayerShellByType(selectedText);									
 				
 					// Set everything else to current 
+					/*lsType.setText(currentLayerShell.type);
+					lsLower.setText(currentLayerShell.lower.toString());
+					lsUpper.setText(currentLayerShell.upper.toString());*/
 				}							
 			}
 		});
 
 	
-		// Entries are set depending on current layer shell selected
+		// Entries are set depending on current layer selected
 		TreeView layView = layers.getView();		
 		
 		// Connect for getting selected row in tree view		
-		rowSelection = layView.getSelection();
-		rowSelection.connect(new Changed() {
+		rs2 = layView.getSelection();
+		rs2.connect(new Changed() {
 			
 			@Override
 			public void onChanged(TreeSelection arg0) {	
 			
 				// Get selected string
-				if( rowSelection.getSelected() != null ) {
+				if( rs2.getSelected() != null ) {
 					
 					// Get selected layer 
-					selectedText = layers.getModel().getValue(rowSelection.getSelected(), layers.getHeader());
+					selectedText = layers.getModel().getValue(rs2.getSelected(), layers.getHeader());
 
-					// Get current column shell based on selected column 
-						// currentColumn = colGetter(selectedText);									
+					// Get current layer based on selected 
+					// currentLayer = getLayerByType(selectedText);									
 				
-					// Set everything else to current column 	
+					// Set everything else to current column
+					lType.setText(currentLayer.type);
 				}							
 			}
 		});

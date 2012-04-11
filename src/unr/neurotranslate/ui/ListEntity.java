@@ -187,7 +187,7 @@ public class ListEntity {
 	
 	// Refresh the view when changes occur
 	public void refreshView() {		
-		view.setModel(model);
+		view.setModel(model);		
 	}
 	
 

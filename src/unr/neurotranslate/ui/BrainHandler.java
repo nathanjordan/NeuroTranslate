@@ -69,11 +69,7 @@ public class BrainHandler {
 
 		// Build models and set views
 		WidgetReferences w = new WidgetReferences();
-		w.getT("b1").addData("hey");
-		w.getT("b1").addData("yo");
-		
-		
-		
+	
 		//WidgetReferences.columnTypes = new ListEntity( "bColTypes", "window1" ); // debugging
 		ListEntity stimulusInjects = new ListEntity( "bStimInjects", "window1" );
 		ListEntity reports = new ListEntity( "bReports", "window1" );

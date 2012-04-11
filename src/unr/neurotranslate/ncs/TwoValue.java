@@ -27,7 +27,7 @@ public class TwoValue {
 		
 		String s = new String();
 		
-		s = s.concat( mean + "\t" + stdev + "\n" );
+		s = s.concat( mean + "\t" + stdev );
 		
 		return s;
 		

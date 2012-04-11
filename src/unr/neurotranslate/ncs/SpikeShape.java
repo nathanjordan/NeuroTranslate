@@ -21,11 +21,9 @@ public class SpikeShape extends TypedElement {
 		
 		for( Double d : voltages )
 			
-			s = s.concat( d + "\t" );
+			s = s.concat( "\t" + d );
 		
-		s = s.concat("\n");
-		
-		s = s.concat("END_SPIKESHAPE");
+		s = s.concat("\nEND_SPIKESHAPE\n\n");
 		
 		return s;
 		

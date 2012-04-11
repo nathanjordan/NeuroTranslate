@@ -16,6 +16,16 @@ public class CellHandler {
 	public ListEntity cells;
 	public ListEntity compartments;
 	public ListEntity spikeShapes;
+	public ComboEntity comName;
+	public ComboEntity spikeSel;
+	public ComboEntity SFDSel;
+	public ComboEntity learnSel;
+	public ComboEntity stimSel;
+	public ComboEntity colSel;
+	public ComboEntity laySel;
+	public ComboEntity cellSel;
+	public ComboEntity compSel;
+	
 	public Entry cCellType;
 	public Entry cComLab;
 	public Entry cComX;
@@ -66,10 +76,18 @@ public class CellHandler {
 		cSpikeVol = (Entry) GladeParseUtil.grabWidget("entry33", "window1");
 		
 		// Lists
-		cells = new ListEntity( cCells, "cCells", "window1" );
-		compartments = new ListEntity( cComps, "Compartments", "window1" );
-		spikeShapes = new ListEntity( cSpikes, "SpikeShapes", "window1" );
-		
+		cells = new ListEntity( "cCells", "window1" );
+		compartments = new ListEntity( "Compartments", "window1" );
+		spikeShapes = new ListEntity( "SpikeShapes", "window1" );
+		comName = new ComboEntity( "combobox10", "window1" );
+		spikeSel = new ComboEntity( "combobox3", "window1" );
+		SFDSel = new ComboEntity( "combobox11", "window1" );
+		learnSel = new ComboEntity( "combobox12", "window1" );
+		stimSel = new ComboEntity( "combobox4", "window1" );
+		colSel = new ComboEntity( "combobox5", "window1" );
+		laySel = new ComboEntity( "combobox6", "window1" );
+		cellSel = new ComboEntity( "combobox7", "window1" );
+		compSel = new ComboEntity( "combobox8", "window1" );
 		
 		setLists();
 		

@@ -51,8 +51,8 @@ public class StimuliHandler {
 		stTEnd = (Entry) GladeParseUtil.grabWidget( "entry27", "window1" );
 		
 		// Lists		
-		injects = new ListEntity( sInjects, "Stimulus Injects", "window1" );
-		stimuli = new ListEntity( sStimuli, "Stimuli", "window1" );		
+		injects = new ListEntity( "Stimulus Injects", "window1" );
+		stimuli = new ListEntity( "Stimuli", "window1" );		
 		
 		setLists();
 		

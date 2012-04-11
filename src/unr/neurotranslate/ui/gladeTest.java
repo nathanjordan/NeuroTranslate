@@ -28,8 +28,7 @@ public class gladeTest {
         top.setPosition(WindowPosition.MOUSE);     
         top.showAll();                         
     
-        // Build the Modify Popup window        
-        ModifyPopup.buildPopup();
+        // Build the Modify Popup window             
         new ModifyPopup();
         
         // Create handlers for each of the tabs and menu

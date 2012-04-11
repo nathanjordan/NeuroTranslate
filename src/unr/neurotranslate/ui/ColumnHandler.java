@@ -21,6 +21,7 @@ public class ColumnHandler {
 	public ArrayList<String> col;
 	public ListEntity columnShells;
 	public ListEntity columns;
+	public ComboEntity colShellSel;
 	public Entry csType;
 	public Entry csWidth;
 	public Entry csHeight;
@@ -47,8 +48,9 @@ public class ColumnHandler {
 			cShells.add(c.type);
 		}*/
 		
-		columnShells = new ListEntity( cShells, "cColShells", "window1" ); 
-		columns = new ListEntity( col, "cColumnView", "window1" );
+		columnShells = new ListEntity( "cColShells", "window1" ); 
+		columns = new ListEntity( "cColumnView", "window1" );
+		colShellSel = new ComboEntity( "combobox2", "window1" );		
 		
 		setLists();
 		
@@ -156,7 +158,7 @@ public class ColumnHandler {
 			public void onClicked(Button arg0) {
 			
 				// Add a new column
-				columns.addData( "NewColumn" );
+				columns.addData( "NewColumn" );				
 			
 			}
 		});

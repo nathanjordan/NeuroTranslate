@@ -3,15 +3,24 @@ package unr.neurotranslate.ui;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import org.gnome.gdk.EventVisibility;
+import org.gnome.gdk.VisibilityState;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
+import org.gnome.gtk.Notebook;
+import org.gnome.gtk.ScrolledWindow;
+import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
 
 public class ReportHandler {
 	// All array lists are for debugging
 	public ArrayList<String> rrep;
 	
-	public ListEntity reports;	
+	public ListEntity reports;
+	public ComboEntity colSel;
+	public ComboEntity laySel;
+	public ComboEntity cellSel;
+	public ComboEntity compSel;	
 	public Entry repType;
 	public Entry repProb;
 	public Entry repFreq;
@@ -22,6 +31,8 @@ public class ReportHandler {
 	public Entry repTEnd;
 	
 	public ReportHandler() throws FileNotFoundException {
+		
+	
 		// Data sources
 		rrep = new ArrayList<String>();
 		
@@ -36,7 +47,11 @@ public class ReportHandler {
 		repTEnd = (Entry) GladeParseUtil.grabWidget( "entry87", "window1" );
 		
 		// Lists
-		reports = new ListEntity( rrep, "ReportsList", "window1" );		
+		reports = new ListEntity( "ReportsList", "window1" );		
+		colSel = new ComboEntity( "combobox9", "window1" );
+		laySel = new ComboEntity( "combobox13", "window1" );
+		cellSel = new ComboEntity( "combobox14", "window1" );
+		compSel = new ComboEntity( "combobox15", "window1" );
 		
 		setLists();
 		

@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import org.gnome.gdk.EventExpose;
-import org.gnome.gdk.EventFocus;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
 import org.gnome.gtk.ScrolledWindow;
@@ -12,87 +11,44 @@ import org.gnome.gtk.TreeSelection;
 import org.gnome.gtk.TreeView;
 import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
-import org.gnome.gtk.Entry.Activate;
 import org.gnome.gtk.TreeSelection.Changed;
 
-import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.ColumnShell;
-import unr.neurotranslate.ncs.Layer;
-import unr.neurotranslate.ncs.NCSData;
 import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 public class ColumnHandler {
 	
 	// All array lists are for debugging
 	public ArrayList<String> cShells;
-	public ArrayList<String> col;
-	public ListEntity columnShells;
-	public ListEntity columns;
-	public ListEntity layers;
-	public ComboEntity colShellSel;
-	public Entry csType;
-	public Entry csWidth;
-	public Entry csHeight;
-	public Entry csLocX;
-	public Entry csLocY;
-	public Entry cType;
-	public String selectedText;
+	public ArrayList<String> col;	
+	public String selectedText;	
+	public TreeSelection rs1, rs2, rs3;
 	public ColumnShell currentColumnShell;
-	public Column currentColumn;
-	public Layer currentLayer;
-	public TreeSelection rs1;
-	public TreeSelection rs2;
-	public TreeSelection rowSelection3;
-	public UIControllerNCS u;
-	public ColumnHandler() throws Exception {
+	
+	public ColumnHandler(final WidgetReferences w, final UIControllerNCS ui) throws Exception {
 		
-		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow6", "window1");
-		u = new UIControllerNCS();
-		c.connect(new Widget.ExposeEvent() {
+		
+		w.getW("columnScroll").connect(new Widget.ExposeEvent() {
 			
 			@Override
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 				
-				// fill out all entries/lists/combo boxes
-				 
-				
+				// Refresh lists
+				w.getL( "coColShells").listToModel( ui.getColumnShells() );
+				w.getL( "coColumns").listToModel( ui.getColumns() );					
 				return false;
 			}
 		});
+				
+		setEntries(w, ui);
 		
-		// Data sources
-		cShells = new ArrayList<String>();
-		col = new ArrayList<String>();
-		selectedText = new String();
-		
-		// Entries		
-		csType = (Entry) GladeParseUtil.grabWidget( "csType", "window1" );
-		csWidth = (Entry) GladeParseUtil.grabWidget( "csWidth", "window1" );
-		csHeight = (Entry) GladeParseUtil.grabWidget( "csHeight", "window1" );
-		csLocX = (Entry) GladeParseUtil.grabWidget( "csLocX", "window1" );
-		csLocY = (Entry) GladeParseUtil.grabWidget( "csLocY", "window1" );	
-		cType = (Entry) GladeParseUtil.grabWidget( "entry12", "window1" );
-		
-		columnShells = new ListEntity( "cColShells", "window1" ); 
-		columns = new ListEntity( "cColumnView", "window1" );
-		colShellSel = new ComboEntity( "combobox2", "window1" );						
-		layers = new ListEntity( "lLayerList", "window1" );
-		
-		// Initialize all lists
-		columnShells.listToModel( u.getColumnShells() );		
-		columns.listToModel(u.getColumns());					
-		
-		setLists();
-		
-		setEntries();
-		
-		modifyHandlers();
+		modifyHandlers(w);
 	}
 
-	private void setEntries() throws FileNotFoundException {		
+	private void setEntries(final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {		
 				
 		// Entries are set depending on current column shell selected
-		TreeView colsView = columnShells.getView();		
+		TreeView colsView = w.getL("coColShells").getView();
 		
 		// Connect for getting selected row in tree view		
 		rs1 = colsView.getSelection();
@@ -104,30 +60,30 @@ public class ColumnHandler {
 				// Get selected string
 				if( rs1.getSelected() != null ) {
 					
-					// Get selected column shell
-					selectedText = columnShells.getModel().getValue(rs1.getSelected(), columnShells.getHeader());
-								
+					// Get selected column shell				
+					selectedText = w.getL("coColShells").getModel().getValue(rs1.getSelected(), w.getL("coColShells").getHeader());					
+					
 					// Get current column shell based on selected column shell
 					try {
-					//	currentColumnShell = u.getColumnShellByType(selectedText);
+						currentColumnShell = ui.getColumnShellByType(selectedText);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					
 					// Set everything else to current column shell				
-					/*csType.setText(currentColumnShell.type);
-					csWidth.setText(currentColumnShell.width.toString());
-					csHeight.setText(currentColumnShell.height.toString());
-					csLocX.setText(currentColumnShell.x.toString());
-					csLocY.setText(currentColumnShell.y.toString()); 
-					*/					
+					((Entry) w.getW("coType")).setText(currentColumnShell.type);
+					((Entry) w.getW("coWidth")).setText(currentColumnShell.width.toString());
+					//csHeight.setText(currentColumnShell.height.toString());
+					//csLocX.setText(currentColumnShell.x.toString());
+					//csLocY.setText(currentColumnShell.y.toString()); 
+								
 				}							
 			}
 		});		
 
 		// Entries are set depending on current column selected
-		TreeView colView = columns.getView();		
+		TreeView colView = w.getL("coColumns").getView();		
 		
 		// Connect for getting selected row in tree view		
 		rs2 = colView.getSelection();
@@ -140,7 +96,7 @@ public class ColumnHandler {
 				if( rs2.getSelected() != null ) {
 					
 					// Get selected column
-					selectedText = columns.getModel().getValue(rs2.getSelected(), columns.getHeader());
+					selectedText = w.getL("coColumns").getModel().getValue(rs2.getSelected(), w.getL("coColumns").getHeader());
 					
 					// Get current column shell based on selected column 
 					try {
@@ -157,20 +113,20 @@ public class ColumnHandler {
 		});
 		
 		// TODO - Figure out how to update this list
-		TreeView layView = layers.getView();		
+		TreeView layView = w.getL("coLayers").getView();		
 		
 		// Connect for getting selected row in tree view		
-		rowSelection3 = layView.getSelection();
-		rowSelection3.connect(new Changed() {
+		rs3 = layView.getSelection();
+		rs3.connect(new Changed() {
 			
 			@Override
 			public void onChanged(TreeSelection arg0) {	
 			
 				// Get selected string
-				if( rowSelection3.getSelected() != null ) {
+				if( rs3.getSelected() != null ) {
 					
 					// Get selected layer type
-					selectedText = layers.getModel().getValue(rowSelection3.getSelected(), layers.getHeader());
+					selectedText = w.getL("coLayers").getModel().getValue(rs3.getSelected(), w.getL("coLayers").getHeader());
 									
 				}							
 			}
@@ -178,67 +134,56 @@ public class ColumnHandler {
 
 	}
 
-	private void setLists() throws FileNotFoundException {				 			
-		
-
-			
-	}
-
 	
-	private void modifyHandlers() throws FileNotFoundException {
-	
-		// Buttons for adding/removing
-		Button addColShells = (Button) GladeParseUtil.grabWidget( "cShellAdd", "window1" );
-		Button removeColShells = (Button) GladeParseUtil.grabWidget( "cShellRem", "window1" );
-		Button addCol = (Button) GladeParseUtil.grabWidget( "cColAdd", "window1" );
-		Button removeCol= (Button) GladeParseUtil.grabWidget( "cColRem", "window1" );
+	private void modifyHandlers( final WidgetReferences w ) throws FileNotFoundException {	
 		
 		// Connect for adding a column shell
-		addColShells.connect( new Clicked() {
+		((Button)w.getW("coAddCShell")).connect( new Clicked() {
 			int counter = 0;
 			@Override
 			public void onClicked(Button arg0) {
 				
 				counter++;
 				// Add a new column shell to the model, update data source??
-				columnShells.addData( "NewColumnShell" + counter );
+				w.getL("coColShells").addData( "NewColumnShell" + counter );
 				
 			}
 		});
 		
 		// Connect for removing a column shell
-		removeColShells.connect( new Clicked() {
+		((Button)w.getW("coRemCShell")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 				
 				// Remove selected column shell
-				columnShells.removeData();
-				csType.setText( "" );
+				w.getL("coColShells").removeData();
+				((Entry) w.getW("coType")).setText( "" );
 				
 			}
 		});
 		
 		// Connect for adding a column 
-		addCol.connect( new Clicked() {
+		((Button)w.getW("coAddColumn")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 			
 				// Add a new column
-				columns.addData( "NewColumn" );				
+				w.getL("coColumns").addData( "NewColumn" );				
 			
 			}
 		});
 				
 		// Connect for remove a column 
-		removeCol.connect( new Clicked() {
+		((Button)w.getW("coRemColumn")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 			
 				// Remove selected column
-				columns.removeData();
+				w.getL("coColumns").removeData();
+				
 			}
 		});
 	}

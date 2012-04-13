@@ -15,6 +15,7 @@ import org.gnome.gtk.TreeSelection.Changed;
 
 import unr.neurotranslate.ncs.Stimulus;
 import unr.neurotranslate.ncs.StimulusInject;
+import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 public class StimuliHandler {
 
@@ -43,7 +44,7 @@ public class StimuliHandler {
 	public Stimulus currentStimulus;
 	
 		
-	public StimuliHandler() throws FileNotFoundException {
+	public StimuliHandler(WidgetReferences w, UIControllerNCS ui) throws FileNotFoundException {
 		
 		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow3", "window1");
 		

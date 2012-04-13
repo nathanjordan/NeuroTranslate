@@ -18,6 +18,7 @@ import org.gnome.gtk.TreeSelection.Changed;
 import unr.neurotranslate.ncs.SynFacilDepress;
 import unr.neurotranslate.ncs.SynLearning;
 import unr.neurotranslate.ncs.Synapse;
+import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 public class SynapseHandler {
 	// All array lists are for debugging
@@ -66,7 +67,7 @@ public class SynapseHandler {
 	public SynFacilDepress currentSFD;
 	public SynLearning currentLearn;
 	
-	public SynapseHandler() throws FileNotFoundException {
+	public SynapseHandler(WidgetReferences w, UIControllerNCS ui) throws FileNotFoundException {
 		
 		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow5", "window1");
 		

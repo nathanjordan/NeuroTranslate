@@ -16,6 +16,7 @@ import org.gnome.gtk.TreeSelection.Changed;
 import unr.neurotranslate.ncs.Cell;
 import unr.neurotranslate.ncs.Compartment;
 import unr.neurotranslate.ncs.SpikeShape;
+import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 public class CellHandler {
 	// All array lists are for debugging
@@ -61,7 +62,7 @@ public class CellHandler {
 	public Compartment currentCompartment;
 	public SpikeShape currentSpikes;
 	
-	public CellHandler() throws FileNotFoundException {
+	public CellHandler(WidgetReferences w, UIControllerNCS ui) throws FileNotFoundException {
 		
 		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow4", "window1");
 		
@@ -71,7 +72,7 @@ public class CellHandler {
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 				
 				// fill out all entries/lists/combo boxes				
-				
+								
 				
 				return false;
 			}

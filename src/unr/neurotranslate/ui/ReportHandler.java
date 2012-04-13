@@ -13,6 +13,7 @@ import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
 
 import unr.neurotranslate.ncs.Report;
+import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 public class ReportHandler {
 	// All array lists are for debugging
@@ -33,7 +34,7 @@ public class ReportHandler {
 	public Entry repTEnd;
 	public Report currentReport;
 	
-	public ReportHandler() throws FileNotFoundException {
+	public ReportHandler(WidgetReferences w, UIControllerNCS ui) throws FileNotFoundException {
 		
 	
 		// Data sources

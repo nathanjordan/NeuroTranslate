@@ -36,8 +36,8 @@ public class LayerHandler {
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 				
 				// fill out all entries/lists/combo boxes
-				//w.getL("lLayShells").listToModel( ui.getLayerShells() );
-				//w.getL("lLayers").listToModel( ui.getLayers() );
+				w.getL("lLayShells").listToModel( ui.getLayerShells() );
+				w.getL("lLayers").listToModel( ui.getLayers() );
 
 				return false;
 			}
@@ -74,12 +74,17 @@ public class LayerHandler {
 					selectedText = w.getL("lLayShells").getModel().getValue(rs1.getSelected(), w.getL("lLayShells").getHeader());
 
 					// Get current layer shell based on selected layer shell 
-					// currentLayerShell = getLayerShellByType(selectedText);									
+					 try {
+						currentLayerShell = ui.getLayerShellByType(selectedText);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}									
 				
 					// Set everything else to current 
-					/*lsType.setText(currentLayerShell.type);
-					lsLower.setText(currentLayerShell.lower.toString());
-					lsUpper.setText(currentLayerShell.upper.toString());*/
+					((Entry) w.getW("lLSType")).setText(currentLayerShell.type);
+					((Entry) w.getW("lLSLower")).setText(currentLayerShell.lower.toString());
+					((Entry) w.getW("lLSUpper")).setText(currentLayerShell.upper.toString());
 				}							
 			}
 		});
@@ -102,10 +107,15 @@ public class LayerHandler {
 					selectedText = w.getL("lLayers").getModel().getValue(rs2.getSelected(), w.getL("lLayers").getHeader());
 
 					// Get current layer based on selected 
-					// currentLayer = getLayerByType(selectedText);									
+					try {
+						currentLayer = ui.getLayerByType(selectedText);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}									
 				
 					// Set everything else to current column
-					//((Entry) w.getW("lLType")).setText(currentLayer.type);
+					((Entry) w.getW("lLType")).setText(currentLayer.type);
 				}							
 			}
 		});

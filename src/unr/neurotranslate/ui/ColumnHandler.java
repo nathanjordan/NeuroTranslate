@@ -13,6 +13,7 @@ import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
 import org.gnome.gtk.TreeSelection.Changed;
 
+import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.ColumnShell;
 import unr.neurotranslate.ui.controller.UIControllerNCS;
 
@@ -24,6 +25,7 @@ public class ColumnHandler {
 	public String selectedText;	
 	public TreeSelection rs1, rs2, rs3;
 	public ColumnShell currentColumnShell;
+	public Column currentColumn;
 	
 	public ColumnHandler(final WidgetReferences w, final UIControllerNCS ui) throws Exception {
 		
@@ -72,12 +74,11 @@ public class ColumnHandler {
 					}
 					
 					// Set everything else to current column shell				
-					((Entry) w.getW("coType")).setText(currentColumnShell.type);
+					((Entry) w.getW("coCSType")).setText(selectedText);					
 					((Entry) w.getW("coWidth")).setText(currentColumnShell.width.toString());
-					//csHeight.setText(currentColumnShell.height.toString());
-					//csLocX.setText(currentColumnShell.x.toString());
-					//csLocY.setText(currentColumnShell.y.toString()); 
-								
+					((Entry) w.getW("coHeight")).setText(currentColumnShell.height.toString());
+					((Entry) w.getW("coLocX")).setText(currentColumnShell.x.toString());
+					((Entry) w.getW("coLocY")).setText(currentColumnShell.y.toString()); 								
 				}							
 			}
 		});		
@@ -100,14 +101,14 @@ public class ColumnHandler {
 					
 					// Get current column shell based on selected column 
 					try {
-						// currentColumn = u.getColumnByType(selectedText);
+						 currentColumn = ui.getColumnByType(selectedText);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}									
 				
 					// Set everything else to current column 	
-					// cType.setText(currentColumn.type);
+					((Entry) w.getW("coCType")).setText(currentColumn.type);
 				}							
 			}
 		});

@@ -20,123 +20,39 @@ import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 public class CellHandler {
 	// All array lists are for debugging
-	public ArrayList<String> cCells;
-	public ArrayList<String> cComps;
-	public ArrayList<String> cSpikes;
 	public TreeSelection rs1, rs2, rs3;
 	public String selectedText;
-	
-	public ListEntity cells;
-	public ListEntity compartments;
-	public ListEntity spikeShapes;
-	public ComboEntity comName;
-	public ComboEntity spikeSel;
-	public ComboEntity SFDSel;
-	public ComboEntity learnSel;
-	public ComboEntity stimSel;
-	public ComboEntity colSel;
-	public ComboEntity laySel;
-	public ComboEntity cellSel;
-	public ComboEntity compSel;
-	
-	public Entry cCellType;
-	public Entry cComLab;
-	public Entry cComX;
-	public Entry cComY;
-	public Entry cComType;
-	public Entry cTMMean;
-	public Entry cTMStd;
-	public Entry cRMMean;
-	public Entry cRMStd;
-	public Entry cTMean;
-	public Entry cTStd;
-	public Entry cLRMean;
-	public Entry cLRStd;
-	public Entry cLCMean;
-	public Entry cLCStd;
-	public Entry cRPMean;
-	public Entry cRPStd;
-	public Entry cSpikeType;
-	public Entry cSpikeVol;
 	public Cell currentCell;
 	public Compartment currentCompartment;
 	public SpikeShape currentSpikes;
 	
-	public CellHandler(WidgetReferences w, UIControllerNCS ui) throws FileNotFoundException {
-		
-		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow4", "window1");
-		
-		c.connect(new Widget.ExposeEvent() {
+	public CellHandler(final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {
+						
+		w.getW("cellScroll").connect(new Widget.ExposeEvent() {
 			
 			@Override
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 				
 				// fill out all entries/lists/combo boxes				
-								
+				w.getL("ceCells").listToModel( ui.getCells() );
+				w.getL("ceCompartments").listToModel( ui.getCompartments() );
+				w.getL("ceSpikes").listToModel( ui.getSpikeShapes() );
 				
 				return false;
 			}
 		});
 		
-		// Data sources
-		cCells = new ArrayList<String>();
-		cComps = new ArrayList<String>();
-		cSpikes = new ArrayList<String>();
-		selectedText = new String();
+		setEntries(w, ui);
 		
-		// Entries
-		cCellType = (Entry) GladeParseUtil.grabWidget("entry30", "window1");
-		cComLab = (Entry) GladeParseUtil.grabWidget("entry28", "window1");
-		cComX = (Entry) GladeParseUtil.grabWidget("entry29", "window1");
-		cComY = (Entry) GladeParseUtil.grabWidget("entry32", "window1");
-		cComType = (Entry) GladeParseUtil.grabWidget("entry31", "window1");
-		cTMMean = (Entry) GladeParseUtil.grabWidget("entry64", "window1");
-		cTMStd = (Entry) GladeParseUtil.grabWidget("entry65", "window1");
-		cRMMean = (Entry) GladeParseUtil.grabWidget("entry62", "window1");
-		cRMStd = (Entry) GladeParseUtil.grabWidget("entry63", "window1");
-		cTMean = (Entry) GladeParseUtil.grabWidget("entry60", "window1");
-		cTStd = (Entry) GladeParseUtil.grabWidget("entry61", "window1");
-		cLRMean = (Entry) GladeParseUtil.grabWidget("entry58", "window1");
-		cLRStd = (Entry) GladeParseUtil.grabWidget("entry59", "window1");
-		cLCMean = (Entry) GladeParseUtil.grabWidget("entry56", "window1");
-		cLCStd = (Entry) GladeParseUtil.grabWidget("entry57", "window1");
-		cRPMean = (Entry) GladeParseUtil.grabWidget("entry48", "window1");
-		cRPStd = (Entry) GladeParseUtil.grabWidget("entry49", "window1");
-		cSpikeType = (Entry) GladeParseUtil.grabWidget("entry40", "window1");
-		cSpikeVol = (Entry) GladeParseUtil.grabWidget("entry33", "window1");
-		
-		// Lists
-		cells = new ListEntity( "cCells", "window1" );
-		compartments = new ListEntity( "Compartments", "window1" );
-		spikeShapes = new ListEntity( "SpikeShapes", "window1" );
-		comName = new ComboEntity( "combobox10", "window1" );
-		spikeSel = new ComboEntity( "combobox3", "window1" );
-		SFDSel = new ComboEntity( "combobox11", "window1" );
-		learnSel = new ComboEntity( "combobox12", "window1" );
-		stimSel = new ComboEntity( "combobox4", "window1" );
-		colSel = new ComboEntity( "combobox5", "window1" );
-		laySel = new ComboEntity( "combobox6", "window1" );
-		cellSel = new ComboEntity( "combobox7", "window1" );
-		compSel = new ComboEntity( "combobox8", "window1" );
-		
-		setLists();
-		
-		setEntries();
-		
-		modifyHandlers();
+		modifyHandlers(w, ui);
 		
 	}
+
 	
-	public void setLists() throws FileNotFoundException {
-	
-	
-				
-	}
-	
-	public void setEntries() {
+	public void setEntries(final WidgetReferences w, final UIControllerNCS ui) {
 		
 		// Entries are set depending on current cell selected
-		TreeView cellView = cells.getView();		
+		TreeView cellView = w.getL("ceCells").getView();		
 		
 		// Connect for getting selected row in tree view		
 		rs1 = cellView.getSelection();
@@ -149,22 +65,26 @@ public class CellHandler {
 				if( rs1.getSelected() != null ) {
 					
 					// Get selected cell
-					selectedText = cells.getModel().getValue(rs1.getSelected(), cells.getHeader());
+					selectedText = w.getL("ceCells").getModel().getValue(rs1.getSelected(), w.getL("ceCells").getHeader());
 
 					// Get current cell based on cell
-					// currentCell = getCellByType(selectedText);									
+					try {
+						currentCell = ui.getCellByType(selectedText);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}									
 				
 					// Set everything else to current
-					//cCellType.setText(currentCell.type);
+					((Entry) w.getW("ceCellType")).setText(currentCell.type);
 					// TODO - set compartment name and all the entries
-					
-					
+										
 				}							
 			}
 		});
 				
 		// Entries are set depending on current compartments selected
-		TreeView compView = compartments.getView();		
+		TreeView compView = w.getL("ceCompartments").getView();		
 		
 		// Connect for getting selected row in tree view		
 		rs2 = compView.getSelection();
@@ -177,32 +97,37 @@ public class CellHandler {
 				if( rs2.getSelected() != null ) {
 					
 					// Get selected compartments
-					selectedText = compartments.getModel().getValue(rs2.getSelected(), compartments.getHeader());
+					selectedText = w.getL("ceCompartments").getModel().getValue(rs2.getSelected(), w.getL("ceCompartments").getHeader());
 
 					// Get current compartments based on compartments
-					// currentCompartment = getCompartmentByType(selectedText);									
+					try {
+						currentCompartment = ui.getCompartmentByType(selectedText);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}									
 				
 					// Set everything else to current 
 					// TODO - Set spike shape
-					/*cComType.setText(currentCompartment.type);
-					cTMMean.setText(currentCompartment.tauMembrane.mean.toString());
-					cTMStd.setText(currentCompartment.tauMembrane.stdev.toString());
-					cRMMean.setText(currentCompartment.rMembrane.mean.toString());
-					cRMStd.setText(currentCompartment.rMembrane.stdev.toString());
-					cTMean.setText(currentCompartment.threshold.mean.toString());
-					cTStd.setText(currentCompartment.threshold.stdev.toString());
-					cLRMean.setText(currentCompartment.leakReversal.mean.toString());
-					cLRStd.setText(currentCompartment.leakReversal.stdev.toString());
-					cLCMean.setText(currentCompartment.leakConductance.mean.toString());
-					cLCStd.setText(currentCompartment.leakConductance.stdev.toString());
-					cRPMean.setText(currentCompartment.vmRest.mean.toString());
-					cRPStd.setText(currentCompartment.vmRest.stdev.toString());*/
+					((Entry) w.getW("ceComType")).setText(currentCompartment.type);
+					((Entry) w.getW("ceTMMean")).setText(currentCompartment.tauMembrane.mean.toString());
+					((Entry) w.getW("ceTMStd")).setText(currentCompartment.tauMembrane.stdev.toString());
+					((Entry) w.getW("ceRMMean")).setText(currentCompartment.rMembrane.mean.toString());
+					((Entry) w.getW("ceRMStd")).setText(currentCompartment.rMembrane.stdev.toString());
+					((Entry) w.getW("ceTMean")).setText(currentCompartment.threshold.mean.toString());
+					((Entry) w.getW("ceTStd")).setText(currentCompartment.threshold.stdev.toString());
+					((Entry) w.getW("ceLRMean")).setText(currentCompartment.leakReversal.mean.toString());
+					((Entry) w.getW("ceLRStd")).setText(currentCompartment.leakReversal.stdev.toString());
+					((Entry) w.getW("ceLCMean")).setText(currentCompartment.leakConductance.mean.toString());
+					((Entry) w.getW("ceLCStd")).setText(currentCompartment.leakConductance.stdev.toString());
+					((Entry) w.getW("ceRPMean")).setText(currentCompartment.vmRest.mean.toString());
+					((Entry) w.getW("ceRPStd")).setText(currentCompartment.vmRest.stdev.toString());
 				}							
 			}
 		});
 		
 		// Entries are set depending on spike selected
-		TreeView spikeView = spikeShapes.getView();		
+		TreeView spikeView = w.getL("ceSpikes").getView();		
 		
 		// Connect for getting selected row in tree view		
 		rs3 = spikeView.getSelection();
@@ -215,91 +140,88 @@ public class CellHandler {
 				if( rs3.getSelected() != null ) {
 					
 					// Get selected spike
-					selectedText = spikeShapes.getModel().getValue(rs3.getSelected(), spikeShapes.getHeader());
+					selectedText = w.getL("ceSpikes").getModel().getValue(rs3.getSelected(), w.getL("ceSpikes").getHeader());
 
 					// Get current spike shape based on selected spike
-					// currentSpikes = getSpikeByType(selectedText);									
+					try {
+						currentSpikes = ui.getSpikeShapeByType(selectedText);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}									
 				
 					// Set everything else to current
-					/*cSpikeType.setText(currentSpikes.type);
-					cSpikeVol.setText(currentSpikes.voltages.toString());*/
-	
+					((Entry) w.getW("ceSpikeType")).setText(currentSpikes.type);					
+					((Entry) w.getW("ceSpikeVol")).setText(currentSpikes.voltages.toString());
+					
 				}							
 			}
 		});
 	}
 	
-	public void modifyHandlers() throws FileNotFoundException {
+	public void modifyHandlers(final WidgetReferences w, UIControllerNCS ui) throws FileNotFoundException {
 	
-		//Buttons for add/removing
-		Button addCell = (Button) GladeParseUtil.grabWidget( "cCellAdd", "window1" );
-		Button remCell = (Button) GladeParseUtil.grabWidget( "cCellRem", "window1" );
-		Button addComp = (Button) GladeParseUtil.grabWidget( "cCompAdd", "window1" );
-		Button remComp = (Button) GladeParseUtil.grabWidget( "cCompRem", "window1" );
-		Button addSpike = (Button) GladeParseUtil.grabWidget( "cSpikeAdd", "window1" );
-		Button remSpike = (Button) GladeParseUtil.grabWidget( "cSpikeRem", "window1" );
-		
 		// Connect for adding a cell
-		addCell.connect( new Clicked() {
+		((Button) w.getW("ceAddCell")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 				
-				cells.addData( "new cell");
+				w.getL("ceCells").addData( "new cell");
 				
 			}
 		});		
 		
 		// Connect for removing a cell
-		remCell.connect( new Clicked() {
+		((Button) w.getW("ceRemCell")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 			
-				cells.removeData( );
+				w.getL("ceCells").removeData( );
 				
 			}
 		});	
 		
 		// Connect for adding a compartment
-		addComp.connect( new Clicked() {
+		((Button) w.getW("ceAddComp")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 				
-				compartments.addData( "new compartment" );
+				w.getL("ceCompartments").addData( "new compartment" );
 			}
 		});
 		
 		// Connect for removing a compartment
-		remComp.connect(new Clicked() {
+		((Button) w.getW("ceRemComp")).connect(new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 				
-				compartments.removeData();
+				w.getL("ceCompartments").removeData();
 				
 			}
 		});
 		
 		// Connect for adding a Spike Shape
-		addSpike.connect( new Clicked() {
+		((Button) w.getW("ceAddSpike")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 				
-				spikeShapes.addData( "new spike shape" );
+				w.getL("ceSpikes").addData( "new spike shape" );
 				
 			}
 		});
 		
 		// Connect for removing a Spike Shape
-		remSpike.connect( new Clicked() {
+		((Button) w.getW("ceRemSpike")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 				
-				spikeShapes.removeData();
+				w.getL("ceSpikes").removeData();
 				
 			}
 		});

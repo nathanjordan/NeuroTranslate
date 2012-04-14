@@ -34,46 +34,46 @@ import unr.neurotranslate.ncs.SynPSG;
 
 public class NeuromlToNCS {
 
-	
-	
+
+
     public static ArrayList<ArrayList<String>> cShellLShellList = new ArrayList<ArrayList<String>>();
-	
+
 	//static int popIndex = 1;
-	
+
 	// TODO set all stdev to 0
-	
+
 	public static ArrayList<unr.neurotranslate.ncs.Cell> generateNCSCells(Level3Cells neuromlCells, Projections projections, Populations populations, ArrayList<Compartment> compartments) {
-		
+
 			// NCS cells array
 		    ArrayList<unr.neurotranslate.ncs.Cell> ncsCellsList = new ArrayList<unr.neurotranslate.ncs.Cell>();
 		    unr.neurotranslate.ncs.Cell tempNCSCell;
-			
+
 			// segments
 			Segments neuromlSegments = new Segments();
 			List<Segment> seglist;
-			
+
 			// compartments
 			ArrayList<String> compNameList = new ArrayList<String>();
 			Compartment tempComp;
-			
+
 			// temp Point
 			Point tempPoint;
-			
+
 			// for each cell in NeuroML
 			for(Level3Cell neuromlCell : neuromlCells.getCells())
 			{
 				tempNCSCell = new unr.neurotranslate.ncs.Cell();
 				// set cell name
 				tempNCSCell.type = neuromlCell.getName();	
-							
+
 				// get segments from the cell
 				neuromlSegments = neuromlCell.getSegments();
-				
+
 				// get the list of segments from the segments class
 				seglist = neuromlSegments.getSegments();
-				
+
 				// start the compartment index at zero
-		
+
 			    //for each segment in that cell
 				for(Segment seg : seglist)
 				{
@@ -86,33 +86,33 @@ public class NeuromlToNCS {
 					}
 					compartments.add(tempComp);
 					compNameList.add(seg.getName());
-					
+
 					// set compartment name
 					tempNCSCell.compartmentLabels.add(seg.getName());
-					
+
 					// set compartment label (same as name when going from NeuroML to NCS)
 					tempNCSCell.compartmentNames.add(seg.getName());
 
 					// add name to list
 					compNameList.add(seg.getName());
-					
+
 					// get the proximal point for the placement of the compartment
 					tempPoint = seg.getProximal();
-					
+
 					// set compartment x value
 					tempNCSCell.xList.add(tempPoint.getX());
-					
+
 					// set compartment y value
 					tempNCSCell.yList.add(tempPoint.getY());
-							
+
 				}
-				
+
 				// add cell to NCS cells list
 				ncsCellsList.add(tempNCSCell);
 			}
 			return ncsCellsList;
 		}
-	
+
 
     public static Compartment generateNCSCompartments(Segment segment, Projections projections, Populations populations, Level3Cell level3Cell){
     	
@@ -342,7 +342,7 @@ public class NeuromlToNCS {
 	    						tempLayer.layerShell = lShell;
 	    						tempLayer.layerShellName = lShell.type;
 	    						tempLayer.cellTypeNames.add(pop.getCellType());
-	    						
+
 	    						for(unr.neurotranslate.ncs.Cell tCell : cells)
 	    						{
 	    							if(tCell.type.equals(pop.getCellType()))
@@ -401,5 +401,3 @@ public class NeuromlToNCS {
     	return synPsg;
     }
 }
-
-   

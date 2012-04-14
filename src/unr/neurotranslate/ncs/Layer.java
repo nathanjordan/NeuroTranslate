@@ -31,6 +31,7 @@ public class Layer extends TypedElement {
 		
 		s = NCSWriter.writeProperty("TYPE", type, s);
 		
+		if(layerShell != null)
 		s = NCSWriter.writeProperty("LAYER_SHELL", layerShell.type, s);
 		
 		for( int i = 0 ; i < cellTypes.size() ; i++ )

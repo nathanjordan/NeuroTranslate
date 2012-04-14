@@ -24,7 +24,7 @@ public class Stimulus extends TypedElement {
 	
 	public String timing;
 	
-	public Integer sameSeed;
+	public Boolean sameSeed;
 	
 	public Double ampStart;
 	

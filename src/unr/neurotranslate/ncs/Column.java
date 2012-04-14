@@ -29,6 +29,7 @@ public class Column extends TypedElement {
 		
 		s = NCSWriter.writeProperty("TYPE", type, s);
 		
+		if(columnShell != null)
 		s = NCSWriter.writeProperty("COLUMN_SHELL", columnShell.type, s);
 		
 		for( Layer l : layers )

@@ -1,18 +1,11 @@
 package unr.neurotranslate.ui;
-import java.io.FileNotFoundException;
-
 import org.gnome.gdk.Event;
-import org.gnome.glade.Glade;
-import org.gnome.glade.XML;
 import org.gnome.gtk.Gtk;
-import org.gnome.gtk.Notebook;
 import org.gnome.gtk.Widget;
 import org.gnome.gtk.Window;
 import org.gnome.gtk.WindowPosition;
 import org.gnome.gtk.Window.DeleteEvent;
 
-import unr.neurotranslate.ncs.Connect;
-import unr.neurotranslate.ncs.NCSData;
 import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 
@@ -23,8 +16,8 @@ public class gladeTest {
     	
     	// Parse UI file
     	Window top = (Window) GladeParseUtil.grabWidget( "window1", "window1" );    	    	
-
-    	
+    	WidgetReferences w = new WidgetReferences();
+    	UIControllerNCS u = new UIControllerNCS();
     	
         // Set default window attributes and display 
         top.setTitle("NeuroTranslate");
@@ -36,14 +29,14 @@ public class gladeTest {
         
         // Create handlers for each of the tabs and menu
         new FileHandler();
-        new BrainHandler();  
-        new ColumnHandler();
-        new LayerHandler();
-        new CellHandler();
-        new ConnectionHandler();
-        new SynapseHandler();
-        new StimuliHandler();
-        new ReportHandler();
+        new BrainHandler(w, u);  
+        new ColumnHandler(w, u);
+        new LayerHandler(w, u);
+        new CellHandler(w, u);
+        new ConnectionHandler(w, u);
+        new SynapseHandler(w, u);
+        new StimuliHandler(w, u);
+        new ReportHandler(w, u);
         
         //new MorphologyHandler( mainApp, modifyPopup );        
         

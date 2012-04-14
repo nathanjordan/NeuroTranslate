@@ -147,7 +147,7 @@ brainvar:  TK_TYPE         NAME    { brain.type = $<sval>2; }
          | TK_PORT         TK_SINGLE { brain.port = -2; }
          | TK_SERVER       NAME    { brain.server = $<sval>2; }
          | TK_SERVER_PORT  INTEGER { brain.serverPort = $<ival>2; }
-         | TK_DISTANCE     LOGICAL { brain.distance =  $<ival>2; }
+         | TK_DISTANCE     LOGICAL { brain.distance =  ($<ival>2 != 0); }
          | TK_OUTPUT_CELLS LOGICAL { brain.outputCells = ( $<ival>2 != 0 );  }
          | TK_OUTPUT_CONNECT_MAP LOGICAL  { brain.outputConnectMap = ( $<ival>2 != 0 );  }
          | TK_OPTION       TK_WARNINGS_OFF  { brain.warningsOn = true;  }
@@ -427,7 +427,7 @@ synvar: TK_TYPE           NAME    { synapseList.get( synapseList.size() - 1).typ
       | TK_LEARN_LABEL    NAME    { synapseList.get( synapseList.size() - 1).learnLabel = $<sval>2; }
       | TK_DATA_LABEL     NAME    {  }
       | TK_SYN_AUGMENTATION NAME  {  }
-      | TK_SYN_PSG        NAME    { synapseList.get( synapseList.size() - 1).synPSG  = $<sval>2; }
+      | TK_SYN_PSG        NAME    { synapseList.get( synapseList.size() - 1).synPSGName  = $<sval>2; }
       | TK_ABSOLUTE_USE  { twoPtr = synapseList.get( synapseList.size() - 1).absoluteUse; } twovalue
       | TK_DELAY         { twoPtr = synapseList.get( synapseList.size() - 1).delay; } twovalue
       | TK_SYN_REVERSAL  { twoPtr = synapseList.get( synapseList.size() - 1).synReversal; } twovalue
@@ -562,7 +562,7 @@ stvar: TK_TYPE           NAME     { stimulusList.get( stimulusList.size() - 1 ).
      | TK_FILENAME       NAME     { stimulusList.get( stimulusList.size() - 1 ).filename = $<sval>2; }
      | TK_PORT           INTEGER  { stimulusList.get( stimulusList.size() - 1 ).port = $<ival>2; }
      | TK_PORT           TK_AUTO  { stimulusList.get( stimulusList.size() - 1 ).port = -1; }
-     | TK_SAMESEED       LOGICAL  { stimulusList.get( stimulusList.size() - 1 ).sameSeed = $<ival>2; }
+     | TK_SAMESEED       LOGICAL  { stimulusList.get( stimulusList.size() - 1 ).sameSeed = ($<ival>2 != 0); }
      | TK_SEED           INTEGER  { stimulusList.get( stimulusList.size() - 1 ).seed = $<ival>2;}
      | TK_FREQ_ROWS      INTEGER  {  }
      | TK_CELLS_PER_FREQ INTEGER  { stimulusList.get( stimulusList.size() - 1 ).cellsPerFreq = $<ival>2; }

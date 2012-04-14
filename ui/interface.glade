@@ -373,7 +373,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="brainAddConnection">
+                              <widget class="GtkButton" id="bModConnections">
                                 <property name="label" translatable="yes">Add/Remove</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -409,7 +409,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="bModColumn">
+                              <widget class="GtkButton" id="bModColumns">
                                 <property name="label" translatable="yes">Add/Remove</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -445,7 +445,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="brainAddStimulus">
+                              <widget class="GtkButton" id="bModStimulus">
                                 <property name="label" translatable="yes">Add/Remove</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -481,7 +481,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="brainAddReport">
+                              <widget class="GtkButton" id="bModReports">
                                 <property name="label" translatable="yes">Add/Remove</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -626,7 +626,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="cColShells">
+                              <widget class="GtkTreeView" id="coColShells">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -887,7 +887,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkTreeView" id="cColumnView">
+                              <widget class="GtkTreeView" id="coColumns">
                                 <property name="width_request">260</property>
                                 <property name="height_request">100</property>
                                 <property name="visible">True</property>
@@ -1014,7 +1014,7 @@
                               <widget class="GtkVBox" id="vbox13">
                                 <property name="visible">True</property>
                                 <child>
-                                  <widget class="GtkTreeView" id="lLayerList">
+                                  <widget class="GtkTreeView" id="coLayers">
                                     <property name="height_request">100</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>

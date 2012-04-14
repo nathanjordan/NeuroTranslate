@@ -39,11 +39,11 @@ public class Event extends TypedElement {
 		
 		s = NCSWriter.writeProperty("TYPE", type, s);
 		
+		if(synapse != null)
 		s = NCSWriter.writeProperty("SYNAPSE", synapse.type, s);
 		
 		if( filename != null )
-			
-			s = s.concat( "\tUSE_OVERRIDE\t" + filename + "\t" + value + "\n" );
+		s = s.concat( "\tUSE_OVERRIDE\t" + filename + "\t" + value + "\n" );
 		
 		s = s.concat( "\tCELL\t" + column.type + "\t" + layer.type + "\t" + cell.type + "\t" + compartment.type + "\n" );
 		

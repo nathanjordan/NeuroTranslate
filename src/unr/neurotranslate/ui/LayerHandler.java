@@ -18,64 +18,34 @@ import org.gnome.gtk.TreeSelection.Changed;
 import unr.neurotranslate.ncs.Cell;
 import unr.neurotranslate.ncs.Layer;
 import unr.neurotranslate.ncs.LayerShell;
+import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 public class LayerHandler {
-
-	// All array lists are for debugging
-	public ArrayList<String> lShells;
-	public ArrayList<String> lays;
+	
 	public TreeSelection rs1, rs2;
 	public String selectedText;
-	
-	public ListEntity layerShells;
-	public ListEntity layers;
-	public ComboEntity layShellSel;
-	public Entry lsType;
-	public Entry lsLower;
-	public Entry lsUpper;
-	public Entry lType;	
 	public LayerShell currentLayerShell;
 	public Layer currentLayer;
 	public Cell currentCell;
 	
-	public LayerHandler() throws FileNotFoundException {
+	public LayerHandler(final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {
 		
-	
-		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow2", "window1");
-		
-		c.connect(new Widget.ExposeEvent() {
+		w.getW("layerScroll").connect(new Widget.ExposeEvent() {
 			
 			@Override
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 				
 				// fill out all entries/lists/combo boxes
-				
+				//w.getL("lLayShells").listToModel( ui.getLayerShells() );
+				//w.getL("lLayers").listToModel( ui.getLayers() );
 
 				return false;
 			}
 		});
+
+		setEntries(w, ui);
 		
-		// Data sources
-		lShells = new ArrayList<String>();
-		lays = new ArrayList<String>();
-		selectedText = new String();
-		
-		// Entries
-		lsType = (Entry) GladeParseUtil.grabWidget( "entry15", "window1" );
-		lsLower = (Entry) GladeParseUtil.grabWidget( "entry14", "window1" );
-		lsUpper = (Entry) GladeParseUtil.grabWidget( "entry13", "window1" );
-		lType = (Entry) GladeParseUtil.grabWidget( "entry17", "window1" );
-		
-		// Lists
-		layerShells = new ListEntity( "lLayerShells", "window1" );
-		layers = new ListEntity( "lLayers", "window1" );		
-		layShellSel = new ComboEntity( "combobox1", "window1" );
-		
-		setLists();
-		
-		setEntries();
-		
-		modifyHandlers();
+		modifyHandlers(w, ui);
 		
 	}
 	
@@ -85,10 +55,10 @@ public class LayerHandler {
 				
 	}
 	
-	public void setEntries() throws FileNotFoundException {
+	public void setEntries(final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {
 	
 		// Entries are set depending on current layer shell selected
-		TreeView layShView = layerShells.getView();		
+		TreeView layShView = w.getL("lLayShells").getView();		
 		
 		// Connect for getting selected row in tree view		
 		rs1 = layShView.getSelection();
@@ -101,7 +71,7 @@ public class LayerHandler {
 				if( rs1.getSelected() != null ) {
 					
 					// Get selected layer shell
-					selectedText = layerShells.getModel().getValue(rs1.getSelected(), layerShells.getHeader());
+					selectedText = w.getL("lLayShells").getModel().getValue(rs1.getSelected(), w.getL("lLayShells").getHeader());
 
 					// Get current layer shell based on selected layer shell 
 					// currentLayerShell = getLayerShellByType(selectedText);									
@@ -116,7 +86,7 @@ public class LayerHandler {
 
 	
 		// Entries are set depending on current layer selected
-		TreeView layView = layers.getView();		
+		TreeView layView = w.getL("lLayers").getView();		
 		
 		// Connect for getting selected row in tree view		
 		rs2 = layView.getSelection();
@@ -129,65 +99,59 @@ public class LayerHandler {
 				if( rs2.getSelected() != null ) {
 					
 					// Get selected layer 
-					selectedText = layers.getModel().getValue(rs2.getSelected(), layers.getHeader());
+					selectedText = w.getL("lLayers").getModel().getValue(rs2.getSelected(), w.getL("lLayers").getHeader());
 
 					// Get current layer based on selected 
 					// currentLayer = getLayerByType(selectedText);									
 				
 					// Set everything else to current column
-					lType.setText(currentLayer.type);
+					//((Entry) w.getW("lLType")).setText(currentLayer.type);
 				}							
 			}
 		});
 	}
 	
-	public void modifyHandlers() throws FileNotFoundException {
-	
-		//Buttons for add/removing
-		Button addShell = (Button) GladeParseUtil.grabWidget( "lShellAdd", "window1" );
-		Button remShell = (Button) GladeParseUtil.grabWidget( "lShellRem", "window1" );
-		Button addLayer = (Button) GladeParseUtil.grabWidget( "lLayAdd", "window1" );
-		Button remLayer = (Button) GladeParseUtil.grabWidget( "lLayRem", "window1" );
+	public void modifyHandlers(final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {	
 		
 		// Connect for adding a Layer Shell
-		addShell.connect( new Clicked() {
+		((Button) w.getW("lAddLShell")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 				
-				layerShells.addData( "new layer shell");
+				w.getL("lLayShells").addData( "new layer shell");
 				
 			}
 		});		
 		
 		// Connect for removing a Layer Shell
-		remShell.connect( new Clicked() {
+		((Button) w.getW("lRemLShell")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 			
-				layerShells.removeData( );
+				w.getL("lLayShells").removeData( );
 				
 			}
 		});	
 		
 		// Connect for adding a Layer
-		addLayer.connect( new Clicked() {
+		((Button) w.getW("lAddLayer")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 				
-				layers.addData( "new layer" );
+				w.getL("lLayers").addData( "new layer" );
 			}
 		});
 		
 		// Connect for removing a Layer
-		remLayer.connect(new Clicked() {
+		((Button) w.getW("lRemLayer")).connect(new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 				
-				layers.removeData();
+				w.getL("lLayers").removeData();
 				
 			}
 		});

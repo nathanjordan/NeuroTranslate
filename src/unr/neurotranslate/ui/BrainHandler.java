@@ -2,6 +2,7 @@ package unr.neurotranslate.ui;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import org.gnome.gdk.EventExpose;
 import org.gnome.gdk.EventVisibility;
 import org.gnome.gdk.VisibilityState;
 import org.gnome.gtk.Button;
@@ -34,32 +35,20 @@ public class BrainHandler {
 	
 	public BrainHandler() throws FileNotFoundException {
 		
-	ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow6", "window1");
+	ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow7", "window1");
+	
+	c.connect(new Widget.ExposeEvent() {
 		
-		c.connect(new ScrolledWindow.VisibilityNotifyEvent() {
-		
-			@Override
-			public boolean onVisibilityNotifyEvent(Widget arg0, EventVisibility arg1) {
-				
-				if(arg1.getState() == VisibilityState.PARTIAL ){
-					System.out.println("gone");
-				}
-				
-				return false;
-			}
-		});
-
-		c.connect( new ScrolledWindow.Hide() {
+		@Override
+		public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 			
-			@Override
-			public void onHide(Widget arg0) {
-				
-				if( arg0.getHasFocus())
-				System.out.println("SJDFKLJDFLSDLKFJSDLJ");
-				
-			}
-		});
-		
+			// fill out all entries/lists/combo boxes
+			
+			
+			
+			return false;
+		}
+	});
 		// Create array lists
 		activeL = new ArrayList<String>();
 		availL = new ArrayList<String>();
@@ -80,11 +69,7 @@ public class BrainHandler {
 
 		// Build models and set views
 		WidgetReferences w = new WidgetReferences();
-		w.getT("b1").addData("hey");
-		w.getT("b1").addData("yo");
-		
-		
-		
+	
 		//WidgetReferences.columnTypes = new ListEntity( "bColTypes", "window1" ); // debugging
 		ListEntity stimulusInjects = new ListEntity( "bStimInjects", "window1" );
 		ListEntity reports = new ListEntity( "bReports", "window1" );

@@ -3,15 +3,26 @@ package unr.neurotranslate.ui;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import org.gnome.gdk.EventExpose;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
+import org.gnome.gtk.ScrolledWindow;
+import org.gnome.gtk.TreeSelection;
+import org.gnome.gtk.TreeView;
+import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
+import org.gnome.gtk.TreeSelection.Changed;
+
+import unr.neurotranslate.ncs.Stimulus;
+import unr.neurotranslate.ncs.StimulusInject;
 
 public class StimuliHandler {
 
 	// All array lists are for debugging
 	public ArrayList<String> sInjects;
 	public ArrayList<String> sStimuli;
+	public TreeSelection rs1, rs2;
+	public String selectedText;
 	
 	public ListEntity injects;
 	public ListEntity stimuli;
@@ -28,12 +39,31 @@ public class StimuliHandler {
 	public Entry stWidth;
 	public Entry stTStart;
 	public Entry stTEnd;
+	public StimulusInject currentStimInj;
+	public Stimulus currentStimulus;
 	
-	
+		
 	public StimuliHandler() throws FileNotFoundException {
+		
+		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow3", "window1");
+		
+		c.connect(new Widget.ExposeEvent() {
+			
+			@Override
+			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
+				
+				// fill out all entries/lists/combo boxes
+				
+				
+				
+				return false;
+			}
+		});
+		
 		// Data sources
 		sInjects = new ArrayList<String>();
 		sStimuli = new ArrayList<String>();
+		selectedText = new String();
 		
 		// Entries
 		sType = (Entry) GladeParseUtil.grabWidget( "entry18", "window1" );		
@@ -70,7 +100,79 @@ public class StimuliHandler {
 	
 	public void setEntries() throws FileNotFoundException {
 	
+		// Entries are set depending on stimulus inject selected
+		TreeView stimInView = injects.getView();		
 		
+		// Connect for getting selected row in tree view		
+		rs1 = stimInView.getSelection();
+		rs1.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rs1.getSelected() != null ) {
+					
+					// Get selected column
+					selectedText = injects.getModel().getValue(rs1.getSelected(), injects.getHeader());
+					
+					// Get current inject based on selected inject 
+					try {
+					 // currentStimInj = getStimulusInjectByType(selectedText);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}									
+				
+					// Set everything else to current inject
+					// TODO - fill combo boxes
+					sType.setText(currentStimInj.type);
+					sProb.setText(currentStimInj.probability.toString());
+					
+				}							
+			}
+		});
+		
+		// Entries are set depending on stimulus inject selected
+		TreeView stimuliView = stimuli.getView();		
+		
+		// Connect for getting selected row in tree view		
+		rs2 = stimuliView.getSelection();
+		rs2.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rs2.getSelected() != null ) {
+					
+					// Get selected column
+					selectedText = stimuli.getModel().getValue(rs2.getSelected(), stimuli.getHeader());
+					
+					// Get current inject based on selected inject 
+					try {
+					// currentStimulus = getStimulusByType(selectedText);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}									
+				
+					// Set everything else to current inject	
+					/*stType.setText(currentStimulus.type);
+					stMode.setText(currentStimulus.mode);
+					stPattern.setText(currentStimulus.pattern);
+					stTimeInc.setText(currentStimulus.timeIncrement.toString());
+					stFreqCol.setText(currentStimulus.freqCols.toString());
+					stCellFreq.setText(currentStimulus.cellsPerFreq.toString());
+					stDynRange.setText(currentStimulus.dynRange.mean + " " + currentStimulus.dynRange.stdev);
+					stAmpStart.setText(currentStimulus.ampStart.toString());
+					stWidth.setText(currentStimulus.width.toString());
+					// TODO - why do these two  return a arraylist<double>?
+					stTStart.setText(currentStimulus.timeStart.toString());
+					stTEnd.setText(currentStimulus.timeEnd.toString());*/
+				}							
+			}
+		});
 	}
 	
 	public void modifyHandlers() throws FileNotFoundException {

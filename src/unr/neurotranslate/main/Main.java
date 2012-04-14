@@ -36,7 +36,11 @@ public static void main(String[] args) throws Exception, FileNotFoundException {
 	
 	NeuroMLConverter converter = new NeuroMLConverter();
 	
+
 	test = converter.readNeuroML("samples/PrototypeNeuroml.xml");
+
+	NCSData d = FileController.loadNCSFile( "samples/PrototypeNCS.in" );
+
 	
 	NCSData d1 = (NCSData) FormatConverter.convertToNCS(test).getData();
 	

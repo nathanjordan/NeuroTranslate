@@ -13,16 +13,19 @@ import org.gnome.gtk.Window.DeleteEvent;
 
 import unr.neurotranslate.ncs.Connect;
 import unr.neurotranslate.ncs.NCSData;
+import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 
 public class gladeTest {
 
-    public gladeTest() throws FileNotFoundException {        	
+    public gladeTest() throws Exception {        	
 
     	
     	// Parse UI file
     	Window top = (Window) GladeParseUtil.grabWidget( "window1", "window1" );    	    	
 
+    	
+    	
         // Set default window attributes and display 
         top.setTitle("NeuroTranslate");
         top.setPosition(WindowPosition.MOUSE);     
@@ -57,7 +60,7 @@ public class gladeTest {
     }
  
     // Main function
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws Exception {
         Gtk.init(args);
         new gladeTest();
         Gtk.main();

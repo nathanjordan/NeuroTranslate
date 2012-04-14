@@ -2,12 +2,25 @@ package unr.neurotranslate.ui.controller;
 
 import java.util.ArrayList;
 import unr.neurotranslate.model.Data;
+import unr.neurotranslate.model.FileController;
 import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.ColumnShell;
+import unr.neurotranslate.ncs.NCSData;
 
 public class UIControllerNCS {
 	
+
 	private Data _data;
+	
+	public UIControllerNCS() {
+		
+		NCSData d = FileController.loadNCSFile( "samples/PrototypeNCS.in" );
+		
+		_data = new Data();
+		
+		_data.ncs = d;
+		
+		}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	////    Column Shells

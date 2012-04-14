@@ -3,15 +3,27 @@ package unr.neurotranslate.ui;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import org.gnome.gdk.EventExpose;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
+import org.gnome.gtk.ScrolledWindow;
+import org.gnome.gtk.TreeSelection;
+import org.gnome.gtk.TreeView;
+import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
+import org.gnome.gtk.TreeSelection.Changed;
+
+import unr.neurotranslate.ncs.Cell;
+import unr.neurotranslate.ncs.Compartment;
+import unr.neurotranslate.ncs.SpikeShape;
 
 public class CellHandler {
 	// All array lists are for debugging
 	public ArrayList<String> cCells;
 	public ArrayList<String> cComps;
 	public ArrayList<String> cSpikes;
+	public TreeSelection rs1, rs2, rs3;
+	public String selectedText;
 	
 	public ListEntity cells;
 	public ListEntity compartments;
@@ -45,14 +57,31 @@ public class CellHandler {
 	public Entry cRPStd;
 	public Entry cSpikeType;
 	public Entry cSpikeVol;
-	
+	public Cell currentCell;
+	public Compartment currentCompartment;
+	public SpikeShape currentSpikes;
 	
 	public CellHandler() throws FileNotFoundException {
+		
+		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow4", "window1");
+		
+		c.connect(new Widget.ExposeEvent() {
+			
+			@Override
+			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
+				
+				// fill out all entries/lists/combo boxes				
+				
+				
+				return false;
+			}
+		});
 		
 		// Data sources
 		cCells = new ArrayList<String>();
 		cComps = new ArrayList<String>();
 		cSpikes = new ArrayList<String>();
+		selectedText = new String();
 		
 		// Entries
 		cCellType = (Entry) GladeParseUtil.grabWidget("entry30", "window1");
@@ -105,6 +134,98 @@ public class CellHandler {
 	
 	public void setEntries() {
 		
+		// Entries are set depending on current cell selected
+		TreeView cellView = cells.getView();		
+		
+		// Connect for getting selected row in tree view		
+		rs1 = cellView.getSelection();
+		rs1.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rs1.getSelected() != null ) {
+					
+					// Get selected cell
+					selectedText = cells.getModel().getValue(rs1.getSelected(), cells.getHeader());
+
+					// Get current cell based on cell
+					// currentCell = getCellByType(selectedText);									
+				
+					// Set everything else to current
+					//cCellType.setText(currentCell.type);
+					// TODO - set compartment name and all the entries
+					
+					
+				}							
+			}
+		});
+				
+		// Entries are set depending on current compartments selected
+		TreeView compView = compartments.getView();		
+		
+		// Connect for getting selected row in tree view		
+		rs2 = compView.getSelection();
+		rs2.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rs2.getSelected() != null ) {
+					
+					// Get selected compartments
+					selectedText = compartments.getModel().getValue(rs2.getSelected(), compartments.getHeader());
+
+					// Get current compartments based on compartments
+					// currentCompartment = getCompartmentByType(selectedText);									
+				
+					// Set everything else to current 
+					// TODO - Set spike shape
+					/*cComType.setText(currentCompartment.type);
+					cTMMean.setText(currentCompartment.tauMembrane.mean.toString());
+					cTMStd.setText(currentCompartment.tauMembrane.stdev.toString());
+					cRMMean.setText(currentCompartment.rMembrane.mean.toString());
+					cRMStd.setText(currentCompartment.rMembrane.stdev.toString());
+					cTMean.setText(currentCompartment.threshold.mean.toString());
+					cTStd.setText(currentCompartment.threshold.stdev.toString());
+					cLRMean.setText(currentCompartment.leakReversal.mean.toString());
+					cLRStd.setText(currentCompartment.leakReversal.stdev.toString());
+					cLCMean.setText(currentCompartment.leakConductance.mean.toString());
+					cLCStd.setText(currentCompartment.leakConductance.stdev.toString());
+					cRPMean.setText(currentCompartment.vmRest.mean.toString());
+					cRPStd.setText(currentCompartment.vmRest.stdev.toString());*/
+				}							
+			}
+		});
+		
+		// Entries are set depending on spike selected
+		TreeView spikeView = spikeShapes.getView();		
+		
+		// Connect for getting selected row in tree view		
+		rs3 = spikeView.getSelection();
+		rs3.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rs3.getSelected() != null ) {
+					
+					// Get selected spike
+					selectedText = spikeShapes.getModel().getValue(rs3.getSelected(), spikeShapes.getHeader());
+
+					// Get current spike shape based on selected spike
+					// currentSpikes = getSpikeByType(selectedText);									
+				
+					// Set everything else to current
+					/*cSpikeType.setText(currentSpikes.type);
+					cSpikeVol.setText(currentSpikes.voltages.toString());*/
+	
+				}							
+			}
+		});
 	}
 	
 	public void modifyHandlers() throws FileNotFoundException {

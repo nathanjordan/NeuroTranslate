@@ -12,6 +12,8 @@ import org.gnome.gtk.ScrolledWindow;
 import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
 
+import unr.neurotranslate.ncs.Report;
+
 public class ReportHandler {
 	// All array lists are for debugging
 	public ArrayList<String> rrep;
@@ -29,6 +31,7 @@ public class ReportHandler {
 	public Entry repFilename;
 	public Entry repTStart;
 	public Entry repTEnd;
+	public Report currentReport;
 	
 	public ReportHandler() throws FileNotFoundException {
 		

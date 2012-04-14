@@ -33,7 +33,7 @@ public static void main(String[] args) throws Exception, FileNotFoundException {
 	
 	//converter.neuromlToXml( test , "/home/njordan/Downloads/Cerebellum_out.xml");
 	
-	NCSData d = FileController.loadNCSFile( "/home/njordan/workspace/NeuroTranslate/samples/PrototypeNCS.in" );
+	NCSData d = FileController.loadNCSFile( "samples/PrototypeNCS.in" );
 	
 	//NeuroMLConversionData n = FormatConverter.convertToNeuroML(d);
 	
@@ -45,7 +45,7 @@ public static void main(String[] args) throws Exception, FileNotFoundException {
 	
 	//converter.neuromlToXml( nm , "/home/kimperry/Documents/NeuroMLTest.xml" );
 	
-	NCSWriter.writeNCS(d, "/home/njordan/Desktop/ggg.in" );
+	//NCSWriter.writeNCS(d, "/home//Desktop/ggg.in" );
 	
 	}
 

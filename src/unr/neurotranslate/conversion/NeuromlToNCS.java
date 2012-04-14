@@ -38,7 +38,6 @@ public class NeuromlToNCS {
 	
     public static ArrayList<ArrayList<String>> cShellLShellList = new ArrayList<ArrayList<String>>();
 	
-	static int popIndex = 1;
 	
 	// TODO set all stdev to 0
 	
@@ -199,6 +198,8 @@ public class NeuromlToNCS {
         	columnShell.type = "columnShell" + d.intValue();
         	columnShell.x = d;
         	columnShell.y = 0.0;
+        	columnShell.height = 0.0;
+        	columnShell.width = 0.0;
         	cShellList.add(columnShell);  
         	e = new ArrayList<String>();
 			cShellLShellList.add(e);
@@ -314,10 +315,7 @@ public class NeuromlToNCS {
     	ArrayList<Layer> layerList = new ArrayList<Layer>();
     	Layer tempLayer;
     	int layerIndex = 1;
-    	ArrayList<Double> yList = new ArrayList<Double>();
-    	boolean foundShell = false;
     	int cShellIndex = 0;
-    	int tempI = 0;
     	
     	// find layer shell for each population
     	for(Population pop : populations.getPopulations())
@@ -362,20 +360,8 @@ public class NeuromlToNCS {
     	}
     	return layerList;
     	
-    }
-    
-    private static ArrayList<Double> getXList(Populations populations)
-    {
-    	ArrayList<Double> list = new ArrayList<Double>();
-    	
-    	for( Population pop : populations.getPopulations())
-    	{
-    		list.add(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX());
-    	}
-    	   	
-    	return list;
-    }
-    
+    }    
+  
     public static SynFacilDepress generateNCSSynFacilDepress()
     {
     	SynFacilDepress synFacilDepress = new SynFacilDepress();

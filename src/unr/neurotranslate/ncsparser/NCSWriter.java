@@ -31,7 +31,8 @@ public class NCSWriter {
 		
 		BufferedWriter b = new BufferedWriter(w);
 		
-		b.write( d.brain.toString() );
+		if(d.brain != null)
+			b.write( d.brain.toString() );
 		
 		for( ColumnShell c : d.columnShellList )
 		

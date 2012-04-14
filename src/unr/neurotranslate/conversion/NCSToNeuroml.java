@@ -515,7 +515,8 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			}
 			
 			// set decay time
-			doubExpSyn.setDecayTime(Double.parseDouble((new String(tempArr)))/10000);
+			//if( tempArr.length > 0 )
+			//doubExpSyn.setDecayTime( Double.parseDouble( ( new String(tempArr) ) ) / 10000 );
 			
 			// set reversal potential
 			doubExpSyn.setReversalPotential(ncsSynapses.get(i).synReversal.mean);

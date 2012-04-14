@@ -38,7 +38,7 @@ public class NeuromlToNCS {
 	
     public static ArrayList<ArrayList<String>> cShellLShellList = new ArrayList<ArrayList<String>>();
 	
-	static int popIndex = 1;
+	//static int popIndex = 1;
 	
 	// TODO set all stdev to 0
 	
@@ -199,6 +199,8 @@ public class NeuromlToNCS {
         	columnShell.type = "columnShell" + d.intValue();
         	columnShell.x = d;
         	columnShell.y = 0.0;
+        	columnShell.height = 0.0;
+        	columnShell.width = 0.0;
         	cShellList.add(columnShell);  
         	e = new ArrayList<String>();
 			cShellLShellList.add(e);

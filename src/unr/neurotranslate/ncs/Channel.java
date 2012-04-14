@@ -62,4 +62,8 @@ public class Channel extends TypedElement {
 		
 		}
 	
+	public Channel( ) {
+			
+			}
+	
 	}

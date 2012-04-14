@@ -1638,6 +1638,7 @@ public ArrayList<Event> eventList = new ArrayList<Event>();
 public ArrayList<Connect> connectList = new ArrayList<Connect>();
 public ArrayList<RecurrentConnect> recurrentConnectList = new ArrayList<RecurrentConnect>();
 public ArrayList<CompartmentConnect> compConnectList = new ArrayList<CompartmentConnect>();
+
 public ArrayList<SynPSG> synpsgList = new ArrayList<SynPSG>();
 
 //For all those pesky mean/stdev values

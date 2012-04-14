@@ -54,7 +54,7 @@ public class UIControllerNCS {
 		
 		for( ColumnShell c : _data.ncs.columnShellList )
 			
-			if( c.type == type )
+			if( c.type.equals(type) )
 				
 				return c;
 		
@@ -78,7 +78,7 @@ public class UIControllerNCS {
 		
 		for( ColumnShell c : _data.ncs.columnShellList )
 			
-			if( c.type == type ) {
+			if( c.type.equals(type) ) {
 				
 				_data.ncs.columnShellList.remove(c);
 				
@@ -110,7 +110,7 @@ public class UIControllerNCS {
 		
 		for( Column c : _data.ncs.columnList )
 			
-			if( c.type == type )
+			if( c.type.equals(type) )
 				
 				return c;
 		
@@ -134,7 +134,7 @@ public class UIControllerNCS {
 		
 		for( Column c : _data.ncs.columnList )
 			
-			if( c.type == type ) {
+			if( c.type.equals(type) ) {
 				
 				_data.ncs.columnList.remove(c);
 				
@@ -166,7 +166,7 @@ public class UIControllerNCS {
 	
 	for( LayerShell l : _data.ncs.layerShellList )
 	
-		if( l.type == type )
+		if( l.type.equals(type) )
 		
 			return l;
 	
@@ -190,7 +190,7 @@ public class UIControllerNCS {
 	
 		for( LayerShell l : _data.ncs.layerShellList )
 		
-			if( l.type == type ) {
+			if( l.type.equals(type) ) {
 			
 				_data.ncs.layerShellList.remove(l);
 		
@@ -222,7 +222,7 @@ public class UIControllerNCS {
 	
 	for( Layer l : _data.ncs.layerList )
 	
-		if( l.type == type )
+		if( l.type.equals(type) )
 		
 			return l;
 	
@@ -246,7 +246,7 @@ public class UIControllerNCS {
 	
 		for( Layer l : _data.ncs.layerList )
 		
-			if( l.type == type ) {
+			if( l.type.equals(type) ) {
 			
 				_data.ncs.layerList.remove(l);
 		
@@ -278,7 +278,7 @@ public class UIControllerNCS {
 	
 	for( Cell c : _data.ncs.cellList )
 	
-		if( c.type == type )
+		if( c.type.equals(type) )
 		
 			return c;
 	
@@ -302,7 +302,7 @@ public class UIControllerNCS {
 	
 		for( Cell c : _data.ncs.cellList )
 		
-			if( c.type == type ) {
+			if( c.type.equals(type) ) {
 			
 				_data.ncs.cellList.remove(c);
 		
@@ -334,7 +334,7 @@ public class UIControllerNCS {
 	
 	for( Compartment c : _data.ncs.compartmentList )
 	
-		if( c.type == type )
+		if( c.type.equals(type) )
 		
 			return c;
 	
@@ -358,7 +358,7 @@ public class UIControllerNCS {
 	
 		for( Compartment c : _data.ncs.compartmentList )
 		
-			if( c.type == type ) {
+			if( c.type.equals(type) ) {
 			
 				_data.ncs.compartmentList.remove(c);
 		
@@ -390,7 +390,7 @@ public class UIControllerNCS {
 	
 	for( Channel c : _data.ncs.channelList )
 	
-		if( c.type == type )
+		if( c.type.equals(type) )
 		
 			return c;
 	
@@ -414,7 +414,7 @@ public class UIControllerNCS {
 	
 		for( Channel c : _data.ncs.channelList )
 		
-			if( c.type == type ) {
+			if( c.type.equals(type) ) {
 			
 				_data.ncs.channelList.remove(c);
 		
@@ -446,7 +446,7 @@ public class UIControllerNCS {
 	
 	for( Synapse s : _data.ncs.synapseList )
 	
-		if( s.type == type )
+		if( s.type.equals(type) )
 		
 			return s;
 	
@@ -470,7 +470,7 @@ public class UIControllerNCS {
 	
 		for( Synapse s : _data.ncs.synapseList )
 		
-			if( s.type == type ) {
+			if( s.type.equals(type) ) {
 			
 				_data.ncs.synapseList.remove(s);
 		
@@ -502,7 +502,7 @@ public class UIControllerNCS {
 	
 	for( SpikeShape s : _data.ncs.spikeshapeList )
 	
-		if( s.type == type )
+		if( s.type.equals(type) )
 		
 			return s;
 	
@@ -526,7 +526,7 @@ public class UIControllerNCS {
 	
 		for( SpikeShape s : _data.ncs.spikeshapeList )
 		
-			if( s.type == type ) {
+			if( s.type.equals(type) ) {
 			
 				_data.ncs.spikeshapeList.remove(s);
 		
@@ -558,7 +558,7 @@ public class UIControllerNCS {
 	
 	for( Stimulus s : _data.ncs.stimulusList )
 	
-		if( s.type == type )
+		if( s.type.equals(type) )
 		
 			return s;
 	
@@ -582,7 +582,7 @@ public class UIControllerNCS {
 	
 		for( Stimulus s : _data.ncs.stimulusList )
 		
-			if( s.type == type ) {
+			if( s.type.equals(type) ) {
 			
 				_data.ncs.stimulusList.remove(s);
 		
@@ -614,7 +614,7 @@ public class UIControllerNCS {
 	
 	for( StimulusInject s : _data.ncs.stimulusInjectList )
 	
-		if( s.type == type )
+		if( s.type.equals(type) )
 		
 			return s;
 	
@@ -638,7 +638,7 @@ public class UIControllerNCS {
 	
 		for( StimulusInject s : _data.ncs.stimulusInjectList )
 		
-			if( s.type == type ) {
+			if( s.type.equals(type) ) {
 			
 				_data.ncs.stimulusInjectList.remove(s);
 		
@@ -670,7 +670,7 @@ public class UIControllerNCS {
 	
 	for( Report r : _data.ncs.reportList )
 	
-		if( r.type == type )
+		if( r.type.equals(type) )
 		
 			return r;
 	
@@ -694,7 +694,7 @@ public class UIControllerNCS {
 	
 		for( Report r : _data.ncs.reportList )
 		
-			if( r.type == type ) {
+			if( r.type.equals(type) ) {
 			
 				_data.ncs.reportList.remove(r);
 		
@@ -726,7 +726,7 @@ public class UIControllerNCS {
 	
 	for( Event e : _data.ncs.eventList )
 	
-		if( e.type == type )
+		if( e.type.equals(type) )
 		
 			return e;
 	
@@ -750,7 +750,7 @@ public class UIControllerNCS {
 	
 		for( Event e : _data.ncs.eventList )
 		
-			if( e.type == type ) {
+			if( e.type.equals(type) ) {
 			
 				_data.ncs.eventList.remove(e);
 		
@@ -782,7 +782,7 @@ public class UIControllerNCS {
 	
 	for( SynPSG s : _data.ncs.synpsgList )
 	
-		if( s.type == type )
+		if( s.type.equals(type) )
 		
 			return s;
 	
@@ -806,7 +806,7 @@ public class UIControllerNCS {
 	
 		for( SynPSG s : _data.ncs.synpsgList )
 		
-			if( s.type == type ) {
+			if( s.type.equals(type) ) {
 			
 				_data.ncs.synpsgList.remove(s);
 		

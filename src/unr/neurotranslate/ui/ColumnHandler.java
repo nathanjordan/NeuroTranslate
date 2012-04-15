@@ -37,14 +37,16 @@ public class ColumnHandler {
 				
 				// Refresh lists
 				w.getL( "coColShells").listToModel( ui.getColumnShells() );
-				w.getL( "coColumns").listToModel( ui.getColumns() );					
+				w.getL( "coColumns").listToModel( ui.getColumns() );
+				w.getC("coColShellSel").listToModel(ui.getColumnShells());
+				
 				return false;
 			}
 		});
 				
 		setEntries(w, ui);
 		
-		modifyHandlers(w);
+		modifyHandlers(w, ui);
 	}
 
 	private void setEntries(final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {		
@@ -136,7 +138,7 @@ public class ColumnHandler {
 	}
 
 	
-	private void modifyHandlers( final WidgetReferences w ) throws FileNotFoundException {	
+	private void modifyHandlers( final WidgetReferences w, final UIControllerNCS ui ) throws FileNotFoundException {	
 		
 		// Connect for adding a column shell
 		((Button)w.getW("coAddCShell")).connect( new Clicked() {
@@ -144,9 +146,11 @@ public class ColumnHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
-				counter++;
-				// Add a new column shell to the model, update data source??
-				w.getL("coColShells").addData( "NewColumnShell" + counter );
+				counter++;							
+				currentColumnShell = ui.addColumnShell();
+				currentColumnShell.width = currentColumnShell.height = currentColumnShell.x = currentColumnShell.y = 0.0;				
+				
+				w.getL("coColShells").addData( currentColumnShell.type );
 				
 			}
 		});

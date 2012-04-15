@@ -2964,9 +2964,8 @@ Potential&lt;/b&gt;</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="label208">
+              <widget class="GtkLabel" id="label60">
                 <property name="visible">True</property>
-                <property name="xalign">0.40000000596046448</property>
                 <property name="label" translatable="yes">Connections</property>
               </widget>
               <packing>
@@ -5756,8 +5755,9 @@ Peak Time&lt;/b&gt;</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="label60">
+              <widget class="GtkLabel" id="label208">
                 <property name="visible">True</property>
+                <property name="xalign">0.40000000596046448</property>
                 <property name="label" translatable="yes">Reports</property>
               </widget>
               <packing>

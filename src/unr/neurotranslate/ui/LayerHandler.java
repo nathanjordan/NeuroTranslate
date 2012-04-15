@@ -38,6 +38,7 @@ public class LayerHandler {
 				// fill out all entries/lists/combo boxes
 				w.getL("lLayShells").listToModel( ui.getLayerShells() );
 				w.getL("lLayers").listToModel( ui.getLayers() );
+				w.getC("lShellSel").listToModel(ui.getLayerShells());
 
 				return false;
 			}

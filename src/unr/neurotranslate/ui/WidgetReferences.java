@@ -94,12 +94,7 @@ public class WidgetReferences {
 		l2.put( "ceComName", new ComboEntity( "combobox10", "window1" ) );
 		l2.put( "ceSpikeSel", new ComboEntity( "combobox3", "window1" ) );
 		l2.put( "ceSFDSel", new ComboEntity( "combobox11", "window1" ) );
-		l2.put( "ceLearnSel", new ComboEntity( "combobox12", "window1" ) );
-		l2.put( "celStimSel", new ComboEntity( "combobox4", "window1" ) );
-		l2.put( "ceColSel", new ComboEntity( "combobox5", "window1" ) );
-		l2.put( "ceLaySel", new ComboEntity( "combobox6", "window1" ) );
-		l2.put( "ceCellSel", new ComboEntity( "combobox7", "window1" ) );
-		l2.put( "ceCompSel", new ComboEntity( "combobox8", "window1" ) );
+		l2.put( "ceLearnSel", new ComboEntity( "combobox12", "window1" ) );	
 		l3.put( "ceCellType", GladeParseUtil.grabWidget("entry30", "window1") );
 		l3.put( "ceComLab", GladeParseUtil.grabWidget("entry28", "window1") );
 		l3.put( "ceComX", GladeParseUtil.grabWidget("entry29", "window1") );
@@ -184,12 +179,49 @@ public class WidgetReferences {
 		l3.put( "stimuliScroll", GladeParseUtil.grabWidget( "scrolledwindow3", "window1" ) );
 		l1.put( "stInjects", new ListEntity( "Stimulus Injects", "window1" ) );
 		l1.put( "stStimuli", new ListEntity( "Stimuli", "window1" ) );
-		
+		l2.put( "stStimSel", new ComboEntity( "combobox4", "window1" ) );
+		l2.put( "stColSel", new ComboEntity( "combobox5", "window1" ) );
+		l2.put( "stLaySel", new ComboEntity( "combobox6", "window1" ) );
+		l2.put( "stCellSel", new ComboEntity( "combobox7", "window1" ) );
+		l2.put( "stCompSel", new ComboEntity( "combobox8", "window1" ) );
+		l3.put( "stSIType", GladeParseUtil.grabWidget( "entry18", "window1" ) );
+		l3.put( "stProb", GladeParseUtil.grabWidget( "entry86", "window1" ) );
+		l3.put( "stSType", GladeParseUtil.grabWidget( "entry19", "window1" ) );
+		l3.put( "stMode", GladeParseUtil.grabWidget( "entry6", "window1" ) );
+		l3.put( "stPattern", GladeParseUtil.grabWidget( "entry16", "window1" ) );
+		l3.put( "stTimeInc", GladeParseUtil.grabWidget( "entry21", "window1" ) );
+		l3.put( "stFreqCol", GladeParseUtil.grabWidget( "entry20", "window1" ) );
+		l3.put( "stCellFreq", GladeParseUtil.grabWidget( "entry23", "window1" ) );
+		l3.put( "stDynRange", GladeParseUtil.grabWidget( "entry22", "window1" ) );
+		l3.put( "stAmpStart", GladeParseUtil.grabWidget( "entry24", "window1" ) );
+		l3.put( "stWidth", GladeParseUtil.grabWidget( "entry25", "window1" ) );
+		l3.put( "stTStart", GladeParseUtil.grabWidget( "entry26", "window1" ) );
+		l3.put( "stTEnd", GladeParseUtil.grabWidget( "entry27", "window1" ) );
+		l3.put( "stAddIn", GladeParseUtil.grabWidget( "sSimInAdd", "window1" ) );
+		l3.put( "stRemIn", GladeParseUtil.grabWidget( "sSimInRem", "window1" ) );
+		l3.put( "stAddSim", GladeParseUtil.grabWidget( "sSimAdd", "window1" ) );
+		l3.put( "stRemSim", GladeParseUtil.grabWidget( "sSimRem", "window1" ) );
+			
 		//////////////////////////////////////////////////////////////////////////////////////////
 		////    Reports Tab
 		//////////////////////////////////////////////////////////////////////////////////////////
 		l3.put( "reportScroll", GladeParseUtil.grabWidget( "scrolledwindow7", "window1" ) );
 		l1.put( "rReports", new ListEntity( "ReportsList", "window1" ) );
+		l2.put( "rColSel", new ComboEntity( "combobox9", "window1" ) );
+		l2.put( "rLaySel", new ComboEntity( "combobox13", "window1" ) );
+		l2.put( "rCellSel", new ComboEntity( "combobox14", "window1" ) );
+		l2.put( "rCompSel", new ComboEntity( "combobox15", "window1" ) );
+		l3.put( "rType", GladeParseUtil.grabWidget( "entry79", "window1" ) );
+		l3.put( "rProb", GladeParseUtil.grabWidget( "entry84", "window1" ) );
+		l3.put( "rFreq", GladeParseUtil.grabWidget( "entry85", "window1" ) );
+		l3.put( "rCellSeq", GladeParseUtil.grabWidget( "entry80", "window1" ) );
+		l3.put( "rReportOn", GladeParseUtil.grabWidget( "entry81", "window1" ) );
+		l3.put( "rFile", GladeParseUtil.grabWidget( "entry82", "window1" ) );
+		l3.put( "rTStart", GladeParseUtil.grabWidget( "entry83", "window1" ) );
+		l3.put( "rTEnd", GladeParseUtil.grabWidget( "entry87", "window1" ) );				
+		l3.put( "rAddRep", GladeParseUtil.grabWidget( "rRepAdd", "window1" ) );
+		l3.put( "rRemRep", GladeParseUtil.grabWidget( "rRepRem", "window1" ) );
+		
 		
 		//////////////////////////////////////////////////////////////////////////////////////////
 		////    Morphology Tab

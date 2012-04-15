@@ -21,50 +21,10 @@ import unr.neurotranslate.ncs.Synapse;
 import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 public class SynapseHandler {
-	// All array lists are for debugging
-	public ArrayList<String> sSynap;
-	public ArrayList<String> sfd;
-	public ArrayList<String> ll;
+
 	public String selectedText;
 	public TreeSelection rs1, rs2, rs3;
-	
-	/*
-	 * public ListEntity synapses;
-	public ListEntity SFDLabels;
-	public ListEntity LearnLabels;	
-	public Entry syType;
-	public Entry sySYN;
-	public Entry syHStart;
-	public Entry syHEnd;
-	public Entry syAbMean;
-	public Entry syAbStd;
-	public Entry syMCMean;
-	public Entry syMCStd;
-	public Entry syDMin;
-	public Entry syDMax;
-	public Entry sySRMean;
-	public Entry sySRStd;
-	public Entry sySFDType;
-	public Entry sySFD;
-	public Entry sySFDFTMean;
-	public Entry sySFDFTStd;
-	public Entry sySFDDTMean;
-	public Entry sySFDDTStd;
-	public Entry syLLType;
-	public Entry syLLLearning;
-	public Entry syLLFTMean;
-	public Entry syLLFTStd;
-	public Entry syLLDTMean;
-	public Entry syLLDTStd;
-	public Entry syLLNebWinMean;
-	public Entry syLLNebWinStd;
-	public Entry syLLPosWinMean;
-	public Entry syLLPosWinStd;
-	public Entry syLLPosPeakMean;
-	public Entry syLLPosPeakStd;
-	public Entry syLLNegMean;
-	public Entry syLLNegStd;
-	*/
+
 	public Synapse currentSynapse;	
 	public SynFacilDepress currentSFD;
 	public SynLearning currentLearn;
@@ -118,18 +78,19 @@ public class SynapseHandler {
 					}									
 				
 					// Set everything else to current column 	
-					// TODO - set SDF Label and Learn Label
-					((Entry) w.getW("syType")).setText(currentSynapse.type);
-					// TODO - All other things don't work o.o 
+					// TODO - SDF Label and Learn Label are not in model currently
+					((Entry) w.getW("syType")).setText(currentSynapse.type);					
 					//((Entry) w.getW("sySYN")).setText(currentSynapse.synPSG.type);
 				    //((Entry) w.getW("syHStart")).setText(currentSynapse.hebbStart.toString());
 				    //((Entry) w.getW("syHEnd")).setText(currentSynapse.hebbEnd.toString());
-					//((Entry) w.getW("syAbMean")).setText(currentSynapse.absoluteUse.mean.toString());
-					//((Entry) w.getW("syAbStd")).setText(currentSynapse.absoluteUse.stdev.toString());
-					//((Entry) w.getW("syMCMean")).setText(currentSynapse.maxConduct.mean.toString());
-					//((Entry) w.getW("syMCStd")).setText(currentSynapse.maxConduct.stdev.toString());
-					//((Entry) w.getW("syDMin")).setText(currentSynapse.delay.mean.toString());
-					//((Entry) w.getW("syDMax")).setText(currentSynapse.delay.stdev.toString());					
+					((Entry) w.getW("syAbMean")).setText(currentSynapse.absoluteUse.mean.toString());
+					((Entry) w.getW("syAbStd")).setText(currentSynapse.absoluteUse.stdev.toString());
+					((Entry) w.getW("syMCMean")).setText(currentSynapse.maxConduct.mean.toString());
+					((Entry) w.getW("syMCStd")).setText(currentSynapse.maxConduct.stdev.toString());
+					((Entry) w.getW("syDMin")).setText(currentSynapse.delay.mean.toString());
+					((Entry) w.getW("syDMax")).setText(currentSynapse.delay.stdev.toString());
+					((Entry) w.getW("sySRMean")).setText(currentSynapse.synReversal.mean.toString());
+					((Entry) w.getW("sySRStd")).setText(currentSynapse.synReversal.stdev.toString());					
 				}							
 			}
 		});
@@ -153,8 +114,7 @@ public class SynapseHandler {
 					// Get current sfd based on selected sfd 
 					try {
 					// currentSFD = getSFDLabelByType(selectedText);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
+					} catch (Exception e) {					
 						e.printStackTrace();
 					}									
 				
@@ -188,8 +148,7 @@ public class SynapseHandler {
 					// Get current learn label based on selected learn label 
 					try {
 					// currentLearn = getCurrentLearnLabelByType(selectedText);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
+					} catch (Exception e) {					
 						e.printStackTrace();
 					}									
 				
@@ -205,7 +164,7 @@ public class SynapseHandler {
 					syLLNegMean.setText(currentLearn.negHebPeakDeltaUse.mean.toString());
 					syLLNegStd.setText(currentLearn.negHebPeakDeltaUse.stdev.toString());
 					*/
-					// TODO - where are facil and depre taus????? 
+					// TODO - facil and depre taus are not in model 
 					// syLLFTMean.setText(currentLearn.facilTau.mean.toStrinG());
 					// syLLFTStd.setText(currentLearn.facilTau.mean.toString());
 					// syLLDTMean.setText(currentLearn.facilTau.stdev.toString());

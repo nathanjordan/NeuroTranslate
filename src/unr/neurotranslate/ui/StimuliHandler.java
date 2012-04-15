@@ -19,90 +19,42 @@ import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 public class StimuliHandler {
 
-	// All array lists are for debugging
-	public ArrayList<String> sInjects;
-	public ArrayList<String> sStimuli;
 	public TreeSelection rs1, rs2;
 	public String selectedText;
-	
-	public ListEntity injects;
-	public ListEntity stimuli;
-	public Entry sType;
-	public Entry sProb;
-	public Entry stType;
-	public Entry stMode;
-	public Entry stPattern;
-	public Entry stTimeInc;
-	public Entry stFreqCol;
-	public Entry stCellFreq;
-	public Entry stDynRange;
-	public Entry stAmpStart;
-	public Entry stWidth;
-	public Entry stTStart;
-	public Entry stTEnd;
 	public StimulusInject currentStimInj;
 	public Stimulus currentStimulus;
 	
 		
-	public StimuliHandler(WidgetReferences w, UIControllerNCS ui) throws FileNotFoundException {
+	public StimuliHandler(final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {			
 		
-		ScrolledWindow c = (ScrolledWindow) GladeParseUtil.grabWidget("scrolledwindow3", "window1");
-		
-		c.connect(new Widget.ExposeEvent() {
+		w.getW("stimuliScroll").connect(new Widget.ExposeEvent() {
 			
 			@Override
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 				
 				// fill out all entries/lists/combo boxes
-				
-				
+				w.getL("stInjects").listToModel(ui.getStimulusInjects());
+				w.getL("stStimuli").listToModel(ui.getStimuli());
+				w.getC("stStimSel").listToModel(ui.getStimuli());
+				w.getC("stColSel").listToModel(ui.getColumns());
+				w.getC("stLaySel").listToModel(ui.getLayers());
+				w.getC("stCellSel").listToModel(ui.getCells());
+				w.getC("stCompSel").listToModel(ui.getCompartments());
 				
 				return false;
 			}
 		});
 		
-		// Data sources
-		sInjects = new ArrayList<String>();
-		sStimuli = new ArrayList<String>();
-		selectedText = new String();
+		setEntries(w, ui);
 		
-		// Entries
-		sType = (Entry) GladeParseUtil.grabWidget( "entry18", "window1" );		
-		sProb = (Entry) GladeParseUtil.grabWidget( "entry86", "window1" );
-		stType = (Entry) GladeParseUtil.grabWidget( "entry19", "window1" );
-		stMode = (Entry) GladeParseUtil.grabWidget( "entry6", "window1" );
-		stPattern = (Entry) GladeParseUtil.grabWidget( "entry16", "window1" );
-		stTimeInc = (Entry) GladeParseUtil.grabWidget( "entry21", "window1" );
-		stFreqCol = (Entry) GladeParseUtil.grabWidget( "entry20", "window1" );
-		stCellFreq = (Entry) GladeParseUtil.grabWidget( "entry23", "window1" );
-		stDynRange = (Entry) GladeParseUtil.grabWidget( "entry22", "window1" );
-		stAmpStart = (Entry) GladeParseUtil.grabWidget( "entry24", "window1" );
-		stWidth = (Entry) GladeParseUtil.grabWidget( "entry25", "window1" );
-		stTStart = (Entry) GladeParseUtil.grabWidget( "entry26", "window1" );
-		stTEnd = (Entry) GladeParseUtil.grabWidget( "entry27", "window1" );
-		
-		// Lists		
-		injects = new ListEntity( "Stimulus Injects", "window1" );
-		stimuli = new ListEntity( "Stimuli", "window1" );		
-		
-		setLists();
-		
-		setEntries();
-		
-		modifyHandlers();
+		modifyHandlers(w, ui);
 		
 	}
 	
-	public void setLists() throws FileNotFoundException {
-	
-		
-				
-	}
-	
-	public void setEntries() throws FileNotFoundException {
+	public void setEntries( final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {
 	
 		// Entries are set depending on stimulus inject selected
-		TreeView stimInView = injects.getView();		
+		TreeView stimInView = w.getL("stInjects").getView();		
 		
 		// Connect for getting selected row in tree view		
 		rs1 = stimInView.getSelection();
@@ -115,27 +67,26 @@ public class StimuliHandler {
 				if( rs1.getSelected() != null ) {
 					
 					// Get selected column
-					selectedText = injects.getModel().getValue(rs1.getSelected(), injects.getHeader());
+					selectedText = w.getL("stInjects").getModel().getValue(rs1.getSelected(), w.getL("stInjects").getHeader());
 					
 					// Get current inject based on selected inject 
 					try {
-					 // currentStimInj = getStimulusInjectByType(selectedText);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
+					  currentStimInj = ui.getStimulusInjectByType(selectedText);
+					} catch (Exception e) {					
 						e.printStackTrace();
 					}									
 				
 					// Set everything else to current inject
 					// TODO - fill combo boxes
-					sType.setText(currentStimInj.type);
-					sProb.setText(currentStimInj.probability.toString());
+					((Entry) w.getW("stSIType")).setText(currentStimInj.type);
+					((Entry) w.getW("stProb")).setText(currentStimInj.probability.toString());
 					
 				}							
 			}
 		});
 		
 		// Entries are set depending on stimulus inject selected
-		TreeView stimuliView = stimuli.getView();		
+		TreeView stimuliView =  w.getL("stStimuli").getView();		
 		
 		// Connect for getting selected row in tree view		
 		rs2 = stimuliView.getSelection();
@@ -148,81 +99,73 @@ public class StimuliHandler {
 				if( rs2.getSelected() != null ) {
 					
 					// Get selected column
-					selectedText = stimuli.getModel().getValue(rs2.getSelected(), stimuli.getHeader());
+					selectedText = w.getL("stStimuli").getModel().getValue(rs2.getSelected(), w.getL("stStimuli").getHeader());
 					
 					// Get current inject based on selected inject 
 					try {
-					// currentStimulus = getStimulusByType(selectedText);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
+					 currentStimulus = ui.getStimulusByType(selectedText);
+					} catch (Exception e) {					
 						e.printStackTrace();
 					}									
 				
 					// Set everything else to current inject	
-					/*stType.setText(currentStimulus.type);
-					stMode.setText(currentStimulus.mode);
-					stPattern.setText(currentStimulus.pattern);
-					stTimeInc.setText(currentStimulus.timeIncrement.toString());
-					stFreqCol.setText(currentStimulus.freqCols.toString());
-					stCellFreq.setText(currentStimulus.cellsPerFreq.toString());
-					stDynRange.setText(currentStimulus.dynRange.mean + " " + currentStimulus.dynRange.stdev);
-					stAmpStart.setText(currentStimulus.ampStart.toString());
-					stWidth.setText(currentStimulus.width.toString());
-					// TODO - why do these two  return a arraylist<double>?
-					stTStart.setText(currentStimulus.timeStart.toString());
-					stTEnd.setText(currentStimulus.timeEnd.toString());*/
+					((Entry) w.getW("stSType")).setText(currentStimulus.type);
+					((Entry) w.getW("stMode")).setText(currentStimulus.mode);
+					((Entry) w.getW("stPattern")).setText(currentStimulus.pattern);
+					((Entry) w.getW("stTimeInc")).setText(currentStimulus.timeIncrement.toString());
+					//((Entry) w.getW("stFreqCol")).setText(currentStimulus.freqCols.toString());
+					((Entry) w.getW("stCellFreq")).setText(currentStimulus.cellsPerFreq.toString());
+					((Entry) w.getW("stDynRange")).setText(currentStimulus.dynRange.mean + " " + currentStimulus.dynRange.stdev);
+					((Entry) w.getW("stAmpStart")).setText(currentStimulus.ampStart.toString());
+					((Entry) w.getW("stWidth")).setText(currentStimulus.width.toString());				
+					((Entry) w.getW("stTStart")).setText(currentStimulus.timeStart.toString());
+					((Entry) w.getW("stTEnd")).setText(currentStimulus.timeEnd.toString());
 				}							
 			}
 		});
 	}
 	
-	public void modifyHandlers() throws FileNotFoundException {
-	
-		//Buttons for add/removing
-		Button addIn = (Button) GladeParseUtil.grabWidget( "sSimInAdd", "window1" );
-		Button remIn = (Button) GladeParseUtil.grabWidget( "sSimInRem", "window1" );
-		Button addSim = (Button) GladeParseUtil.grabWidget( "sSimAdd", "window1" );
-		Button remSim = (Button) GladeParseUtil.grabWidget( "sSimRem", "window1" );
+	public void modifyHandlers(final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {		
 		
 		// Connect for adding an inject
-		addIn.connect( new Clicked() {
+		((Button)w.getW("stAddIn")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 				
-				injects.addData( "new inject");
+				w.getL("stInjects").addData( "new inject");
 				
 			}
 		});		
 		
 		// Connect for removing an inject
-		remIn.connect( new Clicked() {
+		((Button)w.getW("stRemIn")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 			
-				injects.removeData( );
+				w.getL("stInjects").removeData( );
 				
 			}
 		});	
 		
 		// Connect for adding a stimulus
-		addSim.connect( new Clicked() {
+		((Button)w.getW("stAddSim")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 				
-				stimuli.addData( "new stimulus" );
+				w.getL("stStimuli").addData( "new stimulus" );
 			}
 		});
 		
 		// Connect for removing a stimulus
-		remSim.connect(new Clicked() {
+		((Button)w.getW("stRemSim")).connect(new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 				
-				stimuli.removeData();
+				w.getL("stStimuli").removeData();
 				
 			}
 		});

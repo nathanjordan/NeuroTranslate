@@ -16,7 +16,7 @@ public class Brain extends TypedElement {
 	
 	public Integer seed;
 	
-	public Integer distance;
+	public Boolean distance;
 	
 	public ArrayList<Column> columnTypes = new ArrayList<Column>();
 	
@@ -80,6 +80,8 @@ public class Brain extends TypedElement {
 		String s = new String("");
 		
 		s = s.concat( "BRAIN\n" );
+		
+		s = NCSWriter.writeProperty( "TYPE" , type , s );
 		
 		s = NCSWriter.writeProperty( "JOB" , job , s );
 		

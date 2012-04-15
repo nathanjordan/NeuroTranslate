@@ -49,8 +49,10 @@ public class Synapse extends TypedElement {
 		
 		s = NCSWriter.writeProperty("SFD_LABEL", sfdLabel, s);
 		
+		if(synPSG != null)
 		s = NCSWriter.writeProperty("SYN_PSG", synPSG.type, s);
 		
+		if(learn != null)
 		s = NCSWriter.writeProperty("LEARN_LABEL", learn.type, s);
 		
 		s = NCSWriter.writeProperty("HEBB_START", hebbStart, s);

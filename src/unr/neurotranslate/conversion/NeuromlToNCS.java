@@ -27,9 +27,12 @@ import unr.neurotranslate.ncs.ColumnShell;
 import unr.neurotranslate.ncs.Compartment;
 import unr.neurotranslate.ncs.Layer;
 import unr.neurotranslate.ncs.LayerShell;
+import unr.neurotranslate.ncs.Stimulus;
 import unr.neurotranslate.ncs.SynFacilDepress;
 import unr.neurotranslate.ncs.SynLearning;
 import unr.neurotranslate.ncs.SynPSG;
+import unr.neurotranslate.ncs.Synapse;
+import unr.neurotranslate.ncs.TwoValue;
 
 
 public class NeuromlToNCS {
@@ -365,18 +368,114 @@ public class NeuromlToNCS {
     	return layerList;
     	
     }
-    
-    private static ArrayList<Double> getXList(Populations populations)
+   
+   public static ArrayList<Stimulus> generateNCSStimuli()
     {
-    	ArrayList<Double> list = new ArrayList<Double>();
-    	
-    	for( Population pop : populations.getPopulations())
-    	{
-    		list.add(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX());
-    	}
-    	   	
-    	return list;
+	   
+	   ArrayList<Stimulus> stimList = new ArrayList<Stimulus>();
+	   
+	   // type 
+		// mode;
+		
+		// pattern;
+		
+		// filename;
+		
+		// port;
+		
+	   // timeIncrement;
+		
+	   // freqCols;
+		
+	   // cellsPerFreq;
+		
+	   // dynRange = new TwoValue();
+		
+	   // timing;
+		
+	   // sameSeed;
+		
+	   // ampStart;
+		
+	   // ampEnd;
+		
+	   // phase;
+		
+	   // vertTrans;
+		
+	   // width;
+		
+	   // timeStart;
+		
+	   // timeEnd;
+		
+	   // freqStart;
+		
+	   // seed;
+		
+	   // rate;
+		
+	   // tauNoise;
+		
+	   // correl;
+	   return stimList;
     }
+    
+   public static ArrayList<Synapse> generateNCSSynapses( List<SynapseType> list, List<Projection> list2 ) 
+   {
+	   ArrayList<Synapse> synList = new ArrayList<Synapse>();
+	   Synapse ncsSynapse;
+	   int index = 0;
+	   GlobalSynapticProperties synProps = new GlobalSynapticProperties();
+	   
+	   for( SynapseType synType : list )
+	   {
+		   ncsSynapse = new Synapse();
+		   ncsSynapse.type = synType.getName();
+		   // TODO seed?
+		   // SFD_LABEL
+		   ncsSynapse.sfdLabel = "NO_SFD";
+		   // TODO SYN_PSG !!!!
+		   // LEARN LABEL
+		   ncsSynapse.learn = null;
+		   ncsSynapse.learnLabel = "NO_LEARN";
+		   // HEBB_START
+		   ncsSynapse.hebbStart = 0.0;
+		   // HEBB_END
+		   ncsSynapse.hebbEnd = 0.0;
+		   // ABSOLUTE_USE 2V
+		   for( Projection proj : list2 )
+		   {
+			   synProps = proj.getSynapseProps().get(index);
+			   if( synProps.getSynapseType().equals(ncsSynapse.type) )
+			   {
+				  ncsSynapse.absoluteUse.mean = synProps.getWeight();
+				  ncsSynapse.absoluteUse.stdev = 0.1;	  
+				  // DELAY 2V 
+				  ncsSynapse.delay.mean = synProps.getInternalDelay();
+				  ncsSynapse.delay.stdev = synProps.getInternalDelay();
+			   }
+		   }
+		   // RSE_INIT 2V 
+		   ncsSynapse.rseInit = new Double[2];
+		   ncsSynapse.rseInit[0] = 0.0;
+		   ncsSynapse.rseInit[1] = 0.0;
+		   // PREV_SPIKE_RANGE 2V
+		   ncsSynapse.prevSpikeRange = new Double[2];
+		   ncsSynapse.prevSpikeRange[0] = 0.0;
+		   ncsSynapse.prevSpikeRange[1] = 0.0;
+		   // MAX_CONDUCT 2V 
+		   ncsSynapse.maxConduct.mean = synType.getDoubExpSyn().getMaxConductance();
+		   ncsSynapse.maxConduct.stdev = ncsSynapse.maxConduct.mean;  
+		   // SYN_REVERSAL 2V
+		   ncsSynapse.synReversal.mean = synType.getDoubExpSyn().getReversalPotential();
+		   ncsSynapse.synReversal.stdev = 0.0;
+		   synList.add(ncsSynapse);
+	   }
+	   
+	   
+	   return synList;
+   }
     
     public static SynFacilDepress generateNCSSynFacilDepress()
     {

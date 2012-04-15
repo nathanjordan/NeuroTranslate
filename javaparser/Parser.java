@@ -1638,7 +1638,6 @@ public ArrayList<Event> eventList = new ArrayList<Event>();
 public ArrayList<Connect> connectList = new ArrayList<Connect>();
 public ArrayList<RecurrentConnect> recurrentConnectList = new ArrayList<RecurrentConnect>();
 public ArrayList<CompartmentConnect> compConnectList = new ArrayList<CompartmentConnect>();
-
 public ArrayList<SynPSG> synpsgList = new ArrayList<SynPSG>();
 
 //For all those pesky mean/stdev values
@@ -2002,7 +2001,7 @@ case 47:
 break;
 case 48:
 //#line 150 "parse.yaccj"
-{ brain.distance =  val_peek(0).ival; }
+{ brain.distance =  (val_peek(0).ival != 0); }
 break;
 case 49:
 //#line 151 "parse.yaccj"
@@ -2494,7 +2493,7 @@ case 233:
 break;
 case 234:
 //#line 430 "parse.yaccj"
-{ synapseList.get( synapseList.size() - 1).synPSG  = val_peek(0).sval; }
+{ synapseList.get( synapseList.size() - 1).synPSGName  = val_peek(0).sval; }
 break;
 case 235:
 //#line 431 "parse.yaccj"
@@ -2750,7 +2749,7 @@ case 344:
 break;
 case 345:
 //#line 565 "parse.yaccj"
-{ stimulusList.get( stimulusList.size() - 1 ).sameSeed = val_peek(0).ival; }
+{ stimulusList.get( stimulusList.size() - 1 ).sameSeed = (val_peek(0).ival != 0); }
 break;
 case 346:
 //#line 566 "parse.yaccj"

@@ -50,7 +50,7 @@ public class Compartment extends TypedElement {
 		s = NCSWriter.writeProperty("SEED", seed, s);
 		
 		if(spikeshape != null)
-			s = NCSWriter.writeProperty("SPIKESHAPE", spikeshape.type, s);
+		s = NCSWriter.writeProperty("SPIKESHAPE", spikeshape.type, s);
 		
 		s = NCSWriter.writeProperty("TAU_MEMBRANE", tauMembrane, s);
 		

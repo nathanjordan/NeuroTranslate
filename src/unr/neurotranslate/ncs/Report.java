@@ -56,8 +56,10 @@ public class Report extends TypedElement {
 		
 		s = NCSWriter.writeProperty("REPORT_ON", reportOn, s);
 		
+		if(channel != null)
 		s = NCSWriter.writeProperty("CHANNEL", channel.type, s);
 		
+		if(synapse != null)
 		s = NCSWriter.writeProperty("SYNAPSE", synapse.type, s);
 		
 		s = NCSWriter.writeProperty("ASCII", ascii , s);

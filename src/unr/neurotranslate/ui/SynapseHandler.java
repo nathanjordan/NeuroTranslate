@@ -13,6 +13,7 @@ import org.gnome.gtk.TreeSelection;
 import org.gnome.gtk.TreeView;
 import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
+import org.gnome.gtk.Entry.Activate;
 import org.gnome.gtk.TreeSelection.Changed;
 
 import unr.neurotranslate.ncs.SynFacilDepress;
@@ -184,7 +185,8 @@ public class SynapseHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
-				w.getL("sySynapses").addData( "new synapse");
+				currentSynapse = ui.addSynapse();
+				w.getL("sySynapses").addData( currentSynapse.type );
 				
 			}
 		});		
@@ -195,8 +197,21 @@ public class SynapseHandler {
 			@Override
 			public void onClicked(Button arg0) {
 			
-				w.getL("sySynapses").removeData( );
-				
+				try {
+					ui.removeSynapse( w.getL("sySynapses").getSelected() );
+				} catch (Exception e) { 
+					e.printStackTrace();
+				}
+				w.getL("sySynapses").removeData();
+				((Entry) w.getW("syType")).setText("");
+				((Entry) w.getW("syAbMean")).setText("");
+				((Entry) w.getW("syAbStd")).setText("");
+				((Entry) w.getW("syMCMean")).setText("");
+				((Entry) w.getW("syMCStd")).setText("");
+				((Entry) w.getW("syDMin")).setText("");
+				((Entry) w.getW("syDMax")).setText("");
+				((Entry) w.getW("sySRMean")).setText("");
+				((Entry) w.getW("sySRStd")).setText("");
 			}
 		});	
 		
@@ -242,6 +257,134 @@ public class SynapseHandler {
 				
 			}
 		});
+		
+		// Synapse Type
+		((Entry) w.getW("syType")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {						
+				w.getL("sySynapses").removeData();		
+				w.getL("sySynapses").addData(arg0.getText());	
+				w.getL("sySynapses").getView().grabFocus();
+				currentSynapse.type = arg0.getText();				
+			}
+		});
+		
+		// Absolute Use
+		((Entry) w.getW("syAbMean")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentSynapse.absoluteUse.mean = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		((Entry) w.getW("syAbStd")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentSynapse.absoluteUse.stdev = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		// Max Conductance
+		((Entry) w.getW("syMCMean")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentSynapse.maxConduct.mean = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		((Entry) w.getW("syMCStd")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentSynapse.maxConduct.stdev = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		// Delay
+		((Entry) w.getW("syDMin")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentSynapse.delay.mean = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		((Entry) w.getW("syDMax")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentSynapse.delay.stdev = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		// SYN Reversal
+		((Entry) w.getW("sySRMean")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentSynapse.synReversal.mean = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		((Entry) w.getW("sySRStd")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentSynapse.synReversal.stdev = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});		
 	}
 
 }

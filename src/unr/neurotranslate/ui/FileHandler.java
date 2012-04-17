@@ -18,47 +18,36 @@ import org.gnome.gtk.MenuItem.Activate;
 import org.gnome.gtk.ToggleButton.Toggled;
 import org.gnome.notify.Notification;
 
+import unr.neurotranslate.ui.controller.UIControllerNCS;
+
 
 public class FileHandler {
 
 	// Class members
 	private String importedFile;
 	private File temp;
-	private Statusbar statusbar;
-	private MenuItem importOption;
-	private MenuItem exportOption;	
-	private Window mainWindow; 
-	public ToggleButton ncsTButton;
-	public ToggleButton nmlTButton;
-	public Notebook ncsTabs;
-	public Notebook nmlTabs;
 	
 	// Constructor
-	public FileHandler() throws FileNotFoundException {
+	public FileHandler( final WidgetReferences w  ) throws FileNotFoundException {
+					
+		// set up default view (buttons not sensitive/nmlView hidden)
+		w.getW("ncsToggle").setSensitive( false );  
+		w.getW("nmlToggle").setSensitive( false );  
+	    w.getW("nmlTabs").hide();
 		
-		// Get all required widgets
-		statusbar = (Statusbar) GladeParseUtil.grabWidget( "statusbar", "window1" ); ;			
-		importOption = (MenuItem) GladeParseUtil.grabWidget( "importOption", "window1" );
-		exportOption = (MenuItem) GladeParseUtil.grabWidget( "exportOption", "window1" );
-		mainWindow = (Window) GladeParseUtil.grabWidget( "window1", "window1" );
-		ncsTButton = (ToggleButton) GladeParseUtil.grabWidget( "toggleNCS", "window1" );
-		nmlTButton = (ToggleButton) GladeParseUtil.grabWidget( "toggleNML", "window1" );  
-		ncsTabs = (Notebook) GladeParseUtil.grabWidget( "notebook1", "window1" );
-		nmlTabs = (Notebook) GladeParseUtil.grabWidget( "notebook2", "window1" );
-		// set file menu and toggle buttons
-		initMenu();
-		buttonHandler();
+		initMenu( w);
+		//buttonHandler( w );
 		
 	}
 	
 	// Initialize file menu
-	public void initMenu() {
+	public void initMenu(final WidgetReferences w) {
 		
 		// Set default file imported message 
-		statusbar.setMessage( "No file imported..." );
+		((Statusbar) w.getW("statusbar")).setMessage( "No file imported..." );
 		
 		// Set import handler
-		importOption.connect( new Activate() {
+		((MenuItem)w.getW("open")).connect( new Activate() {
 			
 			@Override
 			public void onActivate(MenuItem arg0) {
@@ -74,7 +63,7 @@ public class FileHandler {
 				ncsFiles = new FileFilter( "NCS" );
 				allFiles = new FileFilter( "All Files" );
 				nmlFiles = new FileFilter( "NeuroML" );
-				ncsFiles.addPattern( "*.inc" );				 				 				
+				ncsFiles.addPattern( "*.in" );				 				 				
 				allFiles.addPattern( "*" );				 				
 				nmlFiles.addPattern( "*.xml" );
 				dialog.addFilter( ncsFiles );
@@ -93,30 +82,74 @@ public class FileHandler {
 					temp = new File( dialog.getFilename() );																										
 														
 					// Figure out which type of file was imported 							
-					if( importedFile.endsWith( ".inc" ) ) {
-											
-					/*
-					 * TODO - deal with NCS junk
-					 */
+					if( importedFile.endsWith( ".in" ) ) {
+								
+						UIControllerNCS ui = new UIControllerNCS();
 						
+						// Set up buttons
+						try {
+							buttonHandler( w );
+						} catch (FileNotFoundException e1) {							
+							e1.printStackTrace();
+						}
+						
+						 w.getW("nmlToggle").setSensitive( true );  
+						 Color activeGreen = new Color(44880, 55552, 36608 );        
+					     w.getW("nmlToggle").modifyBackground(StateType.NORMAL, activeGreen );
+					     w.getW("nmlToggle").modifyBackground(StateType.SELECTED, activeGreen );	
+							
+						try {
+							new BrainHandler(w, ui);
+						} catch (FileNotFoundException e) {						
+							e.printStackTrace();
+						}  
+				        try {
+							new ColumnHandler(w, ui);
+						} catch (Exception e) {							
+							e.printStackTrace();
+						}
+				        try {
+							new LayerHandler(w, ui);
+						} catch (FileNotFoundException e) {				
+							e.printStackTrace();
+						}
+				        try {
+							new CellHandler(w, ui);
+						} catch (FileNotFoundException e) {					
+							e.printStackTrace();
+						}
+				       // new ConnectionHandler(w, ui);
+				        try {
+							new SynapseHandler(w, ui);
+						} catch (FileNotFoundException e) {						
+							e.printStackTrace();
+						}
+				        try {
+							new StimuliHandler(w, ui);
+						} catch (FileNotFoundException e) {						
+							e.printStackTrace();
+						}
+				        try {
+							new ReportHandler(w, ui);
+						} catch (FileNotFoundException e) {				
+							e.printStackTrace();
+						}
 						
 						// Update status bar
-						statusbar.setMessage( temp.getName() );
+						((Statusbar) w.getW("statusbar")).setMessage( temp.getName() );
 					}											
 											
 					else if( importedFile.endsWith( ".xml" ) ) {
 					
-					/*
-					 * TODO - deal with XML junk
-					 */
+						// TODO - create NeuroML/handlers
 						
 						// Update status bar
-						statusbar.setMessage( temp.getName() );
+						((Statusbar) w.getW("statusbar")).setMessage( temp.getName() );
 					}
 																							
 					else {
 						// Handle invalid file exception
-						System.out.println( "Not a valid file " );
+						// TODO - throw exception
 						
 					}
 				}			
@@ -124,7 +157,7 @@ public class FileHandler {
 		}); // End importOption handler
 		
 		// Set export handler
-		exportOption.connect( new Activate() {
+		((MenuItem)w.getW("save")).connect( new Activate() {
 			
 			@Override
 			public void onActivate(MenuItem arg0) {
@@ -143,7 +176,8 @@ public class FileHandler {
 					 *  Call NCS/JAXB writer to save file
 					 *  
 					 */							
-					Notification notification = new Notification( "Saved to: ", saveDialog.getFilename(), "", mainWindow);
+					
+					Notification notification = new Notification( "Saved to: ", saveDialog.getFilename(), "", arg0);
 					notification.setTimeout( 50 );
 					notification.show();						
 				}							
@@ -156,7 +190,7 @@ public class FileHandler {
 		return importedFile;
 	}
 	
-	public void buttonHandler() throws FileNotFoundException {
+	public void buttonHandler( final WidgetReferences w ) throws FileNotFoundException {
 
 		// Build translation error dialog
 		new ErrorHandler();
@@ -165,39 +199,40 @@ public class FileHandler {
 		final Window translateDialog = (Window) GladeParseUtil.grabWidget( "window3", "window3" );		
 		
 		// Set ncs view active on program start      
-		ncsTButton.setSensitive( false );       
+		//w.getW("ncsToggle").setSensitive( false );       
        
 		// Messing around with color
         Color activeGreen = new Color(44880, 55552, 36608 );        
-		nmlTButton.modifyBackground(StateType.NORMAL, activeGreen );
-		nmlTButton.modifyBackground(StateType.SELECTED, activeGreen );		
+        w.getW("nmlToggle").modifyBackground(StateType.NORMAL, activeGreen );
+        w.getW("nmlToggle").modifyBackground(StateType.SELECTED, activeGreen );		
 		
         // Hide ncs/nml tabs for debugging
-        nmlTabs.hide();
+        //w.getW("nmlTabs").hide();
         
         // Set ncsToggle button connect
-        ncsTButton.connect( new Toggled() {			
+        ((ToggleButton)w.getW("ncsToggle")).connect( new Toggled() {			
 			@Override
 			public void onToggled(ToggleButton arg0) {			
 				// Toggle other view off
 				if( arg0.getActive() ) {
-					nmlTButton.setActive( false );								
-					nmlTabs.hide();
-					ncsTabs.show();	
+					((ToggleButton) w.getW("nmlToggle")).setActive( false );								
+					w.getW("nmlTabs").hide();
+					w.getW("ncsTabs").show();
+					
 					translateDialog.show();
 				}				
 			}
 		} );
         
         // Set nmlToggle button connect
-        nmlTButton.connect( new Toggled() {			
+        ((ToggleButton)w.getW("nmlToggle")).connect( new Toggled() {			
 			@Override
 			public void onToggled(ToggleButton arg0) {
 				// Toggle other view off
 				if( arg0.getActive() ) {
-				   ncsTButton.setActive( false );	
-				   nmlTabs.show();
-				   ncsTabs.hide();
+				   ((ToggleButton) w.getW("ncsToggle")).setActive( false );	
+				   w.getW("nmlTabs").show();
+				   w.getW("ncsTabs").hide();
 				   translateDialog.show();
 				}				
 			}

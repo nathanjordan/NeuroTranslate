@@ -12,6 +12,7 @@ import org.gnome.gtk.TreeSelection;
 import org.gnome.gtk.TreeView;
 import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
+import org.gnome.gtk.Entry.Activate;
 import org.gnome.gtk.Notebook.ChangeCurrentPage;
 import org.gnome.gtk.TreeSelection.Changed;
 
@@ -130,7 +131,9 @@ public class LayerHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
-				w.getL("lLayShells").addData( "new layer shell");
+				currentLayerShell = ui.addLayerShell();
+				currentLayerShell.lower = currentLayerShell.upper = 0.0;
+				w.getL("lLayShells").addData( currentLayerShell.type );
 				
 			}
 		});		
@@ -141,8 +144,15 @@ public class LayerHandler {
 			@Override
 			public void onClicked(Button arg0) {
 			
+				try {
+					ui.removeLayerShell( w.getL("lLayShells").getSelected() );
+				} catch (Exception e) {			
+					e.printStackTrace();
+				}
 				w.getL("lLayShells").removeData( );
-				
+				((Entry) w.getW("lLSType")).setText(" ");
+				((Entry) w.getW("lLSLower")).setText(" ");
+				((Entry) w.getW("lLSUpper")).setText(" ");
 			}
 		});	
 		
@@ -152,7 +162,8 @@ public class LayerHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
-				w.getL("lLayers").addData( "new layer" );
+				currentLayer = ui.addLayer();				
+				w.getL("lLayers").addData( currentLayer.type );
 			}
 		});
 		
@@ -162,10 +173,72 @@ public class LayerHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
+				try {
+					ui.removeLayer( w.getL("lLayers").getSelected() );
+				} catch (Exception e) {				
+					e.printStackTrace();
+				}				
 				w.getL("lLayers").removeData();
+				((Entry) w.getW("lLType")).setText("");
+				
 				
 			}
 		});
+		
+		// Layer Shell type
+		((Entry) w.getW("lLSType")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {						
+				w.getL("lLayShells").removeData();		
+				w.getL("lLayShells").addData(arg0.getText());	
+				w.getL("lLayShells").getView().grabFocus();
+				currentLayerShell.type = arg0.getText();				
+			}
+		});
+		
+		// Layer Shell lower
+		((Entry) w.getW("lLSLower")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentLayerShell.lower = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		// Layer Shell upper
+		((Entry) w.getW("lLSUpper")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentLayerShell.upper = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		// Layer type
+		((Entry) w.getW("lLType")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {						
+				w.getL("lLayers").removeData();		
+				w.getL("lLayers").addData(arg0.getText());	
+				w.getL("lLayers").getView().grabFocus();
+				currentLayer.type = arg0.getText();				
+			}
+		});
+
 	}
 	
 }

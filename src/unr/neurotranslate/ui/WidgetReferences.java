@@ -67,6 +67,7 @@ public class WidgetReferences {
 		l3.put("coRemCShell", GladeParseUtil.grabWidget( "cShellRem", "window1" ) );
 		l3.put("coAddColumn", GladeParseUtil.grabWidget( "cColAdd", "window1" ) );
 		l3.put("coRemColumn", GladeParseUtil.grabWidget( "cColRem", "window1" ) );
+		l3.put("coModLayer", GladeParseUtil.grabWidget( "button16", "window1" ) );
 		
 		//////////////////////////////////////////////////////////////////////////////////////////
 		////    Layers Tab
@@ -240,8 +241,17 @@ public class WidgetReferences {
 		//////////////////////////////////////////////////////////////////////////////////////////
 		l3.put( "networkScroll", GladeParseUtil.grabWidget( "scrolledwindow10", "window1" ) );
 		
-		
-		
+		//////////////////////////////////////////////////////////////////////////////////////////
+		////    Modify Popup
+		//////////////////////////////////////////////////////////////////////////////////////////
+		l1.put( "active", new ListEntity( "activeTree", "window2" ) );
+		l1.put( "available", new ListEntity( "availableTree", "window2" ) );
+		l3.put( "modCancel", GladeParseUtil.grabWidget( "modifyCancel", "window2" ) );
+		l3.put( "modConfirm", GladeParseUtil.grabWidget( "modifyConfirm", "window2" ) );
+		l3.put( "modAdd", GladeParseUtil.grabWidget( "modifyAdd", "window2" ) );
+		l3.put( "modRem", GladeParseUtil.grabWidget( "modifyRemove", "window2" ) );
+		l3.put( "popupWin", GladeParseUtil.grabWidget( "window2", "window2" ) );
+
 	}	
 	
 	public Widget getW( String name ) {

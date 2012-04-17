@@ -25,7 +25,7 @@ public class gladeTest {
         top.showAll();                         
     
         // Build the Modify Popup window             
-        new ModifyPopup();
+        new ModifyPopup(w);
         
         // Create handlers for each of the tabs and menu
         new FileHandler();

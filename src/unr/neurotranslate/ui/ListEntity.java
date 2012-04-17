@@ -124,6 +124,10 @@ public class ListEntity {
 		
 	}
 	
+	public void addDataAt( int p ) {
+		
+	}
+	
 	// Getter for model
 	public ListStore getModel() {			
 		return model;		
@@ -187,7 +191,8 @@ public class ListEntity {
 	
 	// Refresh the view when changes occur
 	public void refreshView() {		
-		view.setModel(model);		
+		model.clear();
+		//view.setModel(model);		
 	}
 	
 

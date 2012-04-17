@@ -5,12 +5,14 @@ import java.util.ArrayList;
 
 import org.gnome.gdk.EventExpose;
 import org.gnome.gtk.Button;
+import org.gnome.gtk.Editable;
 import org.gnome.gtk.Entry;
 import org.gnome.gtk.ScrolledWindow;
 import org.gnome.gtk.TreeSelection;
 import org.gnome.gtk.TreeView;
 import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
+import org.gnome.gtk.Entry.Activate;
 import org.gnome.gtk.TreeSelection.Changed;
 
 import unr.neurotranslate.ncs.Column;
@@ -39,6 +41,7 @@ public class ColumnHandler {
 				w.getL( "coColShells").listToModel( ui.getColumnShells() );
 				w.getL( "coColumns").listToModel( ui.getColumns() );
 				w.getC("coColShellSel").listToModel(ui.getColumnShells());
+				//w.getL("coLayers").listToModel(ui.getLayers());
 				
 				return false;
 			}
@@ -105,7 +108,7 @@ public class ColumnHandler {
 					try {
 						 currentColumn = ui.getColumnByType(selectedText);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					}									
 				
@@ -129,14 +132,11 @@ public class ColumnHandler {
 				if( rs3.getSelected() != null ) {
 					
 					// Get selected layer type
-					selectedText = w.getL("coLayers").getModel().getValue(rs3.getSelected(), w.getL("coLayers").getHeader());
-									
+					selectedText = w.getL("coLayers").getModel().getValue(rs3.getSelected(), w.getL("coLayers").getHeader());									
 				}							
 			}
-		});
-
+		}); 
 	}
-
 	
 	private void modifyHandlers( final WidgetReferences w, final UIControllerNCS ui ) throws FileNotFoundException {	
 		
@@ -162,9 +162,19 @@ public class ColumnHandler {
 			public void onClicked(Button arg0) {
 				
 				// Remove selected column shell
-				w.getL("coColShells").removeData();
-				((Entry) w.getW("coType")).setText( "" );
+				try {
+					ui.removeColumnShell(w.getL("coColShells").getSelected());
+				} catch (Exception e) {
 				
+					e.printStackTrace();
+				}				
+				w.getL("coColShells").removeData();	
+				
+				((Entry) w.getW("coCSType")).setText( " " );
+				((Entry) w.getW("coWidth")).setText( " " );
+				((Entry) w.getW("coHeight")).setText( " " );
+				((Entry) w.getW("coLocX")).setText( " " );
+				((Entry) w.getW("coLocY")).setText( " " );				
 			}
 		});
 		
@@ -175,8 +185,8 @@ public class ColumnHandler {
 			public void onClicked(Button arg0) {
 			
 				// Add a new column
-				w.getL("coColumns").addData( "NewColumn" );				
-			
+				currentColumn = ui.addColumn();
+				w.getL("coColumns").addData( currentColumn.type );		
 			}
 		});
 				
@@ -187,10 +197,104 @@ public class ColumnHandler {
 			public void onClicked(Button arg0) {
 			
 				// Remove selected column
+				try {
+					ui.removeColumn(w.getL("coColumns").getSelected());
+				} catch (Exception e) {					
+					e.printStackTrace();
+				}
 				w.getL("coColumns").removeData();
+				((Entry) w.getW("coCType")).setText( " " );
 				
 			}
 		});
+		
+		// Connect for modifying layer types
+		((Button)w.getW("coModLayer")).connect( new Clicked() {
+			
+			@Override
+			public void onClicked(Button arg0) {
+			
+				// Show popup and update the views
+				w.getW("popup").show();
+				ModifyPopup.update( "Layer Types", "coLayers", w, ui );
+				
+			}
+		});
+		
+		// Column Shell Type	
+		((Entry) w.getW("coCSType")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {						
+				w.getL("coColShells").removeData();		
+				w.getL("coColShells").addData(arg0.getText());	
+				w.getL("coColShells").getView().grabFocus();
+				currentColumnShell.type = arg0.getText();				
+			}
+		});
+		
+		// Column Shell Width
+		((Entry) w.getW("coWidth")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentColumnShell.width = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		// Column Shell Height
+		((Entry) w.getW("coHeight")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentColumnShell.height = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		// Column Shell Location X
+		((Entry) w.getW("coLocX")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentColumnShell.x = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		// Column Shell Location Y
+		((Entry) w.getW("coLocY")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentColumnShell.y = d;				
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+
+		
 	}
 }
 

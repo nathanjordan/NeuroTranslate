@@ -141,15 +141,12 @@ public class ColumnHandler {
 	private void modifyHandlers( final WidgetReferences w, final UIControllerNCS ui ) throws FileNotFoundException {	
 		
 		// Connect for adding a column shell
-		((Button)w.getW("coAddCShell")).connect( new Clicked() {
-			int counter = 0;
+		((Button)w.getW("coAddCShell")).connect( new Clicked() {		
 			@Override
 			public void onClicked(Button arg0) {
-				
-				counter++;							
-				currentColumnShell = ui.addColumnShell();
+
+				currentColumnShell = ui.addColumnShell();			
 				currentColumnShell.width = currentColumnShell.height = currentColumnShell.x = currentColumnShell.y = 0.0;				
-				
 				w.getL("coColShells").addData( currentColumnShell.type );
 				
 			}
@@ -186,7 +183,7 @@ public class ColumnHandler {
 			
 				// Add a new column
 				currentColumn = ui.addColumn();
-				w.getL("coColumns").addData( currentColumn.type );		
+				w.getL("coColumns").addData( currentColumn.type );				
 			}
 		});
 				
@@ -293,7 +290,7 @@ public class ColumnHandler {
 			}
 		});
 		
-
+		
 		
 	}
 }

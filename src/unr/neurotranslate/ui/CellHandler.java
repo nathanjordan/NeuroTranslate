@@ -11,6 +11,7 @@ import org.gnome.gtk.TreeSelection;
 import org.gnome.gtk.TreeView;
 import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
+import org.gnome.gtk.Entry.Activate;
 import org.gnome.gtk.TreeSelection.Changed;
 
 import unr.neurotranslate.ncs.Cell;
@@ -159,7 +160,7 @@ public class CellHandler {
 		});
 	}
 	
-	public void modifyHandlers(final WidgetReferences w, UIControllerNCS ui) throws FileNotFoundException {
+	public void modifyHandlers(final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {
 	
 		// Connect for adding a cell
 		((Button) w.getW("ceAddCell")).connect( new Clicked() {
@@ -167,7 +168,8 @@ public class CellHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
-				w.getL("ceCells").addData( "new cell");
+				currentCell = ui.addCell();
+				w.getL("ceCells").addData( currentCell.type );
 				
 			}
 		});		
@@ -178,8 +180,13 @@ public class CellHandler {
 			@Override
 			public void onClicked(Button arg0) {
 			
+				try {
+					ui.removeCell( w.getL("ceCells").getSelected() );
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				w.getL("ceCells").removeData( );
-				
+				((Entry) w.getW("ceCellType")).setText("");			
 			}
 		});	
 		
@@ -189,7 +196,8 @@ public class CellHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
-				w.getL("ceCompartments").addData( "new compartment" );
+				currentCompartment = ui.addCompartment();						
+				w.getL("ceCompartments").addData( currentCompartment.type );
 			}
 		});
 		
@@ -199,8 +207,25 @@ public class CellHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
+				try {
+					ui.removeCompartment( w.getL("ceCompartments").getSelected() );
+				} catch (Exception e) {		
+					e.printStackTrace();
+				}				
 				w.getL("ceCompartments").removeData();
-				
+				((Entry) w.getW("ceComType")).setText("");
+				((Entry) w.getW("ceTMMean")).setText("");
+				((Entry) w.getW("ceTMStd")).setText("");
+				((Entry) w.getW("ceRMMean")).setText("");
+				((Entry) w.getW("ceRMStd")).setText("");
+				((Entry) w.getW("ceTMean")).setText("");
+				((Entry) w.getW("ceTStd")).setText("");
+				((Entry) w.getW("ceLRMean")).setText("");
+				((Entry) w.getW("ceLRStd")).setText("");
+				((Entry) w.getW("ceLCMean")).setText("");
+				((Entry) w.getW("ceLCStd")).setText("");
+				((Entry) w.getW("ceRPMean")).setText("");
+				((Entry) w.getW("ceRPStd")).setText("");
 			}
 		});
 		
@@ -210,7 +235,8 @@ public class CellHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
-				w.getL("ceSpikes").addData( "new spike shape" );
+				currentSpikes = ui.addSpikeShape();
+				w.getL("ceSpikes").addData( currentSpikes.type );
 				
 			}
 		});
@@ -221,9 +247,227 @@ public class CellHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
+				try {
+					ui.removeSpikeShape( w.getL("ceSpikes").getSelected() );
+				} catch (Exception e) {		
+					e.printStackTrace();
+				}
 				w.getL("ceSpikes").removeData();
-				
+				((Entry) w.getW("ceSpikeType")).setText("");
+				((Entry) w.getW("ceSpikeVol")).setText("");
 			}
 		});
+		
+		// Cell Type
+		((Entry) w.getW("ceCellType")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {						
+				w.getL("ceCells").removeData();		
+				w.getL("ceCells").addData(arg0.getText());	
+				w.getL("ceCells").getView().grabFocus();
+				currentCell.type = arg0.getText();				
+			}
+		});
+		
+		// Soma Type
+		((Entry) w.getW("ceComType")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {						
+				w.getL("ceCompartments").removeData();		
+				w.getL("ceCompartments").addData(arg0.getText());	
+				w.getL("ceCompartments").getView().grabFocus();
+				currentCompartment.type = arg0.getText();				
+			}
+		});
+		
+		// Tau Membrane
+		((Entry) w.getW("ceTMMean")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentCompartment.tauMembrane.mean = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		((Entry) w.getW("ceTMStd")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentCompartment.tauMembrane.stdev = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+
+		// R Membrane
+		((Entry) w.getW("ceRMMean")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentCompartment.rMembrane.mean = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		((Entry) w.getW("ceRMStd")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentCompartment.rMembrane.stdev = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		// Threshold
+		((Entry) w.getW("ceTMean")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentCompartment.threshold.mean = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		((Entry) w.getW("ceTStd")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentCompartment.threshold.stdev = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		// Leak Reversal
+		((Entry) w.getW("ceLRStd")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentCompartment.leakReversal.mean = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		((Entry) w.getW("ceLRStd")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentCompartment.leakReversal.stdev = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		// Leak Conductance
+		((Entry) w.getW("ceLCMean")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentCompartment.leakConductance.mean = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		((Entry) w.getW("ceLCStd")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentCompartment.leakConductance.stdev = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		// Resting Potential
+		((Entry) w.getW("ceRPMean")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentCompartment.rMembrane.mean = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		((Entry) w.getW("ceRPStd")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentCompartment.rMembrane.stdev = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		// Spike Shape Type
+		((Entry) w.getW("ceSpikeType")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {						
+				w.getL("ceSpikes").removeData();		
+				w.getL("ceSpikes").addData(arg0.getText());	
+				w.getL("ceSpikes").getView().grabFocus();
+				currentSpikes.type = arg0.getText();				
+			}
+		});
+		
+		// TODO - Spike Shape Voltages
 	}
 }

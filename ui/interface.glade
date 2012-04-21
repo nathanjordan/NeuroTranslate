@@ -24,8 +24,8 @@
                     <property name="visible">True</property>
                     <property name="ubuntu_local">True</property>
                     <child>
-                      <widget class="GtkImageMenuItem" id="importOption">
-                        <property name="label">Import</property>
+                      <widget class="GtkImageMenuItem" id="openOption">
+                        <property name="label">Open</property>
                         <property name="visible">True</property>
                         <property name="use_stock">False</property>
                         <child internal-child="image">
@@ -37,8 +37,8 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="exportOption">
-                        <property name="label">Export</property>
+                      <widget class="GtkImageMenuItem" id="saveOption">
+                        <property name="label">Save</property>
                         <property name="visible">True</property>
                         <property name="use_stock">False</property>
                         <child internal-child="image">
@@ -3207,6 +3207,7 @@ Conductance&lt;/b&gt;</property>
                               <widget class="GtkEntry" id="entry41">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="editable">False</property>
                                 <property name="invisible_char">•</property>
                               </widget>
                               <packing>
@@ -3221,6 +3222,7 @@ Conductance&lt;/b&gt;</property>
                               <widget class="GtkEntry" id="entry42">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="editable">False</property>
                                 <property name="invisible_char">•</property>
                               </widget>
                               <packing>
@@ -3235,6 +3237,7 @@ Conductance&lt;/b&gt;</property>
                               <widget class="GtkEntry" id="entry45">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="editable">False</property>
                                 <property name="invisible_char">•</property>
                               </widget>
                               <packing>
@@ -3647,6 +3650,7 @@ Conductance&lt;/b&gt;</property>
                               <widget class="GtkEntry" id="entry44">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="editable">False</property>
                                 <property name="invisible_char">•</property>
                               </widget>
                               <packing>
@@ -3700,6 +3704,7 @@ Conductance&lt;/b&gt;</property>
                               <widget class="GtkEntry" id="entry50">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="editable">False</property>
                                 <property name="invisible_char">•</property>
                               </widget>
                               <packing>
@@ -3740,6 +3745,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry51">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -3751,6 +3757,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry52">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -3799,6 +3806,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry53">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -3810,6 +3818,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry55">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -3950,6 +3959,7 @@ Conductance&lt;/b&gt;</property>
                               <widget class="GtkEntry" id="entry54">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="editable">False</property>
                                 <property name="invisible_char">•</property>
                               </widget>
                               <packing>
@@ -4003,6 +4013,7 @@ Conductance&lt;/b&gt;</property>
                               <widget class="GtkEntry" id="entry66">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="editable">False</property>
                                 <property name="invisible_char">•</property>
                               </widget>
                               <packing>
@@ -4043,6 +4054,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry67">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -4054,6 +4066,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry68">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -4102,6 +4115,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry69">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -4113,6 +4127,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry70">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -4161,6 +4176,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry71">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -4172,6 +4188,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry72">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -4220,6 +4237,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry73">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -4231,6 +4249,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry74">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -4279,6 +4298,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry75">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -4290,6 +4310,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry76">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -4338,6 +4359,7 @@ Conductance&lt;/b&gt;</property>
                                   <widget class="GtkEntry" id="entry77">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>
@@ -4348,7 +4370,7 @@ Conductance&lt;/b&gt;</property>
                                 <child>
                                   <widget class="GtkEntry" id="entry78">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
+                                    <property name="editable">False</property>
                                     <property name="invisible_char">•</property>
                                   </widget>
                                   <packing>

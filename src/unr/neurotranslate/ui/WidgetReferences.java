@@ -5,7 +5,11 @@ import java.util.HashMap;
 
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
+import org.gnome.gtk.MenuItem;
+import org.gnome.gtk.Notebook;
 import org.gnome.gtk.ScrolledWindow;
+import org.gnome.gtk.Statusbar;
+import org.gnome.gtk.ToggleButton;
 import org.gnome.gtk.Widget;
 import org.gnome.gtk.Window;
 
@@ -15,13 +19,7 @@ public class WidgetReferences {
 	// Use a hash map to hold the widget references	
 	private HashMap<String, ListEntity> l1;		// l1 holds all the ListEntity objects 
 	private HashMap<String, ComboEntity> l2;	// l2 holds all the ComboEntity objects
-	private HashMap<String, Widget> l3;			// l3 holds all the remaining widgets
-	
-	//////////////////////////////////////////////////////////////////////////////////////////
-	////    Brain Tab
-	//////////////////////////////////////////////////////////////////////////////////////////
-	
-
+	private HashMap<String, Widget> l3;			// l3 holds all the remaining widgets	
 	
 	public WidgetReferences() throws FileNotFoundException {
 		
@@ -240,6 +238,18 @@ public class WidgetReferences {
 		////    Networks Tab
 		//////////////////////////////////////////////////////////////////////////////////////////
 		l3.put( "networkScroll", GladeParseUtil.grabWidget( "scrolledwindow10", "window1" ) );
+		
+		
+//		////////////////////////////////////////////////////////////////////////////////////////
+		////    File Handler
+		//////////////////////////////////////////////////////////////////////////////////////////
+		l3.put( "statusbar", GladeParseUtil.grabWidget( "statusbar", "window1" ) );
+		l3.put( "open", GladeParseUtil.grabWidget( "openOption", "window1" ) );
+		l3.put( "save", GladeParseUtil.grabWidget( "saveOption", "window1" ) );
+		l3.put( "ncsToggle", GladeParseUtil.grabWidget( "toggleNCS", "window1" ) );
+		l3.put( "nmlToggle", GladeParseUtil.grabWidget( "toggleNML", "window1" ) );
+		l3.put( "ncsTabs", GladeParseUtil.grabWidget( "notebook1", "window1" ) );
+		l3.put( "nmlTabs", GladeParseUtil.grabWidget( "notebook2", "window1" ) );				
 		
 		//////////////////////////////////////////////////////////////////////////////////////////
 		////    Modify Popup

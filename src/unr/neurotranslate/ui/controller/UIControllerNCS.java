@@ -3,6 +3,7 @@ package unr.neurotranslate.ui.controller;
 import java.util.ArrayList;
 import unr.neurotranslate.model.Data;
 import unr.neurotranslate.model.FileController;
+import unr.neurotranslate.ncs.Brain;
 import unr.neurotranslate.ncs.Cell;
 import unr.neurotranslate.ncs.Channel;
 import unr.neurotranslate.ncs.Column;
@@ -33,6 +34,17 @@ public class UIControllerNCS {
 		_data.ncs = d;
 		
 		}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	////    Column Shells
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	public Brain getBrain() {
+		
+		return _data.ncs.brain;
+		
+		}
+	
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	////    Column Shells

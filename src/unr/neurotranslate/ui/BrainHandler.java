@@ -54,7 +54,7 @@ public class BrainHandler {
 						
 				// Show popup and update the views
 				w.getW("popup").show();
-				ModifyPopup.updateViews( "Column Types", actBrainColumnList, availBrainColumnList );		
+				ModifyPopup.updateViews( "Column Types", actBrainColumnList, availBrainColumnList, w );		
 			}
 		});	
 		
@@ -67,7 +67,7 @@ public class BrainHandler {
 				
 				// Show popup and update the views
 				w.getW("popup").show();
-				ModifyPopup.updateViews( "Stimulus Injects", brainStimulusList, brainStimulusList );
+				ModifyPopup.updateViews( "Stimulus Injects", brainStimulusList, brainStimulusList, w );
 				
 			}
 		});		

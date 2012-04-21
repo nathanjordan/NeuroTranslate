@@ -6,119 +6,110 @@ import org.gnome.gtk.Button;
 import org.gnome.gtk.Window;
 import org.gnome.gtk.Button.Clicked;
 
+import unr.neurotranslate.ui.controller.UIControllerNCS;
+
 public class ModifyPopup {
 
-	// Reference the two ListStores for active and available 
-	private static ListEntity activeModel;
-	private static ListEntity availableModel;
-	
 	// Temporary active and available lists for manipulating inside the popup
 	private static ArrayList<String> activeList;
 	private static ArrayList<String> availableList;
-	private static Window popupWin;
+	private static String ptr;
 	
-	// References to the buttons
-	private static Button cancelButton;
-	private static Button confirmButton;
-	private static Button addButton;
-	private static Button removeButton;
-	
-	
-	public ModifyPopup( ) throws FileNotFoundException {
+	public ModifyPopup( final WidgetReferences w ) throws FileNotFoundException {
 
-		// create button references for the modify popup
-		cancelButton = (Button) GladeParseUtil.grabWidget( "modifyCancel", "window2" );
-		confirmButton = (Button) GladeParseUtil.grabWidget( "modifyConfirm", "window2" );
-		addButton = (Button) GladeParseUtil.grabWidget( "modifyAdd", "window2" );
-		removeButton = (Button) GladeParseUtil.grabWidget( "modifyRemove", "window2" );			
-		popupWin = (Window) GladeParseUtil.grabWidget( "window2", "window2" );		
-		
 		// Create lists for each view
 		activeList = new ArrayList<String>();		
-		availableList = new ArrayList<String>();
-		
-		// Create the active and available tree views
-		activeModel = new ListEntity( "activeTree", "window2" );
-		availableModel = new ListEntity( "availableTree", "window2");
+		availableList = new ArrayList<String>();		
 		
 		// Set connects for handling each button event
 		// Set cancel event		
-		cancelButton.connect( new Clicked() {
+		((Button) w.getW("modCancel")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 			
 				// Hide the window if user pushes cancel
-				popupWin.hide();
+				w.getL("active").refreshView();				
+				w.getW("popupWin").hide();
 				
 			}
 		} );
 		
 		// Set confirm event
-		confirmButton.connect( new Clicked() {
+		((Button) w.getW("modConfirm")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 			
 				// Need to save both the active and available lists
-				
+				w.getL("active").modelToList(activeList);
+				w.getL(ptr).listToModel(activeList);
+				w.getW("popupWin").hide();				
 				
 			}
 		} );
 		
 		// Set add event
-		addButton.connect( new Clicked() {
+		((Button) w.getW("modAdd")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 			
 				// Add selected row from available list to active list					
-				activeModel.addData( availableModel.getSelected() );
-				availableModel.removeData();
+				w.getL("active").addData( w.getL("available").getSelected() );
+				w.getL("available").removeData();
 
 			}
 		} );
 		
 		// Set remove event
-		removeButton.connect( new Clicked() {
+		((Button) w.getW("modRem")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
 				
 				// Remove selected row from active list
-				availableModel.addData( activeModel.getSelected() );
-				activeModel.removeData();
+				w.getL("available").addData( w.getL("active").getSelected() );
+				w.getL("active").removeData();
 			}
 		} );
 		
 	}
 	
-	// Call this static function to build the popup
-	public static void buildPopup() throws FileNotFoundException {
-		
-		
-
-	}
-	
 	// Call this function in order to modify and update the popup
-	public static void updateViews( String header, ArrayList<String> active, ArrayList<String> available ) {
+	public static void updateViews( String header, ArrayList<String> active, ArrayList<String> available, WidgetReferences w ) {
 		
 		// Update headers based on what's passed in
-		popupWin.setTitle( "Adding " + header );
-		activeModel.setColumnHeader( header );
-		availableModel.setColumnHeader( header );
+		((Window) w.getW("popupWin")).setTitle( "Adding " + header );
+		w.getL("active").setColumnHeader( header );
+		w.getL("available").setColumnHeader( header );
 		
 		// Update tool tip on buttons (for debugging)
-		addButton.setTooltipText( "Add new " + header );
-		removeButton.setTooltipText( "Remove a " + header );
+		((Button) w.getW("modAdd")).setTooltipText( "Add new " + header );
+		((Button) w.getW("modRem")).setTooltipText( "Remove a " + header );
 		
 		activeList = active;
 		availableList = available;
 		
 		// Update both active and available models with new lists passed in
-		activeModel.listToModel( activeList );
-		availableModel.listToModel( availableList );		
+		w.getL("active").listToModel( activeList );
+		w.getL("available").listToModel( availableList );		
 		
 	}
 	
+	// Call this function in order to modify and update the popup
+	public static void update( String header, String l, WidgetReferences w, UIControllerNCS ui ) {
+		
+		// Update headers based on what's passed in
+		((Window) w.getW("popupWin")).setTitle( "Adding " + header );
+		w.getL("active").setColumnHeader( header );
+		w.getL("available").setColumnHeader( header );
+		
+		// Update tool tip on buttons (for debugging)
+		((Button) w.getW("modAdd")).setTooltipText( "Add new " + header );
+		((Button) w.getW("modRem")).setTooltipText( "Remove " + header );
+				
+		w.getL("available").listToModel( ui.getLayers() );		
+		ptr = new String(l);
+	}
 }

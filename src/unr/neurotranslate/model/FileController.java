@@ -12,6 +12,7 @@ import unr.neurotranslate.neuromlparser.NeuroMLConverter;
 
 public class FileController {
 	
+	
 	public static NCSData loadNCSFile( String location ) {
 		
 		Parser p = new Parser( location );
@@ -88,10 +89,10 @@ public class FileController {
 		
 		}
 	
-	public static void saveNCSFile( NCSData d , String location ) {
+	public static void saveNCSFile( String location ) {
 		
 		try {
-			NCSWriter.writeNCS( d , location );
+			NCSWriter.writeNCS( Data.getInstance().ncs , location );
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -99,7 +100,7 @@ public class FileController {
 		
 		}
 	
-	public static void saveNeuroMLFile( Neuroml d , String location ) {
+	public static void saveNeuroMLFile( String location ) {
 		
 		NeuroMLConverter nml = null;
 		try {
@@ -110,7 +111,7 @@ public class FileController {
 		}
 		
 		try {
-			nml.neuromlToXml(d, location );
+			nml.neuromlToXml( Data.getInstance().nml , location );
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

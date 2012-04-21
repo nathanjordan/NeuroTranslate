@@ -29,7 +29,7 @@ public class UIControllerNCS {
 		
 		NCSData d = FileController.loadNCSFile( "samples/PrototypeNCS.in" );
 		
-		_data = new Data();
+		_data = Data.getInstance();
 		
 		_data.ncs = d;
 		

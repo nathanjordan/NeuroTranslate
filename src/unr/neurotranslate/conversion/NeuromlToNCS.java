@@ -11,6 +11,8 @@ import org.morphml.morphml.schema.Cells;
 import org.morphml.morphml.schema.Segment;
 import org.morphml.morphml.schema.Cell.Segments;
 import org.morphml.networkml.schema.GlobalSynapticProperties;
+import org.morphml.networkml.schema.Input;
+import org.morphml.networkml.schema.Inputs;
 import org.morphml.networkml.schema.Population;
 import org.morphml.networkml.schema.Populations;
 import org.morphml.networkml.schema.Projection;
@@ -27,23 +29,30 @@ import unr.neurotranslate.ncs.ColumnShell;
 import unr.neurotranslate.ncs.Compartment;
 import unr.neurotranslate.ncs.Layer;
 import unr.neurotranslate.ncs.LayerShell;
+import unr.neurotranslate.ncs.Report;
+import unr.neurotranslate.ncs.SpikeShape;
 import unr.neurotranslate.ncs.Stimulus;
+import unr.neurotranslate.ncs.StimulusInject;
 import unr.neurotranslate.ncs.SynFacilDepress;
 import unr.neurotranslate.ncs.SynLearning;
 import unr.neurotranslate.ncs.SynPSG;
 import unr.neurotranslate.ncs.Synapse;
 import unr.neurotranslate.ncs.TwoValue;
 
+final class location{
+	
+	Column column;
+	Layer layer;
+	ArrayList<unr.neurotranslate.ncs.Cell> cellTypes = new ArrayList<unr.neurotranslate.ncs.Cell>();
+}
 
 public class NeuromlToNCS {
 
+    
 
-
+    static ArrayList<location> locations = new ArrayList<location>();
+    
     public static ArrayList<ArrayList<String>> cShellLShellList = new ArrayList<ArrayList<String>>();
-
-	//static int popIndex = 1;
-
-	// TODO set all stdev to 0
 
 	public static ArrayList<unr.neurotranslate.ncs.Cell> generateNCSCells(Level3Cells neuromlCells, Projections projections, Populations populations, ArrayList<Compartment> compartments) {
 
@@ -150,7 +159,7 @@ public class NeuromlToNCS {
     				}
     				// if it's not there, set to default
     				inTargetGroup = false;
-    				tempComp.threshold.mean = 0.0;
+    				tempComp.threshold.mean = 30.0;
     			}
     				// set this compartment's threshold to the threshold of this projection
     		    	if(level3Cell.getName() == cell && inTargetGroup)
@@ -245,9 +254,11 @@ public class NeuromlToNCS {
     	ArrayList<Column> columnList = new ArrayList<Column>();
     	int colIndex = 1;
     	int cShellIndex = 0;
+    	location loc;
     	
     	for(ColumnShell cShell : cShells)
     	{
+    		loc = new location();
     		column = new Column();
     		column.type = "column_" + colIndex;
     		column.columnShell = cShell;
@@ -258,10 +269,23 @@ public class NeuromlToNCS {
     			{
     				column.layers.add(layer);
     				column.layerNames.add(layer.type);
+    				
+    				
+    				loc.layer = layer;
+    			
+    				for( unr.neurotranslate.ncs.Cell cell : layer.cellTypes )
+    				{
+    					loc.cellTypes.add(cell);
+    				}
+    				
+    				
     			}
     		}
     		cShellIndex++;
     		columnList.add(column);
+    	
+    		loc.column = column;
+    		locations.add(loc);
     	}
     	
     	return columnList;
@@ -319,10 +343,8 @@ public class NeuromlToNCS {
     	ArrayList<Layer> layerList = new ArrayList<Layer>();
     	Layer tempLayer;
     	int layerIndex = 1;
-    	ArrayList<Double> yList = new ArrayList<Double>();
-    	boolean foundShell = false;
     	int cShellIndex = 0;
-    	int tempI = 0;
+
     	
     	// find layer shell for each population
     	for(Population pop : populations.getPopulations())
@@ -369,58 +391,185 @@ public class NeuromlToNCS {
     	
     }
    
-   public static ArrayList<Stimulus> generateNCSStimuli()
+   public static ArrayList<Stimulus> generateNCSStimuli(Inputs inputs)
     {
 	   
 	   ArrayList<Stimulus> stimList = new ArrayList<Stimulus>();
+	   Stimulus stimulus;
 	   
-	   // type 
-		// mode;
-		
-		// pattern;
-		
-		// filename;
-		
-		// port;
-		
-	   // timeIncrement;
-		
-	   // freqCols;
-		
-	   // cellsPerFreq;
-		
-	   // dynRange = new TwoValue();
-		
-	   // timing;
-		
-	   // sameSeed;
-		
-	   // ampStart;
-		
-	   // ampEnd;
-		
-	   // phase;
-		
-	   // vertTrans;
-		
-	   // width;
-		
-	   // timeStart;
-		
-	   // timeEnd;
-		
-	   // freqStart;
-		
-	   // seed;
-		
-	   // rate;
-		
-	   // tauNoise;
-		
-	   // correl;
+	   for( Input input : inputs.getInputs() )
+	   {
+		   stimulus = new Stimulus();
+		   
+		   // type 
+		   stimulus.type = input.getName();
+		   
+		   // mode;
+		   stimulus.mode = "CURRENT";
+		   
+		   // pattern;
+		   stimulus.pattern = "PULSE";
+		   
+		   // filename;
+		   stimulus.filename = null;
+
+		   // port;
+		   stimulus.port = null;	
+		   // TODO dont write if null
+		   // timeIncrement;
+		   stimulus.timeIncrement = null;
+		   
+		   // freqCols;
+		   stimulus.freqCols = null;
+		   
+		   // cellsPerFreq;
+		   stimulus.cellsPerFreq = null;
+		   
+		   // dynRange = new TwoValue();
+		   // TODO min and max
+		   stimulus.dynRange.mean = 0.0;
+		   stimulus.dynRange.stdev = 400.0;
+		   
+		   // timing;
+		   stimulus.timing = null;
+		   
+		   // sameSeed;
+		   stimulus.sameSeed = null;
+		   
+		   // ampStart;
+		   stimulus.ampStart = input.getPulseInput().getAmplitude();
+		   
+		   // ampEnd;
+		   stimulus.ampEnd = input.getPulseInput().getAmplitude();
+		   
+		   // phase;
+		   stimulus.phase = null;
+		   
+		   // vertTrans;
+		   stimulus.vertTrans = null;
+		   
+		   // width;
+		   stimulus.width = input.getPulseInput().getDuration();
+			
+		   // timeStart;
+		   stimulus.timeStart.add(0.0);
+		   
+		   // timeEnd;
+		   stimulus.timeEnd.add(input.getPulseInput().getDuration());
+		   
+		   // freqStart;
+		   stimulus.freqStart = null;
+		   
+		   // seed;
+		   stimulus.seed = null;
+		   
+		   // rate;
+		   stimulus.rate = null;
+		   
+		   // tauNoise;
+		   stimulus.tauNoise = null;
+		   
+		   // correl;
+		   stimulus.correl = null;
+		   
+		   stimList.add(stimulus);
+	   }
+	 
 	   return stimList;
     }
-    
+   
+   public static ArrayList<StimulusInject> generateNCSStimulusInjects( Inputs inputs, ArrayList<Stimulus> stimulusList, Populations populations )
+   {
+	   ArrayList<StimulusInject> stimInjectList = new ArrayList<StimulusInject>();
+	   Double probability;
+	   StimulusInject stimInject; 
+	   
+	   for( Input input : inputs.getInputs() )
+	   {
+		   stimInject = new StimulusInject();
+		   
+		   // type
+		   stimInject.type = input.getName();
+		   
+		   //stimulus
+		   for( Stimulus stimulus : stimulusList )
+		   {
+			   if( stimulus.type.equals( input.getName() ))
+					   {
+				   			// stimulus
+				   	    	stimInject.stimulus = stimulus;
+				   	    	// stimulus name
+				   	    	stimInject.stimulusName = stimulus.type;
+				   	    	break;
+					   }
+		   }
+		   
+		   // find which population were dealing with 
+		   for( Population population : populations.getPopulations() )
+		   {
+			   if( population.getName().equals(input.getTarget().getPopulation()) )
+			   {
+				   for( location loc : locations )
+				   {
+					   for( unr.neurotranslate.ncs.Cell cell : loc.cellTypes )
+					   {
+						   if( population.getCellType().equals(cell.type))
+						   {
+							   // column
+							   stimInject.column = loc.column;
+									   
+							   // column name
+							   stimInject.columnName = stimInject.column.type;
+										
+							   // layer
+							   stimInject.layer = loc.layer;
+										
+							   // layer name
+							   stimInject.layerName = stimInject.layer.type;
+										
+							   // cell
+							   stimInject.cell = cell;
+										
+							   // cell name 
+							   stimInject.cellName = stimInject.cell.type;
+										
+							   // compartment
+							   //stimInject.compartment = cell.compartments.get(0);
+										
+							   // compartment name
+							   //stimInject.compartmentName = stimInject.compartment.type;
+										
+							   // probability
+							   probability = input.getTarget().getSitePattern().getPercentageCells().getPercentage();
+							   stimInject.probability = probability / 100.0;
+							   
+						    }	  
+						 }	  
+					   }			   
+				   }
+			   }
+		   stimInjectList.add(stimInject);	   	
+	   }
+	   return stimInjectList;
+   }
+   
+   public static ArrayList<SpikeShape> generateNCSSpikeShape()
+   {
+	   ArrayList<SpikeShape> spikeShapeList = new ArrayList<SpikeShape>();
+	   
+	   SpikeShape spikeShape = new SpikeShape();
+	   
+	   spikeShape.type = "spikeshape_1k_default";
+	   
+	   spikeShape.voltages.add(-38.0);
+	   spikeShape.voltages.add(30.0);
+	   spikeShape.voltages.add(-43.0);
+	   spikeShape.voltages.add(-60.0);
+	   
+	   return spikeShapeList;
+   }
+   
+   
    public static ArrayList<Synapse> generateNCSSynapses( List<SynapseType> list, List<Projection> list2 ) 
    {
 	   ArrayList<Synapse> synList = new ArrayList<Synapse>();
@@ -432,7 +581,8 @@ public class NeuromlToNCS {
 	   {
 		   ncsSynapse = new Synapse();
 		   ncsSynapse.type = synType.getName();
-		   // TODO seed?
+		   // seed
+		   ncsSynapse.seed = null;
 		   // SFD_LABEL
 		   ncsSynapse.sfdLabel = "NO_SFD";
 		   // TODO SYN_PSG !!!!
@@ -496,7 +646,24 @@ public class NeuromlToNCS {
     public static SynPSG generateNCSSynPSG()
     {
     	SynPSG synPsg = new SynPSG();
-    	//synPsg.type 
+    	//synPsg.type
+    	// one of two equations
     	return synPsg;
     }
+    
+    public static ArrayList<Report> generateReports()
+    {
+    	ArrayList<Report> reports = new ArrayList<Report>();
+    	
+    	// get every group but need column etc. 
+    	// name file relative
+    	// all prob = 1
+    	// report voltage
+    	// frequency = 1
+    	// time start = 0
+    	// time end = brain duration
+    	return reports;
+    }
+	
 }
+    

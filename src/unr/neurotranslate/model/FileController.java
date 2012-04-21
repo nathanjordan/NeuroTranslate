@@ -1,8 +1,11 @@
 package unr.neurotranslate.model;
 
+import java.io.IOException;
+
 import org.morphml.neuroml.schema.Neuroml;
 
 import unr.neurotranslate.ncs.NCSData;
+import unr.neurotranslate.ncsparser.NCSWriter;
 import unr.neurotranslate.ncsparser.Parser;
 import unr.neurotranslate.ncsparser.PostParser;
 import unr.neurotranslate.neuromlparser.NeuroMLConverter;
@@ -82,6 +85,36 @@ public class FileController {
 		}
 		
 		return nml;
+		
+		}
+	
+	public static void saveNCSFile( NCSData d , String location ) {
+		
+		try {
+			NCSWriter.writeNCS( d , location );
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		}
+	
+	public static void saveNeuroMLFile( Neuroml d , String location ) {
+		
+		NeuroMLConverter nml = null;
+		try {
+			nml = new NeuroMLConverter();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			nml.neuromlToXml(d, location );
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		}
 	

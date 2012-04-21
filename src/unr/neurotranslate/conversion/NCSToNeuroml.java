@@ -86,7 +86,8 @@ public class NCSToNeuroml {
 	static private ArrayList<PopulationRef> PopulationReference = new ArrayList<PopulationRef>();
 	
 	static int popIndex = 1;
-		
+
+	
 public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell> ncsCells ) {
 		
 			// NeuroML Cells class

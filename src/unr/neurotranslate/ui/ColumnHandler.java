@@ -20,10 +20,7 @@ import unr.neurotranslate.ncs.ColumnShell;
 import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 public class ColumnHandler {
-	
-	// All array lists are for debugging
-	public ArrayList<String> cShells;
-	public ArrayList<String> col;	
+
 	public String selectedText;	
 	public TreeSelection rs1, rs2, rs3;
 	public ColumnShell currentColumnShell;
@@ -74,7 +71,7 @@ public class ColumnHandler {
 					try {
 						currentColumnShell = ui.getColumnShellByType(selectedText);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					}
 					
@@ -213,7 +210,7 @@ public class ColumnHandler {
 			
 				// Show popup and update the views
 				w.getW("popup").show();
-				ModifyPopup.update( "Layer Types", "coLayers", w, ui );
+				//ModifyPopup.update( "Layer Types", "coLayers", w, ui );
 				
 			}
 		});
@@ -289,9 +286,6 @@ public class ColumnHandler {
 				}
 			}
 		});
-		
-		
-		
 	}
 }
 

@@ -75,15 +75,15 @@ public class ReportHandler {
 					//((Entry) w.getW("rCellSeq")).setText(currentReport.cellSequence);
 					//((Entry) w.getW("rReportOn")).setText(currentReport.reportOn);
 					((Entry) w.getW("rFile")).setText(currentReport.filename);
-					((Entry) w.getW("rTStart")).setText(currentReport.timeStart.toString());
-					((Entry) w.getW("rTEnd")).setText(currentReport.timeEnd.toString());
+					((Entry) w.getW("rTStart")).setText(currentReport.timeStart.toString()); // TODO - returns empty
+					((Entry) w.getW("rTEnd")).setText(currentReport.timeEnd.toString()); 	 // TODO - returns empty
 				}					
 			}
 		});
 		
 	}
 	
-	public void modifyHandlers(final WidgetReferences w, UIControllerNCS ui) throws FileNotFoundException {		
+	public void modifyHandlers(final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {		
 		
 		// Connect for adding a report
 		((Button)w.getW("rAddRep")).connect( new Clicked() {
@@ -91,7 +91,9 @@ public class ReportHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
-				w.getL("rReports").addData( "new report");
+				currentReport = ui.addReport();
+				
+				w.getL("rReports").addData( currentReport.type );
 				
 			}
 		});		
@@ -102,10 +104,39 @@ public class ReportHandler {
 			@Override
 			public void onClicked(Button arg0) {
 			
+				// Remove selected report
+				try {
+					ui.removeReport(w.getL("rReports").getSelected());
+				} catch (Exception e) {					
+					e.printStackTrace();
+				}			
 				w.getL("rReports").removeData( );
-				
+				((Entry) w.getW("rType")).setText("");
+				((Entry) w.getW("rProb")).setText("");
+				((Entry) w.getW("rFreq")).setText("");
+				((Entry) w.getW("rCellSeq")).setText("");
+				((Entry) w.getW("rReportOn")).setText("");
+				((Entry) w.getW("rFile")).setText("");
+				((Entry) w.getW("rTStart")).setText("");
+				((Entry) w.getW("rTEnd")).setText("");
 			}
 		});	
+		
+		// Type
+		
+		// Probability
+		
+		// Frequency
+		
+		// Cell Sequence
+		
+		// Report on
+		
+		// Filename
+		
+		// Time Start
+		
+		// Time End
 		
 	}
 }

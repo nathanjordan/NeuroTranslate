@@ -18,7 +18,10 @@ import org.gnome.gtk.MenuItem.Activate;
 import org.gnome.gtk.ToggleButton.Toggled;
 import org.gnome.notify.Notification;
 
+import unr.neurotranslate.model.Data;
+import unr.neurotranslate.model.FileController;
 import unr.neurotranslate.ui.controller.UIControllerNCS;
+import unr.neurotranslate.ui.controller.UIControllerNeuroML;
 
 
 public class FileHandler {
@@ -83,21 +86,28 @@ public class FileHandler {
 														
 					// Figure out which type of file was imported 							
 					if( importedFile.endsWith( ".in" ) ) {
-								
+							
+						// load data model
 						UIControllerNCS ui = new UIControllerNCS();
 						
-						// Set up buttons
+						// set views
+						w.getW("nmlTabs").hide();
+					    w.getW("ncsTabs").show();
+					     
+						// Enable NeuroML toggle button if imported NCS
 						try {
 							buttonHandler( w );
 						} catch (FileNotFoundException e1) {							
 							e1.printStackTrace();
 						}
 						
-						 w.getW("nmlToggle").setSensitive( true );  
-						 Color activeGreen = new Color(44880, 55552, 36608 );        
-					     w.getW("nmlToggle").modifyBackground(StateType.NORMAL, activeGreen );
-					     w.getW("nmlToggle").modifyBackground(StateType.SELECTED, activeGreen );	
-							
+						// set button colors
+						w.getW("nmlToggle").setSensitive( true );  
+						Color activeGreen = new Color(44880, 55552, 36608 );        
+					    w.getW("nmlToggle").modifyBackground(StateType.NORMAL, activeGreen );
+					    w.getW("nmlToggle").modifyBackground(StateType.SELECTED, activeGreen );	
+					    
+						// set all handlers!					    
 						try {
 							new BrainHandler(w, ui);
 						} catch (FileNotFoundException e) {						
@@ -140,9 +150,29 @@ public class FileHandler {
 					}											
 											
 					else if( importedFile.endsWith( ".xml" ) ) {
-					
-						// TODO - create NeuroML/handlers
+															
+						// load data model
+						UIControllerNeuroML ui = new UIControllerNeuroML();
+		
+						// set views
+						w.getW("ncsTabs").hide();
+					    w.getW("nmlTabs").show();
+					    
+						// Enable NCS toggle button if imported NeuroML
+						try {
+							buttonHandler( w );
+						} catch (FileNotFoundException e1) {							
+							e1.printStackTrace();
+						}
 						
+						 w.getW("ncsToggle").setSensitive( true );  
+						 Color activeGreen = new Color(44880, 55552, 36608 );        
+					     w.getW("ncsToggle").modifyBackground(StateType.NORMAL, activeGreen );
+					     w.getW("ncsToggle").modifyBackground(StateType.SELECTED, activeGreen );
+					     
+					     // TODO - create NeuroML/handlers
+						//new MorphologyHandler( w, ui );
+						//new ChannelHandler( w, ui );
 						// Update status bar
 						((Statusbar) w.getW("statusbar")).setMessage( temp.getName() );
 					}
@@ -171,12 +201,8 @@ public class FileHandler {
 				
 				// deal with the result
 				if( response == ResponseType.OK ) {
-					/* TODO
-					 * 
-					 *  Call NCS/JAXB writer to save file
-					 *  
-					 */							
-					
+												
+					FileController.saveNCSFile(  saveDialog.getFilename() );
 					Notification notification = new Notification( "Saved to: ", saveDialog.getFilename(), "", arg0);
 					notification.setTimeout( 50 );
 					notification.show();						
@@ -198,17 +224,6 @@ public class FileHandler {
 		// Grab the translate dialog window to show and hide when toggle button is pushed
 		final Window translateDialog = (Window) GladeParseUtil.grabWidget( "window3", "window3" );		
 		
-		// Set ncs view active on program start      
-		//w.getW("ncsToggle").setSensitive( false );       
-       
-		// Messing around with color
-        Color activeGreen = new Color(44880, 55552, 36608 );        
-        w.getW("nmlToggle").modifyBackground(StateType.NORMAL, activeGreen );
-        w.getW("nmlToggle").modifyBackground(StateType.SELECTED, activeGreen );		
-		
-        // Hide ncs/nml tabs for debugging
-        //w.getW("nmlTabs").hide();
-        
         // Set ncsToggle button connect
         ((ToggleButton)w.getW("ncsToggle")).connect( new Toggled() {			
 			@Override
@@ -217,8 +232,7 @@ public class FileHandler {
 				if( arg0.getActive() ) {
 					((ToggleButton) w.getW("nmlToggle")).setActive( false );								
 					w.getW("nmlTabs").hide();
-					w.getW("ncsTabs").show();
-					
+					w.getW("ncsTabs").show();					
 					translateDialog.show();
 				}				
 			}

@@ -1,51 +1,129 @@
 package unr.neurotranslate.ui;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 import org.gnome.gdk.EventExpose;
 import org.gnome.gtk.Button;
+import org.gnome.gtk.Entry;
 import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
+import org.gnome.gtk.Entry.Activate;
 
+import unr.neurotranslate.ncs.Brain;
 import unr.neurotranslate.ui.controller.UIControllerNCS;
 
 public class BrainHandler {
 	
+	public Brain currentBrain;
 	
-	// All array lists are for debugging!
-	public ArrayList<String> actBrainColumnList;
-	public ArrayList<String> availBrainColumnList;
-	public ArrayList<String> brainStimulusList;
-	public ArrayList<String> brainConnectionList;
-	public ArrayList<String> brainReportsList;
-	public ArrayList<String> activeL;		
-	public ArrayList<String> availL;		
-	
-	public BrainHandler( final WidgetReferences w, UIControllerNCS ui ) throws FileNotFoundException {
+	public BrainHandler( final WidgetReferences w, final UIControllerNCS ui ) throws FileNotFoundException {
+		
+		System.out.println(ui.getColumns());
 		
 		w.getW("brainScroll").connect(new Widget.ExposeEvent() {
 			
 			@Override
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 				
-				// fill out all entries/lists/combo boxes
-					
+				// fill out all entries/lists/combo boxes								
+				//w.getL("bColTypes").setAvailable( ui.getColumns() );		
+				//w.getL("bStimInjects").setAvailable( ui.getStimulusInjects() );
+				//w.getL("bReports").setAvailable( ui.getReports() );
+				w.getL("bColTypes").listToModel(ui.getColumns());
 				
 				return false;
 			}
 		});
 
-		setLists(); 	
-
+		
+		w.getL("bColTypes").setAvailable( ui.getColumns() );
+		
+		// grab current brain pointer
+		currentBrain = ui.getBrain();
+		
 		setEntries( w, ui );
 		
-		modifyHandlers( w, ui );
-		
+		modifyHandlers( w, ui );		
+	}
+	
+	public void setEntries( WidgetReferences w, UIControllerNCS ui ) {
+
+		((Entry) w.getW("bType")).setText( currentBrain.type );
+		((Entry) w.getW("bJob")).setText( currentBrain.job );
+		((Entry) w.getW("bFSV")).setText( currentBrain.FSV.toString() );
+		((Entry) w.getW("bDur")).setText( currentBrain.duration.toString() );
+		((Entry) w.getW("bSeed")).setText( currentBrain.seed.toString() );
 		
 	}
 	
 	public void modifyHandlers( final WidgetReferences w, final UIControllerNCS ui ) {
 
+		// Brain Type
+		((Entry)w.getW("bType")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {			
+				currentBrain.type = arg0.getText();
+			}
+		});
+		
+		// Brain Job
+		((Entry)w.getW("bJob")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {			
+				currentBrain.job = arg0.getText();
+			}
+		});
+		
+		
+		// Brain FSV
+		((Entry)w.getW("bFSV")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {	
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentBrain.FSV = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		
+		// Brain Duration
+		((Entry)w.getW("bDur")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {			
+			
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentBrain.duration = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		
+		// Brain Seed
+		((Entry)w.getW("bSeed")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {			
+			
+				try {
+					int d = Integer.parseInt(arg0.getText());
+					currentBrain.seed = d;
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}
+		});
+		
+		
 		// Set up connect for modifying a column
 		((Button) w.getW("bModColumns")).connect( new Clicked() {
 			
@@ -53,8 +131,9 @@ public class BrainHandler {
 			public void onClicked(Button arg0) {
 						
 				// Show popup and update the views
-				w.getW("popup").show();
-				ModifyPopup.updateViews( "Column Types", actBrainColumnList, availBrainColumnList, w );		
+				//w.getW("popup").show();
+				//ModifyPopup.updateViews( "Column Types", w.getL("bColTypes").getActive(), w.getL("bColTypes").getAvailable(), "bColTypes", w );
+				//System.out.println(w.getL("bColTypes").getAvailable());
 			}
 		});	
 		
@@ -66,45 +145,10 @@ public class BrainHandler {
 			public void onClicked(Button arg0) {
 				
 				// Show popup and update the views
-				w.getW("popup").show();
-				ModifyPopup.updateViews( "Stimulus Injects", brainStimulusList, brainStimulusList, w );
+				//w.getW("popup").show();
+				//ModifyPopup.updateViews( "Stimulus Injects", brainStimulusList, brainStimulusList, w );
 				
 			}
 		});		
 	}
-
-	public void setEntries(WidgetReferences w, UIControllerNCS ui) {
-
-		
-		
-	}
-
-	public void setLists() throws FileNotFoundException {
-
-		// Create array lists
-		activeL = new ArrayList<String>();
-		availL = new ArrayList<String>();
-		actBrainColumnList = new ArrayList<String>();
-		availBrainColumnList = new ArrayList<String>();
-		brainStimulusList = new ArrayList<String>();
-		brainReportsList = new ArrayList<String>();
-		brainConnectionList = new ArrayList<String>();
-		
-		// TODO - Get array lists from data model
-		availBrainColumnList.add("visual_cortex");
-		availBrainColumnList.add("hypothalamus");
-		availBrainColumnList.add("parietal_cortex");		
-
-		brainStimulusList.add("visual");
-		brainStimulusList.add("proprioceptive");	
-	
-		brainReportsList.add("hypothalamus_learning");
-		brainReportsList.add("visual_voltage");
-		brainReportsList.add("parietal_voltage");
-	
-		brainConnectionList.add("visual_hypothalamus");
-		brainConnectionList.add("visual_parietal");	
-		brainConnectionList.add("parietal_hypothalamus");
-	}
-
 }

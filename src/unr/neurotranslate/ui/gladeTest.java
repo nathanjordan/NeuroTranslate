@@ -6,19 +6,14 @@ import org.gnome.gtk.Window;
 import org.gnome.gtk.WindowPosition;
 import org.gnome.gtk.Window.DeleteEvent;
 
-import unr.neurotranslate.ui.controller.UIControllerNCS;
-
-
 public class gladeTest {
 
     public gladeTest() throws Exception {        	
-
     	
-    	// Parse UI file
+    	// Grab main window widget    	
     	Window top = (Window) GladeParseUtil.grabWidget( "window1", "window1" );    	    	
     	WidgetReferences w = new WidgetReferences();
-    	
-    	
+    	    	
         // Set default window attributes and display 
         top.setTitle("NeuroTranslate");
         top.setPosition(WindowPosition.MOUSE);     
@@ -27,18 +22,8 @@ public class gladeTest {
         // Build the Modify Popup window             
         new ModifyPopup(w);
         
-        // Create handlers for each of the tabs and menu
-        new FileHandler(w);
-      /*  new BrainHandler(w, u);  
-        new ColumnHandler(w, u);
-        new LayerHandler(w, u);
-        new CellHandler(w, u);
-        new ConnectionHandler(w, u);
-        new SynapseHandler(w, u);
-        new StimuliHandler(w, u);
-        new ReportHandler(w, u);*/
-        
-        //new MorphologyHandler( mainApp, modifyPopup );        
+        // Set up handlers depending on file imported
+        new FileHandler(w); 
         
         // Make sure we're shutting down gtk correctly 
         top.connect(new DeleteEvent() {

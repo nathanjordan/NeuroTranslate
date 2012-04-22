@@ -226,21 +226,64 @@ public class WidgetReferences {
 		////    Morphology Tab
 		//////////////////////////////////////////////////////////////////////////////////////////
 		l3.put( "morphScroll", GladeParseUtil.grabWidget( "scrolledwindow8", "window1" ) );
-		
+		l1.put( "mCells", new ListEntity( "morphCellView", "window1" ) );
+		l1.put( "mCables", new ListEntity( "mophCableView", "window1" ) );
+		l1.put( "mSegs", new ListEntity( "morphSegmentView", "window1" ) );
+		l2.put( "mCableSel", new ComboEntity( "morphCableList", "window1" ) );
+		l3.put( "mCellName", GladeParseUtil.grabWidget( "entry1", "window1" ) );
+		l3.put( "mCableName", GladeParseUtil.grabWidget( "entry91", "window1" ) );
+		l3.put( "mSegName", GladeParseUtil.grabWidget( "morphSegmentName", "window1" ) );		
+		l3.put( "mProX", GladeParseUtil.grabWidget( "morphProximalX", "window1" ) );
+		l3.put( "mProY", GladeParseUtil.grabWidget( "morphProximalY", "window1" ) );
+		l3.put( "mProZ", GladeParseUtil.grabWidget( "morphProximalZ", "window1" ) );
+		l3.put( "mDisX", GladeParseUtil.grabWidget( "entry4", "window1" ) );
+		l3.put( "mDisY", GladeParseUtil.grabWidget( "entry5", "window1" ) );
+		l3.put( "mDisZ", GladeParseUtil.grabWidget( "entry114", "window1" ) );
+		l3.put( "mAddCell", GladeParseUtil.grabWidget( "button9", "window1" ) );
+		l3.put( "mRemCell", GladeParseUtil.grabWidget( "button10", "window1" ) );
+		l3.put( "mAddCable", GladeParseUtil.grabWidget( "button37", "window1" ) );
+		l3.put( "mRemCable", GladeParseUtil.grabWidget( "button38", "window1" ) );
+		l3.put( "mAddSeg", GladeParseUtil.grabWidget( "button11", "window1" ) );
+		l3.put( "mRemSeg", GladeParseUtil.grabWidget( "button12", "window1" ) );		
 		
 		//////////////////////////////////////////////////////////////////////////////////////////
 		////    Channels Tab
 		//////////////////////////////////////////////////////////////////////////////////////////
 		l3.put( "channelScroll", GladeParseUtil.grabWidget( "scrolledwindow9", "window1" ) );
-		
+		l1.put( "chSynapses", new ListEntity( "treeview4", "window1" ) );
+		l3.put( "chType", GladeParseUtil.grabWidget( "entry2", "window1" ) );
+		l3.put( "chMaxCond", GladeParseUtil.grabWidget( "entry94", "window1" ) );
+		l3.put( "chUse", GladeParseUtil.grabWidget( "entry92", "window1" ) );
+		l3.put( "chDelay", GladeParseUtil.grabWidget( "entry93", "window1" ) );
+		l3.put( "chReversal", GladeParseUtil.grabWidget( "entry95", "window1" ) );
+		l3.put( "chAddSyn", GladeParseUtil.grabWidget( "button39", "window1" ) );
+		l3.put( "chRemSyn", GladeParseUtil.grabWidget( "button40", "window1" ) );
 		
 		//////////////////////////////////////////////////////////////////////////////////////////
 		////    Networks Tab
 		//////////////////////////////////////////////////////////////////////////////////////////
 		l3.put( "networkScroll", GladeParseUtil.grabWidget( "scrolledwindow10", "window1" ) );
+		l1.put( "nPops", new ListEntity( "treeview5", "window1" ) );
+		l1.put( "nProjs", new ListEntity( "treeview6", "window1" ) );
+		l1.put( "nInputs", new ListEntity( "treeview22", "window1" ) );
+		l2.put( "nCellSel", new ComboEntity( "combobox18", "window1" ) );
+		l2.put( "nSourceSel", new ComboEntity( "combobox17", "window1" ) );
+		l2.put( "nTargetSel", new ComboEntity( "combobox19", "window1" ) );
+		l2.put( "nSynSel", new ComboEntity( "combobox20", "window1" ) );
+		l2.put( "nTargetPopSel", new ComboEntity( "combobox21", "window1" ) );
+		l3.put( "nPopSize", GladeParseUtil.grabWidget( "entry104", "window1" ) );
+		l3.put( "nProjectUnits", GladeParseUtil.grabWidget( "entry96", "window1" ) );
+		l3.put( "nProb", GladeParseUtil.grabWidget( "entry97", "window1" ) );
+		l3.put( "nIntDelay", GladeParseUtil.grabWidget( "entry98", "window1" ) );
+		l3.put( "nWait", GladeParseUtil.grabWidget( "entry99", "window1" ) );
+		l3.put( "nThresh", GladeParseUtil.grabWidget( "entry100", "window1" ) );
+		l3.put( "nInputUnits", GladeParseUtil.grabWidget( "entry103", "window1" ) );
+		l3.put( "nPulseDelay", GladeParseUtil.grabWidget( "entry101", "window1" ) );
+		l3.put( "nPulseDuration", GladeParseUtil.grabWidget( "entry102", "window1" ) );
+		l3.put( "nPulseAmp", GladeParseUtil.grabWidget( "entry110", "window1" ) );
 		
 		
-//		////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////
 		////    File Handler
 		//////////////////////////////////////////////////////////////////////////////////////////
 		l3.put( "statusbar", GladeParseUtil.grabWidget( "statusbar", "window1" ) );

@@ -29,7 +29,7 @@ public class ModifyPopup {
 			public void onClicked(Button arg0) {
 			
 				// Hide the window if user pushes cancel
-				w.getL("active").refreshView();				
+				//w.getL("active").refreshView();				
 				w.getW("popupWin").hide();
 				
 			}
@@ -42,8 +42,14 @@ public class ModifyPopup {
 			public void onClicked(Button arg0) {
 			
 				// Need to save both the active and available lists
-				w.getL("active").modelToList(activeList);
+				w.getL("active").modelToList(activeList);	
+				w.getL("available").modelToList(availableList);
+				
 				w.getL(ptr).listToModel(activeList);
+				
+				w.getL(ptr).setActive(activeList);
+				w.getL(ptr).setAvailable(availableList);
+				
 				w.getW("popupWin").hide();				
 				
 			}
@@ -77,7 +83,17 @@ public class ModifyPopup {
 	}
 	
 	// Call this function in order to modify and update the popup
-	public static void updateViews( String header, ArrayList<String> active, ArrayList<String> available, WidgetReferences w ) {
+	public static void updateViews( String header, ArrayList<String> active, ArrayList<String> available, String l, WidgetReferences w ) {
+		
+		// clear current models
+		w.getL("active").refreshView();
+		w.getL("available").refreshView();
+		
+		activeList.clear();
+		availableList.clear();
+		
+		// save widget name
+		ptr = l;
 		
 		// Update headers based on what's passed in
 		((Window) w.getW("popupWin")).setTitle( "Adding " + header );
@@ -88,12 +104,21 @@ public class ModifyPopup {
 		((Button) w.getW("modAdd")).setTooltipText( "Add new " + header );
 		((Button) w.getW("modRem")).setTooltipText( "Remove a " + header );
 		
-		activeList = active;
-		availableList = available;
+		// make local changes
+		for( String s: active ) {
+			activeList.add(s);
+		}
 		
+		for( String s: available ) {
+			availableList.add(s);
+		}
+		
+		//activeList = active;
+		//availableList = available;
+			
 		// Update both active and available models with new lists passed in
-		w.getL("active").listToModel( activeList );
-		w.getL("available").listToModel( availableList );		
+		w.getL("active").listToModel( active );
+		w.getL("available").listToModel( available );		
 		
 	}
 	

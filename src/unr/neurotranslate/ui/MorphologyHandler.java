@@ -1,161 +1,289 @@
 package unr.neurotranslate.ui;
-import java.util.ArrayList;
+import javax.swing.text.Segment;
 
-import org.gnome.glade.XML;
-import org.gnome.gtk.DataColumnString;
+import org.gnome.gdk.EventExpose;
+import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
-import org.gnome.gtk.ListStore;
-import org.gnome.gtk.TreeIter;
+import org.gnome.gtk.TreeSelection;
 import org.gnome.gtk.TreeView;
-import org.gnome.gtk.TreeViewColumn;
-import org.gnome.gtk.ComboBox.Changed;
+import org.gnome.gtk.Widget;
+import org.gnome.gtk.Button.Clicked;
+import org.gnome.gtk.Entry.Activate;
+import org.gnome.gtk.TreeSelection.Changed;
+import org.morphml.morphml.schema.Cable;
+import org.morphml.morphml.schema.Cell;
+
+import unr.neurotranslate.ui.controller.UIControllerNeuroML;
 
 public class MorphologyHandler {
 
-	public XML glade;
-	public XML glade2;
-	public TreeView cellView;
-	public TreeView segmentView;
-	public TreeView cableView;
+	public String selectedText;	
+	public TreeSelection rs1, rs2, rs3;
+	public Cell currentCell;
+	public Cable currentCable;
+	public Segment currentSegment;
 	
-	public ArrayList<String> morphologyCellList; //temp 
-	public ArrayList<String> morphologySegmentList;  //temp
-	public ArrayList<String> morphologyCable1;
-	public ArrayList<String> morphologyCable2;
 	
-	public MorphologyHandler( XML gladeObject, XML popupObject ) {
+	public MorphologyHandler( WidgetReferences w, UIControllerNeuroML ui ) {
+
+		w.getW("morphScroll").connect(new Widget.ExposeEvent() {
+			
+			@Override
+			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
+			
+				return false;
+			}
+		});
+
+		setEntries( w, ui );
 		
-		glade = gladeObject;
-		glade2 = popupObject;
-		
-		setLists( ); 	
-		
-		setEntries( );
+		modifyHandlers( w, ui );
 		
 	}
 
-	
-	public void setEntries() {
-
-		Entry cellName = (Entry) glade.getWidget("entry1");
-		Entry cableName = (Entry) glade.getWidget("entry91");
-		Entry segmentName = (Entry) glade.getWidget( "morphSegmentName" );
-		Entry proximalX = (Entry) glade.getWidget( "morphProximalX" );
-		Entry proximalY = (Entry) glade.getWidget( "morphProximalY" );
-		Entry proximalZ = (Entry) glade.getWidget( "morphProximalZ" );
+	public void setEntries(final WidgetReferences w, UIControllerNeuroML ui) {
 		
-		cellName.setText("pyramidal_cellA");
-		cableName.setText("SomaCable");
-		segmentName.setText( "soma" );
-		proximalX.setText("10");
-		proximalY.setText("0");
-		proximalZ.setText("0");
-	}
-
-	public void setLists() {
-
-		// grab all widgets
-		cellView = (TreeView) glade.getWidget( "morphCellView" );
-		segmentView = (TreeView) glade.getWidget( "morphSegmentView" );
-		cableView = (TreeView) glade.getWidget("mophCableView");
+		// Entries are set depending on current cell selected
+		TreeView cellView = w.getL("mCells").getView();		
 		
-		//segIDView = (ComboBox) glade.getWidget( "morphSegmentIDList" );
-		//cableView = (ComboBox) glade.getWidget( "morphCableList" );
-		
-		// Initialize all List Store models to build widget lists
-		ListStore cellModel, segmentModel, cableModel;
-		TreeViewColumn treeCell = cellView.appendColumn();
-		TreeViewColumn treeSegment = segmentView.appendColumn();
-		TreeViewColumn treeSegment2 = segmentView.appendColumn();
-		TreeViewColumn treeCable1 = cableView.appendColumn();
-		TreeViewColumn treeCable2 = cableView.appendColumn();
-		DataColumnString cellHeader = null;
-		
-		treeCell.setTitle("Name");
-		
-		treeCable1.setTitle("ID");
-		treeCable2.setTitle("Name");
-		
-		treeSegment.setTitle("ID");
-		treeSegment2.setTitle("Name");
-		
-		
-		/*DataColumnString column1;		
-		segIdModel = new ListStore(new DataColumn[] {
-				column1 = new DataColumnString(),          
-		        });
-		 
-	
-		DataColumnString column2;		
-		cableModel = new ListStore(new DataColumn[] {
-				column2 = new DataColumnString(),          
-		        });
-		*/
-		// Add temporary data to lists 
-		morphologyCellList = new ArrayList<String>();
-		morphologyCellList.add("pyramidal_cellA");
-		morphologyCellList.add("pyramidal_cellB");
-		morphologyCellList.add("pyramidal_cellC");
-		
-		
-		morphologyCable1 = new ArrayList<String>();
-		morphologyCable1.add("1");
-		morphologyCable1.add("2");
-		morphologyCable2 = new ArrayList<String>();
-		morphologyCable2.add("SomaCable");
-		morphologyCable2.add("DendriteCable");
-		
-		
-		morphologySegmentList = new ArrayList<String>();
-		morphologySegmentList.add("1");
-		morphologySegmentList.add("2");
-		morphologySegmentList.add("3");
-	
-		ArrayList<String> list2 = new ArrayList<String>();
-		list2.add("Soma");
-		list2.add("paper");
-		list2.add("lizard");
-		
-		ArrayList<String> segId = new ArrayList<String>();
-		segId.add("1");
-		segId.add("2");
-		segId.add("3");
-		//segId.add("4");
-		
-		ArrayList<String> cable = new ArrayList<String>();
-		cable.add("1");
-		cable.add("1");
-		
-		TreeIter row1; 		
-		TreeIter row2;    
-		
-		/*for( String s: segId ) {
-			row1 = segIdModel.appendRow();		
-			segIdModel.setValue( row1, column1, s );
+		// Connect for getting selected row in tree view		
+		rs1 = cellView.getSelection();						
+		rs1.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rs1.getSelected() != null ) {
+					
+					// Get selected column
+					selectedText = w.getL("mCells").getModel().getValue(rs1.getSelected(), w.getL("mCells").getHeader());
+					
+					// Get current cell based on selected cell 
+					try {
+						 //currentCell = ui.getCellByType(selectedText);
+					} catch (Exception e) {
+						
+						e.printStackTrace();
+					}									
 				
-		}
-		
-		for( String s: cable ) {
-			row2 = cableModel.appendRow();
-			cableModel.setValue( row2, column2, s );
-		}*/
+					// Set everything else to current cell 						
+					//((Entry) w.getW("mCellName")).setText(currentCell.getName());
+				}							
+			}
+		});
 
-		// Build models and set views
-		cellModel = Utils.buildListModel( morphologyCellList, treeCell, cellHeader );		
-		cellView.setModel( cellModel );
-		segmentModel = Utils.buildListModel2( morphologySegmentList, list2, treeSegment, treeSegment2 ); 
-		segmentView.setModel( segmentModel );
-		cableModel = Utils.buildListModel2( morphologyCable1, morphologyCable2, treeCable1, treeCable2 );
-		cableView.setModel(cableModel);
+		// Entries are set depending on current cable selected
+		TreeView cableView = w.getL("mCables").getView();		
 		
-		//segIdModel = Utils.buildModel( morphSegIDList, row1 ); //TODO - change util function to accept a TreeIter for comboboxes!
+		// Connect for getting selected row in tree view		
+		rs2 = cableView.getSelection();						
+		rs2.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rs2.getSelected() != null ) {
+					
+					// Get selected cable
+					selectedText = w.getL("mCables").getModel().getValue(rs2.getSelected(), w.getL("mCables").getHeader());
+					
+					// Get current column based on selected cable 
+					try {
+						 //currentCable = ui.getCableByType(selectedText);
+					} catch (Exception e) {
+						
+						e.printStackTrace();
+					}									
+				
+					// Set everything else to current column 						
+					
+				}							
+			}
+		});
 		
-//		segIDView.setModel( segIdModel );
-	//	CellRendererText renderer1 = new CellRendererText(segIDView);
-		//renderer1.setText(column1);
+		// Entries are set depending on current segment selected
+		TreeView segView = w.getL("mSegs").getView();		
 		
-		/*cableView.setModel( cableModel );
-		CellRendererText renderer2 = new CellRendererText(cableView);
-		renderer2.setText(column2);*/
+		// Connect for getting selected row in tree view		
+		rs3 = segView.getSelection();						
+		rs3.connect(new Changed() {
+			
+			@Override
+			public void onChanged(TreeSelection arg0) {	
+			
+				// Get selected string
+				if( rs3.getSelected() != null ) {
+					
+					// Get selected cable
+					selectedText = w.getL("mSegs").getModel().getValue(rs3.getSelected(), w.getL("mSegs").getHeader());
+					
+					// Get current segment based on selected segment 
+					try {
+						 //currentCell = ui.getSegmentByType(selectedText);
+					} catch (Exception e) {
+						
+						e.printStackTrace();
+					}									
+				
+					// Set everything else to current segment 						
+					
+				}							
+			}
+		});
+	}
+		
+	private void modifyHandlers( final WidgetReferences w, final UIControllerNeuroML ui) {
+		
+		// Adding cells
+		((Button)w.getW("mAddCell")).connect( new Clicked() {
+			
+			@Override
+			public void onClicked(Button arg0) {
+	
+				
+			}
+		});
+		
+		// Removing cells
+		((Button)w.getW("mRemCell")).connect( new Clicked() {
+			
+			@Override
+			public void onClicked(Button arg0) {
+		
+				
+			}
+		});
+		
+		// Adding cables
+		((Button)w.getW("mAddCable")).connect( new Clicked() {
+			
+			@Override
+			public void onClicked(Button arg0) {
+		
+				
+			}
+		});
+		
+		// Removing cables
+		((Button)w.getW("mRemCable")).connect( new Clicked() {
+			
+			@Override
+			public void onClicked(Button arg0) {
+		
+				
+			}
+		});
+		
+		// Adding segments
+		((Button)w.getW("mAddSeg")).connect( new Clicked() {
+			
+			@Override
+			public void onClicked(Button arg0) {
+		
+				
+			}
+		});
+		
+		// Removing segments
+		((Button)w.getW("mRemSeg")).connect( new Clicked() {
+			
+			@Override
+			public void onClicked(Button arg0) {
+		
+				
+			}
+		});
+		
+		// Cell Name
+		((Entry) w.getW("mCellname")).connect(new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				
+			}
+		});
+		
+		// Cable Name
+		((Entry) w.getW("mCableName")).connect(new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				
+			}
+		});
+		
+		// Segment Name
+		((Entry) w.getW("mSegName")).connect(new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				
+			}
+		});
+		
+		// Proximal X
+		((Entry) w.getW("mProX")).connect(new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				
+			}
+		});
+		
+		// Proximal Y
+		((Entry) w.getW("mProY")).connect(new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				
+			}
+		});
+		
+		// Proximal Z
+		((Entry) w.getW("mProZ")).connect(new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				
+			}
+		});
+		
+		// Distal X
+		((Entry) w.getW("mDisX")).connect(new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				
+			}
+		});
+		
+		// Distal Y
+		((Entry) w.getW("mDisY")).connect(new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				
+			}
+		});
+		
+		// Distal Z
+		((Entry) w.getW("mDisZ")).connect(new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				
+			}
+		});	
 	}
 }

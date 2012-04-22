@@ -23,10 +23,15 @@ public class ListEntity {
 	private TreeViewColumn column;
 	private CellRendererText renderer;
 	private String selected;
+	private ArrayList<String> active;
+	private ArrayList<String> available;
 	
 	// Constructor builds a tree view model without a data source!
 	public ListEntity( String widgetName, String root ) throws FileNotFoundException {
 
+		setActive(new ArrayList<String>());
+		setAvailable(new ArrayList<String>());
+		
 		// Grab the required widget
 		view = (TreeView) GladeParseUtil.grabWidget( widgetName, root );	
 		
@@ -191,9 +196,27 @@ public class ListEntity {
 	
 	// Refresh the view when changes occur
 	public void refreshView() {		
-		model.clear();
-		//view.setModel(model);		
-	}
 	
+		view.setModel(model);		
+	}
 
+	public void setActive( ArrayList<String> a ) {
+		if(this.active != null)
+			this.active.clear();
+		this.active = a;
+	}
+
+	public ArrayList<String> getActive() {
+		return active;
+	}
+
+	public void setAvailable( ArrayList<String> a ) {
+		if(this.available != null)
+			this.available.clear();
+		this.available = a;
+	}
+
+	public ArrayList<String> getAvailable() {
+		return available;
+	}
 }

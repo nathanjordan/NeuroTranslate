@@ -4,35 +4,22 @@ import java.util.ArrayList;
 
 import org.morphml.channelml.schema.ChannelmlType;
 import org.morphml.channelml.schema.SynapseType;
-import org.morphml.metadata.schema.Properties;
-import org.morphml.morphml.schema.Cells;
-import org.morphml.morphml.schema.Morphml;
-import org.morphml.morphml.schema.Segment;
+import org.morphml.morphml.schema.Cell;
 import org.morphml.networkml.schema.Inputs;
-import org.morphml.networkml.schema.Population;
 import org.morphml.networkml.schema.Populations;
 import org.morphml.networkml.schema.Projections;
-import org.morphml.neuroml.schema.Level3Cell;
 import org.morphml.neuroml.schema.Level3Cells;
 import org.morphml.neuroml.schema.Neuroml;
 
-import unr.neurotranslate.ncs.Cell;
-import unr.neurotranslate.ncs.ColumnShell;
 import unr.neurotranslate.ncs.Compartment;
-import unr.neurotranslate.ncs.LayerShell;
 import unr.neurotranslate.ncs.NCSData;
-import unr.neurotranslate.ncs.Stimulus;
-import unr.neurotranslate.ncs.SynPSG;
-import unr.neurotranslate.ncs.Synapse;
+import unr.neurotranslate.ncs.SpikeShape;
+
 
 public class FormatConverter {
 	
 	public static NeuroMLConversionData convertToNeuroML( NCSData d ) {
 		
-	
-		
-		// list of syn_psg filenames
-		ArrayList<String> synFileList = new ArrayList<String>();
 		ArrayList<SynapseType> synapseList = new ArrayList<SynapseType>();
 		
 		// NeuroMLConversionData object
@@ -85,16 +72,32 @@ public class FormatConverter {
 	    ArrayList<Compartment> tempCompartmentList = new ArrayList<Compartment>();
 	    
 	    // get cells and compartments
-		ncsConversionData.ncs.cellList = NeuromlToNCS.generateNCSCells(m.getCells(), m.getProjections(), m.getPopulations(), tempCompartmentList);
-		ncsConversionData.ncs.compartmentList = tempCompartmentList;
+	    ncsConversionData.ncs.spikeshapeList = NeuromlToNCS.generateNCSSpikeShape();
+	    
+		for( Cell cell : m.getCells().getCells() )
+		{
+			for( Compartment comp : NeuromlToNCS.generateNCSCompartments( cell.getSegments(), m.getProjections(), m.getPopulations(), ncsConversionData.ncs.spikeshapeList.get(0)) )
+			{
+				ncsConversionData.ncs.compartmentList.add(comp);
+			}
+		}
+		
+		ncsConversionData.ncs.cellList = NeuromlToNCS.generateNCSCells( m.getCells(), m.getProjections(), m.getPopulations(), tempCompartmentList );
+		
 		ncsConversionData.ncs.columnShellList = NeuromlToNCS.generateNCSColumnShells(m.getPopulations());
+		
 		ncsConversionData.ncs.layerShellList = NeuromlToNCS.generateNCSLayerShell(m.getPopulations(), ncsConversionData.ncs.columnShellList);
+		
 		ncsConversionData.ncs.layerList =  NeuromlToNCS.generateNCSLayer(m.getPopulations(), ncsConversionData.ncs.layerShellList, ncsConversionData.ncs.columnShellList, ncsConversionData.ncs.cellList);
+		
 		ncsConversionData.ncs.columnList = NeuromlToNCS.generateNCSColumns(ncsConversionData.ncs.columnShellList, ncsConversionData.ncs.layerList);
+		
 		ncsConversionData.ncs.synapseList = NeuromlToNCS.generateNCSSynapses(m.getChannels().getSynapseTypes(), m.getProjections().getProjections());
+		
 		ncsConversionData.ncs.stimulusList = NeuromlToNCS.generateNCSStimuli(m.getInputs());
+		
 		ncsConversionData.ncs.stimulusInjectList = NeuromlToNCS.generateNCSStimulusInjects(m.getInputs(), ncsConversionData.ncs.stimulusList, m.getPopulations());
-		ncsConversionData.ncs.spikeshapeList = NeuromlToNCS.generateNCSSpikeShape();
+		
 		return ncsConversionData;
 		
 		}

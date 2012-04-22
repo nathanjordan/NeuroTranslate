@@ -24,6 +24,7 @@ import org.morphml.neuroml.schema.Neuroml;
 
 import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
 
+import unr.neurotranslate.ncs.Channel;
 import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.ColumnShell;
 import unr.neurotranslate.ncs.Compartment;
@@ -75,6 +76,7 @@ public class NeuromlToNCS {
 			for(Level3Cell neuromlCell : neuromlCells.getCells())
 			{
 				tempNCSCell = new unr.neurotranslate.ncs.Cell();
+				
 				// set cell name
 				tempNCSCell.type = neuromlCell.getName();	
 
@@ -92,19 +94,15 @@ public class NeuromlToNCS {
 					tempPoint = new Point();
 					tempComp = new Compartment();
 					// make new compartment
-					if( !compartments.contains(seg.getName()) )
+					for( Compartment comp : compartments )
 					{
-						tempComp = generateNCSCompartments(seg, projections, populations, neuromlCell);		
+						if( comp.type.equals(seg.getName()) )
+						{
+							tempNCSCell.compartmentLabels.add(comp.type);
+							tempNCSCell.compartments.add(comp);
+						}
 					}
-					compartments.add(tempComp);
-					compNameList.add(seg.getName());
-
-					// set compartment name
-					tempNCSCell.compartmentLabels.add(seg.getName());
-
-					// set compartment label (same as name when going from NeuroML to NCS)
-					tempNCSCell.compartmentNames.add(seg.getName());
-
+				
 					// add name to list
 					compNameList.add(seg.getName());
 
@@ -126,64 +124,103 @@ public class NeuromlToNCS {
 		}
 
 
-    public static Compartment generateNCSCompartments(Segment segment, Projections projections, Populations populations, Level3Cell level3Cell){
+    public static ArrayList<Compartment> generateNCSCompartments( Segments segments, Projections projections, Populations populations, SpikeShape spikeShape ){
     	
-    	//ArrayList<Compartment> compartmentList = new ArrayList<Compartment>();
-        Compartment tempComp = new Compartment();	    
-        String popName, cell = null;
+    	ArrayList<Compartment> compartmentList = new ArrayList<Compartment>();
+        Compartment tempComp;	    
+        String popName;
         boolean inTargetGroup = false;
-        
-    	//for( Segment seg : neuromlSegments.getSegments())
-    	//{
-    		tempComp.type = segment.getName();
-    		// seed if wanted
-    		tempComp.spikeshapeName = "spikeshape" + 1;
-    		tempComp.tauMembrane.mean = 0.020;
-    		tempComp.tauMembrane.stdev = 0.0;
-    		tempComp.rMembrane.mean = 200.0;
-    		tempComp.rMembrane.stdev = 0.0;
-    		// look at target group - find cell - got to segment
-    		// get the target cell group in the projection
-    		for( Projection proj: projections.getProjections() )
-    		{
-    			popName = proj.getTarget();
-    			
-    			// find the cell type in the population
-    			for(Population pop : populations.getPopulations())
-    			{
-    				if(popName == pop.getName())
-    				{
-    					cell = pop.getCellType();
-    					inTargetGroup = true;
-    					break;
-    				}
-    				// if it's not there, set to default
-    				inTargetGroup = false;
-    				tempComp.threshold.mean = 30.0;
-    			}
-    				// set this compartment's threshold to the threshold of this projection
-    		    	if(level3Cell.getName() == cell && inTargetGroup)
-    		    	{
-    		    		tempComp.threshold.mean = proj.getSynapseProps().get(0).getThreshold();
-    		    	}   	
-    		}
-    		tempComp.threshold.stdev = 0.0;
-    		tempComp.leakConductance.mean = 0.0;
-    		tempComp.leakConductance.stdev = 0.0;
-    		tempComp.leakReversal.mean = 0.0;
-    		tempComp.leakReversal.stdev = 0.0;
-    		// TODO vmrest?
-    			// integrate and fire-v_reset membrane potential 
-     		// TODO channels - skip for now 
-    		// CA_INTERNAL
-    		// CA_EXTERNAL
-    		// CA_SPIKE_INCREMENT
-    		// CA_SPIKE_INCREMENT
-    		// CA_TAU
-    		// CHANNEL
-    	//}		
+        ArrayList<String> segList = new ArrayList<String>();
     	
-    	return tempComp;
+    	
+    	for( Segment seg : segments.getSegments() )
+    	{
+    		if( !segList.contains(seg.getName()) )
+    		{		
+    			tempComp = new Compartment();
+    			
+    			// TYPE
+	    		tempComp.type = seg.getName();
+	    		
+	    		// SEED 
+	    		tempComp.seed = null;
+	    		
+	    		// SPIKESHAPE
+	    		tempComp.spikeshape = spikeShape;
+	    		tempComp.spikeshapeName = tempComp.spikeshape.type;
+	    	
+	    		// TAU_MEMBRANE
+	    		tempComp.tauMembrane.mean = 0.020;
+	    		tempComp.tauMembrane.stdev = 0.0;
+	    		
+	    		// R_MEMBRANE
+	    		tempComp.rMembrane.mean = 200.0;
+	    		tempComp.rMembrane.stdev = 0.0;
+	    		
+	    		// look at target group - find cell - go to segment
+	    		// get the target cell group in the projection
+	    		for( Projection proj: projections.getProjections() )
+	    		{
+	    			popName = proj.getTarget();
+	    			
+	    			// find the cell type in the population
+	    			for(Population pop : populations.getPopulations())
+	    			{
+	    				if(popName == pop.getName())
+	    				{
+	    					
+	    					inTargetGroup = true;
+	    					break;
+	    				}
+	    				// if it's not there, set to default
+	    				inTargetGroup = false;
+	    				tempComp.threshold.mean = 30.0;
+	    			}
+	    				// set this compartment's threshold to the threshold of this projection
+	    		    	if(inTargetGroup)
+	    		    	{
+	    		    		tempComp.threshold.mean = proj.getSynapseProps().get(0).getThreshold();
+	    		    	}
+	    		}
+	    		
+	    		tempComp.threshold.stdev = 0.0;
+	    		
+	    		// LEAK_CONDUCTANCE
+	    		tempComp.leakConductance.mean = 0.0;
+	    		tempComp.leakConductance.stdev = 0.0;
+	    		
+	    		// LEAK_REVERSAL
+	    		tempComp.leakReversal.mean = 0.0;
+	    		tempComp.leakReversal.stdev = 0.0;
+	    		
+	    		// TODO vm rest?
+	    			// integrate and fire-v_reset membrane potential 
+	    		
+	    		// CA_INTERNAL
+	    		tempComp.caInternal.mean = null;
+	    		tempComp.caInternal.stdev = null;
+	        	
+	    		// CA_EXTERNAL
+	    		tempComp.caExternal.mean = null;
+	    		tempComp.caExternal.stdev = null;
+	        	
+	        	// CA_SPIKE_INCREMENT
+	    		tempComp.caSpikeIncrement.mean = null;
+	    		tempComp.caSpikeIncrement.stdev = null;
+	        	
+	        	// CA_TAU
+	    		tempComp.caTau.mean = null;
+	    		tempComp.caTau.stdev = null;
+	        	
+	    		// channels
+	    		tempComp.channels = null;
+	    		tempComp.channelNames = null;
+	    		
+	    		compartmentList.add(tempComp);
+    		}
+    	}		
+    	
+    	return compartmentList;
     }
     
     public static ArrayList<ColumnShell> generateNCSColumnShells(Populations populations){
@@ -565,6 +602,8 @@ public class NeuromlToNCS {
 	   spikeShape.voltages.add(30.0);
 	   spikeShape.voltages.add(-43.0);
 	   spikeShape.voltages.add(-60.0);
+	   
+	   spikeShapeList.add(spikeShape);
 	   
 	   return spikeShapeList;
    }

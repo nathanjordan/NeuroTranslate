@@ -72,8 +72,8 @@ public class Compartment extends TypedElement {
 		
 		s = NCSWriter.writeProperty("CA_TAU", caTau, s);
 		
+		if(channels != null)
 		for( Channel c : channels )
-			
 			s = NCSWriter.writeProperty("CHANNEL", c.type, s);
 		
 		s = s.concat("END_COMPARTMENT\n\n");

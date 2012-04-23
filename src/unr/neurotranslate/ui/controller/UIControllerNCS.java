@@ -27,7 +27,7 @@ public class UIControllerNCS {
 	
 	public UIControllerNCS() {
 		
-		NCSData d = FileController.loadNCSFile( "samples/PrototypeNCS.in" );
+		NCSData d = FileController.loadNCSFile( "/home/nitishn/workspace/NeuroTranslate/samples/PrototypeNCS.in" );
 		
 		_data = Data.getInstance();
 		

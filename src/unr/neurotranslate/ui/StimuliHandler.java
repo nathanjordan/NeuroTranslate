@@ -133,7 +133,8 @@ public class StimuliHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
-				w.getL("stInjects").addData( "new inject");
+				currentStimInj = ui.addStimulusInject();
+				w.getL("stInjects").addData( currentStimInj.type );
 				
 			}
 		});		
@@ -155,7 +156,8 @@ public class StimuliHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
-				w.getL("stStimuli").addData( "new stimulus" );
+				currentStimulus = ui.addStimulus();
+				w.getL("stStimuli").addData( currentStimulus.type );
 			}
 		});
 		

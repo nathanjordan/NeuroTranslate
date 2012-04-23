@@ -171,8 +171,8 @@ public class FileHandler {
 					     w.getW("ncsToggle").modifyBackground(StateType.SELECTED, activeGreen );
 					     
 					     // TODO - create NeuroML/handlers
-						//new MorphologyHandler( w, ui );
-						//new ChannelHandler( w, ui );
+						new MorphologyHandler( w, ui );
+						new ChannelHandler( w, ui );
 						// Update status bar
 						((Statusbar) w.getW("statusbar")).setMessage( temp.getName() );
 					}

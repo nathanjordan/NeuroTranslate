@@ -24,12 +24,16 @@ import org.morphml.neuroml.schema.Neuroml;
 
 import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
 
+import unr.neurotranslate.ncs.Brain;
 import unr.neurotranslate.ncs.Channel;
 import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.ColumnShell;
 import unr.neurotranslate.ncs.Compartment;
+import unr.neurotranslate.ncs.Connect;
+import unr.neurotranslate.ncs.Event;
 import unr.neurotranslate.ncs.Layer;
 import unr.neurotranslate.ncs.LayerShell;
+import unr.neurotranslate.ncs.RecurrentConnect;
 import unr.neurotranslate.ncs.Report;
 import unr.neurotranslate.ncs.SpikeShape;
 import unr.neurotranslate.ncs.Stimulus;
@@ -54,6 +58,171 @@ public class NeuromlToNCS {
     static ArrayList<location> locations = new ArrayList<location>();
     
     public static ArrayList<ArrayList<String>> cShellLShellList = new ArrayList<ArrayList<String>>();
+    
+    public static Brain generateNCSBrain( ArrayList<Report> reports, Projections projections, Populations populations, ArrayList<Synapse> synList, ArrayList<StimulusInject> stimInjects ) {
+    	
+    	Brain brain = new Brain();
+    	Connect tempConnect = null;
+    	Column col1 = null, col2 = null; 
+    	Layer lay1 = null, lay2 = null;
+    	unr.neurotranslate.ncs.Cell cell1 = null, cell2 = null;
+    	Compartment comp1 = null, comp2 = null;
+    
+    	// TYPE
+    	brain.type = "Brain";
+    	
+    	// JOB
+        brain.job = "test";
+    	
+    	// TODO DURATION
+    	brain.duration = 3.0;
+        
+    	// TODO FSV
+    	brain.FSV = 10000.0;
+    	
+    	// INTERACTIVE
+    	brain.interactive = null;
+    	
+    	// TODO SEED
+    	brain.seed = 999999;
+    	
+    	// TODO DISTANCE
+    	brain.distance = null;
+    	
+    	for( Report report: reports )
+    	{
+    		// REPORT
+    		brain.reports.add(report);
+    		// REPORT NAMES
+    		brain.reportNames.add(report.type);
+    	}
+    	
+    	// EVENT 
+    	brain.events = null;
+    	
+    	// EVENT NAMES
+    	brain.eventNames = null;
+    	
+    	// CONNECT 
+    	for( Projection pro : projections.getProjections() )
+    	{
+    		for( Population pop : populations.getPopulations() )
+    		{
+    			if( pop.getName().equals(pro.getSource()))
+    			{
+    				for( location loc : locations )
+    	    		{
+    					for( String celltype : loc.layer.cellTypeNames )
+    					{
+    						if( celltype.equals(pop.getCellType()))
+    						{
+    							col1 = new Column();
+        	    				col1 = loc.column;
+        	    				
+            	    	    	lay1 = new Layer();
+            	    	    	lay1 = loc.layer;
+            	    	    	
+            	    	    	cell1 = new unr.neurotranslate.ncs.Cell();
+            	    	    	cell1 = loc.cellTypes.get(0);
+            	    	    	
+            	    	    	comp1 = new Compartment();
+            	    	    	comp1 = cell1.compartments.get(0);
+    						}
+    					}
+    	    		}
+    				
+    				if( pop.getName().equals(pro.getTarget()))
+        			{
+        				for( location loc : locations )
+        	    		{
+        					for( String celltype : loc.layer.cellTypeNames )
+        					{
+        						if( celltype.equals(pop.getCellType()))
+        						{
+        							col2 = new Column();
+        		    				col2 = loc.column;
+        		    				
+        		    				lay2 = new Layer();
+        		    				lay2 = loc.layer;
+        		    				
+        		    				cell2 = new unr.neurotranslate.ncs.Cell();
+        		    				cell2 = loc.cellTypes.get(0);
+        		    				
+        		    				comp2 = new Compartment();
+        		    				comp2 = cell2.compartments.get(0);
+        						}
+        					}
+        	    		}
+
+            			for( Synapse synapse : synList )
+            			{
+            				if( synapse.type.equals(pro.getSynapseProps().get(0).getSynapseType()) )
+            				{
+            					tempConnect = new Connect(col1.type, lay1.type, cell1.type, comp1.type, col2.type, lay2.type, cell2.type, comp2.type, synapse.type, pro.getConnectivityPattern().getFixedProbability().getProbability() / 100, 0);
+            				}
+            			}	
+        			}    			
+    			}
+    			
+    			brain.connect.add(tempConnect);
+    		  }
+    		}
+    	
+    	// COLUMN TYPES and names
+    	for( Connect connect : brain.connect )
+    	{
+    		if( !brain.columnTypes.contains(connect.column1))
+    		{
+    			brain.columnTypes.add(connect.column1);
+    			brain.columnTypeNames.add(connect.column1.type);
+    		}
+    		if( !brain.columnTypes.contains(connect.column2))
+    		{
+    			brain.columnTypes.add(connect.column2);
+    			brain.columnTypeNames.add(connect.column2.type);
+    		}
+    	}
+       	
+    	// STIMULUS INJECT and stimulus inject names
+    	for( StimulusInject stimInject : stimInjects )
+    	{
+    		brain.stimulusInjects.add(stimInject);
+    		brain.stimulusInjectNames.add(stimInject.type);
+    	}
+
+    	// RECURRENT CONNECT
+    	brain.recurrentConnect = null;
+    	
+    	// SAVE FILE
+        brain.savefile = null;
+    	
+    	// SAVE TIME 
+    	brain.saveTime = null;
+    	
+    	// LOAD
+    	brain.load = null;
+    	
+    	// PORT
+    	brain.port = null;
+    	
+    	// SERVER
+    	brain.server = null;
+    	
+    	// SERVER PORT
+    	brain.serverPort = null;
+    	
+    	// WARNINGS ON
+    	brain.warningsOn = false;
+    	
+    	// OUTPUT CELLS
+    	brain.outputCells = null;
+    	
+    	// OUTPUT CONNECT MAP
+    	brain.outputConnectMap = null;
+    	
+    	return brain;
+		
+	}
 
 	public static ArrayList<unr.neurotranslate.ncs.Cell> generateNCSCells(Level3Cells neuromlCells, Projections projections, Populations populations, ArrayList<Compartment> compartments) {
 
@@ -307,14 +476,12 @@ public class NeuromlToNCS {
     				column.layers.add(layer);
     				column.layerNames.add(layer.type);
     				
-    				
     				loc.layer = layer;
     			
     				for( unr.neurotranslate.ncs.Cell cell : layer.cellTypes )
     				{
     					loc.cellTypes.add(cell);
     				}
-    				
     				
     			}
     		}
@@ -381,7 +548,6 @@ public class NeuromlToNCS {
     	Layer tempLayer;
     	int layerIndex = 1;
     	int cShellIndex = 0;
-
     	
     	// find layer shell for each population
     	for(Population pop : populations.getPopulations())
@@ -425,7 +591,6 @@ public class NeuromlToNCS {
     		cShellIndex = 0;
     	}
     	return layerList;
-    	
     }
    
    public static ArrayList<Stimulus> generateNCSStimuli(Inputs inputs)
@@ -578,8 +743,7 @@ public class NeuromlToNCS {
 										
 							   // probability
 							   probability = input.getTarget().getSitePattern().getPercentageCells().getPercentage();
-							   stimInject.probability = probability / 100.0;
-							   
+							   stimInject.probability = probability / 100.0;  
 						    }	  
 						 }	  
 					   }			   
@@ -703,6 +867,5 @@ public class NeuromlToNCS {
     	// time end = brain duration
     	return reports;
     }
-	
 }
     

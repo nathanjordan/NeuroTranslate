@@ -43,23 +43,24 @@ import unr.neurotranslate.ncs.SynLearning;
 import unr.neurotranslate.ncs.SynPSG;
 import unr.neurotranslate.ncs.Synapse;
 import unr.neurotranslate.ncs.TwoValue;
+import java.io.*;
 
 final class location{
 	
 	Column column;
 	Layer layer;
+	Double x;
+	Double y;
 	ArrayList<unr.neurotranslate.ncs.Cell> cellTypes = new ArrayList<unr.neurotranslate.ncs.Cell>();
 }
 
 public class NeuromlToNCS {
 
-    
-
     static ArrayList<location> locations = new ArrayList<location>();
     
     public static ArrayList<ArrayList<String>> cShellLShellList = new ArrayList<ArrayList<String>>();
     
-    public static Brain generateNCSBrain( ArrayList<Report> reports, Projections projections, Populations populations, ArrayList<Synapse> synList, ArrayList<StimulusInject> stimInjects ) {
+    public static Brain generateNCSBrain( ArrayList<Report> reports, Projections projections, Populations populations, ArrayList<Synapse> synList, ArrayList<StimulusInject> stimInjects, ArrayList<Column> columnList ) {
     	
     	Brain brain = new Brain();
     	Connect tempConnect = null;
@@ -112,75 +113,104 @@ public class NeuromlToNCS {
     			{
     				for( location loc : locations )
     	    		{
-    					for( String celltype : loc.layer.cellTypeNames )
+    					if( loc.x == pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX()
+    							&& loc.y == pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() )
     					{
-    						if( celltype.equals(pop.getCellType()))
+    						for( unr.neurotranslate.ncs.Cell cell : loc.cellTypes)
     						{
-    							col1 = new Column();
-        	    				col1 = loc.column;
-        	    				
-            	    	    	lay1 = new Layer();
-            	    	    	lay1 = loc.layer;
-            	    	    	
-            	    	    	cell1 = new unr.neurotranslate.ncs.Cell();
-            	    	    	cell1 = loc.cellTypes.get(0);
-            	    	    	
-            	    	    	comp1 = new Compartment();
-            	    	    	comp1 = cell1.compartments.get(0);
+    							if( cell.type.equals(pop.getCellType()) )
+    							{
+    								col1 = new Column();
+    	    	    				col1 = loc.column;
+    	    	    				
+    	        	    	    	lay1 = new Layer();
+    	        	    	    	lay1 = loc.layer;
+    	        	    	    	
+    	        	    	    	cell1 = new unr.neurotranslate.ncs.Cell();
+    	        	    	    	cell1 = cell;
+    	        	    	    	
+    	        	    	    	comp1 = new Compartment();
+    	        	    	    	comp1 = cell1.compartments.get(0);
+    							}
     						}
     					}
-    	    		}
+    	    		}	
     				
-    				if( pop.getName().equals(pro.getTarget()))
-        			{
-        				for( location loc : locations )
-        	    		{
-        					for( String celltype : loc.layer.cellTypeNames )
-        					{
-        						if( celltype.equals(pop.getCellType()))
-        						{
-        							col2 = new Column();
-        		    				col2 = loc.column;
-        		    				
-        		    				lay2 = new Layer();
-        		    				lay2 = loc.layer;
-        		    				
-        		    				cell2 = new unr.neurotranslate.ncs.Cell();
-        		    				cell2 = loc.cellTypes.get(0);
-        		    				
-        		    				comp2 = new Compartment();
-        		    				comp2 = cell2.compartments.get(0);
-        						}
-        					}
-        	    		}
-
-            			for( Synapse synapse : synList )
-            			{
-            				if( synapse.type.equals(pro.getSynapseProps().get(0).getSynapseType()) )
-            				{
-            					tempConnect = new Connect(col1.type, lay1.type, cell1.type, comp1.type, col2.type, lay2.type, cell2.type, comp2.type, synapse.type, pro.getConnectivityPattern().getFixedProbability().getProbability() / 100, 0);
-            				}
-            			}	
-        			}    			
+    				for( Population pop2 : populations.getPopulations() )
+    				{
+    					if( pop2.getName().equals(pro.getTarget()))
+    	    			{
+    	    				for( location loc : locations )
+    	    	    		{
+    	    					if( loc.x == pop2.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX()
+    	    							&& loc.y == pop2.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() )
+    	    					{
+    	    						for( unr.neurotranslate.ncs.Cell cell : loc.cellTypes)
+    	    						{
+    	    							if( cell.type.equals(pop2.getCellType()))
+    	        						{
+    	        							col2 = new Column();
+    	        		    				col2 = loc.column;
+    	        		    				
+    	        		    				lay2 = new Layer();
+    	        		    				lay2 = loc.layer;
+    	        		    				
+    	        		    				cell2 = new unr.neurotranslate.ncs.Cell();
+    	        		    				cell2 = loc.cellTypes.get(0);
+    	        		    				
+    	        		    				comp2 = new Compartment();
+    	        		    				comp2 = cell2.compartments.get(0);
+    	        						}
+    	    						}
+    	    					}
+    	    	    		}	
+    	    			}    
+    				}	
     			}
-    			
-    			brain.connect.add(tempConnect);
     		  }
+    		if( col1 != null && col2 != null )
+			{
+				for( Synapse synapse : synList )
+    			{
+    				if( synapse.type.equals(pro.getSynapseProps().get(0).getSynapseType()) )
+    				{
+    					tempConnect = new Connect(col1.type, lay1.type, cell1.type, comp1.type, col2.type, lay2.type, cell2.type, comp2.type, synapse.type, pro.getConnectivityPattern().getFixedProbability().getProbability() / 100, 0);
+    					tempConnect.column1 = col1;
+    					tempConnect.column2 = col2;
+    					tempConnect.layer1 = lay1;
+    					tempConnect.layer2 = lay2;
+    				    tempConnect.cellType1 = cell1;
+    				    tempConnect.cellType2 = cell2;
+    				    tempConnect.compartment1 = comp1;
+    				    tempConnect.compartment1 = comp2;
+    				    tempConnect.synapseType = synapse; 					
+    				}
+    			}
+			}
+			brain.connect.add(tempConnect);
     		}
     	
     	// COLUMN TYPES and names
     	for( Connect connect : brain.connect )
-    	{
-    		if( !brain.columnTypes.contains(connect.column1))
+    	{   
+    		if( brain.columnTypes == null )
+    		{
+    			brain.columnTypes = new ArrayList<Column>();
+    			brain.columnTypeNames = new ArrayList<String>();
+    		}
+    		
+    		else if( !brain.columnTypes.contains(connect.column1))
     		{
     			brain.columnTypes.add(connect.column1);
     			brain.columnTypeNames.add(connect.column1.type);
     		}
+    		
     		if( !brain.columnTypes.contains(connect.column2))
     		{
     			brain.columnTypes.add(connect.column2);
     			brain.columnTypeNames.add(connect.column2.type);
     		}
+    		
     	}
        	
     	// STIMULUS INJECT and stimulus inject names
@@ -460,11 +490,9 @@ public class NeuromlToNCS {
     	ArrayList<Column> columnList = new ArrayList<Column>();
     	int colIndex = 1;
     	int cShellIndex = 0;
-    	location loc;
     	
     	for(ColumnShell cShell : cShells)
     	{
-    		loc = new location();
     		column = new Column();
     		column.type = "column_" + colIndex;
     		column.columnShell = cShell;
@@ -475,21 +503,19 @@ public class NeuromlToNCS {
     			{
     				column.layers.add(layer);
     				column.layerNames.add(layer.type);
-    				
-    				loc.layer = layer;
-    			
-    				for( unr.neurotranslate.ncs.Cell cell : layer.cellTypes )
+    				// add column to location somehow
+    				for( location loc : locations )
     				{
-    					loc.cellTypes.add(cell);
+    					if( loc.layer.type.equals(layer.type) )
+    					{
+    						loc.column = column;
+    					}
     				}
-    				
     			}
     		}
     		cShellIndex++;
+    		colIndex++;
     		columnList.add(column);
-    	
-    		loc.column = column;
-    		locations.add(loc);
     	}
     	
     	return columnList;
@@ -548,6 +574,7 @@ public class NeuromlToNCS {
     	Layer tempLayer;
     	int layerIndex = 1;
     	int cShellIndex = 0;
+    	location loc;
     	
     	// find layer shell for each population
     	for(Population pop : populations.getPopulations())
@@ -566,6 +593,7 @@ public class NeuromlToNCS {
 	    					// if the y is between the lower and upper layer shell bounds we found the right layer shell
 	    					if(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() / cShell.height * 100 == lShell.lower)
 	    					{
+	    						loc = new location();
 	    						tempLayer = new Layer();
 	    						tempLayer.layerShell = lShell;
 	    						tempLayer.layerShellName = lShell.type;
@@ -576,10 +604,15 @@ public class NeuromlToNCS {
 	    							if(tCell.type.equals(pop.getCellType()))
 	    							{
 	    								tempLayer.cellTypes.add(tCell);
+	    								loc.cellTypes.add(tCell);
 	    							}
 	    						}
 	    						tempLayer.cellTypeQuantities.add(pop.getPopLocation().getRandomArrangement().getPopulationSize());
 	    						tempLayer.type = "layer_" + layerIndex;	
+	    						loc.layer = tempLayer;
+	    						loc.x = cShell.x;
+	    	    		    	loc.y = pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY();	
+	    	    		    	locations.add(loc);
 	    						layerList.add(tempLayer);
 	    						layerIndex++;
 	    					}		
@@ -713,42 +746,46 @@ public class NeuromlToNCS {
 			   {
 				   for( location loc : locations )
 				   {
-					   for( unr.neurotranslate.ncs.Cell cell : loc.cellTypes )
+					   if( population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX() == loc.x 
+							   && population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX() == loc.y )
 					   {
-						   if( population.getCellType().equals(cell.type))
+						   for( unr.neurotranslate.ncs.Cell cell : loc.cellTypes )
 						   {
-							   // column
-							   stimInject.column = loc.column;
-									   
-							   // column name
-							   stimInject.columnName = stimInject.column.type;
-										
-							   // layer
-							   stimInject.layer = loc.layer;
-										
-							   // layer name
-							   stimInject.layerName = stimInject.layer.type;
-										
-							   // cell
-							   stimInject.cell = cell;
-										
-							   // cell name 
-							   stimInject.cellName = stimInject.cell.type;
-										
-							   // compartment
-							   //stimInject.compartment = cell.compartments.get(0);
-										
-							   // compartment name
-							   //stimInject.compartmentName = stimInject.compartment.type;
-										
-							   // probability
-							   probability = input.getTarget().getSitePattern().getPercentageCells().getPercentage();
-							   stimInject.probability = probability / 100.0;  
-						    }	  
-						 }	  
-					   }			   
-				   }
+							   if( cell.type.equals(population.getCellType()) )
+							   {
+								   // column
+								   stimInject.column = loc.column;
+										   
+								   // column name
+								   stimInject.columnName = stimInject.column.type;
+											
+								   // layer
+								   stimInject.layer = loc.layer;
+											
+								   // layer name
+								   stimInject.layerName = stimInject.layer.type;
+											
+								   // cell
+								   stimInject.cell = cell;
+											
+								   // cell name 
+								   stimInject.cellName = stimInject.cell.type;
+											
+								   // compartment
+								   stimInject.compartment = cell.compartments.get(0);
+											
+								   // compartment name
+								   stimInject.compartmentName = stimInject.compartment.type;
+											
+								   // probability
+								   probability = input.getTarget().getSitePattern().getPercentageCells().getPercentage();
+								   stimInject.probability = probability / 100.0;  
+							   }
+						   }
+					   }	  	  
+				   }			   
 			   }
+		   }
 		   stimInjectList.add(stimInject);	   	
 	   }
 	   return stimInjectList;
@@ -846,25 +883,82 @@ public class NeuromlToNCS {
     	return synLearning;
     }
     
-    public static SynPSG generateNCSSynPSG()
+    public static ArrayList<SynPSG> generateNCSSynPSG() throws IOException
     {
+    	int i;
+    	double e = 2.71828183;
+    	
+    	ArrayList<SynPSG> synPsgList = new ArrayList<SynPSG>();
     	SynPSG synPsg = new SynPSG();
-    	//synPsg.type
-    	// one of two equations
-    	return synPsg;
+    	
+    	synPsg.type = "PSGexcit";
+    	synPsg.filename = "EPSG_Vogels_FSV1k_TAU05.inc";
+    	synPsgList.add(synPsg);
+    	
+    	synPsg = new SynPSG();
+    	synPsg.type = "PSGinhib";
+    	synPsg.filename = "IPSG_Vogels_FSV1k_TAU10.inc";
+    	synPsgList.add(synPsg);
+    	
+    	File file = new File("EPSG_Vogels_FSV1k_TAU05.inc");
+    	PrintWriter out = new PrintWriter(file);
+    	
+    	for( i = 0; i < 50; i++ )
+    	{
+    		out.print( java.lang.Math.pow(e, (-i/5)) );
+    		out.print(' ');
+    	}
+    	
+    	out.close();
+    	
+    	File file2 = new File("IPSG_Vogels_FSV1k_TAU10.inc");
+    	PrintWriter out2 = new PrintWriter(file2);
+    	
+    	for( i = 0; i < 50; i++ )
+    	{
+    		out2.print( java.lang.Math.pow(e, (-i/10)) );
+    		out2.print(' ');
+    	}
+    	
+    	out2.close();
+    
+    	return synPsgList;
     }
     
-    public static ArrayList<Report> generateReports()
+    public static ArrayList<Report> generateReports( Populations populations )
     {
     	ArrayList<Report> reports = new ArrayList<Report>();
+    	Report report = null;
     	
-    	// get every group but need column etc. 
-    	// name file relative
-    	// all prob = 1
-    	// report voltage
-    	// frequency = 1
-    	// time start = 0
-    	// time end = brain duration
+    	for( Population pop : populations.getPopulations() )
+    	{
+    		report = new Report();
+    		
+    		// get every group but need column etc. 
+        	report.cells = new Object();
+    		
+    		// name file relative
+        	report.filename = null;
+    		
+    		// all prob
+    		report.prob = 1.0;
+    		
+    		// report voltage
+        	report.reportOn = "VOLTAGE";
+    		
+    		// frequency
+        	report.frequency = 1;
+    		
+    		// time start
+    		report.timeStart.add(0.0);
+    		
+        	// time end
+    		report.timeEnd.add(3.0);
+    	
+    		report.type = "Report";
+    		
+    		reports.add(report);
+    	}
     	return reports;
     }
 }

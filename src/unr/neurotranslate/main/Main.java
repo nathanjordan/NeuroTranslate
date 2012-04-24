@@ -41,7 +41,6 @@ public static void main(String[] args) throws Exception, FileNotFoundException {
 
 	NCSData d = FileController.loadNCSFile( "samples/PrototypeNCS.in" );
 
-
 	NCSData d1 = (NCSData) FormatConverter.convertToNCS(test).getData();
 
 	NCSWriter.writeNCS(d1, "/home/kimperry/Desktop/conversion.in" );

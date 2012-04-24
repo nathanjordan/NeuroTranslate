@@ -883,26 +883,82 @@ public class NeuromlToNCS {
     	return synLearning;
     }
     
-    public static SynPSG generateNCSSynPSG() throws FileNotFoundException
+    public static ArrayList<SynPSG> generateNCSSynPSG() throws IOException
     {
+    	int i;
+    	double e = 2.71828183;
+    	
+    	ArrayList<SynPSG> synPsgList = new ArrayList<SynPSG>();
     	SynPSG synPsg = new SynPSG();
-    	PrintWriter outputFile = new PrintWriter("./input/EPSG_Vogels_FSV1k_TAU05.inc");
-    	//synPsg.type
-    	// one of two equations
-    	return synPsg;
+    	
+    	synPsg.type = "PSGexcit";
+    	synPsg.filename = "EPSG_Vogels_FSV1k_TAU05.inc";
+    	synPsgList.add(synPsg);
+    	
+    	synPsg = new SynPSG();
+    	synPsg.type = "PSGinhib";
+    	synPsg.filename = "IPSG_Vogels_FSV1k_TAU10.inc";
+    	synPsgList.add(synPsg);
+    	
+    	File file = new File("EPSG_Vogels_FSV1k_TAU05.inc");
+    	PrintWriter out = new PrintWriter(file);
+    	
+    	for( i = 0; i < 50; i++ )
+    	{
+    		out.print( java.lang.Math.pow(e, (-i/5)) );
+    		out.print(' ');
+    	}
+    	
+    	out.close();
+    	
+    	File file2 = new File("IPSG_Vogels_FSV1k_TAU10.inc");
+    	PrintWriter out2 = new PrintWriter(file2);
+    	
+    	for( i = 0; i < 50; i++ )
+    	{
+    		out2.print( java.lang.Math.pow(e, (-i/10)) );
+    		out2.print(' ');
+    	}
+    	
+    	out2.close();
+    
+    	return synPsgList;
     }
     
-    public static ArrayList<Report> generateReports()
+    public static ArrayList<Report> generateReports( Populations populations )
     {
     	ArrayList<Report> reports = new ArrayList<Report>();
+    	Report report = null;
     	
-    	// get every group but need column etc. 
-    	// name file relative
-    	// all prob = 1
-    	// report voltage
-    	// frequency = 1
-    	// time start = 0
-    	// time end = brain duration
+    	for( Population pop : populations.getPopulations() )
+    	{
+    		report = new Report();
+    		
+    		// get every group but need column etc. 
+        	report.cells = new Object();
+    		
+    		// name file relative
+        	report.filename = null;
+    		
+    		// all prob
+    		report.prob = 1.0;
+    		
+    		// report voltage
+        	report.reportOn = "VOLTAGE";
+    		
+    		// frequency
+        	report.frequency = 1;
+    		
+    		// time start
+    		report.timeStart.add(0.0);
+    		
+        	// time end
+    		report.timeEnd.add(3.0);
+    	
+    		report.type = "Report";
+    		
+    		reports.add(report);
+    	}
     	return reports;
     }
 }

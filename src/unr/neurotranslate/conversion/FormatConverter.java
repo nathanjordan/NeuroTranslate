@@ -1,5 +1,7 @@
 package unr.neurotranslate.conversion;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.morphml.channelml.schema.ChannelmlType;
@@ -66,7 +68,7 @@ public class FormatConverter {
 		return neuromlData;
 		}
 	
-	public static NCSConversionData convertToNCS( Neuroml m ) {
+	public static NCSConversionData convertToNCS( Neuroml m ) throws IOException {
 			
 		NCSConversionData ncsConversionData = new NCSConversionData();
 	    ArrayList<Compartment> tempCompartmentList = new ArrayList<Compartment>();
@@ -86,6 +88,8 @@ public class FormatConverter {
 			
 		}
 		
+		ncsConversionData.ncs.synpsgList = NeuromlToNCS.generateNCSSynPSG();
+		
 		ncsConversionData.ncs.cellList = NeuromlToNCS.generateNCSCells( m.getCells(), m.getProjections(), m.getPopulations(), tempCompartmentList );
 		
 		ncsConversionData.ncs.columnShellList = NeuromlToNCS.generateNCSColumnShells(m.getPopulations());
@@ -101,6 +105,8 @@ public class FormatConverter {
 		ncsConversionData.ncs.stimulusList = NeuromlToNCS.generateNCSStimuli(m.getInputs());
 
 		ncsConversionData.ncs.stimulusInjectList = NeuromlToNCS.generateNCSStimulusInjects(m.getInputs(), ncsConversionData.ncs.stimulusList, m.getPopulations());
+		
+		ncsConversionData.ncs.reportList = NeuromlToNCS.generateReports(m.getPopulations());
 		
 		ncsConversionData.ncs.brain = NeuromlToNCS.generateNCSBrain(ncsConversionData.ncs.reportList, m.getProjections(), m.getPopulations(), ncsConversionData.ncs.synapseList, ncsConversionData.ncs.stimulusInjectList, ncsConversionData.ncs.columnList);
 		

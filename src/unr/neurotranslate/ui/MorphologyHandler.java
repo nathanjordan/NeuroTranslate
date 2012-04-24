@@ -1,5 +1,4 @@
 package unr.neurotranslate.ui;
-import javax.swing.text.Segment;
 
 import org.gnome.gdk.EventExpose;
 import org.gnome.gtk.Button;
@@ -12,6 +11,7 @@ import org.gnome.gtk.Entry.Activate;
 import org.gnome.gtk.TreeSelection.Changed;
 import org.morphml.morphml.schema.Cable;
 import org.morphml.morphml.schema.Cell;
+import org.morphml.morphml.schema.Segment;
 
 import unr.neurotranslate.ui.controller.UIControllerNeuroML;
 
@@ -33,8 +33,8 @@ public class MorphologyHandler {
 			
 				return false;
 			}
-		});
-
+		});	
+		
 		setEntries( w, ui );
 		
 		modifyHandlers( w, ui );
@@ -197,7 +197,7 @@ public class MorphologyHandler {
 		});
 		
 		// Cell Name
-		((Entry) w.getW("mCellname")).connect(new Activate() {
+		((Entry) w.getW("mCellName")).connect(new Activate() {
 			
 			@Override
 			public void onActivate(Entry arg0) {

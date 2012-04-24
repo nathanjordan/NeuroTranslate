@@ -8,7 +8,11 @@ import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
 import org.gnome.gtk.Entry.Activate;
 import org.gnome.gtk.TreeSelection.Changed;
+import org.morphml.channelml.schema.ChannelmlType;
+import org.morphml.channelml.schema.DoubleExponentialSynapse;
 import org.morphml.channelml.schema.SynapseType;
+import org.morphml.networkml.schema.SynapseDirection;
+import org.morphml.networkml.schema.SynapseProperties;
 
 import unr.neurotranslate.ui.controller.UIControllerNeuroML;
 
@@ -17,7 +21,7 @@ public class ChannelHandler {
 
 	public String selectedText;	
 	public TreeSelection rs1;
-	SynapseType currentSynapse;
+	DoubleExponentialSynapse currentSynapse;
 	
 	public ChannelHandler(WidgetReferences w, UIControllerNeuroML ui) {
 	

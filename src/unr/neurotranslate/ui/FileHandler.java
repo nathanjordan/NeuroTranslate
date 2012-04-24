@@ -173,6 +173,7 @@ public class FileHandler {
 					     // TODO - create NeuroML/handlers
 						new MorphologyHandler( w, ui );
 						new ChannelHandler( w, ui );
+						new NetworkHandler( w, ui );
 						// Update status bar
 						((Statusbar) w.getW("statusbar")).setMessage( temp.getName() );
 					}

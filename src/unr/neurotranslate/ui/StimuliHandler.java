@@ -112,8 +112,8 @@ public class StimuliHandler {
 					((Entry) w.getW("stSType")).setText(currentStimulus.type);
 					((Entry) w.getW("stMode")).setText(currentStimulus.mode);
 					((Entry) w.getW("stPattern")).setText(currentStimulus.pattern);
-					((Entry) w.getW("stTimeInc")).setText(currentStimulus.timeIncrement.toString());
-					//((Entry) w.getW("stFreqCol")).setText(currentStimulus.freqCols.toString());
+					((Entry) w.getW("stTimeInc")).setText(currentStimulus.timeIncrement.toString());					
+					//((Entry) w.getW("stFreqCol")).setText(currentStimulus.freqCols.toString()); // returns null
 					((Entry) w.getW("stCellFreq")).setText(currentStimulus.cellsPerFreq.toString());
 					((Entry) w.getW("stDynRange")).setText(currentStimulus.dynRange.mean + " " + currentStimulus.dynRange.stdev);
 					((Entry) w.getW("stAmpStart")).setText(currentStimulus.ampStart.toString());
@@ -134,6 +134,7 @@ public class StimuliHandler {
 			public void onClicked(Button arg0) {
 				
 				currentStimInj = ui.addStimulusInject();
+				currentStimInj.probability = 0.0;
 				w.getL("stInjects").addData( currentStimInj.type );
 				
 			}
@@ -145,7 +146,14 @@ public class StimuliHandler {
 			@Override
 			public void onClicked(Button arg0) {
 			
+				try {
+					ui.removeStimulusInject( w.getL("stInjects").getSelected() );
+				} catch (Exception e) {					
+					e.printStackTrace();
+				}
 				w.getL("stInjects").removeData( );
+				((Entry) w.getW("stSIType")).setText("");
+				((Entry) w.getW("stProb")).setText("");
 				
 			}
 		});	
@@ -157,6 +165,10 @@ public class StimuliHandler {
 			public void onClicked(Button arg0) {
 				
 				currentStimulus = ui.addStimulus();
+				currentStimulus.mode = currentStimulus.pattern = " ";
+				currentStimulus.timeIncrement = currentStimulus.dynRange.mean = currentStimulus.dynRange.stdev = 0.0;
+				currentStimulus.width = currentStimulus.ampStart = 0.0;
+				currentStimulus.cellsPerFreq = 0;
 				w.getL("stStimuli").addData( currentStimulus.type );
 			}
 		});
@@ -167,11 +179,24 @@ public class StimuliHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
+				try {
+					ui.removeStimulus( w.getL("stStimuli").getSelected());
+				} catch (Exception e) {			
+					e.printStackTrace();
+				}
 				w.getL("stStimuli").removeData();
-				
+				((Entry) w.getW("stSType")).setText("");
+				((Entry) w.getW("stMode")).setText("");
+				((Entry) w.getW("stPattern")).setText("");
+				((Entry) w.getW("stTimeInc")).setText("");			
+				((Entry) w.getW("stCellFreq")).setText("");
+				((Entry) w.getW("stDynRange")).setText("");
+				((Entry) w.getW("stAmpStart")).setText("");
+				((Entry) w.getW("stWidth")).setText("");
+				((Entry) w.getW("stTStart")).setText("");
+				((Entry) w.getW("stTEnd")).setText("");				
 			}
-		});
-	
+		});	
 	}
 
 }

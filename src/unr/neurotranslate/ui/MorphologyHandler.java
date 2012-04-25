@@ -33,10 +33,7 @@ public class MorphologyHandler {
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 			
 				//Refresh lists
-				w.getL("mCells").listToModel( ui.getCells() );
-				//w.getL("mCables").listToModel( ui.getCables( currentCell ) );
-				//w.getL("mSegs").listToModel( ui.getSegments() );
-				//w.getC("mCableSel").listToModel( ui.getCables() );
+				w.getL("mCells").listToModel( ui.getCells() );		
 				
 				return false;
 			}
@@ -170,7 +167,14 @@ public class MorphologyHandler {
 			@Override
 			public void onClicked(Button arg0) {
 		
+				try {
+					ui.removeCell( w.getL("mCells").getSelected() );
+				} catch (Exception e) {					
+					//e.printStackTrace();
+				}
 				
+				w.getL("mCells").removeData();
+				((Entry) w.getW("mCellName")).setText("");
 				
 			}
 		});
@@ -182,7 +186,7 @@ public class MorphologyHandler {
 			public void onClicked(Button arg0) {
 		
 				//currentCable = ui.addCable();
-				w.getL("mCables").addData( currentCable.getName() );
+				//w.getL("mCables").addData( currentCable.getName() );
 			}
 		});
 		
@@ -210,13 +214,7 @@ public class MorphologyHandler {
 				p.setY(0);
 				p.setZ(0);
 				currentSegment.setProximal(p);
-				currentSegment.setDistal(p);
-				/*currentSegment.getProximal().setX(0);
-				currentSegment.getProximal().setY(0);
-				currentSegment.getProximal().setZ(0);
-				currentSegment.getDistal().setX(0);
-				currentSegment.getDistal().setY(0);
-				currentSegment.getDistal().setZ(0);*/
+				currentSegment.setDistal(p);				
 			}
 		});
 		
@@ -226,8 +224,22 @@ public class MorphologyHandler {
 			@Override
 			public void onClicked(Button arg0) {
 		
+				try {
+					ui.removeSegment( currentCell, w.getL("mSegs").getSelected() );
+				} catch (Exception e) {					
+					//e.printStackTrace();
+				}
 				
+				w.getL("mSegs").removeData();
+				((Entry) w.getW("mSegName")).setText("");
+				((Entry) w.getW("mProX")).setText("");
+				((Entry) w.getW("mProY")).setText("");
+				((Entry) w.getW("mProZ")).setText("");
+				((Entry) w.getW("mDisX")).setText("");
+				((Entry) w.getW("mDisY")).setText("");
+				((Entry) w.getW("mDisZ")).setText("");
 			}
+			
 		});
 		
 		// Cell Name
@@ -380,8 +392,7 @@ public class MorphologyHandler {
 					currentSegment.setDistal(point);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
-				}
-				
+				}				
 			}
 		});	
 	}

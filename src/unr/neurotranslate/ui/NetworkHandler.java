@@ -1,5 +1,7 @@
 package unr.neurotranslate.ui;
 
+import java.math.BigInteger;
+
 import org.gnome.gdk.EventExpose;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
@@ -23,13 +25,15 @@ public class NetworkHandler {
 	public Projection currentProjection;
 	public Input currentInput;
 	
-	public NetworkHandler(WidgetReferences w, UIControllerNeuroML ui) {
+	public NetworkHandler( final WidgetReferences w, final UIControllerNeuroML ui ) {
 		
 		w.getW("networkScroll").connect(new Widget.ExposeEvent() {
 			
 			@Override
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 			
+				w.getL("nPops").listToModel( ui.getPopulations() );
+				
 				return false;
 			}
 		});
@@ -40,7 +44,7 @@ public class NetworkHandler {
 		
 	}
 	
-	private void setEntries(final WidgetReferences w, UIControllerNeuroML ui) {
+	private void setEntries(final WidgetReferences w, final UIControllerNeuroML ui) {
 	
 		// Entries are set depending on current population selected
 		TreeView popView = w.getL("nPops").getView();		
@@ -60,13 +64,16 @@ public class NetworkHandler {
 					
 					// Get pop based on selected pop 
 					try {
-						 //currentPopulation = ui.getPopulationByType(selectedText);
+						 currentPopulation = ui.getPopulationByName(selectedText);
 					} catch (Exception e) {						
 						e.printStackTrace();
 					}									
 				
-					// Set everything else to current pop 						
 					
+					
+					// Set everything else to current pop 						
+					((Entry) w.getW("nPopSize")).setText( (currentPopulation.getPopLocation().getRandomArrangement().getPopulationSize()).toString() );					
+					((Entry) w.getW("nCornerX")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX()) );
 				}							
 			}
 		});

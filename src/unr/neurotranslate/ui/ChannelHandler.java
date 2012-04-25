@@ -11,6 +11,7 @@ import org.gnome.gtk.TreeSelection.Changed;
 import org.morphml.channelml.schema.ChannelmlType;
 import org.morphml.channelml.schema.DoubleExponentialSynapse;
 import org.morphml.channelml.schema.SynapseType;
+import org.morphml.metadata.schema.Point;
 import org.morphml.networkml.schema.SynapseDirection;
 import org.morphml.networkml.schema.SynapseProperties;
 
@@ -61,7 +62,7 @@ public class ChannelHandler {
 					
 					// Get current synapse based on selected synapse 
 					try {
-						// currentSynapse = ui.getSynapsebyName(selectedText);
+						 currentSynapse = ui.getSynapsebyName(selectedText);
 					} catch (Exception e) {
 						
 						e.printStackTrace();
@@ -69,13 +70,16 @@ public class ChannelHandler {
 				
 					// Set everything else to current synapse 						
 					((Entry) w.getW("chType")).setText(currentSynapse.getName());
+					((Entry) w.getW("chMaxCond")).setText( Double.toString( currentSynapse.getDoubExpSyn().getMaxConductance()) );
+					((Entry) w.getW("chUse")).setText( Double.toString( currentSynapse.getDoubExpSyn().getRiseTime()) );
+					((Entry) w.getW("chDelay")).setText( Double.toString( currentSynapse.getDoubExpSyn().getDecayTime()) );
+					((Entry) w.getW("chReversal")).setText( Double.toString( currentSynapse.getDoubExpSyn().getReversalPotential()) );
 				}							
 			}
-		});
-		
+		});		
 	}
 	
-	private void modifyHandlers(WidgetReferences w, UIControllerNeuroML ui) {
+	private void modifyHandlers(final WidgetReferences w, final UIControllerNeuroML ui) {
 	
 		// Adding synapses
 		((Button)w.getW("chAddSyn")).connect( new Clicked() {
@@ -83,7 +87,8 @@ public class ChannelHandler {
 			@Override
 			public void onClicked(Button arg0) {
 	
-				
+				currentSynapse = ui.addSynapse();
+				w.getL("chSynapses").addData( currentSynapse.getName() );								
 			}
 		});
 		
@@ -92,8 +97,19 @@ public class ChannelHandler {
 			
 			@Override
 			public void onClicked(Button arg0) {
-		
 				
+				try {
+					ui.removeSynapse(w.getL("chSynapses").getSelected() );					
+				} catch (Exception e) {					
+					//e.printStackTrace();
+				}
+				
+				w.getL("chSynapses").removeData();			
+				((Entry) w.getW("chType")).setText("");
+				((Entry) w.getW("chMaxCond")).setText("");
+				((Entry) w.getW("chUse")).setText("");
+				((Entry) w.getW("chDelay")).setText("");
+				((Entry) w.getW("chReversal")).setText("");				
 			}
 		});
 		
@@ -103,7 +119,10 @@ public class ChannelHandler {
 			@Override
 			public void onActivate(Entry arg0) {
 				
-				
+				w.getL("chSynapses").removeData();		
+				w.getL("chSynapses").addData(arg0.getText());	
+				w.getL("chSynapses").getView().grabFocus();
+				currentSynapse.setName(arg0.getText());	
 			}
 		});
 		
@@ -113,17 +132,27 @@ public class ChannelHandler {
 			@Override
 			public void onActivate(Entry arg0) {
 				
-				
+				try {
+					double d = Double.parseDouble(arg0.getText());					
+						currentSynapse.getDoubExpSyn().setMaxConductance(d);
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
 			}
 		});
 		
-		// Use Time
+		// Rise Time
 		((Entry) w.getW("chUse")).connect(new Activate() {
 			
 			@Override
 			public void onActivate(Entry arg0) {
 				
-				
+				try {
+					double d = Double.parseDouble(arg0.getText());					
+						currentSynapse.getDoubExpSyn().setRiseTime(d);
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}			
 			}
 		});
 		
@@ -133,6 +162,12 @@ public class ChannelHandler {
 			@Override
 			public void onActivate(Entry arg0) {
 				
+				try {
+					double d = Double.parseDouble(arg0.getText());					
+						currentSynapse.getDoubExpSyn().setDecayTime(d);
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
 				
 			}
 		});
@@ -143,7 +178,12 @@ public class ChannelHandler {
 			@Override
 			public void onActivate(Entry arg0) {
 				
-				
+				try {
+					double d = Double.parseDouble(arg0.getText());					
+						currentSynapse.getDoubExpSyn().setReversalPotential(d);
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
 			}
 		});
 		

@@ -128,7 +128,7 @@ private Data _data;
 		
 		for( Population c : list ) {
 			
-			if( c.getName() != null && c.getName().equals("") )
+			if( c.getName() != null && !c.getName().equals("") )
 				
 				l.add(c.getName());
 			

@@ -4,6 +4,10 @@ public class ConversionNote {
 	
 	String message;
 	
+	String type;
+	
+	String severity;
+	
 	String entityName;
 	
 	}

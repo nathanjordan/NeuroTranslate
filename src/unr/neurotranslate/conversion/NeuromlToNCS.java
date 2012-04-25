@@ -1,8 +1,11 @@
 package unr.neurotranslate.conversion;
 
 import java.math.BigInteger;
+import java.nio.channels.Channels;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.morphml.channelml.schema.ChannelType;
 import org.morphml.channelml.schema.DoubleExponentialSynapse;
 import org.morphml.channelml.schema.SynapseType;
 import org.morphml.metadata.schema.Point;
@@ -70,24 +73,24 @@ public class NeuromlToNCS {
     	Compartment comp1 = null, comp2 = null;
     
     	// TYPE
-    	brain.type = "Brain";
+    	brain.type = "Brain_model";
     	
     	// JOB
-        brain.job = "test";
+        brain.job = "Brain_model";
     	
-    	// TODO DURATION
+    	// DURATION 
     	brain.duration = 3.0;
         
-    	// TODO FSV
-    	brain.FSV = 10000.0;
+    	// FSV 
+    	brain.FSV = 1000.0;
     	
     	// INTERACTIVE
     	brain.interactive = null;
     	
-    	// TODO SEED
-    	brain.seed = 999999;
+    	// SEED
+    	brain.seed = -21;
     	
-    	// TODO DISTANCE
+    	// DISTANCE
     	brain.distance = null;
     	
     	for( Report report: reports )
@@ -190,8 +193,9 @@ public class NeuromlToNCS {
 			brain.connect.add(tempConnect);
     		}
     	
+    	// change to 
     	// COLUMN TYPES and names
-    	for( Connect connect : brain.connect )
+    	for( Column column : columnList )
     	{   
     		if( brain.columnTypes == null )
     		{
@@ -199,17 +203,8 @@ public class NeuromlToNCS {
     			brain.columnTypeNames = new ArrayList<String>();
     		}
     		
-    		else if( !brain.columnTypes.contains(connect.column1))
-    		{
-    			brain.columnTypes.add(connect.column1);
-    			brain.columnTypeNames.add(connect.column1.type);
-    		}
-    		
-    		if( !brain.columnTypes.contains(connect.column2))
-    		{
-    			brain.columnTypes.add(connect.column2);
-    			brain.columnTypeNames.add(connect.column2.type);
-    		}
+    	    brain.columnTypes.add(column);
+    	    brain.columnTypeNames.add(column.type);
     		
     	}
        	
@@ -242,7 +237,7 @@ public class NeuromlToNCS {
     	brain.serverPort = null;
     	
     	// WARNINGS ON
-    	brain.warningsOn = false;
+    	brain.warningsOn = null;
     	
     	// OUTPUT CELLS
     	brain.outputCells = null;
@@ -323,14 +318,13 @@ public class NeuromlToNCS {
 		}
 
 
-    public static ArrayList<Compartment> generateNCSCompartments( Segments segments, Projections projections, Populations populations, SpikeShape spikeShape ){
+    public static ArrayList<Compartment> generateNCSCompartments( ChannelType channelType, Segments segments, Projections projections, Populations populations, SpikeShape spikeShape ){
     	
     	ArrayList<Compartment> compartmentList = new ArrayList<Compartment>();
         Compartment tempComp;	    
         String popName;
         boolean inTargetGroup = false;
         ArrayList<String> segList = new ArrayList<String>();
-    	
     	
     	for( Segment seg : segments.getSegments() )
     	{
@@ -358,6 +352,9 @@ public class NeuromlToNCS {
 	    		
 	    		// look at target group - find cell - go to segment
 	    		// get the target cell group in the projection
+	    		// TODO check with Laurence if this is ok
+	    		tempComp.threshold.mean = channelType.getCurrentVoltageRelation().getIntegrateAndFire().getThreshold();
+	    		/*
 	    		for( Projection proj: projections.getProjections() )
 	    		{
 	    			popName = proj.getTarget();
@@ -375,13 +372,14 @@ public class NeuromlToNCS {
 	    				inTargetGroup = false;
 	    				tempComp.threshold.mean = 30.0;
 	    			}
+	    				
 	    				// set this compartment's threshold to the threshold of this projection
 	    		    	if(inTargetGroup)
 	    		    	{
 	    		    		tempComp.threshold.mean = proj.getSynapseProps().get(0).getThreshold();
 	    		    	}
 	    		}
-	    		
+	    		*/
 	    		tempComp.threshold.stdev = 0.0;
 	    		
 	    		// LEAK_CONDUCTANCE
@@ -392,24 +390,21 @@ public class NeuromlToNCS {
 	    		tempComp.leakReversal.mean = 0.0;
 	    		tempComp.leakReversal.stdev = 0.0;
 	    		
-	    		// TODO vm rest?
-	    			// integrate and fire-v_reset membrane potential 
+	    		// vm rest
+	    		tempComp.vmRest.mean = channelType.getCurrentVoltageRelation().getIntegrateAndFire().getVReset();
+	    		tempComp.vmRest.stdev = 0.0;
 	    		
 	    		// CA_INTERNAL
-	    		tempComp.caInternal.mean = null;
-	    		tempComp.caInternal.stdev = null;
+	    		tempComp.caInternal = null;
 	        	
 	    		// CA_EXTERNAL
-	    		tempComp.caExternal.mean = null;
-	    		tempComp.caExternal.stdev = null;
+	    		tempComp.caExternal = null;
 	        	
 	        	// CA_SPIKE_INCREMENT
-	    		tempComp.caSpikeIncrement.mean = null;
-	    		tempComp.caSpikeIncrement.stdev = null;
+	    		tempComp.caSpikeIncrement = null;
 	        	
 	        	// CA_TAU
-	    		tempComp.caTau.mean = null;
-	    		tempComp.caTau.stdev = null;
+	    		tempComp.caTau = null;
 	        	
 	    		// channels
 	    		tempComp.channels = null;
@@ -426,7 +421,7 @@ public class NeuromlToNCS {
     	
     	ArrayList<ColumnShell> cShellList = new ArrayList<ColumnShell>();
     	ColumnShell columnShell;
-    	int cShellIndex = 0;
+    	int cShellIndex = 0, cNameIndex = 1;
     	Double tempD = 0.0;
     	ArrayList<Double> xList = new ArrayList<Double>();
     	ArrayList<String> e;
@@ -480,7 +475,14 @@ public class NeuromlToNCS {
     			cShellList.get(cShellIndex).height = population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() + 
         				population.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getHeight();
     		}
-    	}	   	 
+    	}	
+    	
+    	for( ColumnShell tCShell : cShellList )
+    	{
+    		tCShell.type = "column_shell_" + cNameIndex;
+    		cNameIndex++;
+    	}
+    	
     	return cShellList;
     }
     
@@ -530,7 +532,7 @@ public class NeuromlToNCS {
     	int lSIndex = 1;
     	Double temp;
     	int cSIndex = 0;
- 
+        char nameIndex = 'A';
     	
     	// for each population
     	for(ColumnShell cShell : cShells)
@@ -547,13 +549,14 @@ public class NeuromlToNCS {
     					yList.add(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY());
     					layerShell = new LayerShell();
     					temp = pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX();
-    					layerShell.type = "layerShell" + lSIndex + "_at" + temp.intValue();
+    					layerShell.type = "layer_shell_" + nameIndex;
     					layerShell.lower = pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() / cShell.height * 100;
     					layerShell.upper = (pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() + 
     							pop.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getHeight()) / cShell.height * 100;
     					lShellList.add(layerShell);
     					cShellLShellList.get(cSIndex).add(layerShell.type);
-    					lSIndex++;   					
+    					lSIndex++;   	
+    					nameIndex++;
     				}
     			}
     		}
@@ -572,7 +575,7 @@ public class NeuromlToNCS {
     {
     	ArrayList<Layer> layerList = new ArrayList<Layer>();
     	Layer tempLayer;
-    	int layerIndex = 1;
+    	char layerIndex = 'A';
     	int cShellIndex = 0;
     	location loc;
     	
@@ -650,8 +653,8 @@ public class NeuromlToNCS {
 
 		   // port;
 		   stimulus.port = null;	
-		   // TODO dont write if null
-		   // timeIncrement;
+		  
+		   // timeIncrement
 		   stimulus.timeIncrement = null;
 		   
 		   // freqCols;
@@ -659,9 +662,7 @@ public class NeuromlToNCS {
 		   
 		   // cellsPerFreq;
 		   stimulus.cellsPerFreq = null;
-		   
-		   // dynRange = new TwoValue();
-		   // TODO min and max
+
 		   stimulus.dynRange.mean = 0.0;
 		   stimulus.dynRange.stdev = 400.0;
 		   
@@ -675,7 +676,7 @@ public class NeuromlToNCS {
 		   stimulus.ampStart = input.getPulseInput().getAmplitude();
 		   
 		   // ampEnd;
-		   stimulus.ampEnd = input.getPulseInput().getAmplitude();
+		   stimulus.ampEnd = null;
 		   
 		   // phase;
 		   stimulus.phase = null;
@@ -706,6 +707,7 @@ public class NeuromlToNCS {
 		   
 		   // correl;
 		   stimulus.correl = null;
+		   
 		   
 		   stimList.add(stimulus);
 	   }
@@ -747,8 +749,9 @@ public class NeuromlToNCS {
 				   for( location loc : locations )
 				   {
 					   if( population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX() == loc.x 
-							   && population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX() == loc.y )
+							   && population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() == loc.y )
 					   {
+						   
 						   for( unr.neurotranslate.ncs.Cell cell : loc.cellTypes )
 						   {
 							   if( cell.type.equals(population.getCellType()) )
@@ -810,7 +813,7 @@ public class NeuromlToNCS {
    }
    
    
-   public static ArrayList<Synapse> generateNCSSynapses( List<SynapseType> list, List<Projection> list2 ) 
+   public static ArrayList<Synapse> generateNCSSynapses( List<SynapseType> list, List<Projection> list2, ArrayList<SynPSG> synPsgList ) 
    {
 	   ArrayList<Synapse> synList = new ArrayList<Synapse>();
 	   Synapse ncsSynapse;
@@ -821,18 +824,35 @@ public class NeuromlToNCS {
 	   {
 		   ncsSynapse = new Synapse();
 		   ncsSynapse.type = synType.getName();
+		   
 		   // seed
 		   ncsSynapse.seed = null;
+		   
 		   // SFD_LABEL
-		   ncsSynapse.sfdLabel = "NO_SFD";
-		   // TODO SYN_PSG !!!!
-		   // LEARN LABEL
+		   ncsSynapse.sfdLabel = null;
+		   
+		   // LEARN
 		   ncsSynapse.learn = null;
-		   ncsSynapse.learnLabel = "NO_LEARN";
+		   
+		   // SYN_PSG
+		   if(ncsSynapse.type.startsWith( new String("E") ) )
+		   {
+			   ncsSynapse.synPSG = synPsgList.get(0);
+			   ncsSynapse.synPSGName = ncsSynapse.synPSG.type;
+		   }
+		   
+		   else
+		   {
+			   ncsSynapse.synPSG = synPsgList.get(1);
+			   ncsSynapse.synPSGName = ncsSynapse.synPSG.type;
+		   }
+		   
 		   // HEBB_START
-		   ncsSynapse.hebbStart = 0.0;
+		   ncsSynapse.hebbStart = null;
+		   
 		   // HEBB_END
-		   ncsSynapse.hebbEnd = 0.0;
+		   ncsSynapse.hebbEnd = null;
+		   
 		   // ABSOLUTE_USE 2V
 		   for( Projection proj : list2 )
 		   {
@@ -851,21 +871,21 @@ public class NeuromlToNCS {
 		   ncsSynapse.rseInit[0] = 0.0;
 		   ncsSynapse.rseInit[1] = 0.0;
 		   // PREV_SPIKE_RANGE 2V
+		   // TODO java error
 		   ncsSynapse.prevSpikeRange = new Double[2];
 		   ncsSynapse.prevSpikeRange[0] = 0.0;
 		   ncsSynapse.prevSpikeRange[1] = 0.0;
 		   // MAX_CONDUCT 2V 
 		   ncsSynapse.maxConduct.mean = synType.getDoubExpSyn().getMaxConductance();
-		   ncsSynapse.maxConduct.stdev = ncsSynapse.maxConduct.mean;  
+		   //ncsSynapse.maxConduct.stdev = ncsSynapse.maxConduct.mean;  
 		   // SYN_REVERSAL 2V
 		   ncsSynapse.synReversal.mean = synType.getDoubExpSyn().getReversalPotential();
 		   ncsSynapse.synReversal.stdev = 0.0;
 		   synList.add(ncsSynapse);
 	   }
-	   
-	   
+	     
 	   return synList;
-   }
+    }
     
     public static SynFacilDepress generateNCSSynFacilDepress()
     {
@@ -903,9 +923,9 @@ public class NeuromlToNCS {
     	File file = new File("EPSG_Vogels_FSV1k_TAU05.inc");
     	PrintWriter out = new PrintWriter(file);
     	
-    	for( i = 0; i < 50; i++ )
+    	for( i = 1; i <= 50; i++ )
     	{
-    		out.print( java.lang.Math.pow(e, (-i/5)) );
+    		out.print( java.lang.Math.pow(e, (-i/5.0)) );
     		out.print(' ');
     	}
     	
@@ -914,9 +934,9 @@ public class NeuromlToNCS {
     	File file2 = new File("IPSG_Vogels_FSV1k_TAU10.inc");
     	PrintWriter out2 = new PrintWriter(file2);
     	
-    	for( i = 0; i < 50; i++ )
+    	for( i = 1; i <= 50; i++ )
     	{
-    		out2.print( java.lang.Math.pow(e, (-i/10)) );
+    		out2.print( java.lang.Math.pow(e, (-i/10.0)) );
     		out2.print(' ');
     	}
     	
@@ -929,6 +949,7 @@ public class NeuromlToNCS {
     {
     	ArrayList<Report> reports = new ArrayList<Report>();
     	Report report = null;
+    	int i = 1;
     	
     	for( Population pop : populations.getPopulations() )
     	{
@@ -955,9 +976,12 @@ public class NeuromlToNCS {
         	// time end
     		report.timeEnd.add(3.0);
     	
-    		report.type = "Report";
+    		report.ascii = "";
+    		
+    		report.type = "Report" + i;
     		
     		reports.add(report);
+    		i++;
     	}
     	return reports;
     }

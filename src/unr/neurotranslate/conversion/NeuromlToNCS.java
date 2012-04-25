@@ -923,7 +923,6 @@ public class NeuromlToNCS {
 		   ncsSynapse.rseInit[0] = 0.0;
 		   ncsSynapse.rseInit[1] = 0.0;
 		   // PREV_SPIKE_RANGE 2V
-		   // TODO java error
 		   ncsSynapse.prevSpikeRange = new Double[2];
 		   ncsSynapse.prevSpikeRange[0] = 0.0;
 		   ncsSynapse.prevSpikeRange[1] = 0.0;
@@ -1008,7 +1007,8 @@ public class NeuromlToNCS {
     		report = new Report();
     		
     		// get every group but need column etc. 
-        	report.cells = new Object();
+        	
+    		//report.cells = new Object();
     		
     		// name file relative
         	report.filename = null;

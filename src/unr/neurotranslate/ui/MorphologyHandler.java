@@ -9,6 +9,7 @@ import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
 import org.gnome.gtk.Entry.Activate;
 import org.gnome.gtk.TreeSelection.Changed;
+import org.morphml.metadata.schema.Point;
 import org.morphml.morphml.schema.Cable;
 import org.morphml.morphml.schema.Cell;
 import org.morphml.morphml.schema.Segment;
@@ -24,13 +25,19 @@ public class MorphologyHandler {
 	public Segment currentSegment;
 	
 	
-	public MorphologyHandler( WidgetReferences w, UIControllerNeuroML ui ) {
+	public MorphologyHandler( final WidgetReferences w, final UIControllerNeuroML ui ) {
 
 		w.getW("morphScroll").connect(new Widget.ExposeEvent() {
 			
 			@Override
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 			
+				//Refresh lists
+				//w.getL("mCells").listToModel( ui.getCells() );
+				//w.getL("mCables").listToModel( ui.getCables() );
+				//w.getL("mSegs").listToModel( ui.getSegments() );
+				//w.getC("mCableSel").listToModel( ui.getCables() );
+				
 				return false;
 			}
 		});	
@@ -89,7 +96,7 @@ public class MorphologyHandler {
 					// Get selected cable
 					selectedText = w.getL("mCables").getModel().getValue(rs2.getSelected(), w.getL("mCables").getHeader());
 					
-					// Get current column based on selected cable 
+					// Get current cable based on selected cable 
 					try {
 						 //currentCable = ui.getCableByType(selectedText);
 					} catch (Exception e) {
@@ -97,8 +104,8 @@ public class MorphologyHandler {
 						e.printStackTrace();
 					}									
 				
-					// Set everything else to current column 						
-					
+					// Set everything else to current cable 						
+					//((Entry) w.getW("mCableName")).setText( currentCable.getName() );
 				}							
 			}
 		});
@@ -121,17 +128,26 @@ public class MorphologyHandler {
 					
 					// Get current segment based on selected segment 
 					try {
-						 //currentCell = ui.getSegmentByType(selectedText);
+						 //currentSegment = ui.getSegmentByType(selectedText);
 					} catch (Exception e) {
 						
 						e.printStackTrace();
 					}									
 				
 					// Set everything else to current segment 						
-					
+					//((Entry) w.getW("mSegName")).setText( currentSegment.getName() );					
+					//((Entry) w.getW("mProX")).setText( Double.toString(currentSegment.getProximal().getX()) );
+					//((Entry) w.getW("mProY")).setText( Double.toString(currentSegment.getProximal().getY()) );
+					//((Entry) w.getW("mProZ")).setText( Double.toString(currentSegment.getProximal().getZ()) );
+					//((Entry) w.getW("mDisX")).setText( Double.toString(currentSegment.getDistal().getX()) );
+					//((Entry) w.getW("mDisY")).setText( Double.toString(currentSegment.getDistal().getY()) );
+					//((Entry) w.getW("mDisZ")).setText( Double.toString(currentSegment.getDistal().getZ()) );
 				}							
 			}
 		});
+		
+		
+		
 	}
 		
 	private void modifyHandlers( final WidgetReferences w, final UIControllerNeuroML ui) {
@@ -142,6 +158,8 @@ public class MorphologyHandler {
 			@Override
 			public void onClicked(Button arg0) {
 	
+				//currentCell = ui.addCell();
+				w.getL("mCells").addData( currentCell.getName() );
 				
 			}
 		});
@@ -153,6 +171,7 @@ public class MorphologyHandler {
 			public void onClicked(Button arg0) {
 		
 				
+				
 			}
 		});
 		
@@ -162,7 +181,8 @@ public class MorphologyHandler {
 			@Override
 			public void onClicked(Button arg0) {
 		
-				
+				//currentCable = ui.addCable();
+				w.getL("mCables").addData( currentCable.getName() );
 			}
 		});
 		
@@ -182,6 +202,8 @@ public class MorphologyHandler {
 			@Override
 			public void onClicked(Button arg0) {
 		
+				//currentSegment = ui.addSegment();
+				w.getL("mSegs").addData( currentSegment.getName() );
 				
 			}
 		});
@@ -202,7 +224,10 @@ public class MorphologyHandler {
 			@Override
 			public void onActivate(Entry arg0) {
 				
-				
+				w.getL("mCells").removeData();		
+				w.getL("mCells").addData(arg0.getText());	
+				w.getL("mCells").getView().grabFocus();
+				currentCell.setName(arg0.getText());	
 			}
 		});
 		
@@ -212,7 +237,10 @@ public class MorphologyHandler {
 			@Override
 			public void onActivate(Entry arg0) {
 				
-				
+				w.getL("mCables").removeData();		
+				w.getL("mCables").addData(arg0.getText());	
+				w.getL("mCables").getView().grabFocus();
+				currentCable.setName(arg0.getText());
 			}
 		});
 		
@@ -222,7 +250,10 @@ public class MorphologyHandler {
 			@Override
 			public void onActivate(Entry arg0) {
 				
-				
+				w.getL("mSegs").removeData();		
+				w.getL("mSegs").addData(arg0.getText());	
+				w.getL("mSegs").getView().grabFocus();
+				currentSegment.setName(arg0.getText());
 			}
 		});
 		
@@ -231,8 +262,17 @@ public class MorphologyHandler {
 			
 			@Override
 			public void onActivate(Entry arg0) {
-				
-				
+			
+				try {
+					double d = Double.parseDouble(arg0.getText());					
+					Point point = new Point();
+					point.setX(d);
+					point.setY( Double.parseDouble(((Entry) w.getW("mProxY")).getText()) );
+					point.setZ( Double.parseDouble(((Entry) w.getW("mProxZ")).getText()) );					
+					currentSegment.setProximal(point);
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
 			}
 		});
 		
@@ -242,8 +282,18 @@ public class MorphologyHandler {
 			@Override
 			public void onActivate(Entry arg0) {
 				
-				
-			}
+				try {
+					double d = Double.parseDouble(arg0.getText());					
+					Point point = new Point();
+					point.setX( Double.parseDouble(((Entry) w.getW("mProxX")).getText()) );
+					point.setY(d);					
+					point.setZ( Double.parseDouble(((Entry) w.getW("mProxZ")).getText()) );					
+					currentSegment.setProximal(point);
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
+			}	
+						
 		});
 		
 		// Proximal Z
@@ -252,7 +302,16 @@ public class MorphologyHandler {
 			@Override
 			public void onActivate(Entry arg0) {
 				
-				
+				try {
+					double d = Double.parseDouble(arg0.getText());					
+					Point point = new Point();
+					point.setX( Double.parseDouble(((Entry) w.getW("mProxX")).getText()) );
+					point.setY( Double.parseDouble(((Entry) w.getW("mProxY")).getText()) );					
+					point.setZ( d );					
+					currentSegment.setProximal(point);
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
 			}
 		});
 		
@@ -262,7 +321,16 @@ public class MorphologyHandler {
 			@Override
 			public void onActivate(Entry arg0) {
 				
-				
+				try {
+					double d = Double.parseDouble(arg0.getText());					
+					Point point = new Point();
+					point.setX(d);
+					point.setY( Double.parseDouble(((Entry) w.getW("mDisX")).getText()) );
+					point.setZ( Double.parseDouble(((Entry) w.getW("mDisY")).getText()) );					
+					currentSegment.setDistal(point);
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}				
 			}
 		});
 		
@@ -272,7 +340,16 @@ public class MorphologyHandler {
 			@Override
 			public void onActivate(Entry arg0) {
 				
-				
+				try {
+					double d = Double.parseDouble(arg0.getText());					
+					Point point = new Point();
+					point.setX( Double.parseDouble(((Entry) w.getW("mDisX")).getText()) );
+					point.setY(d);					
+					point.setZ( Double.parseDouble(((Entry) w.getW("mDisZ")).getText()) );					
+					currentSegment.setDistal(point);
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}				
 			}
 		});
 		
@@ -282,6 +359,16 @@ public class MorphologyHandler {
 			@Override
 			public void onActivate(Entry arg0) {
 				
+				try {
+					double d = Double.parseDouble(arg0.getText());					
+					Point point = new Point();
+					point.setX( Double.parseDouble(((Entry) w.getW("mDisX")).getText()) );
+					point.setY( Double.parseDouble(((Entry) w.getW("mDisY")).getText()) );					
+					point.setZ( d );					
+					currentSegment.setDistal(point);
+				} catch( NumberFormatException nfe ) {
+					arg0.setText("");
+				}
 				
 			}
 		});	

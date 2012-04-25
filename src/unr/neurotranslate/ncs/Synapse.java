@@ -71,7 +71,15 @@ public class Synapse extends TypedElement {
 			
 			}
 		
-		s = NCSWriter.writeProperty("PREV_SPIKE_RANGE", prevSpikeRange, s);
+		if( prevSpikeRange != null ) {
+			
+			s = s + "\tPREV_SPIKE_RANGE\t";
+			
+			s = s + prevSpikeRange[0] + "\t";
+			
+			s = s + prevSpikeRange[1] + "\n";
+			
+			}
 		
 		s = NCSWriter.writeProperty("MAX_CONDUCT", maxConduct, s);
 		

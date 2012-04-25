@@ -8,6 +8,7 @@ import org.morphml.channelml.schema.SynapseType;
 import org.morphml.morphml.schema.Cable;
 import org.morphml.morphml.schema.Cell;
 import org.morphml.morphml.schema.Segment;
+import org.morphml.morphml.schema.Cell.Segments;
 import org.morphml.networkml.schema.Input;
 import org.morphml.networkml.schema.Population;
 import org.morphml.networkml.schema.Projection;
@@ -32,7 +33,7 @@ private Data _data;
 		
 		Neuroml d = null;
 		try {
-			d = n.readNeuroML( "/home/nitishn/workspace/NeuroTranslate/samples/PrototypeNeuroML.in" );
+			d = n.readNeuroML( "/home/nitishn/workspace/NeuroTranslate/samples/PrototypeNeuroml.xml" );
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,7 +57,7 @@ private Data _data;
 		
 		for( Level3Cell c : list ) {
 			
-			if( c.getName() != null && c.getName().equals("") )
+			if( c.getName() != null && !(c.getName().equals("")) )
 				
 				l.add(c.getName());
 			
@@ -336,22 +337,25 @@ private Data _data;
 		
 		ArrayList<String> l = new ArrayList<String>();
 		
-		List<Cable> list = c.getCables().getCables();
-		
-		for( Cable c1 : list ) {
+		if( c.getCables() != null ) {
+			List<Cable> list = c.getCables().getCables();
 			
-			if( c1.getName() != null && c1.getName().equals("") )
+			for( Cable c1 : list ) {
 				
-				l.add(c1.getName());
-			
-			else
+				if( c1.getName() != null && c1.getName().equals("") )
+					
+					l.add(c1.getName());
 				
-				l.add("Cable1");
+				else
+					
+					l.add("Cable1");
+				
+				}
 			
-			}
+			return l;	
+		}
 		
 		return l;
-		
 		}
 	
 	public Cable getCableByName( Cell c , String name ) throws Exception {
@@ -407,22 +411,26 @@ private Data _data;
 		
 		ArrayList<String> l = new ArrayList<String>();
 		
-		List<Segment> list = c.getSegments().getSegments();
-		
-		for( Segment c1 : list ) {
+		if( c.getSegments() != null ) {
 			
-			if( c1.getName() != null && c1.getName().equals("") )
+			List<Segment> list = c.getSegments().getSegments();
+			
+			for( Segment c1 : list ) {
 				
-				l.add(c1.getName());
-			
-			else
+				if( c1.getName() != null && !(c1.getName().equals("")) )
+					
+					l.add(c1.getName());
 				
-				l.add("Segment1");
+				else
+					
+					l.add("Segment1");
+				
+				}
 			
-			}
+			return l;	
+		}
 		
-		return l;
-		
+			return l;
 		}
 	
 	public Segment getSegmentByName( Cell c , String name ) throws Exception {
@@ -446,8 +454,12 @@ private Data _data;
 		
 		Segment c1 = new Segment();
 		
-		c1.setName("Segment1");
+		c1.setName("Segment1");		
 		
+		if( c.getSegments() == null ) {
+			c.setSegments(new Segments() );			
+		}				
+			
 		c.getSegments().getSegments().add( c1 );
 		
 		return c1;

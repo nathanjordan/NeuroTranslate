@@ -33,8 +33,8 @@ public class MorphologyHandler {
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 			
 				//Refresh lists
-				//w.getL("mCells").listToModel( ui.getCells() );
-				//w.getL("mCables").listToModel( ui.getCables() );
+				w.getL("mCells").listToModel( ui.getCells() );
+				//w.getL("mCables").listToModel( ui.getCables( currentCell ) );
 				//w.getL("mSegs").listToModel( ui.getSegments() );
 				//w.getC("mCableSel").listToModel( ui.getCables() );
 				
@@ -48,7 +48,7 @@ public class MorphologyHandler {
 		
 	}
 
-	public void setEntries(final WidgetReferences w, UIControllerNeuroML ui) {
+	public void setEntries(final WidgetReferences w, final UIControllerNeuroML ui) {
 		
 		// Entries are set depending on current cell selected
 		TreeView cellView = w.getL("mCells").getView();		
@@ -68,14 +68,17 @@ public class MorphologyHandler {
 					
 					// Get current cell based on selected cell 
 					try {
-						 //currentCell = ui.getCellByType(selectedText);
+						 currentCell = ui.getCellByName(selectedText);
 					} catch (Exception e) {
 						
 						e.printStackTrace();
 					}									
 				
 					// Set everything else to current cell 						
-					//((Entry) w.getW("mCellName")).setText(currentCell.getName());
+					((Entry) w.getW("mCellName")).setText(currentCell.getName());
+					w.getL("mCables").listToModel( ui.getCables( currentCell ) );
+					w.getL("mSegs").listToModel( ui.getSegments( currentCell ) );					
+					
 				}							
 			}
 		});
@@ -98,14 +101,14 @@ public class MorphologyHandler {
 					
 					// Get current cable based on selected cable 
 					try {
-						 //currentCable = ui.getCableByType(selectedText);
+						 currentCable = ui.getCableByName( currentCell, selectedText);
 					} catch (Exception e) {
 						
 						e.printStackTrace();
 					}									
 				
 					// Set everything else to current cable 						
-					//((Entry) w.getW("mCableName")).setText( currentCable.getName() );
+					((Entry) w.getW("mCableName")).setText( currentCable.getName() );
 				}							
 			}
 		});
@@ -128,26 +131,26 @@ public class MorphologyHandler {
 					
 					// Get current segment based on selected segment 
 					try {
-						 //currentSegment = ui.getSegmentByType(selectedText);
+						 currentSegment = ui.getSegmentByName( currentCell, selectedText);
 					} catch (Exception e) {
 						
 						e.printStackTrace();
 					}									
 				
 					// Set everything else to current segment 						
-					//((Entry) w.getW("mSegName")).setText( currentSegment.getName() );					
-					//((Entry) w.getW("mProX")).setText( Double.toString(currentSegment.getProximal().getX()) );
-					//((Entry) w.getW("mProY")).setText( Double.toString(currentSegment.getProximal().getY()) );
-					//((Entry) w.getW("mProZ")).setText( Double.toString(currentSegment.getProximal().getZ()) );
-					//((Entry) w.getW("mDisX")).setText( Double.toString(currentSegment.getDistal().getX()) );
-					//((Entry) w.getW("mDisY")).setText( Double.toString(currentSegment.getDistal().getY()) );
-					//((Entry) w.getW("mDisZ")).setText( Double.toString(currentSegment.getDistal().getZ()) );
+					((Entry) w.getW("mSegName")).setText( currentSegment.getName() );
+					
+					//System.out.println(Double.toString(currentSegment.getProximal().getX()));
+					
+					/*((Entry) w.getW("mProX")).setText( Double.toString(currentSegment.getProximal().getX()) );
+					((Entry) w.getW("mProY")).setText( Double.toString(currentSegment.getProximal().getY()) );
+					((Entry) w.getW("mProZ")).setText( Double.toString(currentSegment.getProximal().getZ()) );
+					((Entry) w.getW("mDisX")).setText( Double.toString(currentSegment.getDistal().getX()) );
+					((Entry) w.getW("mDisY")).setText( Double.toString(currentSegment.getDistal().getY()) );
+					((Entry) w.getW("mDisZ")).setText( Double.toString(currentSegment.getDistal().getZ()) );*/
 				}							
 			}
 		});
-		
-		
-		
 	}
 		
 	private void modifyHandlers( final WidgetReferences w, final UIControllerNeuroML ui) {
@@ -158,7 +161,7 @@ public class MorphologyHandler {
 			@Override
 			public void onClicked(Button arg0) {
 	
-				//currentCell = ui.addCell();
+				currentCell = ui.addCell();
 				w.getL("mCells").addData( currentCell.getName() );
 				
 			}
@@ -202,9 +205,21 @@ public class MorphologyHandler {
 			@Override
 			public void onClicked(Button arg0) {
 		
-				//currentSegment = ui.addSegment();
+				currentSegment = ui.addSegment(currentCell);
 				w.getL("mSegs").addData( currentSegment.getName() );
 				
+				Point p = new Point();
+				p.setX(0);
+				p.setY(0);
+				p.setZ(0);
+				currentSegment.setProximal(p);
+				currentSegment.setDistal(p);
+				/*currentSegment.getProximal().setX(0);
+				currentSegment.getProximal().setY(0);
+				currentSegment.getProximal().setZ(0);
+				currentSegment.getDistal().setX(0);
+				currentSegment.getDistal().setY(0);
+				currentSegment.getDistal().setZ(0);*/
 			}
 		});
 		

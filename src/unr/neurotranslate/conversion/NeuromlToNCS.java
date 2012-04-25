@@ -1036,14 +1036,14 @@ public class NeuromlToNCS {
 		   {
 			   cNote = makeNewNote("Double Exponential Synapse", "high", "Paramter missing", "No double exponential synapse found, setting defaults.");
 			   cNotes.add(cNote);
-			   ncsSynapse.maxConduct.mean = 50.0;
+			   ncsSynapse.maxConduct = 50.0;
 			   // SYN_REVERSAL 2V
 			   ncsSynapse.synReversal.mean = 50.0;
 		   }
 		   else
 		   {
 				// MAX_CONDUCT 2V 
-				ncsSynapse.maxConduct.mean = synType.getDoubExpSyn().getMaxConductance();
+				ncsSynapse.maxConduct = synType.getDoubExpSyn().getMaxConductance();
 				// SYN_REVERSAL 2V
 				ncsSynapse.synReversal.mean = synType.getDoubExpSyn().getReversalPotential();
 		   }

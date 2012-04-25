@@ -483,7 +483,7 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			tempNeuromlSynapse.setName(ncsSynapses.get(i).type);
 			
 			// set max conductance
-			doubExpSyn.setMaxConductance(ncsSynapses.get(i).maxConduct.mean);
+			doubExpSyn.setMaxConductance(ncsSynapses.get(i).maxConduct);
 			
 			// set rise timemaxConduct
 			doubExpSyn.setRiseTime(.0001);

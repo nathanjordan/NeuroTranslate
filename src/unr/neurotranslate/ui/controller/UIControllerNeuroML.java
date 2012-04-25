@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.morphml.channelml.schema.DoubleExponentialSynapse;
+import org.morphml.channelml.schema.SynapseType;
 import org.morphml.morphml.schema.Cable;
 import org.morphml.morphml.schema.Cell;
 import org.morphml.morphml.schema.Segment;
@@ -466,6 +467,78 @@ private Data _data;
 			}
 		
 		throw new Exception("Segment doesn't exist!");
+		
+		}
+	
+	///////////////////////////////////////////////////////////////////
+	////  Synapses
+	///////////////////////////////////////////////////////////////////
+
+	public ArrayList<String> getSynapses( ) {
+		
+		ArrayList<String> l = new ArrayList<String>();
+		
+		List<SynapseType> list = _data.nml.getChannels().getSynapseTypes();
+		
+		for( SynapseType c1 : list ) {
+			
+			if( c1.getDoubExpSyn() != null && c1.getName() != null && c1.getName().equals("") )
+				
+				l.add(c1.getName());
+			
+			}
+		
+		return l;
+		
+		}
+	
+	public DoubleExponentialSynapse getSynapsebyName( String name ) throws Exception {
+		
+		List<SynapseType> list = _data.nml.getChannels().getSynapseTypes();
+		
+		for( SynapseType c1 : list ) {
+					
+			if( c1.getDoubExpSyn() != null && c1.getName() != null && c1.getName().equals(name) )
+				
+				return c1.getDoubExpSyn();
+				
+				
+			}
+		
+		throw new Exception("Synapse doesn't exist!");
+		
+		}
+	
+	public DoubleExponentialSynapse addSynapse() {
+		
+		DoubleExponentialSynapse c1 = new DoubleExponentialSynapse();
+		
+		SynapseType s = new SynapseType();
+		
+		s.setName("Synapse1");
+		
+		s.setDoubExpSyn(c1);
+		
+		_data.nml.getChannels().getSynapseTypes().add( s );
+		
+		return c1;
+		
+		}
+	
+	public void removeSynapse( String name ) throws Exception {
+		
+		List<SynapseType> list = _data.nml.getChannels().getSynapseTypes();
+		
+		for( SynapseType c1 : list ) {
+					
+			if( c1.getDoubExpSyn() != null && c1.getName() != null && c1.getName().equals(name) )
+				
+				list.remove( c1.getDoubExpSyn() );
+				
+				
+			}
+		
+		throw new Exception("Synapse doesn't exist!");
 		
 		}
 	

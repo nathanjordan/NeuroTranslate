@@ -61,8 +61,6 @@ public class FormatConverter {
 		}
 		
 		neuromlData.neuroml.setChannels(channelml);		
-		
-		
 	
 		// finished converting
 		return neuromlData;
@@ -72,13 +70,16 @@ public class FormatConverter {
 			
 		NCSConversionData ncsConversionData = new NCSConversionData();
 	    ArrayList<Compartment> tempCompartmentList = new ArrayList<Compartment>();
-	    
+	    ArrayList<ConversionNote> tempCNotes = new ArrayList<ConversionNote>();
+	    ncsConversionData.notes = new ConversionNotes();
+		ncsConversionData.notes.notes = new ArrayList<ConversionNote>();
+		
 	    // get cells and compartments
 	    ncsConversionData.ncs.spikeshapeList = NeuromlToNCS.generateNCSSpikeShape();
-	     
+	        
 		for( Cell cell : m.getCells().getCells() )
 		{
-			tempCompartmentList = NeuromlToNCS.generateNCSCompartments( m.getChannels().getChannelTypes().get(0), cell.getSegments(), m.getProjections(), m.getPopulations(), ncsConversionData.ncs.spikeshapeList.get(0) );
+			tempCompartmentList = NeuromlToNCS.generateNCSCompartments( m.getChannels().getChannelTypes().get(0), cell.getSegments(), m.getProjections(), m.getPopulations(), ncsConversionData.ncs.spikeshapeList.get(0), tempCNotes );
 			
 			for( Compartment comp : tempCompartmentList )
 			{
@@ -86,9 +87,18 @@ public class FormatConverter {
 			}			
 		}
 		
-		ncsConversionData.ncs.synpsgList = NeuromlToNCS.generateNCSSynPSG();
+		for( ConversionNote cNote : tempCNotes )
+		{
+			ncsConversionData.notes.notes.add(cNote);
+		}
 		
+		tempCNotes.clear();
+		
+		
+		ncsConversionData.ncs.synpsgList = NeuromlToNCS.generateNCSSynPSG();
+		 
 		ncsConversionData.ncs.cellList = NeuromlToNCS.generateNCSCells( m.getCells(), m.getProjections(), m.getPopulations(), tempCompartmentList );
+		
 		
 		ncsConversionData.ncs.columnShellList = NeuromlToNCS.generateNCSColumnShells(m.getPopulations());
 		
@@ -107,6 +117,14 @@ public class FormatConverter {
 		ncsConversionData.ncs.reportList = NeuromlToNCS.generateReports(m.getPopulations());
 		
 		ncsConversionData.ncs.brain = NeuromlToNCS.generateNCSBrain(ncsConversionData.ncs.reportList, m.getProjections(), m.getPopulations(), ncsConversionData.ncs.synapseList, ncsConversionData.ncs.stimulusInjectList, ncsConversionData.ncs.columnList);
+   		
+	    
+		tempCNotes = NeuromlToNCS.getPopulationErrors( m.getPopulations() );
+		
+		for( ConversionNote cNote : tempCNotes )
+		{
+			ncsConversionData.notes.notes.add(cNote);
+		}
 		
 		return ncsConversionData;
 		

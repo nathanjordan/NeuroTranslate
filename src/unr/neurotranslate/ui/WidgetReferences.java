@@ -272,6 +272,11 @@ public class WidgetReferences {
 		l2.put( "nSynSel", new ComboEntity( "combobox20", "window1" ) );
 		l2.put( "nTargetPopSel", new ComboEntity( "combobox21", "window1" ) );
 		l3.put( "nPopSize", GladeParseUtil.grabWidget( "entry104", "window1" ) );
+		l3.put( "nCornerX", GladeParseUtil.grabWidget( "entry105", "window1" ) );
+		l3.put( "nCornerY", GladeParseUtil.grabWidget( "entry106", "window1" ) );
+		l3.put( "nCornerZ", GladeParseUtil.grabWidget( "entry107", "window1" ) );
+		l3.put( "nSizeW", GladeParseUtil.grabWidget( "entry108", "window1" ) );
+		l3.put( "nSizeH", GladeParseUtil.grabWidget( "entry109", "window1" ) );		
 		l3.put( "nProjectUnits", GladeParseUtil.grabWidget( "entry96", "window1" ) );
 		l3.put( "nProb", GladeParseUtil.grabWidget( "entry97", "window1" ) );
 		l3.put( "nIntDelay", GladeParseUtil.grabWidget( "entry98", "window1" ) );
@@ -281,6 +286,13 @@ public class WidgetReferences {
 		l3.put( "nPulseDelay", GladeParseUtil.grabWidget( "entry101", "window1" ) );
 		l3.put( "nPulseDuration", GladeParseUtil.grabWidget( "entry102", "window1" ) );
 		l3.put( "nPulseAmp", GladeParseUtil.grabWidget( "entry110", "window1" ) );
+		l3.put( "nPattern", GladeParseUtil.grabWidget( "entry111", "window1" ) );
+		l3.put( "nAddPop", GladeParseUtil.grabWidget( "button41", "window1" ) );
+		l3.put( "nRemPop", GladeParseUtil.grabWidget( "button42", "window1" ) );
+		l3.put( "nAddProj", GladeParseUtil.grabWidget( "button43", "window1" ) );
+		l3.put( "nRemProj", GladeParseUtil.grabWidget( "button44", "window1" ) );
+		l3.put( "nAddInput", GladeParseUtil.grabWidget( "button45", "window1" ) );
+		l3.put( "nRemInput", GladeParseUtil.grabWidget( "button46", "window1" ) );
 		
 		
 		//////////////////////////////////////////////////////////////////////////////////////////

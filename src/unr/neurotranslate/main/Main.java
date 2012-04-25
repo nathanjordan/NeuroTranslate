@@ -42,10 +42,16 @@ public static void main(String[] args) throws Exception, FileNotFoundException {
 
 	//NCSData d = FileController.loadNCSFile( "samples/PrototypeNCS.in" );
 
+<<<<<<< HEAD
 
 	//UIControllerNCS u = new UIControllerNCS();
 	
 	//NCSData d1 = (NCSData) FormatConverter.convertToNCS(test).getData();
+=======
+	NCSData d1 = (NCSData) FormatConverter.convertToNCS(test).getData();
+
+	NCSWriter.writeNCS(d1, "/home/kimperry/Desktop/conversion.in" );
+>>>>>>> c2d23937833ad35ab93008d22cb07f9dd7c38080
 
 	//NCSWriter.writeNCS(d1, "/home/kimperry/Desktop/conversion.in" );
 	

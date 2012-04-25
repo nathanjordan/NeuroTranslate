@@ -15,9 +15,7 @@ public class BrainHandler {
 	
 	public Brain currentBrain;
 	
-	public BrainHandler( final WidgetReferences w, final UIControllerNCS ui ) throws FileNotFoundException {
-		
-		System.out.println(ui.getColumns());
+	public BrainHandler( final WidgetReferences w, final UIControllerNCS ui ) throws FileNotFoundException {			
 		
 		w.getW("brainScroll").connect(new Widget.ExposeEvent() {
 			

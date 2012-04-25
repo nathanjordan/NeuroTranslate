@@ -109,16 +109,16 @@ public class Brain extends TypedElement {
 			
 			s = NCSWriter.writeProperty( "REPORT" , r.type , s );
 		
-		for( Event e : events )
+//		for( Event e : events )
 			
-			s = NCSWriter.writeProperty( "EVENT" , e.type , s );
+//			s = NCSWriter.writeProperty( "EVENT" , e.type , s );
 		
 		//connects
 		
 		for( Connect c : connect )
 			
 			s = s.concat( c.toString() );
-		
+					
 		if( savefile != null && saveTime != null )
 			
 			s = s.concat("\tSAVE\t" + savefile + "\t" + saveTime + "\n" );

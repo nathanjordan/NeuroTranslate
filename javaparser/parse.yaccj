@@ -431,7 +431,7 @@ synvar: TK_TYPE           NAME    { synapseList.get( synapseList.size() - 1).typ
       | TK_ABSOLUTE_USE  { twoPtr = synapseList.get( synapseList.size() - 1).absoluteUse; } twovalue
       | TK_DELAY         { twoPtr = synapseList.get( synapseList.size() - 1).delay; } twovalue
       | TK_SYN_REVERSAL  { twoPtr = synapseList.get( synapseList.size() - 1).synReversal; } twovalue
-      | TK_MAX_G         { twoPtr = synapseList.get( synapseList.size() - 1).maxConduct; } twovalue
+      | TK_MAX_G          value { synapseList.get( synapseList.size() - 1).maxConduct = $<dval>2; }
       | TK_RSE_INIT  { } twovalue
       | TK_PREV_SPIKE_RANGE {  } twovalue
       | TK_HEBB_START  value { synapseList.get( synapseList.size() - 1).hebbStart = $<dval>2; }

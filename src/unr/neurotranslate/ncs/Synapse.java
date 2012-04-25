@@ -26,7 +26,7 @@ public class Synapse extends TypedElement {
 	
 	public Double[] prevSpikeRange;
 	
-	public TwoValue maxConduct = new TwoValue();
+	public Double maxConduct;
 	
 	public TwoValue delay = new TwoValue();
 	

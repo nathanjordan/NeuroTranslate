@@ -504,7 +504,7 @@ private Data _data;
 		
 		}
 	
-	public DoubleExponentialSynapse getSynapsebyName( String name ) throws Exception {
+	public SynapseType getSynapsebyName( String name ) throws Exception {
 		
 		List<SynapseType> list = _data.nml.getChannels().getSynapseTypes();
 		
@@ -512,7 +512,7 @@ private Data _data;
 					
 			if( c1.getDoubExpSyn() != null && c1.getName() != null && c1.getName().equals(name) )
 				
-				return c1.getDoubExpSyn();
+				return c1;
 				
 				
 			}
@@ -521,7 +521,7 @@ private Data _data;
 		
 		}
 	
-	public DoubleExponentialSynapse addSynapse() {
+	public SynapseType addSynapse() {
 		
 		DoubleExponentialSynapse c1 = new DoubleExponentialSynapse();
 		
@@ -533,7 +533,7 @@ private Data _data;
 		
 		_data.nml.getChannels().getSynapseTypes().add( s );
 		
-		return c1;
+		return s;
 		
 		}
 	
@@ -545,7 +545,7 @@ private Data _data;
 					
 			if( c1.getDoubExpSyn() != null && c1.getName() != null && c1.getName().equals(name) )
 				
-				list.remove( c1.getDoubExpSyn() );
+				list.remove( c1 );
 				
 				
 			}

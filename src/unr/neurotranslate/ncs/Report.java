@@ -6,7 +6,13 @@ import unr.neurotranslate.ncsparser.NCSWriter;
 
 public class Report extends TypedElement {
 	
-	public Object cells;
+	public Column col;
+	
+	public Layer lay;
+	
+	public Cell cell;
+	
+	public Compartment comp;
 	
 	public Double prob;
 	
@@ -47,6 +53,10 @@ public class Report extends TypedElement {
 		s = s.concat("REPORT\n");
 		
 		s = NCSWriter.writeProperty("TYPE", type, s);
+		
+		if( col != null && lay != null && cell != null && comp != null )
+		
+			s = s + "\tCELLS\t" + col + "\t" + lay + "\t" + cell + "\t" + comp + "\n";
 		
 		s = NCSWriter.writeProperty("PROB", prob, s);
 		

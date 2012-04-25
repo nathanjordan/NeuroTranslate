@@ -13,6 +13,7 @@ import org.morphml.morphml.schema.Cell;
 import org.morphml.morphml.schema.Cells;
 import org.morphml.morphml.schema.Segment;
 import org.morphml.morphml.schema.Cell.Segments;
+import org.morphml.networkml.schema.CellInstance;
 import org.morphml.networkml.schema.GlobalSynapticProperties;
 import org.morphml.networkml.schema.Input;
 import org.morphml.networkml.schema.Inputs;
@@ -318,99 +319,150 @@ public class NeuromlToNCS {
 		}
 
 
-    public static ArrayList<Compartment> generateNCSCompartments( ChannelType channelType, Segments segments, Projections projections, Populations populations, SpikeShape spikeShape ){
+    public static ArrayList<Compartment> generateNCSCompartments( ChannelType channelType, Segments segments, Projections projections, Populations populations, SpikeShape spikeShape, ArrayList<ConversionNote> cNotes ){
     	
     	ArrayList<Compartment> compartmentList = new ArrayList<Compartment>();
         Compartment tempComp;	    
         String popName;
         boolean inTargetGroup = false;
         ArrayList<String> segList = new ArrayList<String>();
-    	
+        ConversionNote cNote;
+        
     	for( Segment seg : segments.getSegments() )
     	{
-    		if( !segList.contains(seg.getName()) )
-    		{		
-    			tempComp = new Compartment();
-    			
-    			// TYPE
-	    		tempComp.type = seg.getName();
-	    		
-	    		// SEED 
-	    		tempComp.seed = null;
-	    		
-	    		// SPIKESHAPE
-	    		tempComp.spikeshape = spikeShape;
-	    		tempComp.spikeshapeName = tempComp.spikeshape.type;
-	    	
-	    		// TAU_MEMBRANE
-	    		tempComp.tauMembrane.mean = 0.020;
-	    		tempComp.tauMembrane.stdev = 0.0;
-	    		
-	    		// R_MEMBRANE
-	    		tempComp.rMembrane.mean = 200.0;
-	    		tempComp.rMembrane.stdev = 0.0;
-	    		
-	    		// look at target group - find cell - go to segment
-	    		// get the target cell group in the projection
-	    		// TODO check with Laurence if this is ok
-	    		tempComp.threshold.mean = channelType.getCurrentVoltageRelation().getIntegrateAndFire().getThreshold();
-	    		/*
-	    		for( Projection proj: projections.getProjections() )
-	    		{
-	    			popName = proj.getTarget();
+    		if( seg.getName() != null )
+    		{
+	    		if( !segList.contains(seg.getName()) )
+	    		{		
+	    			tempComp = new Compartment();
 	    			
-	    			// find the cell type in the population
-	    			for(Population pop : populations.getPopulations())
-	    			{
-	    				if(popName == pop.getName())
-	    				{
-	    					
-	    					inTargetGroup = true;
-	    					break;
-	    				}
-	    				// if it's not there, set to default
-	    				inTargetGroup = false;
-	    				tempComp.threshold.mean = 30.0;
-	    			}
-	    				
-	    				// set this compartment's threshold to the threshold of this projection
-	    		    	if(inTargetGroup)
-	    		    	{
-	    		    		tempComp.threshold.mean = proj.getSynapseProps().get(0).getThreshold();
-	    		    	}
+	    			// TYPE
+		    		tempComp.type = seg.getName();
+		    		
+		    		// SEED 
+		    		tempComp.seed = null;
+		    		
+		    		// SPIKESHAPE
+		    		tempComp.spikeshape = spikeShape;
+		    		tempComp.spikeshapeName = tempComp.spikeshape.type;
+		    	
+		    		// TAU_MEMBRANE
+		    		tempComp.tauMembrane.mean = 0.020;
+		    		tempComp.tauMembrane.stdev = 0.0;
+		    		
+		    		// R_MEMBRANE
+		    		tempComp.rMembrane.mean = 200.0;
+		    		tempComp.rMembrane.stdev = 0.0;
+		    		
+		    		// look at target group - find cell - go to segment
+		    		// get the target cell group in the projection
+		    		// TODO check with Laurence if this is ok
+		    		if( channelType != null )
+		    		{
+		    			if( channelType.getCurrentVoltageRelation() != null )
+		    			{
+		    				if( channelType.getCurrentVoltageRelation().getIntegrateAndFire() != null )
+		    				{
+		    					tempComp.threshold.mean = channelType.getCurrentVoltageRelation().getIntegrateAndFire().getThreshold();
+		    					tempComp.vmRest.mean = channelType.getCurrentVoltageRelation().getIntegrateAndFire().getVReset();
+		    				}
+		    				else
+		    				{
+		    					cNote = new ConversionNote();
+								cNote.entityName = "integrate_and_fire";
+								cNote.severity = "high";
+								cNote.type = "Parameter not found.";
+								cNote.message = "No integrate and fire, setting default threshold and mean.";
+								cNotes.add(cNote);
+		    				}
+		    			}
+		    			
+		    			else
+		    			{
+		    				cNote = new ConversionNote();
+							cNote.entityName = "current_voltage_relation";
+							cNote.severity = "high";
+							cNote.type = "Parameter not found.";
+							cNote.message = "No current voltage relation, setting default threshold and mean.";
+							cNotes.add(cNote);
+		    			}
+						
+		    		}
+		    		
+		    		else
+					{
+						cNote = new ConversionNote();
+						cNote.entityName = "channel_type";
+						cNote.severity = "high";
+						cNote.type = "Parameter not found.";
+						cNote.message = "No channel found, setting default threshold and mean.";
+						cNotes.add(cNote);
+						tempComp.threshold.mean = -50.0;
+		    			tempComp.vmRest.mean = -60.0;
+					}
+		    		
+		    		// threshold
+		    		tempComp.threshold.stdev = 0.0;
+
+		    		// vm rest
+		    		tempComp.vmRest.stdev = 0.0;
+		    		
+		    		/*
+		    		for( Projection proj: projections.getProjections() )
+		    		{
+		    			popName = proj.getTarget();
+		    			
+		    			// find the cell type in the population
+		    			for(Population pop : populations.getPopulations())
+		    			{
+		    				if(popName == pop.getName())
+		    				{
+		    					
+		    					inTargetGroup = true;
+		    					break;
+		    				}
+		    				// if it's not there, set to default
+		    				inTargetGroup = false;
+		    				tempComp.threshold.mean = 30.0;
+		    			}
+		    				
+		    				// set this compartment's threshold to the threshold of this projection
+		    		    	if(inTargetGroup)
+		    		    	{
+		    		    		tempComp.threshold.mean = proj.getSynapseProps().get(0).getThreshold();
+		    		    	}
+		    		}
+		    		*/
+		    		
+		    		
+		    		// LEAK_CONDUCTANCE
+		    		tempComp.leakConductance.mean = 0.0;
+		    		tempComp.leakConductance.stdev = 0.0;
+		    		
+		    		// LEAK_REVERSAL
+		    		tempComp.leakReversal.mean = 0.0;
+		    		tempComp.leakReversal.stdev = 0.0;
+		    		
+		    		
+		    		
+		    		// CA_INTERNAL
+		    		tempComp.caInternal = null;
+		        	
+		    		// CA_EXTERNAL
+		    		tempComp.caExternal = null;
+		        	
+		        	// CA_SPIKE_INCREMENT
+		    		tempComp.caSpikeIncrement = null;
+		        	
+		        	// CA_TAU
+		    		tempComp.caTau = null;
+		        	
+		    		// channels
+		    		tempComp.channels = null;
+		    		tempComp.channelNames = null;
+		    		
+		    		compartmentList.add(tempComp);
 	    		}
-	    		*/
-	    		tempComp.threshold.stdev = 0.0;
-	    		
-	    		// LEAK_CONDUCTANCE
-	    		tempComp.leakConductance.mean = 0.0;
-	    		tempComp.leakConductance.stdev = 0.0;
-	    		
-	    		// LEAK_REVERSAL
-	    		tempComp.leakReversal.mean = 0.0;
-	    		tempComp.leakReversal.stdev = 0.0;
-	    		
-	    		// vm rest
-	    		tempComp.vmRest.mean = channelType.getCurrentVoltageRelation().getIntegrateAndFire().getVReset();
-	    		tempComp.vmRest.stdev = 0.0;
-	    		
-	    		// CA_INTERNAL
-	    		tempComp.caInternal = null;
-	        	
-	    		// CA_EXTERNAL
-	    		tempComp.caExternal = null;
-	        	
-	        	// CA_SPIKE_INCREMENT
-	    		tempComp.caSpikeIncrement = null;
-	        	
-	        	// CA_TAU
-	    		tempComp.caTau = null;
-	        	
-	    		// channels
-	    		tempComp.channels = null;
-	    		tempComp.channelNames = null;
-	    		
-	    		compartmentList.add(tempComp);
     		}
     	}		
     	
@@ -985,5 +1037,69 @@ public class NeuromlToNCS {
     	}
     	return reports;
     }
+    
+    public static ArrayList<ConversionNote> getPopulationErrors( Populations populations )
+    {
+    	ArrayList<ConversionNote> cNotes = new ArrayList<ConversionNote>();
+    	ConversionNote cNote;
+    	
+    	for( Population pop: populations.getPopulations() )
+    	{
+    		// throw warning for instances
+    		if( pop.getInstances() != null )
+    		{
+    			for( CellInstance cellInstance : pop.getInstances().getInstances() )
+    			{
+    				cNote = new ConversionNote();
+    				cNote.entityName = cellInstance.getId().toString();
+    				cNote.severity = "low";
+    				cNote.type = "Unused Parameter";
+    				cNote.message = "NeuroTranslate does not translate Population Instances.";
+    				cNotes.add(cNote);	
+    			}
+    		}
+    		
+    		// look for a pop location
+    		if( pop.getPopLocation() == null )
+    		{
+    			cNote = new ConversionNote();
+				cNote.entityName = pop.getName();
+				cNote.severity = "low";
+				cNote.type = "No population location found";
+				cNote.message = "No populations will be used without a population location.";
+				cNotes.add(cNote);
+    		}
+    		
+    		// we have pop location
+    		else
+    		{
+    			// throw warning for grid arrangement
+        		if( pop.getPopLocation().getGridArrangement() != null)
+        		{
+        			cNote = new ConversionNote();
+    				cNote.entityName = "grid_arrangement";
+    				cNote.severity = "low";
+    				cNote.type = "Unused Parameter";
+    				cNote.message = "NeuroTranslate does not translate with grid arrangements, only random arrangemenets.";
+    				cNotes.add(cNote);
+        		}
+        		
+        		// throw spherical location warning
+        		if( pop.getPopLocation().getRandomArrangement().getSphericalLocation() != null )
+        		{
+        			cNote = new ConversionNote();
+    				cNote.entityName = "spherical_location";
+    				cNote.severity = "low";
+    				cNote.type = "Unused Parameter";
+    				cNote.message = "NeuroTranslate does not translate with spherical locations, only rectangular locations.";
+    				cNotes.add(cNote);
+        		}
+    		}
+    		
+    	}
+    	
+    	return cNotes;
+    }
+    
 }
     

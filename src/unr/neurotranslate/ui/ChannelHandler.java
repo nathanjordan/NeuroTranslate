@@ -21,15 +21,17 @@ public class ChannelHandler {
 
 	public String selectedText;	
 	public TreeSelection rs1;
-	DoubleExponentialSynapse currentSynapse;
+	SynapseType currentSynapse;
 	
-	public ChannelHandler(WidgetReferences w, UIControllerNeuroML ui) {
+	public ChannelHandler(final WidgetReferences w, final UIControllerNeuroML ui) {
 	
 		w.getW("channelScroll").connect(new Widget.ExposeEvent() {
 			
 			@Override
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 			
+				w.getL("chSynapses").listToModel( ui.getSynapses() );
+				
 				return false;
 			}
 		});
@@ -59,14 +61,14 @@ public class ChannelHandler {
 					
 					// Get current synapse based on selected synapse 
 					try {
-						 //currentSynapse = ui.getSynapseByType(selectedText);
+						// currentSynapse = ui.getSynapsebyName(selectedText);
 					} catch (Exception e) {
 						
 						e.printStackTrace();
 					}									
 				
 					// Set everything else to current synapse 						
-					//((Entry) w.getW("mCellName")).setText(currentCell.getName());
+					((Entry) w.getW("chType")).setText(currentSynapse.getName());
 				}							
 			}
 		});

@@ -138,16 +138,13 @@ public class MorphologyHandler {
 					}									
 				
 					// Set everything else to current segment 						
-					((Entry) w.getW("mSegName")).setText( currentSegment.getName() );
-					
-					//System.out.println(Double.toString(currentSegment.getProximal().getX()));
-					
-					/*((Entry) w.getW("mProX")).setText( Double.toString(currentSegment.getProximal().getX()) );
+					((Entry) w.getW("mSegName")).setText( currentSegment.getName() );					
+					((Entry) w.getW("mProX")).setText( Double.toString(currentSegment.getProximal().getX()) );
 					((Entry) w.getW("mProY")).setText( Double.toString(currentSegment.getProximal().getY()) );
 					((Entry) w.getW("mProZ")).setText( Double.toString(currentSegment.getProximal().getZ()) );
 					((Entry) w.getW("mDisX")).setText( Double.toString(currentSegment.getDistal().getX()) );
 					((Entry) w.getW("mDisY")).setText( Double.toString(currentSegment.getDistal().getY()) );
-					((Entry) w.getW("mDisZ")).setText( Double.toString(currentSegment.getDistal().getZ()) );*/
+					((Entry) w.getW("mDisZ")).setText( Double.toString(currentSegment.getDistal().getZ()) );
 				}							
 			}
 		});
@@ -282,8 +279,8 @@ public class MorphologyHandler {
 					double d = Double.parseDouble(arg0.getText());					
 					Point point = new Point();
 					point.setX(d);
-					point.setY( Double.parseDouble(((Entry) w.getW("mProxY")).getText()) );
-					point.setZ( Double.parseDouble(((Entry) w.getW("mProxZ")).getText()) );					
+					point.setY( Double.parseDouble(((Entry) w.getW("mProY")).getText()) );
+					point.setZ( Double.parseDouble(((Entry) w.getW("mProZ")).getText()) );					
 					currentSegment.setProximal(point);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
@@ -300,9 +297,9 @@ public class MorphologyHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());					
 					Point point = new Point();
-					point.setX( Double.parseDouble(((Entry) w.getW("mProxX")).getText()) );
+					point.setX( Double.parseDouble(((Entry) w.getW("mProX")).getText()) );
 					point.setY(d);					
-					point.setZ( Double.parseDouble(((Entry) w.getW("mProxZ")).getText()) );					
+					point.setZ( Double.parseDouble(((Entry) w.getW("mProZ")).getText()) );					
 					currentSegment.setProximal(point);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
@@ -320,8 +317,8 @@ public class MorphologyHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());					
 					Point point = new Point();
-					point.setX( Double.parseDouble(((Entry) w.getW("mProxX")).getText()) );
-					point.setY( Double.parseDouble(((Entry) w.getW("mProxY")).getText()) );					
+					point.setX( Double.parseDouble(((Entry) w.getW("mProX")).getText()) );
+					point.setY( Double.parseDouble(((Entry) w.getW("mProY")).getText()) );					
 					point.setZ( d );					
 					currentSegment.setProximal(point);
 				} catch( NumberFormatException nfe ) {

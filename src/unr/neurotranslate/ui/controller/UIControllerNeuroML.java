@@ -494,7 +494,7 @@ private Data _data;
 		
 		for( SynapseType c1 : list ) {
 			
-			if( c1.getDoubExpSyn() != null && c1.getName() != null && c1.getName().equals("") )
+			if( c1.getDoubExpSyn() != null && c1.getName() != null && !c1.getName().equals("") )
 				
 				l.add(c1.getName());
 			

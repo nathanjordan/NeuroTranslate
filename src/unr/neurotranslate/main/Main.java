@@ -33,37 +33,29 @@ public class Main {
 
 public static void main(String[] args) throws Exception, FileNotFoundException {
 
-	//Neuroml test;
+	Neuroml test;
 
-	//NeuroMLConverter converter = new NeuroMLConverter();
+	NeuroMLConverter converter = new NeuroMLConverter();
 
-
-	//test = converter.readNeuroML("samples/PrototypeNeuroml.xml");
-
-	//NCSData d = FileController.loadNCSFile( "samples/PrototypeNCS.in" );
-
-<<<<<<< HEAD
-
-	//UIControllerNCS u = new UIControllerNCS();
+	test = converter.readNeuroML("samples/PrototypeNeuroml.xml");
 	
-	//NCSData d1 = (NCSData) FormatConverter.convertToNCS(test).getData();
-=======
 	NCSData d1 = (NCSData) FormatConverter.convertToNCS(test).getData();
-
-	NCSWriter.writeNCS(d1, "/home/kimperry/Desktop/conversion.in" );
->>>>>>> c2d23937833ad35ab93008d22cb07f9dd7c38080
-
-	//NCSWriter.writeNCS(d1, "/home/kimperry/Desktop/conversion.in" );
 	
-	//System.out.println(u.getColumnShells().size());
+	NCSWriter.writeNCS(d1, "/home/kimperry/Desktop/conversion.in" );
 	
 	NCSData d2 = FileController.loadNCSFile( "samples/PrototypeNCS.in" );
 
-	//NeuroMLConversionData n = FormatConverter.convertToNeuroML(d2);
+	NeuroMLConversionData n = FormatConverter.convertToNeuroML(d2);
+
+	converter.neuromlToXml( (Neuroml) n.getData() , "/home/kimperry/Desktop/conversion.xml" );
+
+	//UIControllerNCS u = new UIControllerNCS();
 	
-	String s = "5";
+	//System.out.println(u.getColumnShells().size());
 	
-	//converter.neuromlToXml( (Neuroml) n.getData() , "/home/kimperry/Desktop/conversion.xml" );
+	//	NCSData d2 = FileController.loadNCSFile( "samples/PrototypeNCS.in" );
+
+	//String s = "5";
 
 	}
 

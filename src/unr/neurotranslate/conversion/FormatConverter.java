@@ -98,8 +98,8 @@ public class FormatConverter {
 		ncsConversionData.ncs.synpsgList = NeuromlToNCS.generateNCSSynPSG();
 		 
 		ncsConversionData.ncs.cellList = NeuromlToNCS.generateNCSCells( m.getCells(), m.getProjections(), m.getPopulations(), tempCompartmentList );
-		
-		
+
+				
 		ncsConversionData.ncs.columnShellList = NeuromlToNCS.generateNCSColumnShells(m.getPopulations());
 		
 		ncsConversionData.ncs.layerShellList = NeuromlToNCS.generateNCSLayerShell(m.getPopulations(), ncsConversionData.ncs.columnShellList);
@@ -117,7 +117,7 @@ public class FormatConverter {
 		ncsConversionData.ncs.reportList = NeuromlToNCS.generateReports(m.getPopulations());
 		
 		ncsConversionData.ncs.brain = NeuromlToNCS.generateNCSBrain(ncsConversionData.ncs.reportList, m.getProjections(), m.getPopulations(), ncsConversionData.ncs.synapseList, ncsConversionData.ncs.stimulusInjectList, ncsConversionData.ncs.columnList);
-   		
+
 	    
 		tempCNotes = NeuromlToNCS.getPopulationErrors( m.getPopulations() );
 		

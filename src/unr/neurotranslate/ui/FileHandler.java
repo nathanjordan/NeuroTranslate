@@ -37,6 +37,8 @@ public class FileHandler {
 	// Class members
 	private String importedFile;
 	private File temp;
+	static Boolean ncsState = false; 
+	static Boolean nmlState = false;
 	
 	// Constructor
 	public FileHandler( final WidgetReferences w  ) throws FileNotFoundException {
@@ -46,12 +48,21 @@ public class FileHandler {
 		w.getW("nmlToggle").setSensitive( false );  
 	    w.getW("nmlTabs").hide();
 		
-		initMenu( w);		
+		// create translation dialog
+		ErrorHandler errors = new ErrorHandler(w);
+	    
+	    // do menu init stuff
+		initMenu( w, errors );		
+	
+		// Enable NeuroML toggle button if imported NCS
+	
+		buttonHandler( w, errors );
+		
 		
 	}
 	
 	// Initialize file menu
-	public void initMenu(final WidgetReferences w) {
+	public void initMenu(final WidgetReferences w, ErrorHandler errors) {
 		
 		// Set default file imported message 
 		((Statusbar) w.getW("statusbar")).setMessage( "No file imported..." );
@@ -101,13 +112,14 @@ public class FileHandler {
 						// set views
 						w.getW("nmlTabs").hide();
 					    w.getW("ncsTabs").show();
-					     
-						// Enable NeuroML toggle button if imported NCS
+					    //ncsState = true; 
+					    
+						/*// Enable NeuroML toggle button if imported NCS
 						try {
 							buttonHandler( w );
 						} catch (FileNotFoundException e1) {							
 							e1.printStackTrace();
-						}
+						}*/
 						
 						// set button colors
 						w.getW("nmlToggle").setSensitive( true );  
@@ -151,12 +163,12 @@ public class FileHandler {
 						w.getW("ncsTabs").hide();
 					    w.getW("nmlTabs").show();
 					    
-						// Enable NCS toggle button if imported NeuroML
+						/*// Enable NCS toggle button if imported NeuroML
 						try {
 							buttonHandler( w );
 						} catch (FileNotFoundException e1) {							
 							e1.printStackTrace();
-						}
+						}*/
 						
 						 w.getW("ncsToggle").setSensitive( true );  
 						 Color activeGreen = new Color(44880, 55552, 36608 );        
@@ -195,7 +207,13 @@ public class FileHandler {
 				// deal with the result
 				if( response == ResponseType.OK ) {
 												
-					FileController.saveNCSFile(  saveDialog.getFilename() );
+					// Write to file!
+					if( ncsState)
+						FileController.saveNCSFile(  saveDialog.getFilename() );
+					if( nmlState)
+						FileController.saveNeuroMLFile( saveDialog.getFilename() );
+					
+					
 					Notification notification = new Notification( "Saved to: ", saveDialog.getFilename(), "", arg0);
 					notification.setTimeout( 50 );
 					notification.show();						
@@ -209,20 +227,18 @@ public class FileHandler {
 		return importedFile;
 	}
 	
-	public void buttonHandler( final WidgetReferences w ) throws FileNotFoundException {
-		
-		// Grab the translate dialog window to show and hide when toggle button is pushed
-		final Window translateDialog = (Window) GladeParseUtil.grabWidget( "window3", "window3" );		
-		
+	public void buttonHandler( final WidgetReferences w, final ErrorHandler errors ) throws FileNotFoundException {
+	
         // Set ncsToggle button connect
         ((ToggleButton)w.getW("ncsToggle")).connect( new Toggled() {			
 			@Override
 			public void onToggled(ToggleButton arg0) {			
 				// Toggle other view off
 				if( arg0.getActive() ) {
-					((ToggleButton) w.getW("nmlToggle")).setActive( false );								
-					w.getW("nmlTabs").hide();
-					w.getW("ncsTabs").show();
+					((ToggleButton) w.getW("nmlToggle")).setActive( false );	
+					ncsState = true;
+					//w.getW("nmlTabs").hide();
+					//w.getW("ncsTabs").show();
 					
 					// Create conversion notes and temp ncs data		
 					NCSConversionData ncs = new NCSConversionData();
@@ -234,16 +250,23 @@ public class FileHandler {
 						e1.printStackTrace();
 					}
 					
+					errors.update( ncs.getNotes(), w);
+					
+					
+					
+					/*
 					// Build translation error dialog
 					try {
-						new ErrorHandler( ncs.getNotes() );
+						new ErrorHandler( ncs.getNotes(), w );
 					} catch (FileNotFoundException e) {					
 						e.printStackTrace();
 					}
-					
+					*/
 					// display translation dialog
-					translateDialog.show();		
-										
+					
+					w.getW("translateDialog").show();		
+					
+					
 					// set all handlers!
 					UIControllerNCS ui = new UIControllerNCS( (NCSData) ncs.getData() );
 					try {
@@ -262,28 +285,30 @@ public class FileHandler {
 				// Toggle other view off
 				if( arg0.getActive() ) {
 				   ((ToggleButton) w.getW("ncsToggle")).setActive( false );	
-				   w.getW("nmlTabs").show();
-				   w.getW("ncsTabs").hide();
+				   nmlState = true;
+				   //w.getW("nmlTabs").show();
+				   //w.getW("ncsTabs").hide();
 				   
-				   // Translate to NeuroML!
-				   NeuroMLConversionData nml;				   
+				   // Grab conversion data from NeuroML to NCS!
+				   NeuroMLConversionData nml = new NeuroMLConversionData();				   
 				   nml = FormatConverter.convertToNeuroML(Data.getInstance().ncs);
-				   				   
-				   // Build translation error dialog
+				   			
+				   
+				   errors.update( nml.getNotes(), w );
+				   
+				  /* // Show translation dialog
 				   try {
-				    	new ErrorHandler(nml.getNotes());
+				    	new ErrorHandler(nml.getNotes(), w);
 				   } catch (FileNotFoundException e) {					
 						e.printStackTrace();
 				   }
+				   */
 				   
-				   translateDialog.show();
+				   w.getW("translateDialog").show();
 				   
 				   // Set up handlers
 				   UIControllerNeuroML ui = new UIControllerNeuroML( (Neuroml) nml.getData() );
 				   new NeuroMLHandlers(w, ui);
-				   
-				   //NeuroMLConversionData n = FormatConverter.convertToNeuroML(Data.getInstance().ncs);
-				   //ConversionNotes c = n.getNotes();
 				}				
 			}
 		} );       

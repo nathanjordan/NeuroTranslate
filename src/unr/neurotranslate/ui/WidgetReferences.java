@@ -317,6 +317,13 @@ public class WidgetReferences {
 		l3.put( "modRem", GladeParseUtil.grabWidget( "modifyRemove", "window2" ) );
 		l3.put( "popupWin", GladeParseUtil.grabWidget( "window2", "window2" ) );
 
+		//////////////////////////////////////////////////////////////////////////////////////////
+		////    Error List
+		//////////////////////////////////////////////////////////////////////////////////////////		
+		l3.put( "errorlist", GladeParseUtil.grabWidget( "errorlist", "window3" ) );
+		l3.put( "cancelTrans", GladeParseUtil.grabWidget( "button47", "window3" ) );
+		l3.put( "translate", GladeParseUtil.grabWidget( "button48", "window3" ) );
+		l3.put( "translateDialog", GladeParseUtil.grabWidget( "window3", "window3") );
 	}	
 	
 	public Widget getW( String name ) {

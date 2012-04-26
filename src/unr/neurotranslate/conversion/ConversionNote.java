@@ -2,12 +2,12 @@ package unr.neurotranslate.conversion;
 
 public class ConversionNote {
 	
-	String message;
+	public String message;
 	
-	String type;
+	public String type;
 	
-	String severity;
+	public String severity;
 	
-	String entityName;
+	public String entityName;
 	
 	}

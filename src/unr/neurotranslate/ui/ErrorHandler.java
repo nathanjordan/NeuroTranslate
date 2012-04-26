@@ -44,17 +44,14 @@ public class ErrorHandler {
 		    messageCol = new DataColumnString(),                
 		});
 
-		ConversionNotes no;
-	
-		
-		/*for (ConversionNote note : notes.notes) {
+		for (ConversionNote note : notes.notes) {
 		    row = model.appendRow();            
-		    model.setValue(row, nameCol, note.name );
+		    model.setValue(row, nameCol, note.entityName );
 		    model.setValue(row, typeCol, note.type );
 		    model.setValue(row, severityCol, note.severity );
 		    model.setValue(row, messageCol, note.message );
 		
-		}*/
+		}
 		
 		// Create view
 		view.setModel(model);

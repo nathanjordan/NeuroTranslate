@@ -1,7 +1,6 @@
 package unr.neurotranslate.ui;
 import java.io.FileNotFoundException;
 
-import org.gnome.glade.XML;
 import org.gnome.gtk.CellRendererText;
 import org.gnome.gtk.DataColumn;
 import org.gnome.gtk.DataColumnString;
@@ -9,25 +8,22 @@ import org.gnome.gtk.ListStore;
 import org.gnome.gtk.TreeIter;
 import org.gnome.gtk.TreeView;
 import org.gnome.gtk.TreeViewColumn;
+
+import unr.neurotranslate.conversion.ConversionNote;
+import unr.neurotranslate.conversion.ConversionNotes;
 public class ErrorHandler {
-	
-	// TODO - temporary error list, clean up
-	private Errors[] errorList = {
-			// TODO - List will be dynamic
-			new Errors( "hypothalamus", "columns", "warning", "column: available but not active" ),
-			new Errors( "visual_voltage", "reports", "warning", "report: not applicable to NeuroML" ),
-			new Errors( "proprioceptive", "stimuli", "warning", "stimulus: not connected" ),
-	};
-	
-	// TODO - Use glade for UI if I'm ambitious
-	public ErrorHandler() throws FileNotFoundException {	
+		
+	public ErrorHandler(ConversionNotes notes) throws FileNotFoundException {	
 		
 		// Build the error dialog
-		initUI();
+		
+		initUI(notes);
 
 	}
+	
+	
 		
-	public void initUI() throws FileNotFoundException {			
+	public void initUI(ConversionNotes notes) throws FileNotFoundException {			
 		
 		// Build the translate dialog
 		TreeView view = (TreeView) GladeParseUtil.grabWidget( "errorlist", "window3" );
@@ -47,16 +43,18 @@ public class ErrorHandler {
 		    severityCol = new DataColumnString(),
 		    messageCol = new DataColumnString(),                
 		});
+
+		ConversionNotes no;
+	
 		
-		// TODO - Make dynamic
-		for (Errors err : errorList) {
+		/*for (ConversionNote note : notes.notes) {
 		    row = model.appendRow();            
-		    model.setValue(row, nameCol, err.name );
-		    model.setValue(row, typeCol, err.type );
-		    model.setValue(row, severityCol, err.severity );
-		    model.setValue(row, messageCol, err.message );
+		    model.setValue(row, nameCol, note.name );
+		    model.setValue(row, typeCol, note.type );
+		    model.setValue(row, severityCol, note.severity );
+		    model.setValue(row, messageCol, note.message );
 		
-		}
+		}*/
 		
 		// Create view
 		view.setModel(model);

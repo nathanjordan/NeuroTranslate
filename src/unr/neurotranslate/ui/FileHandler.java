@@ -1,6 +1,7 @@
 package unr.neurotranslate.ui;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.gnome.gdk.Color;
 import org.gnome.glade.XML;
@@ -17,9 +18,16 @@ import org.gnome.gtk.Window;
 import org.gnome.gtk.MenuItem.Activate;
 import org.gnome.gtk.ToggleButton.Toggled;
 import org.gnome.notify.Notification;
+import org.morphml.neuroml.schema.Neuroml;
 
+import unr.neurotranslate.conversion.ConversionNotes;
+import unr.neurotranslate.conversion.FormatConverter;
+import unr.neurotranslate.conversion.NCSConversionData;
+import unr.neurotranslate.conversion.NeuroMLConversionData;
 import unr.neurotranslate.model.Data;
 import unr.neurotranslate.model.FileController;
+import unr.neurotranslate.ncs.NCSData;
+import unr.neurotranslate.neuromlparser.NeuroMLConverter;
 import unr.neurotranslate.ui.controller.UIControllerNCS;
 import unr.neurotranslate.ui.controller.UIControllerNeuroML;
 
@@ -38,8 +46,7 @@ public class FileHandler {
 		w.getW("nmlToggle").setSensitive( false );  
 	    w.getW("nmlTabs").hide();
 		
-		initMenu( w);
-		//buttonHandler( w );
+		initMenu( w);		
 		
 	}
 	
@@ -88,7 +95,8 @@ public class FileHandler {
 					if( importedFile.endsWith( ".in" ) ) {
 							
 						// load data model
-						UIControllerNCS ui = new UIControllerNCS();
+						NCSData d = FileController.loadNCSFile( importedFile );
+						UIControllerNCS ui = new UIControllerNCS( d );
 						
 						// set views
 						w.getW("nmlTabs").hide();
@@ -107,44 +115,13 @@ public class FileHandler {
 					    w.getW("nmlToggle").modifyBackground(StateType.NORMAL, activeGreen );
 					    w.getW("nmlToggle").modifyBackground(StateType.SELECTED, activeGreen );	
 					    
-						// set all handlers!					    
-						try {
-							new BrainHandler(w, ui);
-						} catch (FileNotFoundException e) {						
-							e.printStackTrace();
-						}  
-				        try {
-							new ColumnHandler(w, ui);
-						} catch (Exception e) {							
+						// set all handlers!
+					    try {
+							new NCSHandlers(w, ui);
+						} catch (Exception e) {						
 							e.printStackTrace();
 						}
-				        try {
-							new LayerHandler(w, ui);
-						} catch (FileNotFoundException e) {				
-							e.printStackTrace();
-						}
-				        try {
-							new CellHandler(w, ui);
-						} catch (FileNotFoundException e) {					
-							e.printStackTrace();
-						}
-				       // new ConnectionHandler(w, ui);
-				        try {
-							new SynapseHandler(w, ui);
-						} catch (FileNotFoundException e) {						
-							e.printStackTrace();
-						}
-				        try {
-							new StimuliHandler(w, ui);
-						} catch (FileNotFoundException e) {						
-							e.printStackTrace();
-						}
-				        try {
-							new ReportHandler(w, ui);
-						} catch (FileNotFoundException e) {				
-							e.printStackTrace();
-						}
-						
+
 						// Update status bar
 						((Statusbar) w.getW("statusbar")).setMessage( temp.getName() );
 					}											
@@ -152,7 +129,23 @@ public class FileHandler {
 					else if( importedFile.endsWith( ".xml" ) ) {
 															
 						// load data model
-						UIControllerNeuroML ui = new UIControllerNeuroML();
+						NeuroMLConverter n = null;
+						try {
+							n = new NeuroMLConverter();
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
+						Neuroml d = null;
+						try {
+							d = n.readNeuroML( importedFile );
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						UIControllerNeuroML ui = new UIControllerNeuroML( d );
 		
 						// set views
 						w.getW("ncsTabs").hide();
@@ -170,10 +163,9 @@ public class FileHandler {
 					     w.getW("ncsToggle").modifyBackground(StateType.NORMAL, activeGreen );
 					     w.getW("ncsToggle").modifyBackground(StateType.SELECTED, activeGreen );
 					     
-					     // TODO - create NeuroML/handlers
-						new MorphologyHandler( w, ui );
-						new ChannelHandler( w, ui );
-						new NetworkHandler( w, ui );
+					    // Set up handlers
+					    new NeuroMLHandlers( w, ui );
+						
 						// Update status bar
 						((Statusbar) w.getW("statusbar")).setMessage( temp.getName() );
 					}
@@ -218,9 +210,6 @@ public class FileHandler {
 	}
 	
 	public void buttonHandler( final WidgetReferences w ) throws FileNotFoundException {
-
-		// Build translation error dialog
-		new ErrorHandler();
 		
 		// Grab the translate dialog window to show and hide when toggle button is pushed
 		final Window translateDialog = (Window) GladeParseUtil.grabWidget( "window3", "window3" );		
@@ -233,8 +222,35 @@ public class FileHandler {
 				if( arg0.getActive() ) {
 					((ToggleButton) w.getW("nmlToggle")).setActive( false );								
 					w.getW("nmlTabs").hide();
-					w.getW("ncsTabs").show();					
-					translateDialog.show();
+					w.getW("ncsTabs").show();
+					
+					// Create conversion notes and temp ncs data		
+					NCSConversionData ncs = new NCSConversionData();
+					
+					// Translate to NCS!
+					try {
+						ncs =  FormatConverter.convertToNCS(Data.getInstance().nml);
+					} catch (IOException e1) {					
+						e1.printStackTrace();
+					}
+					
+					// Build translation error dialog
+					try {
+						new ErrorHandler( ncs.getNotes() );
+					} catch (FileNotFoundException e) {					
+						e.printStackTrace();
+					}
+					
+					// display translation dialog
+					translateDialog.show();		
+										
+					// set all handlers!
+					UIControllerNCS ui = new UIControllerNCS( (NCSData) ncs.getData() );
+					try {
+						new NCSHandlers(w, ui);
+					} catch (Exception e1) {						
+						e1.printStackTrace();
+					}
 				}				
 			}
 		} );
@@ -248,7 +264,26 @@ public class FileHandler {
 				   ((ToggleButton) w.getW("ncsToggle")).setActive( false );	
 				   w.getW("nmlTabs").show();
 				   w.getW("ncsTabs").hide();
+				   
+				   // Translate to NeuroML!
+				   NeuroMLConversionData nml;				   
+				   nml = FormatConverter.convertToNeuroML(Data.getInstance().ncs);
+				   				   
+				   // Build translation error dialog
+				   try {
+				    	new ErrorHandler(nml.getNotes());
+				   } catch (FileNotFoundException e) {					
+						e.printStackTrace();
+				   }
+				   
 				   translateDialog.show();
+				   
+				   // Set up handlers
+				   UIControllerNeuroML ui = new UIControllerNeuroML( (Neuroml) nml.getData() );
+				   new NeuroMLHandlers(w, ui);
+				   
+				   //NeuroMLConversionData n = FormatConverter.convertToNeuroML(Data.getInstance().ncs);
+				   //ConversionNotes c = n.getNotes();
 				}				
 			}
 		} );       

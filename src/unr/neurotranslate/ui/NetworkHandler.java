@@ -4,6 +4,7 @@ import java.math.BigInteger;
 
 import org.gnome.gdk.EventExpose;
 import org.gnome.gtk.Button;
+import org.gnome.gtk.ComboBox;
 import org.gnome.gtk.Entry;
 import org.gnome.gtk.TreeSelection;
 import org.gnome.gtk.TreeView;
@@ -33,6 +34,10 @@ public class NetworkHandler {
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 			
 				w.getL("nPops").listToModel( ui.getPopulations() );
+				w.getL("nProjs").listToModel( ui.getProjections() );
+				w.getL("nInputs").listToModel( ui.getInputs() );
+				w.getC("nCellSel").listToModel( ui.getCells() );
+				w.getC("nCellSel").getView().setActive(0);
 				
 				return false;
 			}
@@ -68,12 +73,14 @@ public class NetworkHandler {
 					} catch (Exception e) {						
 						e.printStackTrace();
 					}									
-				
-					
-					
+														
 					// Set everything else to current pop 						
 					((Entry) w.getW("nPopSize")).setText( (currentPopulation.getPopLocation().getRandomArrangement().getPopulationSize()).toString() );					
 					((Entry) w.getW("nCornerX")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX()) );
+					((Entry) w.getW("nCornerY")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY()) );
+					((Entry) w.getW("nCornerZ")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getZ()) );
+					((Entry) w.getW("nSizeW")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getWidth()) );
+					((Entry) w.getW("nSizeH")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getHeight()) );
 				}							
 			}
 		});
@@ -96,13 +103,13 @@ public class NetworkHandler {
 					
 					// Get projection based on selected projection
 					try {
-						 //currentProjection = ui.getProjectionByType(selectedText);
+						 currentProjection = ui.getProjectionByName(selectedText);
 					} catch (Exception e) {						
 						e.printStackTrace();
 					}									
 				
 					// Set everything else to current projection 						
-					
+					//((Entry) w.getW("nProjectUnits")).setText( currentProjection.get );					
 				}							
 			}
 		});			
@@ -125,12 +132,15 @@ public class NetworkHandler {
 					
 					// Get input based on selected input
 					try {
-						 //currentInput = ui.getInputByType(selectedText);
+						 currentInput = ui.getInputByName(selectedText);
 					} catch (Exception e) {						
 						e.printStackTrace();
 					}									
 				
 					// Set everything else to current input 						
+					((Entry) w.getW("nPulseDelay")).setText( Double.toString(currentInput.getPulseInput().getDelay()) );
+					((Entry) w.getW("nPulseDuration")).setText( Double.toString(currentInput.getPulseInput().getDuration()) );
+					((Entry) w.getW("nPulseAmp")).setText( Double.toString(currentInput.getPulseInput().getAmplitude()) );
 					
 				}							
 			}

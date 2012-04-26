@@ -21,24 +21,8 @@ public class UIControllerNeuroML {
 
 private Data _data;
 	
-	public UIControllerNeuroML() {
-		
-		NeuroMLConverter n = null;
-		try {
-			n = new NeuroMLConverter();
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		Neuroml d = null;
-		try {
-			d = n.readNeuroML( "/home/nitishn/workspace/NeuroTranslate/samples/PrototypeNeuroml.xml" );
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	public UIControllerNeuroML(Neuroml d) {
+
 		_data = Data.getInstance();
 		
 		_data.nml = d;
@@ -199,7 +183,7 @@ private Data _data;
 		
 		for( Projection c : list ) {
 			
-			if( c.getName() != null && c.getName().equals("") )
+			if( c.getName() != null && !c.getName().equals("") )
 				
 				l.add(c.getName());
 			
@@ -270,7 +254,7 @@ private Data _data;
 		
 		for( Input c : list ) {
 			
-			if( c.getName() != null && c.getName().equals("") )
+			if( c.getName() != null && !c.getName().equals("") )
 				
 				l.add(c.getName());
 			

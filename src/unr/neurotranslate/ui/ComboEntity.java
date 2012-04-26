@@ -128,5 +128,9 @@ public class ComboEntity {
 		} while (tempRow.iterNext() );
 	}
 
+	// Getter for view
+	public ComboBox getView() {
+		return view;
+	}
 
 }

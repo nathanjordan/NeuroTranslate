@@ -4,6 +4,6 @@ import java.util.ArrayList;
 
 public class ConversionNotes {
 	
-	ArrayList<ConversionNote> notes;
+	public ArrayList<ConversionNote> notes;
 	
 	}

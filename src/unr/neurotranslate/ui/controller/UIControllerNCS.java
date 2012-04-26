@@ -25,10 +25,10 @@ public class UIControllerNCS {
 
 	private Data _data;
 	
-	public UIControllerNCS() {
+	public UIControllerNCS( NCSData d) {
 		
-		NCSData d = FileController.loadNCSFile( "/home/nitishn/workspace/NeuroTranslate/samples/PrototypeNCS.in" );
-		
+		//NCSData d = FileController.loadNCSFile( "/home/nitishn/workspace/NeuroTranslate/samples/PrototypeNCS.in" );
+		//NCSData d = FileController.loadNCSFile( file );
 		_data = Data.getInstance();
 		
 		_data.ncs = d;

@@ -56,7 +56,7 @@ public class Report extends TypedElement {
 		
 		if( col != null && lay != null && cell != null && comp != null )
 		
-			s = s + "\tCELLS\t" + col + "\t" + lay + "\t" + cell + "\t" + comp + "\n";
+			s = s + "\tCELLS\t" + col.type + "\t" + lay.type + "\t" + cell.type + "\t" + comp.type + "\n";
 		
 		s = NCSWriter.writeProperty("PROB", prob, s);
 		

@@ -49,7 +49,7 @@
 		<current_voltage_relation cond_law="ohmic" ion="non_specific" default_erev="-54.3" default_gmax="0.3">
 			<integrate_and_fire threshold="-50" t_refrac="5" v_reset="-60" g_refrac="0.1"/>
 		</current_voltage_relation>
-  	    </channel_type>
+  	 </channel_type>
 
     <synapse_type name="ExcitSyn1" xmlns="http://morphml.org/channelml/schema">
 	<doub_exp_syn max_conductance="0.5" rise_time=".0001" decay_time="0.0005" reversal_potential="0" />

@@ -486,7 +486,7 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			doubExpSyn.setMaxConductance(ncsSynapses.get(i).maxConduct);
 			
 			// set rise timemaxConduct
-			doubExpSyn.setRiseTime(.0001);
+			doubExpSyn.setRiseTime(.001);
 		
 			// find which waveform file to parse for decay time
 			for(int j = 0; j < synpsgList.size(); j++)
@@ -514,6 +514,8 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 					tempIndex = 0;
 				}
 			}
+			
+			// TODO decay time
 			
 			// set decay time
 			//if( tempArr.length > 0 )

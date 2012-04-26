@@ -1,6 +1,7 @@
 package unr.neurotranslate.ui;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 import org.gnome.gdk.EventExpose;
 import org.gnome.gtk.Button;
@@ -12,9 +13,15 @@ import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
 import org.gnome.gtk.Entry.Activate;
 import org.gnome.gtk.TreeSelection.Changed;
+import org.morphml.channelml.schema.SynapseType;
+import org.morphml.networkml.schema.GlobalSynapticProperties;
 import org.morphml.networkml.schema.Input;
+import org.morphml.networkml.schema.InputSitePattern;
+import org.morphml.networkml.schema.Inputs;
 import org.morphml.networkml.schema.Population;
 import org.morphml.networkml.schema.Projection;
+import org.morphml.networkml.schema.Projections;
+import org.morphml.networkml.schema.SynapseProperties;
 
 import unr.neurotranslate.ui.controller.UIControllerNeuroML;
 
@@ -24,7 +31,10 @@ public class NetworkHandler {
 	public TreeSelection rs1, rs2, rs3;
 	public Population currentPopulation;
 	public Projection currentProjection;
+	public Projections currentProjectionClass;
 	public Input currentInput;
+	public Inputs currentInputClass; 	
+	public InputSitePattern currentPattern;
 	
 	public NetworkHandler( final WidgetReferences w, final UIControllerNeuroML ui ) {
 		
@@ -36,8 +46,22 @@ public class NetworkHandler {
 				w.getL("nPops").listToModel( ui.getPopulations() );
 				w.getL("nProjs").listToModel( ui.getProjections() );
 				w.getL("nInputs").listToModel( ui.getInputs() );
-				w.getC("nCellSel").listToModel( ui.getCells() );
-				w.getC("nCellSel").getView().setActive(0);
+				
+				if( w.getC("nCellSel").getChanged() ) {
+					w.getC("nCellSel").listToModel( ui.getCells() );
+					w.getC("nCellSel").setChanged(false);					
+				}
+											
+				if( w.getC("nSourceSel").getChanged()) {
+					w.getC("nSourceSel").listToModel( ui.getPopulations() );
+					w.getC("nSourceSel").setChanged(false);
+				}
+				
+				if( w.getC("nTargetSel").getChanged() ) {					
+					w.getC("nTargetSel").listToModel( ui.getPopulations() );
+					w.getC("nTargetSel").setChanged(false);
+				}
+			
 				
 				return false;
 			}
@@ -108,8 +132,18 @@ public class NetworkHandler {
 						e.printStackTrace();
 					}									
 				
-					// Set everything else to current projection 						
-					//((Entry) w.getW("nProjectUnits")).setText( currentProjection.get );					
+					currentProjectionClass = ui.getProjectionsClass();
+					
+					// Set everything else to current projection					
+					ArrayList<String> s = new ArrayList<String>();
+					for(GlobalSynapticProperties t: currentProjection.getSynapseProps() ) {
+						s.add(t.getSynapseType());
+					}					
+					w.getC("nSynSel").listToModel(s);
+					
+					
+					((Entry) w.getW("nProb")).setText(currentProjection.getConnectivityPattern().getFixedProbability().getProbability().toString());
+					((Entry) w.getW("nProjectUnits")).setText( currentProjectionClass.getUnits().toString() );					
 				}							
 			}
 		});			
@@ -133,29 +167,35 @@ public class NetworkHandler {
 					// Get input based on selected input
 					try {
 						 currentInput = ui.getInputByName(selectedText);
+						
 					} catch (Exception e) {						
 						e.printStackTrace();
 					}									
 				
-					// Set everything else to current input 						
+					 currentInputClass = ui.getInputsClass();
+					
+					// Set everything else to current input 		
+					((Entry) w.getW("nInputUnits")).setText( currentInputClass.getUnits().toString() );
 					((Entry) w.getW("nPulseDelay")).setText( Double.toString(currentInput.getPulseInput().getDelay()) );
 					((Entry) w.getW("nPulseDuration")).setText( Double.toString(currentInput.getPulseInput().getDuration()) );
 					((Entry) w.getW("nPulseAmp")).setText( Double.toString(currentInput.getPulseInput().getAmplitude()) );
+					((Entry) w.getW("nPattern")).setText( currentInput.getTarget().getSitePattern().getPercentageCells().getPercentage().toString() );
+					
 					
 				}							
 			}
 		});
 	}
 	
-	private void modifyHandler(WidgetReferences w, UIControllerNeuroML ui) {
+	private void modifyHandler(final WidgetReferences w, UIControllerNeuroML ui) {
 	
 		// Adding populations
 		((Button)w.getW("nAddPop")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
-	
-				
+				w.getC("nTargetSel").setChanged(false);	
+				w.getC("nSourceSel").setChanged(false);	
 			}
 		});
 		
@@ -164,8 +204,8 @@ public class NetworkHandler {
 			
 			@Override
 			public void onClicked(Button arg0) {
-		
-				
+				w.getC("nTargetSel").setChanged(false);	
+				w.getC("nSourceSel").setChanged(false);				
 			}
 		});
 		
@@ -175,6 +215,7 @@ public class NetworkHandler {
 			@Override
 			public void onClicked(Button arg0) {
 	
+				
 				
 			}
 		});

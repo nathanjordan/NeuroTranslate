@@ -157,6 +157,7 @@ public class MorphologyHandler {
 	
 				currentCell = ui.addCell();
 				w.getL("mCells").addData( currentCell.getName() );
+				w.getC("nCellSel").setChanged(true);	
 				
 			}
 		});
@@ -175,6 +176,7 @@ public class MorphologyHandler {
 				
 				w.getL("mCells").removeData();
 				((Entry) w.getW("mCellName")).setText("");
+				w.getC("nCellSel").setChanged(true);	
 				
 			}
 		});
@@ -265,6 +267,7 @@ public class MorphologyHandler {
 				w.getL("mCables").addData(arg0.getText());	
 				w.getL("mCables").getView().grabFocus();
 				currentCable.setName(arg0.getText());
+				
 			}
 		});
 		

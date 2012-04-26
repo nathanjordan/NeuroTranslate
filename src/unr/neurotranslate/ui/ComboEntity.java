@@ -18,6 +18,7 @@ public class ComboEntity {
 	private DataColumnString column;
 	private CellRendererText renderer;
 	private String selected;
+	private Boolean changed = true;
 	
 	public ComboEntity( String widgetName, String root ) throws FileNotFoundException {
 		
@@ -133,4 +134,13 @@ public class ComboEntity {
 		return view;
 	}
 
+	// Getter for changed property
+	public Boolean getChanged() {
+		return changed;
+	}
+	
+	// Setter for changed proptery
+	public void setChanged( Boolean b ) {
+		changed = b;
+	}
 }

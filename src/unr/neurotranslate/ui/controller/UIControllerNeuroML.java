@@ -10,8 +10,11 @@ import org.morphml.morphml.schema.Cell;
 import org.morphml.morphml.schema.Segment;
 import org.morphml.morphml.schema.Cell.Segments;
 import org.morphml.networkml.schema.Input;
+import org.morphml.networkml.schema.InputSitePattern;
+import org.morphml.networkml.schema.Inputs;
 import org.morphml.networkml.schema.Population;
 import org.morphml.networkml.schema.Projection;
+import org.morphml.networkml.schema.Projections;
 import org.morphml.neuroml.schema.Level3Cell;
 import org.morphml.neuroml.schema.Neuroml;
 import unr.neurotranslate.model.Data;
@@ -197,6 +200,13 @@ private Data _data;
 		
 		}
 	
+	public Projections getProjectionsClass() {
+		
+		return _data.nml.getProjections();
+		
+	}
+	
+	
 	public Projection getProjectionByName( String name ) throws Exception {
 		
 		List<Projection> list = _data.nml.getProjections().getProjections();
@@ -267,6 +277,14 @@ private Data _data;
 		return l;
 		
 		}
+	
+	public Inputs getInputsClass() {
+				
+		return _data.nml.getInputs();
+		
+		}
+	
+	
 	
 	public Input getInputByName( String name ) throws Exception {
 		

@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.morphml.channelml.schema.ChannelType;
 import org.morphml.channelml.schema.ChannelmlType;
 import org.morphml.channelml.schema.SynapseType;
 import org.morphml.morphml.schema.Cell;
@@ -13,6 +14,7 @@ import org.morphml.networkml.schema.Projections;
 import org.morphml.neuroml.schema.Level3Cells;
 import org.morphml.neuroml.schema.Neuroml;
 
+import unr.neurotranslate.ncs.Brain;
 import unr.neurotranslate.ncs.Compartment;
 import unr.neurotranslate.ncs.NCSData;
 import unr.neurotranslate.ncs.SpikeShape;
@@ -23,6 +25,7 @@ public class FormatConverter {
 	public static NeuroMLConversionData convertToNeuroML( NCSData d ) {
 		
 		ArrayList<SynapseType> synapseList = new ArrayList<SynapseType>();
+		ChannelType channel = new ChannelType();
 		
 		// NeuroMLConversionData object
 		NeuroMLConversionData neuromlData = new NeuroMLConversionData();
@@ -59,12 +62,18 @@ public class FormatConverter {
 		{
 			channelml.getSynapseTypes().add(st);
 		}
+	
+	
+		channel.setCurrentVoltageRelation(NCSToNeuroml.generateNeuromlCurrentVoltageRelation(d.cellList.get(0)));
+	    channelml.getChannelTypes().add(channel);
 		
 		neuromlData.neuroml.setChannels(channelml);		
 	
 		// finished converting
 		return neuromlData;
 		}
+	
+	
 	
 	public static NCSConversionData convertToNCS( Neuroml m ) throws IOException {
 			

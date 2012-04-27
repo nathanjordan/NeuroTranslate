@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.morphml.channelml.schema.ConductanceLaw;
 import org.morphml.channelml.schema.CurrentVoltageRelation;
 import org.morphml.channelml.schema.DoubleExponentialSynapse;
 import org.morphml.channelml.schema.IntegrateAndFire;
@@ -160,14 +161,21 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 	
 
 	// TODO current voltage relation, integrate and fire - should have for each something? i.e. more than one?
-    public static CurrentVoltageRelation generateNeuromlCurrentVoltageRelation(unr.neurotranslate.ncs.Brain ncsBrain)
+    public static CurrentVoltageRelation generateNeuromlCurrentVoltageRelation(unr.neurotranslate.ncs.Cell cell)
     {
     	CurrentVoltageRelation cvr = new CurrentVoltageRelation();
     	IntegrateAndFire integrateAndFire = new IntegrateAndFire();
-    	// ncs
-    	// threshold
-    	// TODO t_refrac
-    	// v_reset 	
+  
+    	// cond law
+		cvr.setCondLaw(ConductanceLaw.OHMIC);
+		cvr.setIon("non_specific");
+		cvr.setDefaultErev(-54.3);
+		cvr.setDefaultGmax(0.3);
+		integrateAndFire.setThreshold(cell.compartments.get(0).threshold.mean);
+		integrateAndFire.setTRefrac(5.0);
+		integrateAndFire.setVReset(cell.compartments.get(0).vmRest.mean);
+		integrateAndFire.setGRefrac(0.1);
+	    cvr.setIntegrateAndFire(integrateAndFire);
     	return cvr;
     }
 

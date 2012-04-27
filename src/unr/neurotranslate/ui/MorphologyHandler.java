@@ -157,8 +157,7 @@ public class MorphologyHandler {
 	
 				currentCell = ui.addCell();
 				w.getL("mCells").addData( currentCell.getName() );
-				w.getC("nCellSel").setChanged(true);	
-				
+				w.getC("nCellSel").setChanged(true);				
 			}
 		});
 		

@@ -245,7 +245,7 @@ private Data _data;
 			if( c.getName() != null && c.getName().equals(name) )
 				
 				list.remove(c);
-				
+					
 			}
 		
 		throw new Exception("Projection doesn't exist!");

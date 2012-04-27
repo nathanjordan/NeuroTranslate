@@ -35,12 +35,30 @@ public class StimuliHandler {
 				// fill out all entries/lists/combo boxes
 				w.getL("stInjects").listToModel(ui.getStimulusInjects());
 				w.getL("stStimuli").listToModel(ui.getStimuli());
-				w.getC("stStimSel").listToModel(ui.getStimuli());
-				w.getC("stColSel").listToModel(ui.getColumns());
-				w.getC("stLaySel").listToModel(ui.getLayers());
-				w.getC("stCellSel").listToModel(ui.getCells());
-				w.getC("stCompSel").listToModel(ui.getCompartments());
 				
+				if( w.getC("stStimSel").getChanged() ) {
+					w.getC("stStimSel").listToModel(ui.getStimuli());
+					w.getC("stStimSel").setChanged(false);
+				}
+				if( w.getC("stColSel").getChanged() ) {
+					w.getC("stColSel").listToModel(ui.getColumns());
+					w.getC("stColSel").setChanged(false);
+				}
+				
+				if( w.getC("stLaySel").getChanged() ) {				
+					w.getC("stLaySel").listToModel(ui.getLayers());
+					w.getC("stLaySel").setChanged(false);
+				}
+				
+				if( w.getC("stCellSel").getChanged() ) {					
+					w.getC("stCellSel").listToModel(ui.getCells());
+					w.getC("stCellSel").setChanged(false);
+				}
+			
+				if( w.getC("stCompSel").getChanged() ){
+					w.getC("stCompSel").listToModel(ui.getCompartments());
+					w.getC("stCompSel").setChanged(false);
+				}		
 				return false;
 			}
 		});
@@ -137,6 +155,7 @@ public class StimuliHandler {
 				currentStimInj.probability = 0.0;
 				w.getL("stInjects").addData( currentStimInj.type );
 				
+				
 			}
 		});		
 		
@@ -154,7 +173,7 @@ public class StimuliHandler {
 				w.getL("stInjects").removeData( );
 				((Entry) w.getW("stSIType")).setText("");
 				((Entry) w.getW("stProb")).setText("");
-				
+			
 			}
 		});	
 		
@@ -170,6 +189,7 @@ public class StimuliHandler {
 				currentStimulus.width = currentStimulus.ampStart = 0.0;
 				currentStimulus.cellsPerFreq = 0;
 				w.getL("stStimuli").addData( currentStimulus.type );
+				w.getC("stStimSel").setChanged(true);
 			}
 		});
 		
@@ -185,6 +205,8 @@ public class StimuliHandler {
 					e.printStackTrace();
 				}
 				w.getL("stStimuli").removeData();
+				w.getC("stStimSel").setChanged(true);
+				
 				((Entry) w.getW("stSType")).setText("");
 				((Entry) w.getW("stMode")).setText("");
 				((Entry) w.getW("stPattern")).setText("");

@@ -37,7 +37,12 @@ public class ColumnHandler {
 				// Refresh lists
 				w.getL( "coColShells").listToModel( ui.getColumnShells() );
 				w.getL( "coColumns").listToModel( ui.getColumns() );
-				w.getC("coColShellSel").listToModel(ui.getColumnShells());
+				
+				if( w.getC("coColShellSel").getChanged() ){
+					w.getC("coColShellSel").listToModel(ui.getColumnShells());
+					w.getC("coColShellSel").setChanged(false);
+				}
+			
 				//w.getL("coLayers").listToModel(ui.getLayers());
 				
 				return false;
@@ -145,6 +150,7 @@ public class ColumnHandler {
 				currentColumnShell = ui.addColumnShell();			
 				currentColumnShell.width = currentColumnShell.height = currentColumnShell.x = currentColumnShell.y = 0.0;				
 				w.getL("coColShells").addData( currentColumnShell.type );
+				w.getC("coColShellSel").setChanged(false);
 				
 			}
 		});
@@ -163,12 +169,14 @@ public class ColumnHandler {
 					e.printStackTrace();
 				}				
 				w.getL("coColShells").removeData();	
+				w.getC("coColShellSel").setChanged(false);
 				
 				((Entry) w.getW("coCSType")).setText( " " );
 				((Entry) w.getW("coWidth")).setText( " " );
 				((Entry) w.getW("coHeight")).setText( " " );
 				((Entry) w.getW("coLocX")).setText( " " );
-				((Entry) w.getW("coLocY")).setText( " " );				
+				((Entry) w.getW("coLocY")).setText( " " );	
+			
 			}
 		});
 		
@@ -180,7 +188,9 @@ public class ColumnHandler {
 			
 				// Add a new column
 				currentColumn = ui.addColumn();
-				w.getL("coColumns").addData( currentColumn.type );				
+				w.getL("coColumns").addData( currentColumn.type );		
+				w.getC("stColSel").setChanged(true);
+				w.getC("rColSel").setChanged(true);
 			}
 		});
 				
@@ -198,6 +208,8 @@ public class ColumnHandler {
 				}
 				w.getL("coColumns").removeData();
 				((Entry) w.getW("coCType")).setText( " " );
+				w.getC("stColSel").setChanged(true);
+				w.getC("rColSel").setChanged(true);
 				
 			}
 		});
@@ -284,6 +296,18 @@ public class ColumnHandler {
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
 				}
+			}
+		});
+		
+		// Column Type	
+		((Entry) w.getW("coCType")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {						
+				w.getL("coColumns").removeData();		
+				w.getL("coColumns").addData(arg0.getText());	
+				w.getL("coColumns").getView().grabFocus();
+				currentColumn.type = arg0.getText();				
 			}
 		});
 	}

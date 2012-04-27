@@ -28,11 +28,31 @@ public class ReportHandler {
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 				
 				// fill out all entries/lists/combo boxes
-				w.getL("rReports").listToModel(ui.getReports());				
-				w.getC("rColSel").listToModel(ui.getColumns());
-				w.getC("rLaySel").listToModel(ui.getLayers());
-				w.getC("rCellSel").listToModel(ui.getCells());
-				w.getC("rCompSel").listToModel(ui.getCompartments());
+				w.getL("rReports").listToModel(ui.getReports());			
+				
+				if( w.getC("rColSel").getChanged() ) {
+					w.getC("rColSel").listToModel(ui.getColumns());
+					w.getC("rColSel").setChanged(false);
+				}
+			
+				
+				if( w.getC("rLaySel").getChanged() ) {
+					w.getC("rLaySel").listToModel(ui.getLayers());
+					w.getC("rLaySel").setChanged(false);
+				}
+				
+				
+				if( w.getC("rCellSel").getChanged() ) {
+					w.getC("rCellSel").listToModel(ui.getCells());
+					w.getC("rCellSel").setChanged(false);
+				}
+				
+				
+				if( w.getC("rCompSel").getChanged() ) {
+					w.getC("rCompSel").listToModel(ui.getCompartments());
+					w.getC("rCompSel").setChanged(false);
+				}
+			
 				return false;
 			}
 		});
@@ -91,8 +111,7 @@ public class ReportHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
-				currentReport = ui.addReport();
-				
+				currentReport = ui.addReport();				
 				w.getL("rReports").addData( currentReport.type );
 				
 			}

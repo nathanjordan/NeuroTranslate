@@ -1250,10 +1250,30 @@
                               <placeholder/>
                             </child>
                             <child>
-                              <placeholder/>
+                              <widget class="GtkLabel" id="label205">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">%</property>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">2</property>
+                                <property name="bottom_attach">3</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <widget class="GtkLabel" id="label206">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">%</property>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">3</property>
+                                <property name="bottom_attach">4</property>
+                              </packing>
                             </child>
                           </widget>
                           <packing>
@@ -2327,13 +2347,43 @@ Potential&lt;/b&gt;</property>
                               <placeholder/>
                             </child>
                             <child>
-                              <placeholder/>
+                              <widget class="GtkLabel" id="label221">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">sec.</property>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">3</property>
+                                <property name="bottom_attach">4</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <widget class="GtkLabel" id="label222">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Ω</property>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">4</property>
+                                <property name="bottom_attach">5</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <widget class="GtkLabel" id="label223">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">mV</property>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">5</property>
+                                <property name="bottom_attach">6</property>
+                              </packing>
                             </child>
                           </widget>
                           <packing>
@@ -2488,7 +2538,17 @@ Potential&lt;/b&gt;</property>
                               <placeholder/>
                             </child>
                             <child>
-                              <placeholder/>
+                              <widget class="GtkLabel" id="label224">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">mV</property>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">2</property>
+                                <property name="bottom_attach">3</property>
+                              </packing>
                             </child>
                           </widget>
                           <packing>
@@ -3532,13 +3592,43 @@ Conductance&lt;/b&gt;</property>
                               <placeholder/>
                             </child>
                             <child>
-                              <placeholder/>
+                              <widget class="GtkLabel" id="label225">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">S</property>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">8</property>
+                                <property name="bottom_attach">9</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <widget class="GtkLabel" id="label226">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">sec</property>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">9</property>
+                                <property name="bottom_attach">10</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <widget class="GtkLabel" id="label227">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">mV</property>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">10</property>
+                                <property name="bottom_attach">11</property>
+                              </packing>
                             </child>
                           </widget>
                           <packing>
@@ -5194,7 +5284,7 @@ Peak Time&lt;/b&gt;</property>
                               <widget class="GtkLabel" id="label54">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">label</property>
+                                <property name="label" translatable="yes">sec</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -5208,7 +5298,7 @@ Peak Time&lt;/b&gt;</property>
                               <widget class="GtkLabel" id="label55">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">label</property>
+                                <property name="label" translatable="yes">sec</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -5222,7 +5312,7 @@ Peak Time&lt;/b&gt;</property>
                               <widget class="GtkLabel" id="label56">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">label</property>
+                                <property name="label" translatable="yes">sec</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>

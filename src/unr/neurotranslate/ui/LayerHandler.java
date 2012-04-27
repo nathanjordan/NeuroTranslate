@@ -39,7 +39,11 @@ public class LayerHandler {
 				// fill out all entries/lists/combo boxes
 				w.getL("lLayShells").listToModel( ui.getLayerShells() );
 				w.getL("lLayers").listToModel( ui.getLayers() );
-				w.getC("lShellSel").listToModel(ui.getLayerShells());
+				
+				if(w.getC("lShellSel").getChanged() ){
+					w.getC("lShellSel").listToModel(ui.getLayerShells());
+					w.getC("lShellSel").setChanged(false);
+				}
 
 				return false;
 			}
@@ -49,12 +53,6 @@ public class LayerHandler {
 		
 		modifyHandlers(w, ui);
 		
-	}
-	
-	public void setLists() throws FileNotFoundException {
-	
-		
-				
 	}
 	
 	public void setEntries(final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {
@@ -84,7 +82,10 @@ public class LayerHandler {
 					}									
 				
 					// Set everything else to current 
-					((Entry) w.getW("lLSType")).setText(currentLayerShell.type);
+					if(currentLayerShell.type != null )
+						((Entry) w.getW("lLSType")).setText(currentLayerShell.type);
+					else
+						((Entry) w.getW("lLSType")).setText("");
 					((Entry) w.getW("lLSLower")).setText(currentLayerShell.lower.toString());
 					((Entry) w.getW("lLSUpper")).setText(currentLayerShell.upper.toString());
 				}							
@@ -134,6 +135,7 @@ public class LayerHandler {
 				currentLayerShell = ui.addLayerShell();
 				currentLayerShell.lower = currentLayerShell.upper = 0.0;
 				w.getL("lLayShells").addData( currentLayerShell.type );
+				w.getC("lShellSel").setChanged(true);
 				
 			}
 		});		
@@ -153,6 +155,7 @@ public class LayerHandler {
 				((Entry) w.getW("lLSType")).setText(" ");
 				((Entry) w.getW("lLSLower")).setText(" ");
 				((Entry) w.getW("lLSUpper")).setText(" ");
+				w.getC("lShellSel").setChanged(true);
 			}
 		});	
 		
@@ -164,6 +167,8 @@ public class LayerHandler {
 				
 				currentLayer = ui.addLayer();				
 				w.getL("lLayers").addData( currentLayer.type );
+				w.getC("stLaySel").setChanged(true);
+				w.getC("rLaySel").setChanged(true);
 			}
 		});
 		
@@ -180,6 +185,8 @@ public class LayerHandler {
 				}				
 				w.getL("lLayers").removeData();
 				((Entry) w.getW("lLType")).setText("");
+				w.getC("stLaySel").setChanged(true);
+				w.getC("rLaySel").setChanged(true);
 				
 				
 			}

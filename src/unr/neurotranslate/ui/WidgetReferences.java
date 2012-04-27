@@ -165,12 +165,12 @@ public class WidgetReferences {
 		l3.put( "syLLPosPeakStd", GladeParseUtil.grabWidget("entry76", "window1") );
 		l3.put( "syLLNegMean", GladeParseUtil.grabWidget("entry77", "window1") );
 		l3.put( "syLLNegStd", GladeParseUtil.grabWidget("entry78", "window1") );
-		l3.put("syAddSynapse", GladeParseUtil.grabWidget( "sSynapseAdd", "window1" ) );
-		l3.put("syRemSynapse", GladeParseUtil.grabWidget( "sSynapseRem", "window1" ) );
-		l3.put("syAddSFD", GladeParseUtil.grabWidget( "sSFDAdd", "window1" ) );
-		l3.put("syRemSFD", GladeParseUtil.grabWidget( "sSFDRem", "window1" ) );
-		l3.put("syAddLearn", GladeParseUtil.grabWidget( "sLearnAdd", "window1" ) );
-		l3.put("syRemLearn", GladeParseUtil.grabWidget( "sLearnRem", "window1" ) );
+		l3.put( "syAddSynapse", GladeParseUtil.grabWidget( "sSynapseAdd", "window1" ) );
+		l3.put( "syRemSynapse", GladeParseUtil.grabWidget( "sSynapseRem", "window1" ) );
+		l3.put( "syAddSFD", GladeParseUtil.grabWidget( "sSFDAdd", "window1" ) );
+		l3.put( "syRemSFD", GladeParseUtil.grabWidget( "sSFDRem", "window1" ) );
+		l3.put( "syAddLearn", GladeParseUtil.grabWidget( "sLearnAdd", "window1" ) );
+		l3.put( "syRemLearn", GladeParseUtil.grabWidget( "sLearnRem", "window1" ) );
 				
 		//////////////////////////////////////////////////////////////////////////////////////////
 		////    Stimuli Tab
@@ -324,6 +324,8 @@ public class WidgetReferences {
 		l3.put( "cancelTrans", GladeParseUtil.grabWidget( "button47", "window3" ) );
 		l3.put( "translate", GladeParseUtil.grabWidget( "button48", "window3" ) );
 		l3.put( "translateDialog", GladeParseUtil.grabWidget( "window3", "window3") );
+		l3.put( "errImg", GladeParseUtil.grabWidget( "image46", "window3") );
+		l3.put( "errMsg", GladeParseUtil.grabWidget( "label177", "window3") );
 	}	
 	
 	public Widget getW( String name ) {

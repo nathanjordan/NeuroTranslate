@@ -4,23 +4,19 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.gnome.gdk.Color;
-import org.gnome.glade.XML;
 import org.gnome.gtk.FileChooserAction;
 import org.gnome.gtk.FileChooserDialog;
 import org.gnome.gtk.FileFilter;
 import org.gnome.gtk.MenuItem;
-import org.gnome.gtk.Notebook;
 import org.gnome.gtk.ResponseType;
 import org.gnome.gtk.StateType;
 import org.gnome.gtk.Statusbar;
 import org.gnome.gtk.ToggleButton;
-import org.gnome.gtk.Window;
 import org.gnome.gtk.MenuItem.Activate;
 import org.gnome.gtk.ToggleButton.Toggled;
 import org.gnome.notify.Notification;
 import org.morphml.neuroml.schema.Neuroml;
 
-import unr.neurotranslate.conversion.ConversionNotes;
 import unr.neurotranslate.conversion.FormatConverter;
 import unr.neurotranslate.conversion.NCSConversionData;
 import unr.neurotranslate.conversion.NeuroMLConversionData;
@@ -237,8 +233,6 @@ public class FileHandler {
 				if( arg0.getActive() ) {
 					((ToggleButton) w.getW("nmlToggle")).setActive( false );	
 					ncsState = true;
-					//w.getW("nmlTabs").hide();
-					//w.getW("ncsTabs").show();
 					
 					// Create conversion notes and temp ncs data		
 					NCSConversionData ncs = new NCSConversionData();
@@ -250,30 +244,12 @@ public class FileHandler {
 						e1.printStackTrace();
 					}
 					
-					errors.update( ncs.getNotes(), w);
+					// Update warnings and errors
+					ErrorHandler.update( ncs.getNotes(), w );
 					
-					
-					
-					/*
-					// Build translation error dialog
-					try {
-						new ErrorHandler( ncs.getNotes(), w );
-					} catch (FileNotFoundException e) {					
-						e.printStackTrace();
-					}
-					*/
-					// display translation dialog
-					
-					w.getW("translateDialog").show();		
-					
-					
-					// set all handlers!
-					UIControllerNCS ui = new UIControllerNCS( (NCSData) ncs.getData() );
-					try {
-						new NCSHandlers(w, ui);
-					} catch (Exception e1) {						
-						e1.printStackTrace();
-					}
+					// display translation dialog					
+					w.getW("translateDialog").show();	
+
 				}				
 			}
 		} );
@@ -286,29 +262,30 @@ public class FileHandler {
 				if( arg0.getActive() ) {
 				   ((ToggleButton) w.getW("ncsToggle")).setActive( false );	
 				   nmlState = true;
-				   //w.getW("nmlTabs").show();
-				   //w.getW("ncsTabs").hide();
 				   
 				   // Grab conversion data from NeuroML to NCS!
 				   NeuroMLConversionData nml = new NeuroMLConversionData();				   
 				   nml = FormatConverter.convertToNeuroML(Data.getInstance().ncs);
-				   			
-				   
-				   errors.update( nml.getNotes(), w );
-				   
-				  /* // Show translation dialog
-				   try {
-				    	new ErrorHandler(nml.getNotes(), w);
-				   } catch (FileNotFoundException e) {					
-						e.printStackTrace();
-				   }
-				   */
+	   
+				   // Update warnings and errors
+				   ErrorHandler.update( nml.getNotes(), w );
 				   
 				   w.getW("translateDialog").show();
 				   
+				   
+				   //w.getW("nmlTabs").show();
+				   //w.getW("ncsTabs").hide();
+				   
+				   // Grab conversion data from NeuroML to NCS!
+				   //NeuroMLConversionData nml = new NeuroMLConversionData();				   
+				   //nml = FormatConverter.convertToNeuroML(Data.getInstance().ncs);
+				   			
+				   
+				   //errors.update( nml.getNotes(), w );
+
 				   // Set up handlers
-				   UIControllerNeuroML ui = new UIControllerNeuroML( (Neuroml) nml.getData() );
-				   new NeuroMLHandlers(w, ui);
+				   //UIControllerNeuroML ui = new UIControllerNeuroML( (Neuroml) nml.getData() );
+				   //new NeuroMLHandlers(w, ui);
 				}				
 			}
 		} );       

@@ -1,6 +1,5 @@
 package unr.neurotranslate.ui;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 import org.gnome.gdk.EventExpose;
@@ -14,27 +13,33 @@ import org.gnome.gtk.Button.Clicked;
 import org.gnome.gtk.Entry.Activate;
 import org.gnome.gtk.TreeSelection.Changed;
 import org.morphml.channelml.schema.SynapseType;
+import org.morphml.networkml.schema.ConnectivityPattern;
 import org.morphml.networkml.schema.GlobalSynapticProperties;
 import org.morphml.networkml.schema.Input;
 import org.morphml.networkml.schema.InputSitePattern;
+import org.morphml.networkml.schema.InputTarget;
 import org.morphml.networkml.schema.Inputs;
 import org.morphml.networkml.schema.Population;
 import org.morphml.networkml.schema.Projection;
 import org.morphml.networkml.schema.Projections;
-import org.morphml.networkml.schema.SynapseProperties;
+import org.morphml.networkml.schema.PulseInput;
+import org.morphml.networkml.schema.ConnectivityPattern.FixedProbability;
+import org.morphml.networkml.schema.InputSitePattern.PercentageCells;
 
 import unr.neurotranslate.ui.controller.UIControllerNeuroML;
 
 public class NetworkHandler {
 	
 	public String selectedText;	
-	public TreeSelection rs1, rs2, rs3;
+	public TreeSelection rs1, rs2, rs3, rs4;
 	public Population currentPopulation;
 	public Projection currentProjection;
 	public Projections currentProjectionClass;
 	public Input currentInput;
 	public Inputs currentInputClass; 	
 	public InputSitePattern currentPattern;
+	public SynapseType currentSynapse;
+	
 	
 	public NetworkHandler( final WidgetReferences w, final UIControllerNeuroML ui ) {
 		
@@ -61,8 +66,7 @@ public class NetworkHandler {
 					w.getC("nTargetSel").listToModel( ui.getPopulations() );
 					w.getC("nTargetSel").setChanged(false);
 				}
-			
-				
+
 				return false;
 			}
 		});
@@ -98,13 +102,24 @@ public class NetworkHandler {
 						e.printStackTrace();
 					}									
 														
-					// Set everything else to current pop 						
-					((Entry) w.getW("nPopSize")).setText( (currentPopulation.getPopLocation().getRandomArrangement().getPopulationSize()).toString() );					
-					((Entry) w.getW("nCornerX")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX()) );
-					((Entry) w.getW("nCornerY")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY()) );
-					((Entry) w.getW("nCornerZ")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getZ()) );
-					((Entry) w.getW("nSizeW")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getWidth()) );
-					((Entry) w.getW("nSizeH")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getHeight()) );
+					// Set everything else to current pop 				
+					if(currentPopulation.getPopLocation() != null) {
+						((Entry) w.getW("nPopSize")).setText( (currentPopulation.getPopLocation().getRandomArrangement().getPopulationSize()).toString() );
+						((Entry) w.getW("nCornerX")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX()) );
+						((Entry) w.getW("nCornerY")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY()) );
+						((Entry) w.getW("nCornerZ")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getZ()) );
+						((Entry) w.getW("nSizeW")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getWidth()) );
+						((Entry) w.getW("nSizeH")).setText( Double.toString(currentPopulation.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getHeight()) );	
+					}
+					
+					else {
+						((Entry) w.getW("nPopSize")).setText("");
+						((Entry) w.getW("nCornerX")).setText ("");
+						((Entry) w.getW("nCornerY")).setText ("");
+						((Entry) w.getW("nCornerZ")).setText ("");
+						((Entry) w.getW("nSizeW")).setText ("");
+						((Entry) w.getW("nSizeH")).setText ("");
+					}
 				}							
 			}
 		});
@@ -141,9 +156,21 @@ public class NetworkHandler {
 					}					
 					w.getC("nSynSel").listToModel(s);
 					
+					if( currentProjection.getConnectivityPattern() != null ) {
+						((Entry) w.getW("nProb")).setText(currentProjection.getConnectivityPattern().getFixedProbability().getProbability().toString());
+						
+					}
+					else {
+						((Entry) w.getW("nProb")).setText("");
+					}
 					
-					((Entry) w.getW("nProb")).setText(currentProjection.getConnectivityPattern().getFixedProbability().getProbability().toString());
-					((Entry) w.getW("nProjectUnits")).setText( currentProjectionClass.getUnits().toString() );					
+					if( currentProjectionClass.getUnits() != null ) {
+						((Entry) w.getW("nProjectUnits")).setText( currentProjectionClass.getUnits().toString() );	
+					}
+					else {
+						((Entry) w.getW("nProjectUnits")).setText("");
+					}
+				
 				}							
 			}
 		});			
@@ -174,28 +201,44 @@ public class NetworkHandler {
 				
 					 currentInputClass = ui.getInputsClass();
 					
-					// Set everything else to current input 		
-					((Entry) w.getW("nInputUnits")).setText( currentInputClass.getUnits().toString() );
-					((Entry) w.getW("nPulseDelay")).setText( Double.toString(currentInput.getPulseInput().getDelay()) );
-					((Entry) w.getW("nPulseDuration")).setText( Double.toString(currentInput.getPulseInput().getDuration()) );
-					((Entry) w.getW("nPulseAmp")).setText( Double.toString(currentInput.getPulseInput().getAmplitude()) );
-					((Entry) w.getW("nPattern")).setText( currentInput.getTarget().getSitePattern().getPercentageCells().getPercentage().toString() );
+					// Set everything else to current input 
+					if( currentInput.getPulseInput() != null ) {
+						((Entry) w.getW("nPulseDelay")).setText( Double.toString(currentInput.getPulseInput().getDelay()) );
+						((Entry) w.getW("nPulseDuration")).setText( Double.toString(currentInput.getPulseInput().getDuration()) );
+						((Entry) w.getW("nPulseAmp")).setText( Double.toString(currentInput.getPulseInput().getAmplitude()) );
+						((Entry) w.getW("nPattern")).setText( currentInput.getTarget().getSitePattern().getPercentageCells().getPercentage().toString() );	
+					}
 					
+					else {
+						((Entry) w.getW("nPulseDelay")).setText( "" );
+						((Entry) w.getW("nPulseDuration")).setText( "" );
+						((Entry) w.getW("nPulseAmp")).setText( "" );
+						((Entry) w.getW("nPattern")).setText( "" );
+					}
 					
+					if( currentInputClass.getUnits() != null ) {
+						((Entry) w.getW("nInputUnits")).setText( currentInputClass.getUnits().toString() );	
+					}
+					
+					else {
+						((Entry) w.getW("nInputUnits")).setText("");
+					}
 				}							
 			}
-		});
+		});			
 	}
 	
-	private void modifyHandler(final WidgetReferences w, UIControllerNeuroML ui) {
+	private void modifyHandler(final WidgetReferences w, final UIControllerNeuroML ui) {
 	
 		// Adding populations
 		((Button)w.getW("nAddPop")).connect( new Clicked() {
 			
 			@Override
 			public void onClicked(Button arg0) {
-				w.getC("nTargetSel").setChanged(false);	
-				w.getC("nSourceSel").setChanged(false);	
+				
+				
+				w.getC("nTargetSel").setChanged(true);	
+				w.getC("nSourceSel").setChanged(true);	
 			}
 		});
 		
@@ -204,8 +247,8 @@ public class NetworkHandler {
 			
 			@Override
 			public void onClicked(Button arg0) {
-				w.getC("nTargetSel").setChanged(false);	
-				w.getC("nSourceSel").setChanged(false);				
+				w.getC("nTargetSel").setChanged(true);	
+				w.getC("nSourceSel").setChanged(true);				
 			}
 		});
 		
@@ -215,7 +258,11 @@ public class NetworkHandler {
 			@Override
 			public void onClicked(Button arg0) {
 	
-				
+				currentProjection = ui.addProjection();
+				currentProjection.setConnectivityPattern(new ConnectivityPattern());
+				currentProjection.getConnectivityPattern().setFixedProbability(new FixedProbability());
+				currentProjection.getConnectivityPattern().getFixedProbability().setProbability(0.0);
+				w.getL("nProjs").addData(currentProjection.getName());
 				
 			}
 		});
@@ -226,7 +273,15 @@ public class NetworkHandler {
 			@Override
 			public void onClicked(Button arg0) {
 		
+				try {
+					ui.removeProjection(w.getL("nProjs").getSelected());
+				} catch (Exception e) {				
+					///e.printStackTrace();
+				}
 				
+				w.getL("nProjs").removeData();
+				((Entry) w.getW("nProjectUnits")).setText("");
+				((Entry) w.getW("nProb")).setText("");
 			}
 		});
 		
@@ -236,6 +291,17 @@ public class NetworkHandler {
 			@Override
 			public void onClicked(Button arg0) {
 	
+				currentInput = ui.addInput();				
+				w.getL("nInputs").addData(currentInput.getName());
+				currentInput.setPulseInput( new PulseInput() );
+				currentInput.getPulseInput().setAmplitude(0);
+				currentInput.getPulseInput().setDelay(0);
+				currentInput.getPulseInput().setDuration(0);
+				
+				currentInput.setTarget( new InputTarget() );
+				currentInput.getTarget().setSitePattern( new InputSitePattern() );
+				currentInput.getTarget().getSitePattern().setPercentageCells( new PercentageCells() );
+				currentInput.getTarget().getSitePattern().getPercentageCells().setPercentage(0.0);
 				
 			}
 		});
@@ -246,7 +312,18 @@ public class NetworkHandler {
 			@Override
 			public void onClicked(Button arg0) {
 		
+				try {
+					ui.removeInput(w.getL("nInputs").getSelected());
+				} catch (Exception e) {				
+					//e.printStackTrace();
+				}
 				
+				w.getL("nInputs").removeData();
+				((Entry) w.getW("nInputUnits")).setText( "" );
+				((Entry) w.getW("nPulseDelay")).setText( "" );
+				((Entry) w.getW("nPulseDuration")).setText( "" );
+				((Entry) w.getW("nPulseAmp")).setText( "" );
+				((Entry) w.getW("nPattern")).setText( "" );
 			}
 		});
 		

@@ -170,7 +170,8 @@ public class CellHandler {
 				
 				currentCell = ui.addCell();
 				w.getL("ceCells").addData( currentCell.type );
-				
+				w.getC("stCellSel").setChanged(true);
+				w.getC("rCellSel").setChanged(true);				
 			}
 		});		
 		
@@ -186,6 +187,8 @@ public class CellHandler {
 					e.printStackTrace();
 				}
 				w.getL("ceCells").removeData( );
+				w.getC("stCellSel").setChanged(true);
+				w.getC("rCellSel").setChanged(true);
 				((Entry) w.getW("ceCellType")).setText("");			
 			}
 		});	
@@ -198,6 +201,8 @@ public class CellHandler {
 				
 				currentCompartment = ui.addCompartment();						
 				w.getL("ceCompartments").addData( currentCompartment.type );
+				w.getC("stCompSel").setChanged(true);
+				w.getC("rCompSel").setChanged(true);
 			}
 		});
 		
@@ -213,6 +218,9 @@ public class CellHandler {
 					e.printStackTrace();
 				}				
 				w.getL("ceCompartments").removeData();
+				w.getC("stCompSel").setChanged(true);
+				w.getC("rCompSel").setChanged(true);
+				
 				((Entry) w.getW("ceComType")).setText("");
 				((Entry) w.getW("ceTMMean")).setText("");
 				((Entry) w.getW("ceTMStd")).setText("");

@@ -2,8 +2,10 @@ package unr.neurotranslate.ui;
 import java.io.FileNotFoundException;
 
 import org.gnome.gdk.EventExpose;
+import org.gnome.gdk.EventFocus;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.Entry;
+import org.gnome.gtk.Notebook;
 import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
 import org.gnome.gtk.Entry.Activate;
@@ -34,6 +36,16 @@ public class BrainHandler {
 				w.getL("bReports").listToModel(w.getL("bReports").getAvailable());
 				
 				return false;
+			}
+		});
+		
+		((Notebook)w.getW("notebook1")).connect(new Notebook.SwitchPage() {
+			
+			@Override
+			public void onSwitchPage(Notebook arg0, int arg1) {
+			
+				System.out.println("switched");
+				
 			}
 		});
 		

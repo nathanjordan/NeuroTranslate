@@ -228,4 +228,8 @@ public class ListEntity {
 	public ArrayList<String> getAvailable() {
 		return available;
 	}
+	
+	public void addAvailable(String s) {
+		available.add(s);
+	}
 }

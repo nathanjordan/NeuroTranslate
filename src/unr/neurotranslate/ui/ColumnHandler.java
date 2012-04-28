@@ -36,14 +36,12 @@ public class ColumnHandler {
 				
 				// Refresh lists
 				w.getL( "coColShells").listToModel( ui.getColumnShells() );
-				w.getL( "coColumns").listToModel( ui.getColumns() );				
+				w.getL( "coColumns").listToModel( w.getL("bColTypes").getAvailable() );				
 				
 				if( w.getC("coColShellSel").getChanged() ){
 					w.getC("coColShellSel").listToModel(ui.getColumnShells());
 					w.getC("coColShellSel").setChanged(false);
 				}
-			
-				//w.getL("coLayers").listToModel(ui.getLayers());
 				
 				return false;
 			}
@@ -189,6 +187,7 @@ public class ColumnHandler {
 				// Add a new column
 				currentColumn = ui.addColumn();
 				w.getL("coColumns").addData( currentColumn.type );		
+				w.getL("bColTypes").addAvailable(currentColumn.type);
 				w.getC("stColSel").setChanged(true);
 				w.getC("rColSel").setChanged(true);
 			}

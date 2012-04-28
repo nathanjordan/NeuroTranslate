@@ -326,6 +326,9 @@ public class WidgetReferences {
 		l3.put( "translateDialog", GladeParseUtil.grabWidget( "window3", "window3") );
 		l3.put( "errImg", GladeParseUtil.grabWidget( "image46", "window3") );
 		l3.put( "errMsg", GladeParseUtil.grabWidget( "label177", "window3") );
+		
+		
+		l3.put("notebook1", GladeParseUtil.grabWidget( "notebook1", "window1" ) );
 	}	
 	
 	public Widget getW( String name ) {

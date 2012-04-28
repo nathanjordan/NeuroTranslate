@@ -29,6 +29,9 @@ public class FormatConverter {
 		
 		// NeuroMLConversionData object
 		NeuroMLConversionData neuromlData = new NeuroMLConversionData();
+		neuromlData.notes = new ConversionNotes();
+		neuromlData.notes.notes = new ArrayList<ConversionNote>();
+		ArrayList<ConversionNote> tempCNotes = new ArrayList<ConversionNote>();
 		
 		// objects getting set into the neuroml object
 		Populations populations = new Populations();
@@ -68,6 +71,13 @@ public class FormatConverter {
 	    channelml.getChannelTypes().add(channel);
 		
 		neuromlData.neuroml.setChannels(channelml);		
+		
+		tempCNotes = NCSToNeuroml.generateReportCNotes(d.reportList);
+		
+		for( ConversionNote cNote : tempCNotes )
+		{
+			neuromlData.notes.notes.add(cNote);
+		}
 	
 		// finished converting
 		return neuromlData;
@@ -177,8 +187,16 @@ public class FormatConverter {
 		
 		tempCNotes.clear();
 	
-		ncsConversionData.ncs.stimulusInjectList = NeuromlToNCS.generateNCSStimulusInjects(m.getInputs(), ncsConversionData.ncs.stimulusList, m.getPopulations());
+		ncsConversionData.ncs.stimulusInjectList = NeuromlToNCS.generateNCSStimulusInjects(m.getInputs(), ncsConversionData.ncs.stimulusList, m.getPopulations(), tempCNotes);
 		
+		// conversion notes
+		for( ConversionNote cNote : tempCNotes )
+		{
+			ncsConversionData.notes.notes.add(cNote);
+		}
+		
+		tempCNotes.clear();
+				
 		ncsConversionData.ncs.reportList = NeuromlToNCS.generateReports(m.getPopulations());
 		 
 		ncsConversionData.ncs.brain = NeuromlToNCS.generateNCSBrain(ncsConversionData.ncs.reportList, m.getProjections(), m.getPopulations(), ncsConversionData.ncs.synapseList, ncsConversionData.ncs.stimulusInjectList, ncsConversionData.ncs.columnList);

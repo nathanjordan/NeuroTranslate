@@ -82,7 +82,7 @@ public class NeuromlToNCS {
         brain.job = "Brain_model";
     	
     	// DURATION 
-    	brain.duration = 3.0;
+    	brain.duration = 1.0;
         
     	// FSV 
     	brain.FSV = 1000.0;
@@ -94,7 +94,7 @@ public class NeuromlToNCS {
     	brain.seed = -21;
     	
     	// DISTANCE
-    	brain.distance = null;
+    	brain.distance = false;
     	
     	for( Report report: reports )
     	{
@@ -380,14 +380,14 @@ public class NeuromlToNCS {
 		    				}
 		    				else
 		    				{
-		    					cNote = makeNewNote("integrate_and_fire", "high", "Parameter missing", "No integrate and fire, setting default threshold and mean.");
+		    					cNote = makeNewNote("integrate_and_fire", "low", "Parameter missing", "No integrate and fire, setting default threshold and mean.");
 								cNotes.add(cNote);
 		    				}
 		    			}
 		    			
 		    			else
 		    			{
-		    				cNote = makeNewNote("current_voltage_relation", "high", "Parameter missing", "No current voltage relation, setting default threshold and mean.");
+		    				cNote = makeNewNote("current_voltage_relation", "low", "Parameter missing", "No current voltage relation, setting default threshold and mean.");
 							cNotes.add(cNote);
 		    			}
 						
@@ -395,7 +395,7 @@ public class NeuromlToNCS {
 		    		
 		    		else
 					{
-		    			cNote = makeNewNote("channel_type", "high", "Parameter missing", "No channel found, setting default threshold and mean.");
+		    			cNote = makeNewNote("channel_type", "low", "Parameter missing", "No channel found, setting default threshold and mean.");
 						cNotes.add(cNote);
 						tempComp.threshold.mean = -50.0;
 		    			tempComp.vmRest.mean = -60.0;
@@ -479,69 +479,16 @@ public class NeuromlToNCS {
     	ArrayList<String> e;
     	ConversionNote cNote;
     	
-    	// get list of non repeating x coordinates	
-    	for(Population pop : populations.getPopulations())
-    	{
-    		if( pop.getPopLocation() == null )
-    		{
-    			cNote = makeNewNote("Population location", "high", "Parameter missing", "Missing the population location, can't create column shells.");
-    			cNotes.add(cNote);
-    		}
-    		else
-    		{
-    			if( pop.getPopLocation().getRandomArrangement() == null )
-    			{
-    				cNote = makeNewNote("Random Arrangement", "high", "Parameter missing", "Missing the random arrangement, can't create column shells.");
-        			cNotes.add(cNote);
-    			}
-    			else
-    			{
-    				if( pop.getPopLocation().getRandomArrangement().getRectangularLocation() == null )
-    				{
-    					cNote = makeNewNote("Rectangular Location", "high", "Parameter missing", "Missing the rectangular location, can't create column shells.");
-            			cNotes.add(cNote);
-    				}
-    				else
-    				{
-    					if(!xList.contains(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX()))
-    		    		{
-    		    			xList.add(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX());
-    		    		}
-    				}
-    			}
-    		}
-    		
-    	}
+    	columnShell = new ColumnShell();
+    	columnShell.type = "columnShell";
+    	columnShell.x = 0.0;
+    	columnShell.y = 0.0;
+    	columnShell.height = 0.0;
+    	columnShell.width = 0.0;
     	
-    	// for each unique x create column shell
-        for(Double d : xList)
-    	{
-        	columnShell = new ColumnShell();
-        	columnShell.type = "columnShell" + d.intValue();
-        	columnShell.x = d;
-        	columnShell.y = 0.0;
-        	columnShell.height = 0.0;
-        	columnShell.width = 0.0;
-        	cShellList.add(columnShell);  
-        	e = new ArrayList<String>();
-			cShellLShellList.add(e);
-        }
-    		      		
     	// getting max width and height
     	for(Population population: populations.getPopulations())
     	{
-    		// get correct column shell
-    		for( ColumnShell cShell : cShellList)
-    		{
-    			tempD = population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX();
-    			
-    			if(("columnShell" + tempD.intValue()).equals(cShell.type) )
-    			{
-    				cShellIndex = cShellList.indexOf(cShell);
-    				break;
-    			}
-    		}
-    	
     		if( population.getPopLocation() == null )
     		{
     			cNote = makeNewNote("Population location", "high", "Parameter missing", "Missing the population location, can't create column shells.");
@@ -564,15 +511,15 @@ public class NeuromlToNCS {
     				else
     				{
     					// get max height and min
-    		    		if(population.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getWidth() > cShellList.get(cShellIndex).width)
+    		    		if(population.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getWidth() > columnShell.width)
     		    		{
-    		    			cShellList.get(cShellIndex).width = population.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getWidth();
+    		    			columnShell.width = population.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getWidth();
     		    		}
     		    		
     		    		if( population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() + 
-    		    				population.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getHeight() > cShellList.get(cShellIndex).height)
+    		    				population.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getHeight() > columnShell.height)
     		    		{
-    		    			cShellList.get(cShellIndex).height = population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() + 
+    		    			columnShell.height = population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() + 
     		        				population.getPopLocation().getRandomArrangement().getRectangularLocation().getSize().getHeight();
     		    		}
     				}
@@ -580,12 +527,11 @@ public class NeuromlToNCS {
     		}
     	}	
     	
-    	for( ColumnShell tCShell : cShellList )
-    	{
-    		tCShell.type = "column_shell_" + cNameIndex;
-    		cNameIndex++;
-    	}
+		columnShell.type = "column_shell_" + cNameIndex;
     	
+    	cShellList.add(columnShell);  
+    	e = new ArrayList<String>();
+		cShellLShellList.add(e);
     	return cShellList;
     }
     
@@ -643,17 +589,22 @@ public class NeuromlToNCS {
     	{
     		for(Population pop : populations.getPopulations())
     		{	
-    			// if we are on the right column shell
-    			if( pop.getPopLocation().getRandomArrangement() == null )
+    			if( pop.getPopLocation() == null )
     			{
-    				cNote = makeNewNote("Random Arrangement", "high", "Parameter missing", "Missing the random arrangement, can't create column shells.");
+    				cNote = makeNewNote("Random Arrangement", "high", "Parameter missing", "Missing the population location, can't create layer shells.");
+        			cNotes.add(cNote);
+        			
+    			}
+    			else if( pop.getPopLocation().getRandomArrangement() == null )
+    			{
+    				cNote = makeNewNote("Random Arrangement", "high", "Parameter missing", "Missing the random arrangement, can't create layer shells.");
         			cNotes.add(cNote);
     			}
     			else
     			{
     				if( pop.getPopLocation().getRandomArrangement().getRectangularLocation() == null )
     				{
-    					cNote = makeNewNote("Rectangular Location", "high", "Parameter missing", "Missing the rectangular location, can't create column shells.");
+    					cNote = makeNewNote("Rectangular Location", "high", "Parameter missing", "Missing the rectangular location, can't create layer shells.");
             			cNotes.add(cNote);
     				}
     				else
@@ -678,15 +629,13 @@ public class NeuromlToNCS {
     	    				}
     	    			}
     				}
+    			
     			}
     		}
     		cSIndex++;
     		lSIndex = 1;
     		yList.clear();
     	}
-    			// for each unique y per that x
-    				// make layer shell
-    	
     	return lShellList;
     	
     }
@@ -696,74 +645,117 @@ public class NeuromlToNCS {
     	ArrayList<Layer> layerList = new ArrayList<Layer>();
     	Layer tempLayer;
     	char layerIndex = 'A';
-    	int cShellIndex = 0;
+    	
+    	int temp, xIndex = 0;
     	location loc;
     	ConversionNote cNote;
+    	boolean exists = false;
+    	ArrayList<Double> xList = new ArrayList<Double>();
+    	ArrayList<Double> yList = new ArrayList<Double>();
     	
     	// find layer shell for each population
     	for(Population pop : populations.getPopulations())
     	{
-    		// first find which column shell its in
-    		for(ColumnShell cShell : cShells)
+    		if( pop.getPopLocation() == null )
     		{
-    			if( pop.getPopLocation().getRandomArrangement() == null )
-    			{
-    				cNote = makeNewNote("Random Arrangement", "high", "Parameter missing", "Missing the random arrangement, can't create column shells.");
-        			cNotes.add(cNote);
-    			}
-    			else
-    			{
-    				if( pop.getPopLocation().getRandomArrangement().getRectangularLocation() == null )
-    				{
-    					cNote = makeNewNote("Rectangular Location", "high", "Parameter missing", "Missing the rectangular location, can't create column shells.");
-            			cNotes.add(cNote);
-    				}
-    				else
-    				{
-    					// if the population starts at the same x as a column shell it is in that column shell
-    	    			if(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX() == cShell.x)
-    	    			{
-    	    				// find which layer shell its in
-    	    				for(LayerShell lShell : lShells)
-    	    				{    		
-    	    					if(cShellLShellList.get(cShellIndex).contains(lShell.type))
-    	    					{	
-    		    					// if the y is between the lower and upper layer shell bounds we found the right layer shell
-    		    					if(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() / cShell.height * 100 == lShell.lower)
-    		    					{
-    		    						loc = new location();
-    		    						tempLayer = new Layer();
-    		    						tempLayer.layerShell = lShell;
-    		    						tempLayer.layerShellName = lShell.type;
-    		    						tempLayer.cellTypeNames.add(pop.getCellType());
-
-    		    						for(unr.neurotranslate.ncs.Cell tCell : cells)
-    		    						{
-    		    							if(tCell.type.equals(pop.getCellType()))
-    		    							{
-    		    								tempLayer.cellTypes.add(tCell);
-    		    								loc.cellTypes.add(tCell);
-    		    							}
-    		    						}
-    		    						tempLayer.cellTypeQuantities.add(pop.getPopLocation().getRandomArrangement().getPopulationSize());
-    		    						tempLayer.type = "layer_" + layerIndex;	
-    		    						loc.layer = tempLayer;
-    		    						loc.x = cShell.x;
-    		    	    		    	loc.y = pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY();	
-    		    	    		    	locations.add(loc);
-    		    						layerList.add(tempLayer);
-    		    						layerIndex++;
-    		    					}		
-    	    					}
-    	    				}
-    	    			}	
-    				}
-    			}
-    			
-    			cShellIndex++;
+    			cNote = makeNewNote("Population Location", "high", "Parameter missing", "Missing the population location, can't create layers.");
+				cNotes.add(cNote);
     		}
-    		cShellIndex = 0;
-    	}
+    		else if( pop.getPopLocation().getRandomArrangement() == null )
+			{
+				cNote = makeNewNote("Random Arrangement", "high", "Parameter missing", "Missing the random arrangement, can't create layers.");
+				cNotes.add(cNote);
+			}
+			else
+			{
+				if( pop.getPopLocation().getRandomArrangement().getRectangularLocation() == null )
+				{
+					cNote = makeNewNote("Rectangular Location", "high", "Parameter missing", "Missing the rectangular location, can't create layers.");
+	    			cNotes.add(cNote);
+				}
+				else
+				{
+					// find which layer shell its in
+					for(LayerShell lShell : lShells)
+					{  	
+    					// if the y is between the lower and upper layer shell bounds we found the right layer shell
+    					if(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() / cShells.get(0).height * 100 == lShell.lower)
+    					{
+    						// for each x
+    						for( Double x : xList )
+    						{
+    							// if that x is equal to the population's x
+    							if( x.equals( pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX() ))
+    							{
+    								// if that x's y is equal to the population's y
+    								if(yList.get(xIndex).equals( pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY()) )
+    								{
+    									// if layer doesn't already contain cell type
+        					    		if( layerList.get(xIndex).cellTypeNames.contains(pop.getCellType()) )
+        					    		{
+        					    			exists = true;
+        					    		}
+        					    		else
+        					    		{
+    	    					    		loc = new location();
+    	    					    		layerList.get(xIndex).cellTypeNames.add(pop.getCellType());
+    	    					    		
+    	    					    		for(unr.neurotranslate.ncs.Cell tCell : cells)
+        		    						{
+        		    							if(tCell.type.equals(pop.getCellType()))
+        		    							{
+        		    								layerList.get(xIndex).cellTypes.add(tCell);
+        		    								loc.cellTypes.add(tCell);
+        		    							}
+        		    						}
+    	    					    		layerList.get(xIndex).cellTypeQuantities.add(pop.getPopLocation().getRandomArrangement().getPopulationSize());
+    	    					    		loc.layer = layerList.get(xIndex);
+
+        		    						loc.x = pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX();	
+        		    	    		    	loc.y = pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY();	
+        		    	    		    	locations.add(loc);	
+        		    	    		    	exists = true;
+        					    		}
+    								}
+    							}
+    							xIndex++;
+    						}
+    						xIndex = 0;
+    					
+				 
+				        if( !exists )
+				        {
+				        	xList.add(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX());
+					    	yList.add(pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY());
+					    	loc = new location();
+    						tempLayer = new Layer();
+    						tempLayer.layerShell = lShell;
+    						tempLayer.layerShellName = lShell.type;
+    						tempLayer.cellTypeNames.add(pop.getCellType());
+    						for(unr.neurotranslate.ncs.Cell tCell : cells)
+    						{
+    							if(tCell.type.equals(pop.getCellType()))
+    							{
+    								tempLayer.cellTypes.add(tCell);
+    								loc.cellTypes.add(tCell);
+    							}
+    						}
+    						tempLayer.cellTypeQuantities.add(pop.getPopLocation().getRandomArrangement().getPopulationSize());
+    						tempLayer.type = "layer_" + layerIndex;	
+    						loc.layer = tempLayer;
+    						layerList.add(tempLayer);
+    						layerIndex++;
+
+    						loc.x = pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX();
+    	    		    	loc.y = pop.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY();	
+    	    		    	locations.add(loc);	
+				        }		
+					}
+				}	
+			}
+			}
+			exists = false;
+		}
     	return layerList;
     }
    
@@ -816,7 +808,7 @@ public class NeuromlToNCS {
 		   {
 			   cNote = makeNewNote("Pulse input", "high", "Parameter missing", "Pulse input is missing, setting defaults.");
 			   cNotes.add(cNote);
-			   stimulus.ampStart = 3.0;
+			   stimulus.ampStart = 0.5;
 			   stimulus.width = .01;
 			   stimulus.timeEnd.add(1.0);
 		   }
@@ -863,11 +855,12 @@ public class NeuromlToNCS {
 	   return stimList;
     }
    
-   public static ArrayList<StimulusInject> generateNCSStimulusInjects( Inputs inputs, ArrayList<Stimulus> stimulusList, Populations populations )
+   public static ArrayList<StimulusInject> generateNCSStimulusInjects( Inputs inputs, ArrayList<Stimulus> stimulusList, Populations populations, ArrayList<ConversionNote> cNotes )
    {
 	   ArrayList<StimulusInject> stimInjectList = new ArrayList<StimulusInject>();
 	   Double probability;
 	   StimulusInject stimInject; 
+	   ConversionNote cNote;
 	   
 	   for( Input input : inputs.getInputs() )
 	   {
@@ -898,8 +891,7 @@ public class NeuromlToNCS {
 				   {
 					   if( population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX() == loc.x 
 							   && population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() == loc.y )
-					   {
-						   
+					   {   
 						   for( unr.neurotranslate.ncs.Cell cell : loc.cellTypes )
 						   {
 							   if( cell.type.equals(population.getCellType()) )
@@ -929,8 +921,18 @@ public class NeuromlToNCS {
 								   stimInject.compartmentName = stimInject.compartment.type;
 											
 								   // probability
-								   probability = input.getTarget().getSitePattern().getPercentageCells().getPercentage();
-								   stimInject.probability = probability / 100.0;  
+								   if( input.getTarget().getSitePattern() == null )
+								   {
+									   cNote = makeNewNote("Input Site Pattern", "high", "Parameter missing", "No input site pattern found, setting  defaults.");
+									   cNotes.add(cNote);
+									   probability = 100.0;
+									   stimInject.probability = probability / 100.0;  
+								   }
+								   else
+								   {
+									   probability = input.getTarget().getSitePattern().getPercentageCells().getPercentage();
+									   stimInject.probability = probability / 100.0;  
+								   }
 							   }
 						   }
 					   }	  	  

@@ -40,6 +40,7 @@ import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.Connect;
 import unr.neurotranslate.ncs.Layer;
 import unr.neurotranslate.ncs.Report;
+import unr.neurotranslate.ncs.SpikeShape;
 import unr.neurotranslate.ncs.StimulusInject;
 import unr.neurotranslate.ncs.SynPSG;
 import unr.neurotranslate.ncs.Synapse;
@@ -90,7 +91,7 @@ public class NCSToNeuroml {
 	static int popIndex = 1;
 
 	
-public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell> ncsCells ) {
+public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs.Cell> ncsCells, ArrayList<ConversionNote> cNotes ) {
 		
 			// NeuroML Cells class
 	        Level3Cells neuromlCells = new Level3Cells();
@@ -103,6 +104,8 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			ArrayList<Segment> segmentList = new ArrayList<Segment>();
 			Segment tempSegment;
 			Point tempPoint;
+
+			ConversionNote cNote;
 			
 			BigInteger idIndex = new BigInteger("0");
 			
@@ -553,6 +556,20 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 		for( Report report: reports )
 		{
 			cNote = makeNewNote(report.type, "low", "Unused Parameter", "Reports not applicable to NeuroML.");
+			cNotes.add(cNote);
+		}
+		
+		return cNotes;	
+	}
+	
+	public static ArrayList<ConversionNote> generateSpikeshapeCNotes(ArrayList<SpikeShape> spikeshapes)
+	{
+		ArrayList<ConversionNote> cNotes = new ArrayList<ConversionNote>();
+		ConversionNote cNote; 
+		
+		for( SpikeShape spikeshape: spikeshapes )
+		{
+			cNote = makeNewNote(spikeshape.type, "low", "Unused Parameter", "Spike shape voltages not applicable to NeuroML.");
 			cNotes.add(cNote);
 		}
 		

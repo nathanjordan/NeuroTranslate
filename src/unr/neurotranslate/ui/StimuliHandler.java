@@ -95,10 +95,13 @@ public class StimuliHandler {
 					}									
 				
 					// Set everything else to current inject
-					// TODO - fill combo boxes
 					((Entry) w.getW("stSIType")).setText(currentStimInj.type);
-					((Entry) w.getW("stProb")).setText(currentStimInj.probability.toString());
-					
+					if(currentStimInj.probability != null) {
+						((Entry) w.getW("stProb")).setText(currentStimInj.probability.toString());	
+					}
+					else {
+						((Entry) w.getW("stProb")).setText("");
+					}
 				}							
 			}
 		});
@@ -130,11 +133,33 @@ public class StimuliHandler {
 					((Entry) w.getW("stSType")).setText(currentStimulus.type);
 					((Entry) w.getW("stMode")).setText(currentStimulus.mode);
 					((Entry) w.getW("stPattern")).setText(currentStimulus.pattern);
-					((Entry) w.getW("stTimeInc")).setText(currentStimulus.timeIncrement.toString());					
-					//((Entry) w.getW("stFreqCol")).setText(currentStimulus.freqCols.toString()); // returns null
-					((Entry) w.getW("stCellFreq")).setText(currentStimulus.cellsPerFreq.toString());
-					((Entry) w.getW("stDynRange")).setText(currentStimulus.dynRange.mean + " " + currentStimulus.dynRange.stdev);
-					((Entry) w.getW("stAmpStart")).setText(currentStimulus.ampStart.toString());
+					if(currentStimulus.timeIncrement != null ) {
+						((Entry) w.getW("stTimeInc")).setText(currentStimulus.timeIncrement.toString());		
+					}
+					else {
+						((Entry) w.getW("stTimeInc")).setText("");
+					}
+									
+					if(currentStimulus.cellsPerFreq != null ) {
+						((Entry) w.getW("stCellFreq")).setText(currentStimulus.cellsPerFreq.toString());		
+					}
+					else {
+						((Entry) w.getW("stCellFreq")).setText("");
+					}
+					
+					if(currentStimulus.dynRange.mean != null || currentStimulus.dynRange.stdev != null ) {						
+						((Entry) w.getW("stDynRange")).setText(currentStimulus.dynRange.mean + " " + currentStimulus.dynRange.stdev);
+					}
+					else {
+						((Entry) w.getW("stDynRange")).setText("");
+					}
+					
+					if(currentStimulus.ampStart != null) {
+						((Entry) w.getW("stAmpStart")).setText(currentStimulus.ampStart.toString());	
+					}
+					else {
+						((Entry) w.getW("stAmpStart")).setText("");								
+					}
 					((Entry) w.getW("stWidth")).setText(currentStimulus.width.toString());				
 					((Entry) w.getW("stTStart")).setText(currentStimulus.timeStart.toString());
 					((Entry) w.getW("stTEnd")).setText(currentStimulus.timeEnd.toString());

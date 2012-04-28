@@ -44,7 +44,7 @@ public class BrainHandler {
 			@Override
 			public void onSwitchPage(Notebook arg0, int arg1) {
 			
-				System.out.println("switched");
+				
 				
 			}
 		});

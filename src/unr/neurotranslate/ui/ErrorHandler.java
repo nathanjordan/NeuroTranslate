@@ -126,7 +126,7 @@ public class ErrorHandler {
 	static void update( ConversionNotes notes, WidgetReferences w) {
 					
 		// Set conversion notes
-		if(notes.notes != null) {
+		if(notes.notes.size() != 0) {
 			
 			// Clear current model first
 			model.clear();			
@@ -147,7 +147,7 @@ public class ErrorHandler {
 			
 			// Throw error message and image up if notes exist
 			((Image)w.getW("errImg")).setImage(Stock.NO, IconSize.BUTTON );
-			((Label)w.getW("errMsg")).setLabel("Translation possible warnings!");
+			((Label)w.getW("errMsg")).setLabel("Translation possible with warnings!");
 		}
 		
 		else {

@@ -16,6 +16,11 @@ public class BrainHandler {
 	public Brain currentBrain;
 	
 	public BrainHandler( final WidgetReferences w, final UIControllerNCS ui ) throws FileNotFoundException {			
+				
+		// Set initial parameters for the brain
+		w.getL("bColTypes").setAvailable( ui.getColumns() );
+		w.getL("bStimInjects").setAvailable( ui.getStimulusInjects() );
+		w.getL("bReports").setAvailable( ui.getReports() );
 		
 		w.getW("brainScroll").connect(new Widget.ExposeEvent() {
 			
@@ -23,17 +28,14 @@ public class BrainHandler {
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 				
 				// fill out all entries/lists/combo boxes								
-				//w.getL("bColTypes").setAvailable( ui.getColumns() );		
-				//w.getL("bStimInjects").setAvailable( ui.getStimulusInjects() );
-				//w.getL("bReports").setAvailable( ui.getReports() );
-				w.getL("bColTypes").listToModel(ui.getColumns());
+
+				w.getL("bColTypes").listToModel(w.getL("bColTypes").getAvailable());
+				w.getL("bStimInjects").listToModel(w.getL("bStimInjects").getAvailable());
+				w.getL("bReports").listToModel(w.getL("bReports").getAvailable());
 				
 				return false;
 			}
 		});
-
-		
-		w.getL("bColTypes").setAvailable( ui.getColumns() );
 		
 		// grab current brain pointer
 		currentBrain = ui.getBrain();
@@ -129,9 +131,8 @@ public class BrainHandler {
 			public void onClicked(Button arg0) {
 						
 				// Show popup and update the views
-				//w.getW("popup").show();
-				//ModifyPopup.updateViews( "Column Types", w.getL("bColTypes").getActive(), w.getL("bColTypes").getAvailable(), "bColTypes", w );
-				//System.out.println(w.getL("bColTypes").getAvailable());
+				w.getW("popup").show();
+				ModifyPopup.updateViews( "Column Types", "bColTypes", w );
 			}
 		});	
 		
@@ -143,10 +144,25 @@ public class BrainHandler {
 			public void onClicked(Button arg0) {
 				
 				// Show popup and update the views
-				//w.getW("popup").show();
-				//ModifyPopup.updateViews( "Stimulus Injects", brainStimulusList, brainStimulusList, w );
+				w.getW("popup").show();
+				ModifyPopup.updateViews( "Stimulus Injects", "bStimInjects", w );
 				
 			}
-		});		
+		});	
+		
+		// Set up connect for modifying a report
+		((Button) w.getW("bModReports")).connect( new Clicked() {
+			
+			@Override
+			public void onClicked(Button arg0) {
+				
+				// Show popup and update the views
+				w.getW("popup").show();
+				ModifyPopup.updateViews( "Reports", "bReports", w );
+				
+			}
+		});	
+		
+		
 	}
 }

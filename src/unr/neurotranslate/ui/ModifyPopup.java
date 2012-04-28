@@ -17,10 +17,6 @@ public class ModifyPopup {
 	
 	public ModifyPopup( final WidgetReferences w ) throws FileNotFoundException {
 
-		// Create lists for each view
-		activeList = new ArrayList<String>();		
-		availableList = new ArrayList<String>();		
-		
 		// Set connects for handling each button event
 		// Set cancel event		
 		((Button) w.getW("modCancel")).connect( new Clicked() {
@@ -44,8 +40,8 @@ public class ModifyPopup {
 				// Need to save both the active and available lists
 				w.getL("active").modelToList(activeList);	
 				w.getL("available").modelToList(availableList);
-				
-				w.getL(ptr).listToModel(activeList);
+						
+				w.getL(ptr).listToModel(availableList);
 				
 				w.getL(ptr).setActive(activeList);
 				w.getL(ptr).setAvailable(availableList);
@@ -61,10 +57,19 @@ public class ModifyPopup {
 			@Override
 			public void onClicked(Button arg0) {
 			
-				// Add selected row from available list to active list					
+				// Add selected row from available list to active list		
+				ArrayList<String> a = new ArrayList<String>();
+				w.getL("available").modelToList(a);
+				
+				if( a.size()-1 == 0 ) {				
+					((Button)w.getW("modAdd")).setSensitive(false);
+					
+				}
+				
+				((Button)w.getW("modRem")).setSensitive(true);
+				
 				w.getL("active").addData( w.getL("available").getSelected() );
-				w.getL("available").removeData();
-
+				w.getL("available").removeData();		
 			}
 		} );
 		
@@ -73,6 +78,15 @@ public class ModifyPopup {
 			
 			@Override
 			public void onClicked(Button arg0) {
+				
+				ArrayList<String> a = new ArrayList<String>();
+				w.getL("active").modelToList(a);
+				
+				if( a.size()-1 == 0 ) {				
+					((Button)w.getW("modRem")).setSensitive(false);					
+				}
+				
+				((Button)w.getW("modAdd")).setSensitive(true);
 				
 				// Remove selected row from active list
 				w.getL("available").addData( w.getL("active").getSelected() );
@@ -83,15 +97,8 @@ public class ModifyPopup {
 	}
 	
 	// Call this function in order to modify and update the popup
-	public static void updateViews( String header, ArrayList<String> active, ArrayList<String> available, String l, WidgetReferences w ) {
-		
-		// clear current models
-		w.getL("active").refreshView();
-		w.getL("available").refreshView();
-		
-		activeList.clear();
-		availableList.clear();
-		
+	public static void updateViews( String header, String l, WidgetReferences w ) {
+
 		// save widget name
 		ptr = l;
 		
@@ -102,39 +109,26 @@ public class ModifyPopup {
 		
 		// Update tool tip on buttons (for debugging)
 		((Button) w.getW("modAdd")).setTooltipText( "Add new " + header );
-		((Button) w.getW("modRem")).setTooltipText( "Remove a " + header );
-		
-		// make local changes
-		for( String s: active ) {
-			activeList.add(s);
-		}
-		
-		for( String s: available ) {
-			availableList.add(s);
-		}
-		
-		//activeList = active;
-		//availableList = available;
-			
-		// Update both active and available models with new lists passed in
-		w.getL("active").listToModel( active );
-		w.getL("available").listToModel( available );		
-		
-	}
-	
-	// Call this function in order to modify and update the popup
-	public static void update( String header, String l, WidgetReferences w, UIControllerNCS ui ) {
-		
-		// Update headers based on what's passed in
-		((Window) w.getW("popupWin")).setTitle( "Adding " + header );
-		w.getL("active").setColumnHeader( header );
-		w.getL("available").setColumnHeader( header );
-		
-		// Update tool tip on buttons (for debugging)
-		((Button) w.getW("modAdd")).setTooltipText( "Add new " + header );
 		((Button) w.getW("modRem")).setTooltipText( "Remove " + header );
-				
-		w.getL("available").listToModel( ui.getLayers() );		
-		ptr = new String(l);
-	}
+
+		// make local changes
+		activeList = new ArrayList<String>( w.getL(l).getActive() );
+		availableList = new ArrayList<String>( w.getL(l).getAvailable() );
+
+		// reset add/rem buttons if needed
+		if(activeList.size() == 0) 
+			((Button)w.getW("modRem")).setSensitive(false);
+		else
+			((Button)w.getW("modRem")).setSensitive(true);
+		
+		if(availableList.size() == 0)
+			((Button)w.getW("modAdd")).setSensitive(false);
+		else
+			((Button)w.getW("modAdd")).setSensitive(true);
+		
+		// Update both active and available models with new lists passed in
+		w.getL("active").listToModel( activeList );
+		w.getL("available").listToModel( availableList );		
+		
+	}	
 }

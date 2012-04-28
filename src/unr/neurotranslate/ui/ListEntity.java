@@ -29,8 +29,10 @@ public class ListEntity {
 	// Constructor builds a tree view model without a data source!
 	public ListEntity( String widgetName, String root ) throws FileNotFoundException {
 
-		setActive(new ArrayList<String>());
-		setAvailable(new ArrayList<String>());
+		//setActive(new ArrayList<String>());
+		//setAvailable(new ArrayList<String>());
+		active = new ArrayList<String>();
+		available = new ArrayList<String>();
 		
 		// Grab the required widget
 		view = (TreeView) GladeParseUtil.grabWidget( widgetName, root );	
@@ -85,13 +87,13 @@ public class ListEntity {
 	
 	// Add new data to the model
 	public void addData( String newData ) {
-					
-		// Append a new row to the model
+
+		// Append a new row to the model	
 		row = model.appendRow();
 		
-		// Set the new value 
-		model.setValue( row, header, newData );
-
+		// Set the new value 		
+		model.setValue( row, header, newData );	
+		
 	}
 	
 	// Remove the selected row from the view/model
@@ -159,14 +161,17 @@ public class ListEntity {
 		String tempData = new String();		
 		
 		// Iterate over model to get each data item
-		do {
-			// Get next value from model
-			tempData = model.getValue( tempRow, header );
-			
-			// Add the value to list
-			dataSource.add(tempData);
-						
-		} while (tempRow.iterNext() );
+		if(tempRow != null){
+			do {
+				// Get next value from model
+				tempData = model.getValue( tempRow, header );
+				
+				// Add the value to list
+				dataSource.add(tempData);
+							
+			} while (tempRow.iterNext() );		
+		}
+	
 	}
 	
 	// Replace the current model with passed in list
@@ -197,13 +202,17 @@ public class ListEntity {
 	// Refresh the view when changes occur
 	public void refreshView() {		
 	
-		view.setModel(model);		
+		 model.clear();	
 	}
 
 	public void setActive( ArrayList<String> a ) {
+		
 		if(this.active != null)
 			this.active.clear();
-		this.active = a;
+		
+		for( String s: a) {
+			active.add(s);
+		}
 	}
 
 	public ArrayList<String> getActive() {

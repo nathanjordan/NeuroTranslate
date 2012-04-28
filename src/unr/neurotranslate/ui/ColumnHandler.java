@@ -36,7 +36,7 @@ public class ColumnHandler {
 				
 				// Refresh lists
 				w.getL( "coColShells").listToModel( ui.getColumnShells() );
-				w.getL( "coColumns").listToModel( ui.getColumns() );
+				w.getL( "coColumns").listToModel( ui.getColumns() );				
 				
 				if( w.getC("coColShellSel").getChanged() ){
 					w.getC("coColShellSel").listToModel(ui.getColumnShells());

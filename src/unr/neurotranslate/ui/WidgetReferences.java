@@ -35,7 +35,7 @@ public class WidgetReferences {
 		l1.put( "bColTypes", new ListEntity( "bColTypes", "window1" ) );
 		l1.put( "bStimInjects", new ListEntity( "bStimInjects", "window1" ) );		
 		l1.put( "bReports", new ListEntity( "bReports", "window1" ) );
-		l1.put( "bConnectionss", new ListEntity( "bConnections", "window1" ) );		
+		l1.put( "bConnections", new ListEntity( "bConnections", "window1" ) );		
 		l3.put("bType", GladeParseUtil.grabWidget( "brainType", "window1" ) );
 		l3.put("bJob", GladeParseUtil.grabWidget( "brainJob", "window1" ) );
 		l3.put("bFSV", GladeParseUtil.grabWidget( "brainFSV", "window1" ) );

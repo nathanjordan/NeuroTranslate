@@ -11,6 +11,7 @@ import org.gnome.gtk.Image;
 import org.gnome.gtk.Label;
 import org.gnome.gtk.ListStore;
 import org.gnome.gtk.Stock;
+import org.gnome.gtk.ToggleButton;
 import org.gnome.gtk.TreeIter;
 import org.gnome.gtk.TreeView;
 import org.gnome.gtk.TreeViewColumn;
@@ -52,11 +53,19 @@ public class ErrorHandler {
 				// If canceled, reset views
 				w.getW("translateDialog").hide();
 				
-				if(FileHandler.ncsState)
+				if(FileHandler.ncsState) {
+					((ToggleButton)w.getW("ncsToggle")).setActive(false);
 					FileHandler.ncsState = false;
+				}
+					
 				
-				if(FileHandler.nmlState)
+				if(FileHandler.nmlState) {
+					((ToggleButton)w.getW("nmlToggle")).setActive(false);
 					FileHandler.nmlState = false;
+				}
+					
+				
+				
 				
 				return false;
 			}

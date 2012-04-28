@@ -39,6 +39,7 @@ import unr.neurotranslate.ncs.Brain;
 import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.Connect;
 import unr.neurotranslate.ncs.Layer;
+import unr.neurotranslate.ncs.Report;
 import unr.neurotranslate.ncs.StimulusInject;
 import unr.neurotranslate.ncs.SynPSG;
 import unr.neurotranslate.ncs.Synapse;
@@ -539,7 +540,35 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			neuromlSynapseList.add(tempNeuromlSynapse);
 		}
 				
-		return neuromlSynapseList;
+			return neuromlSynapseList;
 		
 		}
+	
+	
+	public static ArrayList<ConversionNote> generateReportCNotes(ArrayList<Report> reports)
+	{
+		ArrayList<ConversionNote> cNotes = new ArrayList<ConversionNote>();
+		ConversionNote cNote; 
+		
+		for( Report report: reports )
+		{
+			cNote = makeNewNote(report.type, "low", "Unused Parameter", "Reports not applicable to NeuroML.");
+			cNotes.add(cNote);
+		}
+		
+		return cNotes;	
 	}
+	
+	private static ConversionNote makeNewNote( String entity, String severity, String type, String message )
+    {
+    	ConversionNote cNote = new ConversionNote();
+    	cNote.entityName = entity;
+    	cNote.severity = severity;
+    	cNote.type = type;
+    	cNote.message = message;
+		return cNote;
+    }
+	
+	
+	
+}

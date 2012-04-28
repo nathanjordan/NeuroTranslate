@@ -93,9 +93,13 @@ private Data _data;
 		
 		for( Level3Cell c : list ) {
 					
-			if( c.getName() != null && c.getName().equals(name) )
+			if( c.getName() != null && c.getName().equals(name) ) {
 				
 				list.remove(c);
+				return;
+			}
+				
+				
 				
 			}
 		
@@ -146,7 +150,7 @@ private Data _data;
 		
 		}
 	
-	public Population addCable() {
+	public Population addPopulation() {
 		
 		Population c = new Population();
 		
@@ -164,13 +168,16 @@ private Data _data;
 		
 		for( Population c : list ) {
 					
-			if( c.getName() != null && c.getName().equals(name) )
+			if( c.getName() != null && c.getName().equals(name) ) {				
 				
-				list.remove(c);
+					list.remove(c);
+					return;
+		
+				}
 				
 			}
 		
-		throw new Exception("Cell doesn't exist!");
+		throw new Exception("Population doesn't exist!");
 		
 		}
 	
@@ -242,11 +249,12 @@ private Data _data;
 		
 		for( Projection c : list ) {
 					
-			if( c.getName() != null && c.getName().equals(name) )
+			if( c.getName() != null && c.getName().equals(name) ){
 				
 				list.remove(c);
-					
+				return;
 			}
+		}
 		
 		throw new Exception("Projection doesn't exist!");
 		
@@ -295,8 +303,7 @@ private Data _data;
 			if( p.getName() != null && p.getName().equals(name) )
 				
 				return p;
-				
-				
+
 			}
 		
 		throw new Exception("Input doesn't exist!");
@@ -321,11 +328,12 @@ private Data _data;
 		
 		for( Input c : list ) {
 					
-			if( c.getName() != null && c.getName().equals(name) )
+			if( c.getName() != null && c.getName().equals(name) ) {
 				
 				list.remove(c);
-				
+				return;
 			}
+		}
 		
 		throw new Exception("Input doesn't exist!");
 		
@@ -369,8 +377,7 @@ private Data _data;
 			if( c1.getName() != null && c1.getName().equals(name) )
 				
 				return c1;
-				
-				
+
 			}
 		
 		throw new Exception("Cable doesn't exist!");
@@ -395,9 +402,13 @@ private Data _data;
 		
 		for( Cable c1 : list ) {
 					
-			if( c1.getName() != null && c1.getName().equals(name) )
+			if( c1.getName() != null && c1.getName().equals(name) ) {
 				
 				list.remove(c1);
+				return;
+			}
+				
+				
 				
 			}
 		
@@ -474,9 +485,13 @@ private Data _data;
 		
 		for( Segment c1 : list ) {
 					
-			if( c1.getName() != null && c1.getName().equals(name) )
+			if( c1.getName() != null && c1.getName().equals(name) ) {				
 				
 				list.remove(c1);
+				return;
+			}
+				
+				
 				
 			}
 		
@@ -545,10 +560,11 @@ private Data _data;
 		
 		for( SynapseType c1 : list ) {
 					
-			if( c1.getDoubExpSyn() != null && c1.getName() != null && c1.getName().equals(name) )
+			if( c1.getDoubExpSyn() != null && c1.getName() != null && c1.getName().equals(name) ) {
 				
 				list.remove( c1 );
-				
+				return;
+			}
 				
 			}
 		

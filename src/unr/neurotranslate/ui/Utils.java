@@ -1,15 +1,27 @@
 package unr.neurotranslate.ui;
 import java.util.ArrayList;
 
+import org.gnome.gdk.Color;
 import org.gnome.gtk.CellRendererText;
 import org.gnome.gtk.DataColumn;
 import org.gnome.gtk.DataColumnString;
+import org.gnome.gtk.Entry;
 import org.gnome.gtk.ListStore;
+import org.gnome.gtk.StateType;
 import org.gnome.gtk.TreeIter;
 import org.gnome.gtk.TreeViewColumn;
 
 
 public class Utils {
+	
+	static Color activeGreen = new Color(44880, 55552, 36608 );
+	static Color red = new Color(65535, 0, 0);
+	
+	public static void setColor( String s, Color color, WidgetReferences w ) {
+		
+		  w.getW(s).modifyBackground(StateType.SELECTED, color );
+		
+	}
 	
 	public static void updateModel( ArrayList<String> list, ListStore model, TreeViewColumn column, DataColumnString header ) {
 		

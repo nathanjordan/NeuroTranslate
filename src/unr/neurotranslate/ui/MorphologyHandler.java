@@ -170,7 +170,7 @@ public class MorphologyHandler {
 				try {
 					ui.removeCell( w.getL("mCells").getSelected() );
 				} catch (Exception e) {					
-					//e.printStackTrace();
+					e.printStackTrace();
 				}
 				
 				w.getL("mCells").removeData();
@@ -228,7 +228,7 @@ public class MorphologyHandler {
 				try {
 					ui.removeSegment( currentCell, w.getL("mSegs").getSelected() );
 				} catch (Exception e) {					
-					//e.printStackTrace();
+					e.printStackTrace();
 				}
 				
 				w.getL("mSegs").removeData();

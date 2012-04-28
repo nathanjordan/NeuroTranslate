@@ -101,7 +101,7 @@ public class ChannelHandler {
 				try {
 					ui.removeSynapse(w.getL("chSynapses").getSelected() );					
 				} catch (Exception e) {					
-					//e.printStackTrace();
+					e.printStackTrace();
 				}
 				
 				w.getL("chSynapses").removeData();			

@@ -1247,9 +1247,6 @@
                               </packing>
                             </child>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
                               <widget class="GtkLabel" id="label205">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
@@ -1274,6 +1271,9 @@
                                 <property name="top_attach">3</property>
                                 <property name="bottom_attach">4</property>
                               </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
                             </child>
                           </widget>
                           <packing>
@@ -2332,21 +2332,6 @@ Potential&lt;/b&gt;</property>
                               </packing>
                             </child>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
                               <widget class="GtkLabel" id="label221">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
@@ -2384,6 +2369,21 @@ Potential&lt;/b&gt;</property>
                                 <property name="top_attach">5</property>
                                 <property name="bottom_attach">6</property>
                               </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
                             </child>
                           </widget>
                           <packing>
@@ -2535,9 +2535,6 @@ Potential&lt;/b&gt;</property>
                               </packing>
                             </child>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
                               <widget class="GtkLabel" id="label224">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
@@ -2549,6 +2546,9 @@ Potential&lt;/b&gt;</property>
                                 <property name="top_attach">2</property>
                                 <property name="bottom_attach">3</property>
                               </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
                             </child>
                           </widget>
                           <packing>
@@ -3571,27 +3571,6 @@ Conductance&lt;/b&gt;</property>
                               </packing>
                             </child>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
                               <widget class="GtkLabel" id="label225">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
@@ -3629,6 +3608,27 @@ Conductance&lt;/b&gt;</property>
                                 <property name="top_attach">10</property>
                                 <property name="bottom_attach">11</property>
                               </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
                             </child>
                           </widget>
                           <packing>
@@ -8035,6 +8035,7 @@ Population&lt;/b&gt;</property>
   <widget class="GtkWindow" id="window3">
     <property name="width_request">600</property>
     <property name="title" translatable="yes">Translation Status</property>
+    <property name="window_position">center</property>
     <child>
       <widget class="GtkVBox" id="vbox45">
         <property name="visible">True</property>

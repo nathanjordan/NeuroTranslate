@@ -184,8 +184,15 @@ public class FormatConverter {
 		
 		tempCNotes.clear();
 				
+		// learning
+		ncsConversionData.ncs.synLearningList = NeuromlToNCS.generateNCSSynLearning();
+		
+		// syn fac 
+		ncsConversionData.ncs.synFacilDepressList = NeuromlToNCS.generateNCSSynFacilDepress();
+				
+				
 		// synapses
-		ncsConversionData.ncs.synapseList = NeuromlToNCS.generateNCSSynapses(m.getChannels().getSynapseTypes(), m.getProjections().getProjections(), ncsConversionData.ncs.synpsgList, tempCNotes);
+		ncsConversionData.ncs.synapseList = NeuromlToNCS.generateNCSSynapses(m.getChannels().getSynapseTypes(), m.getProjections().getProjections(), ncsConversionData.ncs.synpsgList, tempCNotes, ncsConversionData.ncs.synLearningList.get(0), ncsConversionData.ncs.synFacilDepressList.get(0) );
 		
 		// conversion notes
 		for( ConversionNote cNote : tempCNotes )
@@ -194,6 +201,7 @@ public class FormatConverter {
 		}
 		
 		tempCNotes.clear();
+		
 		
 		// stimuli
 		ncsConversionData.ncs.stimulusList = NeuromlToNCS.generateNCSStimuli(m.getInputs(), tempCNotes);

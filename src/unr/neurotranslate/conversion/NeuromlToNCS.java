@@ -288,7 +288,7 @@ public class NeuromlToNCS {
 					{
 						if( comp.type.equals(seg.getName()) )
 						{
-							tempNCSCell.compartmentLabels.add(comp.type);
+							tempNCSCell.compartmentLabels.add(comp.type+"Label");
 							tempNCSCell.compartments.add(comp);
 						}
 					}
@@ -951,7 +951,7 @@ public class NeuromlToNCS {
    }
    
    
-   public static ArrayList<Synapse> generateNCSSynapses( List<SynapseType> list, List<Projection> list2, ArrayList<SynPSG> synPsgList, ArrayList<ConversionNote> cNotes ) 
+   public static ArrayList<Synapse> generateNCSSynapses( List<SynapseType> list, List<Projection> list2, ArrayList<SynPSG> synPsgList, ArrayList<ConversionNote> cNotes, SynLearning learn, SynFacilDepress synFacil ) 
    {
 	   ArrayList<Synapse> synList = new ArrayList<Synapse>();
 	   Synapse ncsSynapse;
@@ -968,10 +968,10 @@ public class NeuromlToNCS {
 		   ncsSynapse.seed = null;
 		   
 		   // SFD_LABEL
-		   ncsSynapse.sfdLabel = null;
+		   ncsSynapse.sfdLabel = synFacil.type;
 		   
 		   // LEARN
-		   ncsSynapse.learn = null;
+		   ncsSynapse.learn = learn;
 		   
 		   // SYN_PSG
 		   if(ncsSynapse.type.startsWith( new String("E") ) )
@@ -1045,20 +1045,35 @@ public class NeuromlToNCS {
 	   return synList;
     }
     
-    public static SynFacilDepress generateNCSSynFacilDepress()
+    public static ArrayList<SynFacilDepress> generateNCSSynFacilDepress()
     {
+    	ArrayList<SynFacilDepress> synFList = new ArrayList<SynFacilDepress>();
     	SynFacilDepress synFacilDepress = new SynFacilDepress();
+    	
     	synFacilDepress.type = "NO_SFD";
     	synFacilDepress.SFD = "NONE";
-    	return synFacilDepress;
+    	synFacilDepress.facilTau = null;
+    	synFacilDepress.deprTau = null;
+    	synFList.add(synFacilDepress);
+    	
+    	return synFList;
     }
     
-    public static SynLearning generateNCSSynLearning()
+    public static ArrayList<SynLearning> generateNCSSynLearning()
     {
+    	ArrayList<SynLearning> learnList = new ArrayList<SynLearning>();
     	SynLearning synLearning = new SynLearning();
     	synLearning.type = "NO_LEARN";
     	synLearning.learning = "NONE";
-    	return synLearning;
+    	synLearning.negHebPeakDeltaUse = null;
+    	synLearning.posHebPeakDeltaUse = null;
+    	synLearning.posHebPeakTime = null;
+    	synLearning.posHebWindow = null;
+    	synLearning.negHebPeakDeltaUse = null;
+    	synLearning.negHebPeakTime = null;
+    	synLearning.negHebWindow = null;
+    	learnList.add(synLearning);
+    	return learnList;
     }
     
     public static ArrayList<SynPSG> generateNCSSynPSG() throws IOException

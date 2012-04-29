@@ -110,15 +110,13 @@ public class FormatConverter {
 	    ncsConversionData.ncs.spikeshapeList = NeuromlToNCS.generateNCSSpikeShape();
 	    
 	    // get compartments
-		for( Cell cell : m.getCells().getCells() )
+		tempCompartmentList = NeuromlToNCS.generateNCSCompartments( m.getChannels().getChannelTypes().get(0), m.getCells().getCells().get(0).getSegments(), m.getProjections(), m.getPopulations(), ncsConversionData.ncs.spikeshapeList.get(0), tempCNotes );
+		
+		for( Compartment comp : tempCompartmentList )
 		{
-			tempCompartmentList = NeuromlToNCS.generateNCSCompartments( m.getChannels().getChannelTypes().get(0), cell.getSegments(), m.getProjections(), m.getPopulations(), ncsConversionData.ncs.spikeshapeList.get(0), tempCNotes );
-			
-			for( Compartment comp : tempCompartmentList )
-			{
-				ncsConversionData.ncs.compartmentList.add(comp);
-			}			
-		}
+			ncsConversionData.ncs.compartmentList.add(comp);
+		}			
+		
 		
 		// conversion notes
 		for( ConversionNote cNote : tempCNotes )

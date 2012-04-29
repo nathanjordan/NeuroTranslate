@@ -236,7 +236,8 @@ public class ColumnHandler {
 				w.getL("coColShells").removeData();		
 				w.getL("coColShells").addData(arg0.getText());	
 				w.getL("coColShells").getView().grabFocus();
-				currentColumnShell.type = arg0.getText();				
+				currentColumnShell.type = arg0.getText();	
+				Utils.setColor("coCSType", Utils.activeGreen, w);
 			}
 		});
 		
@@ -249,7 +250,9 @@ public class ColumnHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentColumnShell.width = d;
+					Utils.setColor("coWidth", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
+					Utils.setColor("coWidth", Utils.red, w);
 					arg0.setText("");
 				}
 			}
@@ -264,8 +267,10 @@ public class ColumnHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentColumnShell.height = d;
+					Utils.setColor("coHeight", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("coHeight", Utils.red, w);
 				}
 			}
 		});
@@ -278,9 +283,11 @@ public class ColumnHandler {
 				
 				try {
 					double d = Double.parseDouble(arg0.getText());
+					Utils.setColor("coLocX", Utils.activeGreen, w);
 					currentColumnShell.x = d;
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("coLocX", Utils.red, w);
 				}
 			}
 		});
@@ -294,8 +301,10 @@ public class ColumnHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentColumnShell.y = d;				
+					Utils.setColor("coLocY", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("coLocY", Utils.red, w);
 				}
 			}
 		});
@@ -308,7 +317,8 @@ public class ColumnHandler {
 				w.getL("coColumns").removeData();		
 				w.getL("coColumns").addData(arg0.getText());	
 				w.getL("coColumns").getView().grabFocus();
-				currentColumn.type = arg0.getText();				
+				currentColumn.type = arg0.getText();	
+				Utils.setColor("coWidth", Utils.activeGreen, w);
 			}
 		});
 	}

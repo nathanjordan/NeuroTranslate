@@ -190,7 +190,6 @@ public class FormatConverter {
 		// syn fac 
 		ncsConversionData.ncs.synFacilDepressList = NeuromlToNCS.generateNCSSynFacilDepress();
 				
-				
 		// synapses
 		ncsConversionData.ncs.synapseList = NeuromlToNCS.generateNCSSynapses(m.getChannels().getSynapseTypes(), m.getProjections().getProjections(), ncsConversionData.ncs.synpsgList, tempCNotes, ncsConversionData.ncs.synLearningList.get(0), ncsConversionData.ncs.synFacilDepressList.get(0) );
 		

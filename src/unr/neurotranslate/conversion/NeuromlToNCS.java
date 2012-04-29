@@ -783,7 +783,7 @@ public class NeuromlToNCS {
 		   stimulus.cellsPerFreq = null;
 
 		   stimulus.dynRange.mean = 0.0;
-		   stimulus.dynRange.stdev = 400.0;
+		   stimulus.dynRange.stdev = 100.0;
 		   
 		   // timing
 		   stimulus.timing = null;
@@ -797,8 +797,8 @@ public class NeuromlToNCS {
 			   cNote = makeNewNote("Pulse input", "high", "Parameter missing", "Pulse input is missing, setting defaults.");
 			   cNotes.add(cNote);
 			   stimulus.ampStart = 0.5;
-			   stimulus.width = .01;
-			   stimulus.timeEnd.add(1.0);
+			   stimulus.width = .001;
+			   stimulus.timeEnd.add(3.0);
 		   }
 		   else
 		   {
@@ -806,7 +806,8 @@ public class NeuromlToNCS {
 			   // width
 			   stimulus.width = input.getPulseInput().getDuration();
 			// timeEnd
-			   stimulus.timeEnd.add(input.getPulseInput().getDuration());
+			   // TODO hard coded
+			   stimulus.timeEnd.add(3.0);
 		   }
 		   
 		   // ampEnd
@@ -877,8 +878,7 @@ public class NeuromlToNCS {
 			   {
 				   for( location loc : locations )
 				   {
-					   if( population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getX() == loc.x 
-							   && population.getPopLocation().getRandomArrangement().getRectangularLocation().getCorner().getY() == loc.y )
+					   if( population.getName().equals(loc.population.getName() ) )
 					   {   
 						   for( unr.neurotranslate.ncs.Cell cell : loc.cellTypes )
 						   {

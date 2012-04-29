@@ -43,7 +43,7 @@ public class FormatConverter {
 		// get/set cells
 			// segment ID's may not be right 
 			// segment y needs parsing
-		cells = NCSToNeuroml.generateNeuromlCells(d.cellList);
+		cells = NCSToNeuroml.generateNeuromlCells(d.cellList, tempCNotes);
 		neuromlData.neuroml.setCells(cells);
 	
 		// get/set populations
@@ -72,6 +72,7 @@ public class FormatConverter {
 		
 		neuromlData.neuroml.setChannels(channelml);		
 		
+		// report warnings
 		tempCNotes = NCSToNeuroml.generateReportCNotes(d.reportList);
 		
 		for( ConversionNote cNote : tempCNotes )
@@ -79,6 +80,18 @@ public class FormatConverter {
 			neuromlData.notes.notes.add(cNote);
 		}
 	
+		tempCNotes.clear();
+		
+		// spikeshape warnings
+		tempCNotes = NCSToNeuroml.generateSpikeshapeCNotes(d.spikeshapeList);
+		
+		for( ConversionNote cNote : tempCNotes )
+		{
+			neuromlData.notes.notes.add(cNote);
+		}
+	
+		tempCNotes.clear();
+		
 		// finished converting
 		return neuromlData;
 		}
@@ -163,8 +176,16 @@ public class FormatConverter {
 		tempCNotes.clear();
 				
 		// columns
-		ncsConversionData.ncs.columnList = NeuromlToNCS.generateNCSColumns(ncsConversionData.ncs.columnShellList, ncsConversionData.ncs.layerList);
+		ncsConversionData.ncs.columnList = NeuromlToNCS.generateNCSColumns(ncsConversionData.ncs.columnShellList, ncsConversionData.ncs.layerList, m.getPopulations(), tempCNotes);
 		
+		// conversion notes
+		for( ConversionNote cNote : tempCNotes )
+		{
+			ncsConversionData.notes.notes.add(cNote);
+		}
+		
+		tempCNotes.clear();
+				
 		// synapses
 		ncsConversionData.ncs.synapseList = NeuromlToNCS.generateNCSSynapses(m.getChannels().getSynapseTypes(), m.getProjections().getProjections(), ncsConversionData.ncs.synpsgList, tempCNotes);
 		

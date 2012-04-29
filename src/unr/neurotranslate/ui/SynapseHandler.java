@@ -73,15 +73,14 @@ public class SynapseHandler {
 					// Get current synapse based on selected synapse 
 					try {
 						 currentSynapse = ui.getSynapseByType(selectedText);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
+					} catch (Exception e) {			
 						e.printStackTrace();
 					}									
 				
 					// Set everything else to current column 	
 					// TODO - SDF Label and Learn Label are not in model currently
 					((Entry) w.getW("syType")).setText(currentSynapse.type);					
-					//((Entry) w.getW("sySYN")).setText(currentSynapse.synPSG.type);
+					((Entry) w.getW("sySYN")).setText(currentSynapse.synPSGName);
 				    //((Entry) w.getW("syHStart")).setText(currentSynapse.hebbStart.toString());
 				    //((Entry) w.getW("syHEnd")).setText(currentSynapse.hebbEnd.toString());
 					((Entry) w.getW("syAbMean")).setText(currentSynapse.absoluteUse.mean.toString());

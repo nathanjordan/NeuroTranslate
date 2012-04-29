@@ -1142,8 +1142,15 @@ public class NeuromlToNCS {
         	report.filename = "NCS"+ report.col.type + report.lay.type + report.cell.type + ".txt";
     		
     		// all prob
-    		report.prob = 1.0;
-    		
+        	if( report.cell.type.equals("Inhibitory") )
+        	{
+        		report.prob = 1.0;
+        	}
+        	else
+        	{
+        		report.prob = 0.2;
+        	}
+        	
     		// report voltage
         	report.reportOn = "VOLTAGE";
     		

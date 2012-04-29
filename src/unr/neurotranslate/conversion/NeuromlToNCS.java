@@ -326,7 +326,7 @@ public class NeuromlToNCS {
     		if( seg.getName() != null )
     		{
 	    		if( !segList.contains(seg.getName()) )
-	    		{		
+	    		{	
 	    			tempComp = new Compartment();
 	    			
 	    			// TYPE

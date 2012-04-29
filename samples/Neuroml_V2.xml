@@ -191,16 +191,16 @@
     <inputs units="SI Units" xmlns="http://morphml.org/networkml/schema">
         
         <input name="StInject1">
-            <pulse_input delay="0.0" duration=".01" amplitude="3" />
-            <target population="ExcitatoryPop1">
+            <pulse_input delay="0.0" duration=".001" amplitude="0.5" />
+            <target population="ExcitatoryC1LA">
 		<site_pattern>
 			<percentage_cells percentage="10"/>
 		</site_pattern> 
             </target>
         </input>
 	<input name="StInject2">
-            <pulse_input delay="0.0" duration=".01" amplitude="3" />
-            <target population="InhibitoryPop4">
+            <pulse_input delay="0.0" duration=".001" amplitude="0.5" />
+            <target population="InhibitoryC1LB">
 		<site_pattern>
 			<percentage_cells percentage="10"/>
 		</site_pattern> 

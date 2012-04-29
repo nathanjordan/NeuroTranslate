@@ -35,7 +35,7 @@
 	<cell name="Inhibitory">
             <segments xmlns="http://morphml.org/morphml/schema">
                 <segment id ="0" name="s1" cable="1">
-                    <proximal x="5" y="0" z="0"/>
+                    <proximal x="0" y="0" z="0"/>
                     <distal x="0" y="0" z="0"/>
                 </segment>
             </segments>     

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.gnome.gdk.EventExpose;
 import org.gnome.gtk.Button;
+import org.gnome.gtk.ComboBox;
 import org.gnome.gtk.Entry;
 import org.gnome.gtk.ScrolledWindow;
 import org.gnome.gtk.TreeSelection;
@@ -28,7 +29,7 @@ public class CellHandler {
 	public SpikeShape currentSpikes;
 	
 	public CellHandler(final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {
-						
+		
 		w.getW("cellScroll").connect(new Widget.ExposeEvent() {
 			
 			@Override
@@ -78,8 +79,14 @@ public class CellHandler {
 				
 					// Set everything else to current
 					((Entry) w.getW("ceCellType")).setText(currentCell.type);
-					// TODO - set compartment name and all the entries
-										
+					ArrayList<String> c = new ArrayList<String>();					
+					for( String s: currentCell.compartmentNames )
+						c.add(s);					
+					w.getC("ceComName").listToModel(c);
+					
+					((Entry)w.getW("ceComLab")).setText("");
+					((Entry)w.getW("ceComX")).setText("");
+					((Entry)w.getW("ceComY")).setText("");
 				}							
 			}
 		});
@@ -103,13 +110,11 @@ public class CellHandler {
 					// Get current compartments based on compartments
 					try {
 						currentCompartment = ui.getCompartmentByType(selectedText);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
+					} catch (Exception e) {				
 						e.printStackTrace();
 					}									
 				
-					// Set everything else to current 
-					// TODO - Set spike shape
+					// Set everything else to current 			
 					((Entry) w.getW("ceComType")).setText(currentCompartment.type);
 					((Entry) w.getW("ceTMMean")).setText(currentCompartment.tauMembrane.mean.toString());
 					((Entry) w.getW("ceTMStd")).setText(currentCompartment.tauMembrane.stdev.toString());
@@ -156,6 +161,19 @@ public class CellHandler {
 					((Entry) w.getW("ceSpikeVol")).setText(currentSpikes.voltages.toString());
 					
 				}							
+			}
+		});
+		
+		ComboBox comView = w.getC("ceComName").getView();
+		comView.connect( new ComboBox.Changed() {
+			
+			@Override
+			public void onChanged(ComboBox arg0) {
+				
+				((Entry)w.getW("ceComLab")).setText(currentCell.compartmentLabels.get(0).toString());
+				((Entry)w.getW("ceComX")).setText(currentCell.xList.get(0).toString());
+				((Entry)w.getW("ceComY")).setText(currentCell.yList.get(0).toString());
+				
 			}
 		});
 	}

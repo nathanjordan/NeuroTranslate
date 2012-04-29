@@ -30,11 +30,9 @@ public class BrainHandler {
 			public boolean onExposeEvent(Widget arg0, EventExpose arg1) {
 				
 				// fill out all entries/lists/combo boxes								
-
 				w.getL("bColTypes").listToModel(w.getL("bColTypes").getAvailable());
 				w.getL("bStimInjects").listToModel(w.getL("bStimInjects").getAvailable());
-				w.getL("bReports").listToModel(w.getL("bReports").getAvailable());
-				
+				w.getL("bReports").listToModel(w.getL("bReports").getAvailable());				
 				return false;
 			}
 		});

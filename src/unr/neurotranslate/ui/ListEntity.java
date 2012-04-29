@@ -29,8 +29,6 @@ public class ListEntity {
 	// Constructor builds a tree view model without a data source!
 	public ListEntity( String widgetName, String root ) throws FileNotFoundException {
 
-		//setActive(new ArrayList<String>());
-		//setAvailable(new ArrayList<String>());
 		active = new ArrayList<String>();
 		available = new ArrayList<String>();
 		

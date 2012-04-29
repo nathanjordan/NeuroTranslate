@@ -27,7 +27,9 @@ public class ColumnHandler {
 	public Column currentColumn;
 	
 	public ColumnHandler(final WidgetReferences w, final UIControllerNCS ui) throws Exception {
-		
+				
+		// Set initial lists
+		w.getL("coLayers").setAvailable( ui.getLayers() );
 		
 		w.getW("columnScroll").connect(new Widget.ExposeEvent() {
 			
@@ -36,7 +38,8 @@ public class ColumnHandler {
 				
 				// Refresh lists
 				w.getL( "coColShells").listToModel( ui.getColumnShells() );
-				w.getL( "coColumns").listToModel( w.getL("bColTypes").getAvailable() );				
+				w.getL( "coColumns").listToModel( ui.getColumns() );				
+				w.getL( "coLayers" ).listToModel( w.getL( "coLayers").getAvailable() );
 				
 				if( w.getC("coColShellSel").getChanged() ){
 					w.getC("coColShellSel").listToModel(ui.getColumnShells());
@@ -118,7 +121,6 @@ public class ColumnHandler {
 			}
 		});
 		
-		// TODO - Figure out how to update this list
 		TreeView layView = w.getL("coLayers").getView();		
 		
 		// Connect for getting selected row in tree view		
@@ -221,7 +223,7 @@ public class ColumnHandler {
 			
 				// Show popup and update the views
 				w.getW("popup").show();
-				//ModifyPopup.update( "Layer Types", "coLayers", w, ui );
+				ModifyPopup.updateViews( "Layer Types", "coLayers", w );
 				
 			}
 		});

@@ -86,9 +86,7 @@ public class SynapseHandler {
 				    //((Entry) w.getW("syHEnd")).setText(currentSynapse.hebbEnd.toString());
 					((Entry) w.getW("syAbMean")).setText(currentSynapse.absoluteUse.mean.toString());
 					((Entry) w.getW("syAbStd")).setText(currentSynapse.absoluteUse.stdev.toString());
-					((Entry) w.getW("syMCMean")).setText(currentSynapse.maxConduct.toString());
-					//((Entry) w.getW("syMCStd")).setText(currentSynapse.maxConduct.stdev.toString());
-					((Entry) w.getW("syDMin")).setText(currentSynapse.delay.mean.toString());
+					((Entry) w.getW("syMCMean")).setText(currentSynapse.maxConduct.toString());					((Entry) w.getW("syDMin")).setText(currentSynapse.delay.mean.toString());
 					((Entry) w.getW("syDMax")).setText(currentSynapse.delay.stdev.toString());
 					((Entry) w.getW("sySRMean")).setText(currentSynapse.synReversal.mean.toString());
 					((Entry) w.getW("sySRStd")).setText(currentSynapse.synReversal.stdev.toString());					

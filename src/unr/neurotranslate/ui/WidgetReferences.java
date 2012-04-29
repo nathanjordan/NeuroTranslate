@@ -73,6 +73,7 @@ public class WidgetReferences {
 		l3.put( "layerScroll", GladeParseUtil.grabWidget( "scrolledwindow2", "window1" ) );
 		l1.put( "lLayShells", new ListEntity( "lLayerShells", "window1" ) );
 		l1.put( "lLayers", new ListEntity( "lLayers", "window1" ) );
+		l1.put( "lCells", new ListEntity( "CellTypeList", "window1" ) );
 		l2.put( "lShellSel", new ComboEntity( "combobox1", "window1" ) );		
 		l3.put( "lLSType", GladeParseUtil.grabWidget( "entry15", "window1" ) );
 		l3.put( "lLSLower", GladeParseUtil.grabWidget( "entry14", "window1" ) );
@@ -139,8 +140,7 @@ public class WidgetReferences {
 		l3.put( "syHEnd", GladeParseUtil.grabWidget("entry45", "window1") );
 		l3.put( "syAbMean", GladeParseUtil.grabWidget("entry34", "window1") );
 		l3.put( "syAbStd", GladeParseUtil.grabWidget("entry35", "window1") );
-		l3.put( "syMCMean", GladeParseUtil.grabWidget("entry36", "window1") );
-		l3.put( "syMCStd", GladeParseUtil.grabWidget("entry37", "window1") );
+		l3.put( "syMCMean", GladeParseUtil.grabWidget("entry36", "window1") );		
 		l3.put( "syDMin", GladeParseUtil.grabWidget("entry38", "window1") );
 		l3.put( "syDMax", GladeParseUtil.grabWidget("entry39", "window1") );
 		l3.put( "sySRMean", GladeParseUtil.grabWidget("entry46", "window1") );

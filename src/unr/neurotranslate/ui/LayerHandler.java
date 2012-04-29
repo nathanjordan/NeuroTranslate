@@ -31,6 +31,9 @@ public class LayerHandler {
 	
 	public LayerHandler(final WidgetReferences w, final UIControllerNCS ui) throws FileNotFoundException {
 		
+		// Set initial lists
+		w.getL("lCells").setAvailable(ui.getCells());
+		
 		w.getW("layerScroll").connect(new Widget.ExposeEvent() {
 			
 			@Override
@@ -38,7 +41,8 @@ public class LayerHandler {
 				
 				// fill out all entries/lists/combo boxes
 				w.getL("lLayShells").listToModel( ui.getLayerShells() );
-				w.getL("lLayers").listToModel( ui.getLayers() );
+				w.getL("lLayers").listToModel( ui.getLayers() );				
+				w.getL("lCells").listToModel( w.getL("lCells").getAvailable() );
 				
 				if(w.getC("lShellSel").getChanged() ){
 					w.getC("lShellSel").listToModel(ui.getLayerShells());

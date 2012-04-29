@@ -164,6 +164,10 @@ public class NetworkHandler {
 					}					
 					w.getC("nSynSel").listToModel(s);
 					
+					((Entry)w.getW("nIntDelay")).setText("");
+					((Entry)w.getW("nWait")).setText("");
+					((Entry)w.getW("nThresh")).setText("");
+					
 					if( currentProjection.getConnectivityPattern() != null ) {
 						((Entry) w.getW("nProb")).setText(currentProjection.getConnectivityPattern().getFixedProbability().getProbability().toString());
 						
@@ -233,7 +237,20 @@ public class NetworkHandler {
 					}
 				}							
 			}
-		});			
+		});		
+		
+		ComboBox sView = w.getC("nSynSel").getView();
+		sView.connect(new ComboBox.Changed() {
+			
+			@Override
+			public void onChanged(ComboBox arg0) {
+				
+				((Entry)w.getW("nIntDelay")).setText( Double.toString(currentProjection.getSynapseProps().get(0).getInternalDelay()) );
+				((Entry)w.getW("nWait")).setText(Double.toString(currentProjection.getSynapseProps().get(0).getWeight()) );
+				((Entry)w.getW("nThresh")).setText(Double.toString(currentProjection.getSynapseProps().get(0).getThreshold()) );
+				
+			}
+		});
 	}
 	
 	private void modifyHandler(final WidgetReferences w, final UIControllerNeuroML ui) {

@@ -100,7 +100,7 @@ public class FileHandler {
 														
 					// Figure out which type of file was imported 							
 					if( importedFile.endsWith( ".in" ) ) {
-							
+								
 						// load data model
 						NCSData d = FileController.loadNCSFile( importedFile );
 						UIControllerNCS ui = new UIControllerNCS( d );
@@ -108,17 +108,10 @@ public class FileHandler {
 						// set views
 						w.getW("nmlTabs").hide();
 					    w.getW("ncsTabs").show();
-					    //ncsState = true; 
-					    
-						/*// Enable NeuroML toggle button if imported NCS
-						try {
-							buttonHandler( w );
-						} catch (FileNotFoundException e1) {							
-							e1.printStackTrace();
-						}*/
 						
 						// set button colors
-						w.getW("nmlToggle").setSensitive( true );  
+						w.getW("nmlToggle").setSensitive( true );
+						w.getW("ncsToggle").setSensitive( false );					
 						Color activeGreen = new Color(44880, 55552, 36608 );        
 					    w.getW("nmlToggle").modifyBackground(StateType.NORMAL, activeGreen );
 					    w.getW("nmlToggle").modifyBackground(StateType.SELECTED, activeGreen );	
@@ -157,19 +150,12 @@ public class FileHandler {
 		
 						// set views
 						w.getW("ncsTabs").hide();
-					    w.getW("nmlTabs").show();
-					    
-						/*// Enable NCS toggle button if imported NeuroML
-						try {
-							buttonHandler( w );
-						} catch (FileNotFoundException e1) {							
-							e1.printStackTrace();
-						}*/
-						
-						 w.getW("ncsToggle").setSensitive( true );  
-						 Color activeGreen = new Color(44880, 55552, 36608 );        
-					     w.getW("ncsToggle").modifyBackground(StateType.NORMAL, activeGreen );
-					     w.getW("ncsToggle").modifyBackground(StateType.SELECTED, activeGreen );
+					    w.getW("nmlTabs").show();						
+						w.getW("ncsToggle").setSensitive( true );  
+						w.getW("nmlToggle").setSensitive( false );						
+						Color activeGreen = new Color(44880, 55552, 36608 );        
+					    w.getW("ncsToggle").modifyBackground(StateType.NORMAL, activeGreen );
+					    w.getW("ncsToggle").modifyBackground(StateType.SELECTED, activeGreen );
 					     
 					    // Set up handlers
 					    new NeuroMLHandlers( w, ui );
@@ -208,8 +194,7 @@ public class FileHandler {
 						FileController.saveNCSFile(  saveDialog.getFilename() );
 					if( nmlState)
 						FileController.saveNeuroMLFile( saveDialog.getFilename() );
-					
-					
+										
 					Notification notification = new Notification( "Saved to: ", saveDialog.getFilename(), "", arg0);
 					notification.setTimeout( 50 );
 					notification.show();						

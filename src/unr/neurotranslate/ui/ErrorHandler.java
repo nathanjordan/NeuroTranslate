@@ -80,7 +80,8 @@ public class ErrorHandler {
 				if( FileHandler.ncsState ) {
 					w.getW("nmlTabs").hide();
 					w.getW("ncsTabs").show();
-										
+					w.getW("ncsToggle").setSensitive( false );	
+					
 					// Create conversion notes and temp ncs data		
 					NCSConversionData ncs = new NCSConversionData();
 					
@@ -104,7 +105,8 @@ public class ErrorHandler {
 				if( FileHandler.nmlState ) {
 					w.getW("ncsTabs").hide();
 					w.getW("nmlTabs").show();					
-
+					w.getW("nmlToggle").setSensitive( false );
+					
 				   // Grab conversion data from NeuroML to NCS!
 				   NeuroMLConversionData nml = new NeuroMLConversionData();				   
 				   nml = FormatConverter.convertToNeuroML(Data.getInstance().ncs);	  

@@ -18,7 +18,7 @@ public class Report extends TypedElement {
 	
 	public String cellSequence;
 	
-	public Integer frequency;
+	public Double frequency;
 	
 	public String reportOn;
 	
@@ -35,6 +35,16 @@ public class Report extends TypedElement {
 	public ArrayList<Double> timeStart;
 	
 	public ArrayList<Double> timeEnd;
+	
+	//Parser stuff
+	
+	public String colName;
+	
+	public String layName;
+	
+	public String cellName;
+	
+	public String compName;
 	
 	public Report() {
 		
@@ -78,7 +88,7 @@ public class Report extends TypedElement {
 		
 		if( timeStart.size() > 0 ) {
 			
-			s = s.concat("TIME_START");
+			s = s.concat("\tTIME_START");
 			
 			for( Double d : timeStart )
 			
@@ -90,7 +100,7 @@ public class Report extends TypedElement {
 		
 		if( timeEnd.size() > 0 ) {
 			
-			s = s.concat("TIME_END");
+			s = s.concat("\tTIME_END");
 			
 			for( Double d : timeEnd )
 			

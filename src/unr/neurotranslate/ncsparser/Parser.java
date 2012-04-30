@@ -129,7 +129,7 @@ void val_push(ParserVal val)
 {
   if (valptr>=YYSTACKSIZE)
     return;
-  valstk[++valptr]=dup_yyval(val);
+  valstk[++valptr]=val;
 }
 ParserVal val_pop()
 {
@@ -1605,7 +1605,7 @@ final static String yyrule[] = {
 "value : REAL",
 };
 
-//#line 679 "parse.yaccj"
+//#line 683 "parse.yaccj"
 
 //Brain Stuff
 public Brain brain;
@@ -2828,114 +2828,110 @@ case 370:
 break;
 case 371:
 //#line 610 "parse.yaccj"
-{  }
+{ reportList.get( reportList.size() - 1 ).colName = val_peek(3).sval;
+                                   reportList.get( reportList.size() - 1 ).layName = val_peek(2).sval;
+                                   reportList.get( reportList.size() - 1 ).cellName = val_peek(1).sval;
+                                   reportList.get( reportList.size() - 1 ).compName = val_peek(0).sval;
+                                 }
 break;
 case 372:
-//#line 611 "parse.yaccj"
+//#line 615 "parse.yaccj"
 { reportList.get( reportList.size() - 1 ).filename = val_peek(0).sval; }
 break;
 case 373:
-//#line 612 "parse.yaccj"
-{  }
-break;
-case 374:
-//#line 613 "parse.yaccj"
-{  }
-break;
-case 375:
-//#line 614 "parse.yaccj"
-{  }
-break;
-case 376:
-//#line 615 "parse.yaccj"
-{  }
-break;
-case 377:
 //#line 616 "parse.yaccj"
 {  }
 break;
-case 378:
+case 374:
 //#line 617 "parse.yaccj"
 {  }
 break;
-case 379:
+case 375:
 //#line 618 "parse.yaccj"
-{  }
+{ reportList.get( reportList.size() - 1 ).ascii = ""; }
 break;
-case 380:
+case 376:
 //#line 619 "parse.yaccj"
-{  }
+{ reportList.get( reportList.size() - 1 ).ascii = ""; }
 break;
-case 381:
+case 377:
 //#line 620 "parse.yaccj"
 {  }
 break;
-case 382:
+case 378:
 //#line 621 "parse.yaccj"
-{  }
+{ reportList.get( reportList.size() - 1 ).reportOn = val_peek(0).sval; }
 break;
-case 383:
-//#line 621 "parse.yaccj"
-{  }
+case 379:
+//#line 622 "parse.yaccj"
+{ reportList.get( reportList.size() - 1 ).cellSequence = val_peek(0).sval; }
+break;
+case 380:
+//#line 623 "parse.yaccj"
+{ reportList.get( reportList.size() - 1 ).prob = val_peek(0).dval; }
+break;
+case 381:
+//#line 624 "parse.yaccj"
+{ reportList.get( reportList.size() - 1 ).frequency = val_peek(0).dval; }
+break;
+case 382:
+//#line 625 "parse.yaccj"
+{ listPtr = reportList.get( reportList.size() - 1 ).timeStart; }
 break;
 case 384:
-//#line 622 "parse.yaccj"
-{  }
-break;
-case 385:
-//#line 622 "parse.yaccj"
-{  }
+//#line 626 "parse.yaccj"
+{ listPtr = reportList.get( reportList.size() - 1 ).timeEnd; }
 break;
 case 386:
-//#line 623 "parse.yaccj"
-{  }
-break;
-case 387:
-//#line 624 "parse.yaccj"
-{  }
-break;
-case 388:
-//#line 625 "parse.yaccj"
-{  }
-break;
-case 389:
-//#line 626 "parse.yaccj"
-{  }
-break;
-case 390:
 //#line 627 "parse.yaccj"
 {  }
 break;
-case 391:
+case 387:
 //#line 628 "parse.yaccj"
 {  }
 break;
-case 392:
+case 388:
 //#line 629 "parse.yaccj"
 {  }
 break;
-case 393:
+case 389:
 //#line 630 "parse.yaccj"
 {  }
 break;
-case 394:
+case 390:
 //#line 631 "parse.yaccj"
+{  }
+break;
+case 391:
+//#line 632 "parse.yaccj"
+{  }
+break;
+case 392:
+//#line 633 "parse.yaccj"
+{  }
+break;
+case 393:
+//#line 634 "parse.yaccj"
+{  }
+break;
+case 394:
+//#line 635 "parse.yaccj"
 { }
 break;
 case 395:
-//#line 634 "parse.yaccj"
+//#line 638 "parse.yaccj"
 { eventList.add( new Event() ); }
 break;
 case 399:
-//#line 641 "parse.yaccj"
+//#line 645 "parse.yaccj"
 { eventList.get( eventList.size() - 1 ).type = val_peek(0).sval; }
 break;
 case 400:
-//#line 642 "parse.yaccj"
+//#line 646 "parse.yaccj"
 { eventList.get( eventList.size() - 1 ).synapseName = val_peek(0).sval; }
 break;
 case 401:
-//#line 643 "parse.yaccj"
+//#line 647 "parse.yaccj"
 {
             eventList.get( eventList.size() - 1 ).columnName = val_peek(3).sval;
             eventList.get( eventList.size() - 1 ).layerName = val_peek(2).sval;
@@ -2944,45 +2940,45 @@ case 401:
         }
 break;
 case 402:
-//#line 649 "parse.yaccj"
+//#line 653 "parse.yaccj"
 { 
     	eventList.get( eventList.size() - 1 ).filename = val_peek(1).sval;
     	eventList.get( eventList.size() - 1 ).value = val_peek(0).dval; 
     	}
 break;
 case 405:
-//#line 660 "parse.yaccj"
+//#line 664 "parse.yaccj"
 {  }
 break;
 case 406:
-//#line 661 "parse.yaccj"
+//#line 665 "parse.yaccj"
 {  }
 break;
 case 407:
-//#line 666 "parse.yaccj"
+//#line 670 "parse.yaccj"
 { listPtr.add( val_peek(0).dval ); }
 break;
 case 408:
-//#line 667 "parse.yaccj"
+//#line 671 "parse.yaccj"
 { listPtr.add( val_peek(1).dval ); }
 break;
 case 409:
-//#line 670 "parse.yaccj"
+//#line 674 "parse.yaccj"
 { twoPtr.set( val_peek(1).dval , val_peek(0).dval ); twoPtr = null; }
 break;
 case 410:
-//#line 671 "parse.yaccj"
+//#line 675 "parse.yaccj"
 { twoPtr.set( val_peek(0).dval , 0.0 ); twoPtr = null; }
 break;
 case 411:
-//#line 674 "parse.yaccj"
+//#line 678 "parse.yaccj"
 { yyval.dval = (double) val_peek(0).ival; }
 break;
 case 412:
-//#line 675 "parse.yaccj"
+//#line 679 "parse.yaccj"
 { yyval.dval = val_peek(0).dval; }
 break;
-//#line 2909 "Parser.java"
+//#line 2905 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

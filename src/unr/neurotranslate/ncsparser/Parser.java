@@ -129,7 +129,7 @@ void val_push(ParserVal val)
 {
   if (valptr>=YYSTACKSIZE)
     return;
-  valstk[++valptr]=val;
+  valstk[++valptr]=dup_yyval(val);
 }
 ParserVal val_pop()
 {

@@ -607,19 +607,23 @@ reportvars: reportvar
 
 reportvar: TK_TYPE       NAME    { reportList.get( reportList.size() - 1 ).type = $<sval>2; }
          | TK_CELLS      NAME NAME NAME NAME
-                                 {  }
+                                 { reportList.get( reportList.size() - 1 ).colName = $<sval>2;
+                                   reportList.get( reportList.size() - 1 ).layName = $<sval>3;
+                                   reportList.get( reportList.size() - 1 ).cellName = $<sval>4;
+                                   reportList.get( reportList.size() - 1 ).compName = $<sval>5;
+                                 }
          | TK_FILENAME   NAME    { reportList.get( reportList.size() - 1 ).filename = $<sval>2; }
          | TK_PORT       INTEGER {  }
          | TK_PORT       TK_AUTO {  }
-         | TK_ASCII              {  }
-         | TK_ASCII      TK_EXP  {  }
+         | TK_ASCII              { reportList.get( reportList.size() - 1 ).ascii = ""; }
+         | TK_ASCII      TK_EXP  { reportList.get( reportList.size() - 1 ).ascii = ""; }
          | TK_CHANNEL    NAME    {  }
-         | TK_REPORT_ON  NAME    {  }
-         | TK_CELL_SEQUENCE NAME {  }
-         | TK_PROB       value   {  }
-         | TK_FREQUENCY  value   {  }
-         | TK_TIME_START {  } values {  }
-         | TK_TIME_END   {  } values {  }
+         | TK_REPORT_ON  NAME    { reportList.get( reportList.size() - 1 ).reportOn = $<sval>2; }
+         | TK_CELL_SEQUENCE NAME { reportList.get( reportList.size() - 1 ).cellSequence = $<sval>2; }
+         | TK_PROB       value   { reportList.get( reportList.size() - 1 ).prob = $<dval>2; }
+         | TK_FREQUENCY  value   { reportList.get( reportList.size() - 1 ).frequency = $<dval>2; }
+         | TK_TIME_START { listPtr = reportList.get( reportList.size() - 1 ).timeStart; } values
+         | TK_TIME_END   { listPtr = reportList.get( reportList.size() - 1 ).timeEnd; } values
          | TK_SYNAPSE    NAME    {  }
          | TK_SYNAPSE_RSE NAME   {  }
          | TK_SYNAPSE_UF  NAME   {  }

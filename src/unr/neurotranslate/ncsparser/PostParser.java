@@ -12,6 +12,7 @@ import unr.neurotranslate.ncs.CompartmentConnect;
 import unr.neurotranslate.ncs.Connect;
 import unr.neurotranslate.ncs.Layer;
 import unr.neurotranslate.ncs.LayerShell;
+import unr.neurotranslate.ncs.Report;
 import unr.neurotranslate.ncs.SpikeShape;
 import unr.neurotranslate.ncs.Stimulus;
 import unr.neurotranslate.ncs.StimulusInject;
@@ -99,6 +100,18 @@ public class PostParser {
 			c.compartment1 = (Compartment) fillValue( c.compartment1Name , p.compartmentList );
 			
 			c.compartment2 = (Compartment) fillValue( c.compartment2Name , p.compartmentList );
+			
+			}
+		
+		for( Report r : p.reportList ) {
+			
+			r.col = (Column) fillValue( r.colName , p.columnList );
+			
+			r.lay = (Layer) fillValue( r.layName , p.layerList );
+			
+			r.cell = (Cell) fillValue( r.cellName , p.cellList );
+			
+			r.comp = (Compartment) fillValue( r.compName , p.compartmentList );
 			
 			}
 		

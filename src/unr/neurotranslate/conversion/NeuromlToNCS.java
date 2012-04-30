@@ -1155,8 +1155,8 @@ public class NeuromlToNCS {
         	report.reportOn = "VOLTAGE";
     		
     		// frequency
-        	report.frequency = 1;
-    		
+        	report.frequency = 1.0;
+        	
     		// time start
     		report.timeStart.add(0.0);
     		

@@ -239,11 +239,9 @@ public class ColumnHandler {
 				w.getL("coColShells").getView().grabFocus();
 				currentColumnShell.type = arg0.getText();	
 				Utils.setColor("coCSType", Utils.activeGreen, w);
+				w.getC("rColSel").setChanged(true);
 			}
-		});
-		
-		//((Entry)w.getW("coCSType")).modifyBackground(StateType.SELECTED, Utils.grey);
-		
+		});		
 		
 		// Column Shell Width
 		((Entry) w.getW("coWidth")).connect( new Activate() {

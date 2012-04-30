@@ -206,6 +206,7 @@ public class LayerHandler {
 				w.getL("lLayShells").getView().grabFocus();
 				currentLayerShell.type = arg0.getText();
 				Utils.setColor("lLSType", Utils.activeGreen, w);
+				w.getC("rLaySel").setChanged(true);
 			}
 		});
 		

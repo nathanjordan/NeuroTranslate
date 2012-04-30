@@ -126,7 +126,9 @@ public class ErrorHandler {
 	} 
 
 	static void update( ConversionNotes notes, WidgetReferences w) {
-					
+				
+		model.clear();		
+		
 		// Set conversion notes
 		if(notes.notes.size() != 0) {
 			

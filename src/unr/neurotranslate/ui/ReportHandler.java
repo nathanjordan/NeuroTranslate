@@ -92,31 +92,31 @@ public class ReportHandler {
 					// Set everything else to report					
 					((Entry) w.getW("rType")).setText(currentReport.type);
 					if(currentReport.prob != null) {
-						//((Entry) w.getW("rProb")).setText(currentReport.prob.toString());	
+						((Entry) w.getW("rProb")).setText(currentReport.prob.toString());	
 					}
 					else {
-						//((Entry) w.getW("rProb")).setText("");
+						((Entry) w.getW("rProb")).setText("");
 					}
 					
 					if(currentReport.frequency != null) {
-						//((Entry) w.getW("rFreq")).setText(currentReport.frequency.toString());		
+						((Entry) w.getW("rFreq")).setText(currentReport.frequency.toString());		
 					}
 					else {
-						//((Entry) w.getW("rFreq")).setText("");
+						((Entry) w.getW("rFreq")).setText("");
 					}
 				
 					if(currentReport.cellSequence != null) {
-						//((Entry) w.getW("rCellSeq")).setText(currentReport.cellSequence);		
+						((Entry) w.getW("rCellSeq")).setText(currentReport.cellSequence);		
 					}
 					else {
-						//((Entry) w.getW("rCellSeq")).setText("");
+						((Entry) w.getW("rCellSeq")).setText("");
 					}
 				
 					if(currentReport.reportOn != null) {
-						//((Entry) w.getW("rReportOn")).setText(currentReport.reportOn);
+						((Entry) w.getW("rReportOn")).setText(currentReport.reportOn);
 					}
 					else {
-						//((Entry) w.getW("rReportOn")).setText("");
+						((Entry) w.getW("rReportOn")).setText("");
 					}
 					
 					if(currentReport.filename != null) {
@@ -158,7 +158,7 @@ public class ReportHandler {
 				
 				currentReport = ui.addReport();				
 				w.getL("rReports").addData( currentReport.type );
-				currentReport.frequency = 0;
+				currentReport.frequency = 0.0;
 				currentReport.prob = 0.0;
 				
 			}
@@ -226,7 +226,7 @@ public class ReportHandler {
 				
 				try {
 					double d = Double.parseDouble(arg0.getText());
-					//currentReport.frequency = d;
+					currentReport.frequency = d;
 					Utils.setColor("rFreq", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					Utils.setColor("rFreq", Utils.red, w);

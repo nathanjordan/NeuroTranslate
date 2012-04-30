@@ -79,10 +79,16 @@ public class CellHandler {
 				
 					// Set everything else to current
 					((Entry) w.getW("ceCellType")).setText(currentCell.type);
-					ArrayList<String> c = new ArrayList<String>();					
-					for( String s: currentCell.compartmentNames )
-						c.add(s);					
-					w.getC("ceComName").listToModel(c);
+					ArrayList<String> c = new ArrayList<String>();
+					if(currentCell.compartmentNames != null) {		// TODO - remove if not needed
+						for( String s: currentCell.compartmentNames )
+							c.add(s);			
+						if(c.size() >0 ) {
+							w.getC("ceComName").listToModel(c);		
+						}
+						
+					}
+					
 					
 					((Entry)w.getW("ceComLab")).setText("");
 					((Entry)w.getW("ceComX")).setText("");
@@ -170,9 +176,24 @@ public class CellHandler {
 			@Override
 			public void onChanged(ComboBox arg0) {
 				
-				((Entry)w.getW("ceComLab")).setText(currentCell.compartmentLabels.get(0).toString());
-				((Entry)w.getW("ceComX")).setText(currentCell.xList.get(0).toString());
-				((Entry)w.getW("ceComY")).setText(currentCell.yList.get(0).toString());
+				if(currentCell.compartmentNames.size() > 0 ) {
+					((Entry)w.getW("ceComLab")).setText(currentCell.compartmentLabels.get(0).toString());		
+				}
+				else {
+					((Entry)w.getW("ceComLab")).setText("");	
+				}
+				if(currentCell.xList.size() > 0 ) {
+					((Entry)w.getW("ceComX")).setText(currentCell.xList.get(0).toString());	
+				}
+				else {
+					((Entry)w.getW("ceComX")).setText("");
+				}
+				if(currentCell.yList.size() > 0 ) {
+					((Entry)w.getW("ceComY")).setText(currentCell.yList.get(0).toString());		
+				}
+				else {
+					((Entry)w.getW("ceComY")).setText("");
+				}
 				
 			}
 		});
@@ -188,6 +209,7 @@ public class CellHandler {
 				
 				currentCell = ui.addCell();
 				w.getL("ceCells").addData( currentCell.type );
+				
 				w.getC("stCellSel").setChanged(true);
 				w.getC("rCellSel").setChanged(true);				
 			}
@@ -294,6 +316,7 @@ public class CellHandler {
 				w.getL("ceCells").getView().grabFocus();
 				currentCell.type = arg0.getText();	
 				Utils.setColor("ceCellType", Utils.activeGreen, w);
+				w.getC("rCellSel").setChanged(true);
 			}
 		});
 		
@@ -307,6 +330,7 @@ public class CellHandler {
 				w.getL("ceCompartments").getView().grabFocus();
 				currentCompartment.type = arg0.getText();	
 				Utils.setColor("ceComType", Utils.activeGreen, w);
+				w.getC("rCompSel").setChanged(true);
 			}
 		});
 		

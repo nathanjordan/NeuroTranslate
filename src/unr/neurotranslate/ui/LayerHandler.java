@@ -204,7 +204,8 @@ public class LayerHandler {
 				w.getL("lLayShells").removeData();		
 				w.getL("lLayShells").addData(arg0.getText());	
 				w.getL("lLayShells").getView().grabFocus();
-				currentLayerShell.type = arg0.getText();				
+				currentLayerShell.type = arg0.getText();
+				Utils.setColor("lLSType", Utils.activeGreen, w);
 			}
 		});
 		
@@ -217,8 +218,10 @@ public class LayerHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentLayerShell.lower = d;
+					Utils.setColor("lLSLower", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("lLSLower", Utils.red, w);
 				}
 			}
 		});
@@ -232,8 +235,10 @@ public class LayerHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentLayerShell.upper = d;
+					Utils.setColor("lLSUpper", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("lLSUpper", Utils.red, w);
 				}
 			}
 		});
@@ -246,7 +251,8 @@ public class LayerHandler {
 				w.getL("lLayers").removeData();		
 				w.getL("lLayers").addData(arg0.getText());	
 				w.getL("lLayers").getView().grabFocus();
-				currentLayer.type = arg0.getText();				
+				currentLayer.type = arg0.getText();			
+				Utils.setColor("lLType", Utils.activeGreen, w);
 			}
 		});
 

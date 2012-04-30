@@ -8,6 +8,7 @@ import org.gnome.gtk.Button;
 import org.gnome.gtk.Editable;
 import org.gnome.gtk.Entry;
 import org.gnome.gtk.ScrolledWindow;
+import org.gnome.gtk.StateType;
 import org.gnome.gtk.TreeSelection;
 import org.gnome.gtk.TreeView;
 import org.gnome.gtk.Widget;
@@ -240,6 +241,9 @@ public class ColumnHandler {
 				Utils.setColor("coCSType", Utils.activeGreen, w);
 			}
 		});
+		
+		//((Entry)w.getW("coCSType")).modifyBackground(StateType.SELECTED, Utils.grey);
+		
 		
 		// Column Shell Width
 		((Entry) w.getW("coWidth")).connect( new Activate() {

@@ -16,6 +16,7 @@ public class Utils {
 	
 	static Color activeGreen = new Color(44880, 55552, 36608 );
 	static Color red = new Color(65535, 0, 0);
+	static Color grey = new Color(44880, 44880, 44880);
 	
 	public static void setColor( String s, Color color, WidgetReferences w ) {
 		

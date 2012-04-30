@@ -11,6 +11,7 @@ import org.gnome.gtk.TreeSelection;
 import org.gnome.gtk.TreeView;
 import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
+import org.gnome.gtk.Entry.Activate;
 import org.gnome.gtk.TreeSelection.Changed;
 
 import unr.neurotranslate.ncs.Stimulus;
@@ -244,6 +245,21 @@ public class StimuliHandler {
 				((Entry) w.getW("stTEnd")).setText("");				
 			}
 		});	
+		
+		// Stimulus Type	
+		/*((Entry) w.getW("coCSType")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {						
+				w.getL("coColShells").removeData();		
+				w.getL("coColShells").addData(arg0.getText());	
+				w.getL("coColShells").getView().grabFocus();
+				currentColumnShell.type = arg0.getText();	
+				Utils.setColor("coCSType", Utils.activeGreen, w);
+			}
+		});*/
+		
+		// 
 	}
 
 }

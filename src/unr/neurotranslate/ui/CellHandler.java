@@ -292,7 +292,8 @@ public class CellHandler {
 				w.getL("ceCells").removeData();		
 				w.getL("ceCells").addData(arg0.getText());	
 				w.getL("ceCells").getView().grabFocus();
-				currentCell.type = arg0.getText();				
+				currentCell.type = arg0.getText();	
+				Utils.setColor("ceCellType", Utils.activeGreen, w);
 			}
 		});
 		
@@ -304,7 +305,8 @@ public class CellHandler {
 				w.getL("ceCompartments").removeData();		
 				w.getL("ceCompartments").addData(arg0.getText());	
 				w.getL("ceCompartments").getView().grabFocus();
-				currentCompartment.type = arg0.getText();				
+				currentCompartment.type = arg0.getText();	
+				Utils.setColor("ceComType", Utils.activeGreen, w);
 			}
 		});
 		
@@ -317,7 +319,9 @@ public class CellHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentCompartment.tauMembrane.mean = d;
+					Utils.setColor("ceTMMean", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
+					Utils.setColor("ceTMMean", Utils.red, w);
 					arg0.setText("");
 				}
 			}
@@ -331,8 +335,10 @@ public class CellHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentCompartment.tauMembrane.stdev = d;
+					Utils.setColor("ceTMStd", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("ceTMStd", Utils.red, w);
 				}
 			}
 		});
@@ -346,8 +352,10 @@ public class CellHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentCompartment.rMembrane.mean = d;
+					Utils.setColor("ceRMMean", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("ceRMMean", Utils.red, w);
 				}
 			}
 		});
@@ -360,8 +368,10 @@ public class CellHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentCompartment.rMembrane.stdev = d;
+					Utils.setColor("ceRMStd", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("ceRMStd", Utils.red, w);
 				}
 			}
 		});
@@ -375,8 +385,10 @@ public class CellHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentCompartment.threshold.mean = d;
+					Utils.setColor("ceTMean", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("ceTMean", Utils.red, w);
 				}
 			}
 		});
@@ -389,8 +401,10 @@ public class CellHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentCompartment.threshold.stdev = d;
+					Utils.setColor("ceTStd", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("ceTStd", Utils.red, w);
 				}
 			}
 		});
@@ -404,8 +418,10 @@ public class CellHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentCompartment.leakReversal.mean = d;
+					Utils.setColor("ceLRStd", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("ceLRStd", Utils.red, w);
 				}
 			}
 		});
@@ -418,8 +434,10 @@ public class CellHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentCompartment.leakReversal.stdev = d;
+					Utils.setColor("ceLRStd", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("ceLRStd", Utils.red, w);
 				}
 			}
 		});
@@ -433,8 +451,10 @@ public class CellHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentCompartment.leakConductance.mean = d;
+					Utils.setColor("ceLCMean", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("ceLCMean", Utils.red, w);
 				}
 			}
 		});
@@ -447,8 +467,10 @@ public class CellHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentCompartment.leakConductance.stdev = d;
+					Utils.setColor("ceLCStd", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("ceLCStd", Utils.red, w);
 				}
 			}
 		});
@@ -462,8 +484,10 @@ public class CellHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentCompartment.rMembrane.mean = d;
+					Utils.setColor("ceRPMean", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("ceRPMean", Utils.red, w);
 				}
 			}
 		});
@@ -476,8 +500,10 @@ public class CellHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentCompartment.rMembrane.stdev = d;
+					Utils.setColor("ceRPStd", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("ceRPStdr", Utils.red, w);
 				}
 			}
 		});
@@ -490,7 +516,8 @@ public class CellHandler {
 				w.getL("ceSpikes").removeData();		
 				w.getL("ceSpikes").addData(arg0.getText());	
 				w.getL("ceSpikes").getView().grabFocus();
-				currentSpikes.type = arg0.getText();				
+				currentSpikes.type = arg0.getText();	
+				Utils.setColor("ceSpikeType", Utils.activeGreen, w);
 			}
 		});
 		

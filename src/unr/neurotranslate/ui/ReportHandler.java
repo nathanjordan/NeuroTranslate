@@ -9,6 +9,7 @@ import org.gnome.gtk.TreeSelection;
 import org.gnome.gtk.TreeView;
 import org.gnome.gtk.Widget;
 import org.gnome.gtk.Button.Clicked;
+import org.gnome.gtk.Entry.Activate;
 import org.gnome.gtk.TreeSelection.Changed;
 
 import unr.neurotranslate.ncs.Report;
@@ -90,13 +91,57 @@ public class ReportHandler {
 				
 					// Set everything else to report					
 					((Entry) w.getW("rType")).setText(currentReport.type);
-					//((Entry) w.getW("rProb")).setText(currentReport.prob.toString());
-					//((Entry) w.getW("rFreq")).setText(currentReport.frequency.toString());
-					//((Entry) w.getW("rCellSeq")).setText(currentReport.cellSequence);
-					//((Entry) w.getW("rReportOn")).setText(currentReport.reportOn);
-					((Entry) w.getW("rFile")).setText(currentReport.filename);
-					((Entry) w.getW("rTStart")).setText(currentReport.timeStart.toString()); // TODO - returns empty
-					((Entry) w.getW("rTEnd")).setText(currentReport.timeEnd.toString()); 	 // TODO - returns empty
+					if(currentReport.prob != null) {
+						//((Entry) w.getW("rProb")).setText(currentReport.prob.toString());	
+					}
+					else {
+						//((Entry) w.getW("rProb")).setText("");
+					}
+					
+					if(currentReport.frequency != null) {
+						//((Entry) w.getW("rFreq")).setText(currentReport.frequency.toString());		
+					}
+					else {
+						//((Entry) w.getW("rFreq")).setText("");
+					}
+				
+					if(currentReport.cellSequence != null) {
+						//((Entry) w.getW("rCellSeq")).setText(currentReport.cellSequence);		
+					}
+					else {
+						//((Entry) w.getW("rCellSeq")).setText("");
+					}
+				
+					if(currentReport.reportOn != null) {
+						//((Entry) w.getW("rReportOn")).setText(currentReport.reportOn);
+					}
+					else {
+						//((Entry) w.getW("rReportOn")).setText("");
+					}
+					
+					if(currentReport.filename != null) {
+						((Entry)w.getW("rFile")).setText(currentReport.filename);							
+					}
+					
+					else {
+						((Entry) w.getW("rFile")).setText("");
+					}
+					
+					if(currentReport.timeStart != null ) {
+						((Entry) w.getW("rTStart")).setText(currentReport.timeStart.toString()); // TODO - returns empty	
+					}
+					
+					else {
+						((Entry) w.getW("rTStart")).setText("");
+					}
+					
+					if(currentReport.timeEnd != null) {
+						((Entry) w.getW("rTEnd")).setText(currentReport.timeEnd.toString()); 	 // TODO - returns empty		
+					}
+				
+					else {
+						((Entry) w.getW("rTEnd")).setText("");
+					}
 				}					
 			}
 		});
@@ -113,6 +158,8 @@ public class ReportHandler {
 				
 				currentReport = ui.addReport();				
 				w.getL("rReports").addData( currentReport.type );
+				currentReport.frequency = 0;
+				currentReport.prob = 0.0;
 				
 			}
 		});		
@@ -141,17 +188,84 @@ public class ReportHandler {
 			}
 		});	
 		
-		// Type
+		// rType
+		((Entry) w.getW("rType")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {						
+				w.getL("rReports").removeData();		
+				w.getL("rReports").addData(arg0.getText());	
+				w.getL("rReports").getView().grabFocus();
+				currentReport.type = arg0.getText();	
+				Utils.setColor("rType", Utils.activeGreen, w);
+			}
+		});
 		
 		// Probability
+		((Entry) w.getW("rProb")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					currentReport.prob = d;
+					Utils.setColor("rProb", Utils.activeGreen, w);
+				} catch( NumberFormatException nfe ) {
+					Utils.setColor("rProb", Utils.red, w);
+					arg0.setText("");
+				}
+			}
+		});
 		
 		// Frequency
+		((Entry) w.getW("rFreq")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				try {
+					double d = Double.parseDouble(arg0.getText());
+					//currentReport.frequency = d;
+					Utils.setColor("rFreq", Utils.activeGreen, w);
+				} catch( NumberFormatException nfe ) {
+					Utils.setColor("rFreq", Utils.red, w);
+					arg0.setText("");
+				}
+			}
+		});
 		
 		// Cell Sequence
+		((Entry) w.getW("rCellSeq")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+		
+				currentReport.cellSequence = arg0.getText();
+				Utils.setColor("rFreq", Utils.red, w);
+		
+			}
+		});
 		
 		// Report on
+		((Entry) w.getW("rReportOn")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				currentReport.reportOn = arg0.getText();
+			}
+		});
 		
 		// Filename
+		((Entry) w.getW("rFile")).connect( new Activate() {
+			
+			@Override
+			public void onActivate(Entry arg0) {
+				
+				currentReport.filename = arg0.getText();
+			}
+		});
 		
 		// Time Start
 		

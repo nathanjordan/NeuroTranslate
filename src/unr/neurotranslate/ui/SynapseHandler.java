@@ -263,7 +263,8 @@ public class SynapseHandler {
 				w.getL("sySynapses").removeData();		
 				w.getL("sySynapses").addData(arg0.getText());	
 				w.getL("sySynapses").getView().grabFocus();
-				currentSynapse.type = arg0.getText();				
+				currentSynapse.type = arg0.getText();		
+				Utils.setColor("syType", Utils.activeGreen, w);
 			}
 		});
 		
@@ -276,8 +277,10 @@ public class SynapseHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentSynapse.absoluteUse.mean = d;
+					Utils.setColor("coLocX", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("syAbMean", Utils.red, w);
 				}
 			}
 		});
@@ -290,8 +293,10 @@ public class SynapseHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentSynapse.absoluteUse.stdev = d;
+					Utils.setColor("syAbStd", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("syAbStd", Utils.red, w);
 				}
 			}
 		});
@@ -305,8 +310,10 @@ public class SynapseHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentSynapse.maxConduct = d;
+					Utils.setColor("syMCMean", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("syMCMean", Utils.red, w);
 				}
 			}
 		});
@@ -334,8 +341,10 @@ public class SynapseHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentSynapse.delay.mean = d;
+					Utils.setColor("syDMin", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("syDMin", Utils.red, w);
 				}
 			}
 		});
@@ -348,8 +357,10 @@ public class SynapseHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentSynapse.delay.stdev = d;
+					Utils.setColor("syDMax", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("syDMax", Utils.red, w);
 				}
 			}
 		});
@@ -363,8 +374,10 @@ public class SynapseHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentSynapse.synReversal.mean = d;
+					Utils.setColor("sySRMean", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("sySRMean", Utils.red, w);
 				}
 			}
 		});
@@ -377,8 +390,10 @@ public class SynapseHandler {
 				try {
 					double d = Double.parseDouble(arg0.getText());
 					currentSynapse.synReversal.stdev = d;
+					Utils.setColor("sySRStd", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("sySRStd", Utils.red, w);
 				}
 			}
 		});		

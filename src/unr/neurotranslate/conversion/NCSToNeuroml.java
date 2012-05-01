@@ -194,7 +194,7 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 		int i;
 		
 		// set units
-		neuromlProjs.setUnits(Units.fromValue("Physiological Units"));
+		neuromlProjs.setUnits(Units.SI_UNITS);
 	    // TODO set xmlns?
 		
 		// loop through connects in brain
@@ -233,7 +233,7 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			// set syn props
 			proj.getSynapseProps().add(synProps);
 			// set the probability
-			fp.setProbability(connect.probability * 100.0);
+			fp.setProbability(connect.probability);
 			cp.setFixedProbability(fp);
 			// set probability in projection
 			proj.setConnectivityPattern(cp);
@@ -504,7 +504,7 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			for(int j = 0; j < synpsgList.size(); j++)
 			{
 				// find 
-				if(synpsgList.get(j).type.equals(ncsSynapses.get(i).synPSG))
+				if(synpsgList.get(j).type.equals(ncsSynapses.get(i).synPSGName))
 				{
 					char fileArr[] = synpsgList.get(j).filename.toCharArray();
 					
@@ -530,8 +530,8 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			// TODO decay time
 			
 			// set decay time
-			//if( tempArr.length > 0 )
-			//doubExpSyn.setDecayTime( Double.parseDouble( ( new String(tempArr) ) ) / 10000 );
+			if( tempArr.length > 0 )
+			doubExpSyn.setDecayTime( Double.parseDouble( ( new String(tempArr) ) ) / 10000 );
 			
 			// set reversal potential
 			doubExpSyn.setReversalPotential(ncsSynapses.get(i).synReversal.mean);

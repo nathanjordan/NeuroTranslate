@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.morphml.channelml.schema.ChannelType;
 import org.morphml.channelml.schema.ChannelmlType;
 import org.morphml.channelml.schema.SynapseType;
+import org.morphml.metadata.schema.Units;
 import org.morphml.morphml.schema.Cell;
 import org.morphml.networkml.schema.Inputs;
 import org.morphml.networkml.schema.Populations;
@@ -57,6 +58,7 @@ public class FormatConverter {
 		
 		// get/set inputs
 		inputs = NCSToNeuroml.generateNeuromlInputs(d.brain);
+		inputs.setUnits(Units.SI_UNITS);
 		neuromlData.neuroml.setInputs(inputs);		
 		
 		
@@ -66,10 +68,10 @@ public class FormatConverter {
 			channelml.getSynapseTypes().add(st);
 		}
 	
-	
+	    
 		channel.setCurrentVoltageRelation(NCSToNeuroml.generateNeuromlCurrentVoltageRelation(d.cellList.get(0)));
 	    channelml.getChannelTypes().add(channel);
-		
+		channelml.setUnits(Units.SI_UNITS);
 		neuromlData.neuroml.setChannels(channelml);		
 		
 		// report warnings

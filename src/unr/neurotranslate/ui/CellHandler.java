@@ -37,7 +37,7 @@ public class CellHandler {
 				
 				// fill out all entries/lists/combo boxes				
 				w.getL("ceCells").listToModel( ui.getCells() );
-				w.getL("ceCompartments").listToModel( ui.getCompartments() );
+				//w.getL("ceCompartments").listToModel( ui.getCompartments() );
 				w.getL("ceSpikes").listToModel( ui.getSpikeShapes() );
 				
 				return false;
@@ -72,13 +72,13 @@ public class CellHandler {
 					// Get current cell based on cell
 					try {
 						currentCell = ui.getCellByType(selectedText);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
+					} catch (Exception e) {					
 						e.printStackTrace();
 					}									
 				
 					// Set everything else to current
 					((Entry) w.getW("ceCellType")).setText(currentCell.type);
+					/*
 					ArrayList<String> c = new ArrayList<String>();
 					if(currentCell.compartmentNames != null) {		// TODO - remove if not needed
 						for( String s: currentCell.compartmentNames )
@@ -87,12 +87,35 @@ public class CellHandler {
 							w.getC("ceComName").listToModel(c);		
 						}
 						
-					}
+					}*/
 					
+					// Grab each compartment and populate data
+					ArrayList<String> s = new ArrayList<String>();
+					if( currentCell.compartments != null ) {
+						for( Compartment c: currentCell.compartments ) {
+							s.add(c.type);
+						}
+						// Populate list
+						w.getL("ceCompartments").listToModel( s );
+						
+						// default entries to empty strings
+						((Entry)w.getW("ceTMMean")).setText("");
+						((Entry)w.getW("ceTMStd")).setText("");
+					}
 					
 					((Entry)w.getW("ceComLab")).setText("");
 					((Entry)w.getW("ceComX")).setText("");
 					((Entry)w.getW("ceComY")).setText("");
+					((Entry) w.getW("ceRMMean")).setText("");
+					((Entry) w.getW("ceRMStd")).setText("");
+					((Entry) w.getW("ceTMean")).setText("");
+					((Entry) w.getW("ceTStd")).setText("");
+					((Entry) w.getW("ceLRMean")).setText("");
+					((Entry) w.getW("ceLRStd")).setText("");
+					((Entry) w.getW("ceLCMean")).setText("");
+					((Entry) w.getW("ceLCStd")).setText("");
+					((Entry) w.getW("ceRPMean")).setText("");
+					((Entry) w.getW("ceRPStd")).setText("");
 				}							
 			}
 		});
@@ -209,18 +232,19 @@ public class CellHandler {
 				
 				currentCell = ui.addCell();
 				w.getL("ceCells").addData( currentCell.type );
-				
-				/*if( ui.getCompartments().size() > 0 ) {
+								
+				if( ui.getCompartments().size() > 0 ) {
 					try {
-						currentCell.compartments.add(ui.getCompartmentByType(ui.getCompartments().get(0)));
+						Compartment c = ui.getCompartmentByType(ui.getCompartments().get(0));						
+						currentCell.compartments.add(c);
+						currentCell.compartmentLabels.add("s1");
+						currentCell.xList.add(0.0);
+						currentCell.yList.add(0.0);
 					} catch (Exception e) {					
 						e.printStackTrace();
 					}
 				}
-			
-				currentCell.xList = new ArrayList<Double>();
-				currentCell.yList = new ArrayList<Double>();
-				*/
+				
 				w.getC("stCellSel").setChanged(true);
 				w.getC("rCellSel").setChanged(true);				
 			}
@@ -250,8 +274,13 @@ public class CellHandler {
 			@Override
 			public void onClicked(Button arg0) {
 				
-				currentCompartment = ui.addCompartment();						
+				currentCompartment = ui.addCompartment();
+				currentCell.compartments.add(currentCompartment);
+				currentCell.compartmentLabels.add("s");
+				currentCell.xList.add(0.0);
+				currentCell.yList.add(0.0);
 				w.getL("ceCompartments").addData( currentCompartment.type );
+				
 				w.getC("stCompSel").setChanged(true);
 				w.getC("rCompSel").setChanged(true);
 			}
@@ -264,7 +293,13 @@ public class CellHandler {
 			public void onClicked(Button arg0) {
 				
 				try {
-					ui.removeCompartment( w.getL("ceCompartments").getSelected() );
+					ui.removeCompartment( w.getL("ceCompartments").getSelected() );		
+					for(int i = 0; i < currentCell.compartments.size(); i++) {
+						if( currentCell.compartments.get(i).type.equals(w.getL("ceCompartments").getSelected()) ) {
+							currentCell.compartments.remove(i);
+						}
+					}
+										
 				} catch (Exception e) {		
 					e.printStackTrace();
 				}				

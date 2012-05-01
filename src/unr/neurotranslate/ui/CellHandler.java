@@ -210,6 +210,17 @@ public class CellHandler {
 				currentCell = ui.addCell();
 				w.getL("ceCells").addData( currentCell.type );
 				
+				/*if( ui.getCompartments().size() > 0 ) {
+					try {
+						currentCell.compartments.add(ui.getCompartmentByType(ui.getCompartments().get(0)));
+					} catch (Exception e) {					
+						e.printStackTrace();
+					}
+				}
+			
+				currentCell.xList = new ArrayList<Double>();
+				currentCell.yList = new ArrayList<Double>();
+				*/
 				w.getC("stCellSel").setChanged(true);
 				w.getC("rCellSel").setChanged(true);				
 			}

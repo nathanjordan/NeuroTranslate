@@ -35,6 +35,9 @@ public class MorphologyHandler {
 				//Refresh lists
 				w.getL("mCells").listToModel( ui.getCells() );		
 				
+				FileHandler.nmlSaveState = true;
+				FileHandler.ncsSaveState = false;	
+				
 				return false;
 			}
 		});	

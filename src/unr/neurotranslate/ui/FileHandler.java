@@ -35,6 +35,9 @@ public class FileHandler {
 	private File temp;
 	static Boolean ncsState = false; 
 	static Boolean nmlState = false;
+	static Boolean ncsSaveState = false; 
+	static Boolean nmlSaveState = false;
+	
 	
 	// Constructor
 	public FileHandler( final WidgetReferences w  ) throws FileNotFoundException {
@@ -101,6 +104,8 @@ public class FileHandler {
 					// Figure out which type of file was imported 							
 					if( importedFile.endsWith( ".in" ) ) {
 								
+						ncsSaveState = true;
+						
 						// load data model
 						NCSData d = FileController.loadNCSFile( importedFile );
 						UIControllerNCS ui = new UIControllerNCS( d );
@@ -128,21 +133,21 @@ public class FileHandler {
 					}											
 											
 					else if( importedFile.endsWith( ".xml" ) ) {
-															
+											
+						nmlSaveState = true;
+						
 						// load data model
 						NeuroMLConverter n = null;
 						try {
 							n = new NeuroMLConverter();
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
+						} catch (Exception e1) {						
 							e1.printStackTrace();
 						}
 						
 						Neuroml d = null;
 						try {
 							d = n.readNeuroML( importedFile );
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
+						} catch (Exception e) {				
 							e.printStackTrace();
 						}
 						
@@ -165,8 +170,7 @@ public class FileHandler {
 					}
 																							
 					else {
-						// Handle invalid file exception
-						// TODO - throw exception
+						// Handle invalid file exception						
 						
 					}
 				}			
@@ -190,9 +194,9 @@ public class FileHandler {
 				if( response == ResponseType.OK ) {
 												
 					// Write to file!
-					if( ncsState)
+					if( ncsSaveState )
 						FileController.saveNCSFile(  saveDialog.getFilename() );
-					if( nmlState)
+					if( nmlSaveState )
 						FileController.saveNeuroMLFile( saveDialog.getFilename() );
 										
 					Notification notification = new Notification( "Saved to: ", saveDialog.getFilename(), "", arg0);

@@ -196,6 +196,9 @@ public class LayerHandler {
 			}
 		});
 		
+		// Modifying layers
+		
+		
 		// Layer Shell type
 		((Entry) w.getW("lLSType")).connect( new Activate() {
 			
@@ -256,7 +259,6 @@ public class LayerHandler {
 				Utils.setColor("lLType", Utils.activeGreen, w);
 			}
 		});
-
 	}
 	
 }

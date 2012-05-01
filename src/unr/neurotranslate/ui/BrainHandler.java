@@ -23,6 +23,7 @@ public class BrainHandler {
 		w.getL("bColTypes").setAvailable( ui.getColumns() );
 		w.getL("bStimInjects").setAvailable( ui.getStimulusInjects() );
 		w.getL("bReports").setAvailable( ui.getReports() );
+
 		
 		w.getW("brainScroll").connect(new Widget.ExposeEvent() {
 			
@@ -32,7 +33,10 @@ public class BrainHandler {
 				// fill out all entries/lists/combo boxes								
 				w.getL("bColTypes").listToModel(w.getL("bColTypes").getAvailable());
 				w.getL("bStimInjects").listToModel(w.getL("bStimInjects").getAvailable());
-				w.getL("bReports").listToModel(w.getL("bReports").getAvailable());				
+				w.getL("bReports").listToModel(w.getL("bReports").getAvailable());		
+				
+				FileHandler.nmlSaveState = false;
+				FileHandler.ncsSaveState = true;
 				return false;
 			}
 		});

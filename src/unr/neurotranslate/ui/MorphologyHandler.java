@@ -299,7 +299,9 @@ public class MorphologyHandler {
 					point.setY( Double.parseDouble(((Entry) w.getW("mProY")).getText()) );
 					point.setZ( Double.parseDouble(((Entry) w.getW("mProZ")).getText()) );					
 					currentSegment.setProximal(point);
+					Utils.setColor("mProX", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
+					Utils.setColor("mProX", Utils.red, w);
 					arg0.setText("");
 				}
 			}
@@ -318,8 +320,10 @@ public class MorphologyHandler {
 					point.setY(d);					
 					point.setZ( Double.parseDouble(((Entry) w.getW("mProZ")).getText()) );					
 					currentSegment.setProximal(point);
+					Utils.setColor("mProY", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("mProY", Utils.red, w);
 				}
 			}	
 						
@@ -338,8 +342,10 @@ public class MorphologyHandler {
 					point.setY( Double.parseDouble(((Entry) w.getW("mProY")).getText()) );					
 					point.setZ( d );					
 					currentSegment.setProximal(point);
+					Utils.setColor("mProZ", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("mProZ", Utils.red, w);
 				}
 			}
 		});
@@ -357,8 +363,10 @@ public class MorphologyHandler {
 					point.setY( Double.parseDouble(((Entry) w.getW("mDisX")).getText()) );
 					point.setZ( Double.parseDouble(((Entry) w.getW("mDisY")).getText()) );					
 					currentSegment.setDistal(point);
+					Utils.setColor("mDisX", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("mDisX", Utils.red, w);
 				}				
 			}
 		});
@@ -376,8 +384,10 @@ public class MorphologyHandler {
 					point.setY(d);					
 					point.setZ( Double.parseDouble(((Entry) w.getW("mDisZ")).getText()) );					
 					currentSegment.setDistal(point);
+					Utils.setColor("mDisY", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("mDisY", Utils.red, w);
 				}				
 			}
 		});
@@ -395,8 +405,10 @@ public class MorphologyHandler {
 					point.setY( Double.parseDouble(((Entry) w.getW("mDisY")).getText()) );					
 					point.setZ( d );					
 					currentSegment.setDistal(point);
+					Utils.setColor("mDisZ", Utils.activeGreen, w);
 				} catch( NumberFormatException nfe ) {
 					arg0.setText("");
+					Utils.setColor("mDisZ", Utils.red, w);
 				}				
 			}
 		});	

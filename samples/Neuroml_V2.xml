@@ -190,7 +190,7 @@
     <!-- The electrical inputs to the cells in the network -->
     <inputs units="SI Units" xmlns="http://morphml.org/networkml/schema">
         
-        <input name="StInject1">
+        <input name="Input1">
             <pulse_input delay="0.0" duration=".001" amplitude="0.5" />
             <target population="ExcitatoryC1LA">
 		<site_pattern>
@@ -198,7 +198,7 @@
 		</site_pattern> 
             </target>
         </input>
-	<input name="StInject2">
+	<input name="Input2">
             <pulse_input delay="0.0" duration=".001" amplitude="0.5" />
             <target population="InhibitoryC1LB">
 		<site_pattern>

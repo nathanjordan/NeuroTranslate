@@ -1,9 +1,16 @@
 package unr.neurotranslate.conversion;
 
+import java.lang.management.MemoryType;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.List;
 
+import org.morphml.biophysics.schema.BiophysicsType;
+import org.morphml.biophysics.schema.Mechanism;
+import org.morphml.biophysics.schema.MechanismType;
+import org.morphml.biophysics.schema.NamedParameter;
+import org.morphml.biophysics.schema.SpecAxialResistance;
+import org.morphml.biophysics.schema.SpecCapacitance;
+import org.morphml.biophysics.schema.VariableParameter;
 import org.morphml.channelml.schema.ConductanceLaw;
 import org.morphml.channelml.schema.CurrentVoltageRelation;
 import org.morphml.channelml.schema.DoubleExponentialSynapse;
@@ -13,8 +20,6 @@ import org.morphml.metadata.schema.Point;
 import org.morphml.metadata.schema.RectangularBox;
 import org.morphml.metadata.schema.Units;
 import org.morphml.metadata.schema.RectangularBox.Size;
-import org.morphml.morphml.schema.Cell;
-import org.morphml.morphml.schema.Cells;
 import org.morphml.morphml.schema.Segment;
 import org.morphml.morphml.schema.Cell.Segments;
 import org.morphml.networkml.schema.ConnectivityPattern;
@@ -32,10 +37,9 @@ import org.morphml.networkml.schema.PulseInput;
 import org.morphml.networkml.schema.RandomArrangement;
 import org.morphml.networkml.schema.ConnectivityPattern.FixedProbability;
 import org.morphml.networkml.schema.InputSitePattern.PercentageCells;
+import org.morphml.neuroml.schema.Level3Biophysics;
 import org.morphml.neuroml.schema.Level3Cell;
 import org.morphml.neuroml.schema.Level3Cells;
-
-import unr.neurotranslate.ncs.Brain;
 import unr.neurotranslate.ncs.Column;
 import unr.neurotranslate.ncs.Connect;
 import unr.neurotranslate.ncs.Layer;
@@ -43,7 +47,6 @@ import unr.neurotranslate.ncs.Report;
 import unr.neurotranslate.ncs.SpikeShape;
 import unr.neurotranslate.ncs.StimulusInject;
 import unr.neurotranslate.ncs.SynPSG;
-import unr.neurotranslate.ncs.Synapse;
 
 
 final class PopulationRef
@@ -104,8 +107,6 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			ArrayList<Segment> segmentList = new ArrayList<Segment>();
 			Segment tempSegment;
 			Point tempPoint;
-
-			ConversionNote cNote;
 			
 			BigInteger idIndex = new BigInteger("0");
 			
@@ -153,6 +154,44 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 				}
 				
 				segmentList.clear();
+				
+				// bio 
+				Level3Biophysics bio = new Level3Biophysics();
+				
+				bio.setUnits(Units.SI_UNITS);
+				
+				// mechanism
+				Mechanism arg0 = new Mechanism();
+				
+				// parameter
+				NamedParameter np = new NamedParameter();
+				
+				np.setName("gmax");
+				
+				np.setValue(0.03);
+				
+				np.getGroups().add("all");
+				
+				
+				// group
+				
+				arg0.getParameters().add(np);
+				
+				arg0.setName("mech");
+			
+				arg0.setType(MechanismType.CHANNEL_MECHANISM);
+				
+				SpecCapacitance specC = new SpecCapacitance();
+	
+				bio.setSpecCapacitance(specC);
+				
+				SpecAxialResistance specA = new SpecAxialResistance();
+				
+				bio.setSpecAxialResistance(specA);
+				
+				tempCell.setBiophysics(bio);
+				
+				tempCell.getBiophysics().getMechanisms().add(arg0);
 				
 				tempCell.setSegments(neuromlSegments);
 				// add the cell to the cell list
@@ -324,7 +363,7 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 						// set the probability
 						fp.setProbability(connect.probability * 100.0);
 						cp.setFixedProbability(fp);
-						// set porbability in projection
+						// set probability in projection
 						proj.setConnectivityPattern(cp);
 						// add projection to the list
 						neuromlProjs.getProjections().add(proj);
@@ -396,7 +435,6 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 		int popCounter = 1;
 		BigInteger bI;
 		double yloc;
-		List<String> completedLayers = new ArrayList<String>();
 		RectangularBox rb;
 		Point tempPoint;
 		Size tempSize;
@@ -410,61 +448,52 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 			for( unr.neurotranslate.ncs.Layer layer : column.layers )
 			{   
 				index = 0;
-				
-				// if this layer hasn't been added already
-				if( !completedLayers.contains(layer.type))
+				// for each cell in the layer
+				for( unr.neurotranslate.ncs.Cell cell : layer.cellTypes )
 				{
-					// for each cell in the layer
-					for( unr.neurotranslate.ncs.Cell cell : layer.cellTypes )
-					{
-						popRef = new PopulationRef();
-						neuromlPop = new Population();
-						ra = new RandomArrangement();
-						rb = new RectangularBox();
-						tempPoint = new Point();
-						tempSize = new Size();
-						neuromlPopLoc = new PopulationLocation();
-						// set cell_type
-						neuromlPop.setCellType(cell.type);
-						// set population size
-						bI = new BigInteger(layer.cellTypeQuantities.get(index).toString());
-						ra.setPopulationSize(bI);
-						// set up point for corner
-						tempPoint.setX(0.0);
-						yloc = layer.layerShell.lower * .01 * column.columnShell.height; 
-						tempPoint.setY(yloc);
-						tempPoint.setZ(0.0);
-						// set corner
-						rb.setCorner(tempPoint);
-						// set up size for rectangular box size
-						tempSize.setWidth(column.columnShell.width);
-						boxHeight = (layer.layerShell.upper * .01 * column.columnShell.height) - yloc; 
-						tempSize.setHeight(boxHeight);
-						// set size
-						rb.setSize(tempSize);
-						// set rectangular location
-						ra.setRectangularLocation(rb);
-						// set the random arrangement
-						neuromlPopLoc.setRandomArrangement(ra);
-						// set the pop location
-						neuromlPop.setPopLocation(neuromlPopLoc);
-						// set the name
-						neuromlPop.setName(cell.type + "Pop" + popCounter);
-						// add the population to the list 
-						neuromlPops.getPopulations().add(neuromlPop);
-						// add to PopulationReference for later use
-						popRef.setPopName(cell.type + "Pop" + popCounter);
-						popRef.setLayerName(layer.type);
-						popRef.setCellName(cell.type);
-						index++;
-						popCounter++;
-						PopulationReference.add(popRef);
-					}
+					popRef = new PopulationRef();
+					neuromlPop = new Population();
+					ra = new RandomArrangement();
+					rb = new RectangularBox();
+					tempPoint = new Point();
+					tempSize = new Size();
+					neuromlPopLoc = new PopulationLocation();
+					// set cell_type
+					neuromlPop.setCellType(cell.type);
+					// set population size
+					bI = new BigInteger(layer.cellTypeQuantities.get(index).toString());
+					ra.setPopulationSize(bI);
+					// set up point for corner
+					tempPoint.setX(0.0);
+					yloc = layer.layerShell.lower * .01 * column.columnShell.height; 
+					tempPoint.setY(yloc);
+					tempPoint.setZ(0.0);
+					// set corner
+					rb.setCorner(tempPoint);
+					// set up size for rectangular box size
+					tempSize.setWidth(column.columnShell.width);
+					boxHeight = (layer.layerShell.upper * .01 * column.columnShell.height) - yloc; 
+					tempSize.setHeight(boxHeight);
+					// set size
+					rb.setSize(tempSize);
+					// set rectangular location
+					ra.setRectangularLocation(rb);
+					// set the random arrangement
+					neuromlPopLoc.setRandomArrangement(ra);
+					// set the pop location
+					neuromlPop.setPopLocation(neuromlPopLoc);
+					// set the name
+					neuromlPop.setName(cell.type + "Pop" + popCounter);
+					// add the population to the list 
+					neuromlPops.getPopulations().add(neuromlPop);
+					// add to PopulationReference for later use
+					popRef.setPopName(cell.type + "Pop" + popCounter);
+					popRef.setLayerName(layer.type);
+					popRef.setCellName(cell.type);
+					index++;
+					popCounter++;
+					PopulationReference.add(popRef);
 				}
-				// add layer to completed list so its cell groups aren't repeated
-				completedLayers.add(layer.type);
-				// add popRef to array list
-				
 			}
 		}
 		
@@ -479,10 +508,6 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 		int endIndex;
 		char[] tempArr = new char[10];
 		int tempIndex = 0;
-		String tempString2 = null;	
-		//unr.neurotranslate.ncs.Synapse tempSyn = new unr.neurotranslate.ncs.Synapse(); 
-		
-		//int ncsIndex = ncsSynapses.size();
 		
 		// for each synapse in NCS
 		for(int i = 0; i < ncsSynapses.size(); i++ )
@@ -526,8 +551,6 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
 					tempIndex = 0;
 				}
 			}
-			
-			// TODO decay time
 			
 			// set decay time
 			if( tempArr.length > 0 )
@@ -585,7 +608,6 @@ public static Level3Cells generateNeuromlCells( ArrayList<unr.neurotranslate.ncs
     	cNote.message = message;
 		return cNote;
     }
-	
 	
 	
 }

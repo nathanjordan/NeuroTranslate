@@ -164,7 +164,7 @@ public class NeuromlToNCS {
     			{
     				if( synapse.type.equals(pro.getSynapseProps().get(0).getSynapseType()) )
     				{
-    					tempConnect = new Connect(col1.type, lay1.type, cell1.type, comp1.type, col2.type, lay2.type, cell2.type, comp2.type, synapse.type, pro.getConnectivityPattern().getFixedProbability().getProbability(), 0);
+    					tempConnect = new Connect(col1.type, lay1.type, cell1.type, cell1.compartmentLabels.get(0), col2.type, lay2.type, cell2.type, cell2.compartmentLabels.get(0), synapse.type, pro.getConnectivityPattern().getFixedProbability().getProbability(), 0);
     					tempConnect.column1 = col1;
     					tempConnect.column2 = col2;
     					tempConnect.layer1 = lay1;
@@ -856,7 +856,7 @@ public class NeuromlToNCS {
 		   stimInject = new StimulusInject();
 		   
 		   // type
-		   stimInject.type = input.getName();
+		   stimInject.type = input.getName() + "Inject";
 		   
 		   //stimulus
 		   for( Stimulus stimulus : stimulusList )
@@ -1014,13 +1014,10 @@ public class NeuromlToNCS {
 			   }
 		   }
 		   // RSE_INIT 2V 
-		   ncsSynapse.rseInit = new Double[2];
-		   ncsSynapse.rseInit[0] = 0.0;
-		   ncsSynapse.rseInit[1] = 0.0;
+		   ncsSynapse.rseInit = null;
+		
 		   // PREV_SPIKE_RANGE 2V
-		   ncsSynapse.prevSpikeRange = new Double[2];
-		   ncsSynapse.prevSpikeRange[0] = 0.0;
-		   ncsSynapse.prevSpikeRange[1] = 0.0;
+		   ncsSynapse.prevSpikeRange = null;
 		   
 		   if( synType.getDoubExpSyn() == null )
 		   {
@@ -1124,7 +1121,6 @@ public class NeuromlToNCS {
     	Report report = null;
     	int i = 1;
     	
-    		
 		// get every group but need column etc. 
     	for( location loc : locations )
     	{
@@ -1165,7 +1161,6 @@ public class NeuromlToNCS {
     	
     		report.ascii = "";
 
-    		
     		reports.add(report);
     		i++;
     			

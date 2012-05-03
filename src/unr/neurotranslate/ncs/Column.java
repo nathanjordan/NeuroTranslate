@@ -34,7 +34,7 @@ public class Column extends TypedElement {
 		
 		for( Layer l : layers )
 			
-			s = NCSWriter.writeProperty("LAYER", l.type, s);
+			s = NCSWriter.writeProperty("LAYER_TYPE", l.type, s);
 		
 		for( Connect c : connects )
 			

@@ -15,7 +15,7 @@ public class SynPSG extends TypedElement {
 		
 		s = NCSWriter.writeProperty("TYPE", type, s);
 		
-		s = NCSWriter.writeProperty("FILENAME", filename, s);
+		s = NCSWriter.writeProperty("PSG_FILE", filename, s);
 		
 		s = s.concat("END_SYN_PSG\n\n");
 		

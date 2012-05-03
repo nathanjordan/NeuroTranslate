@@ -117,7 +117,7 @@ public class Connect {
 		
 		if( compartment1 != null)
 			
-			s = s.concat( "\t" + compartment1.type );
+			s = s.concat( "\t" + cellType1.compartmentLabels.get(0) + "\n" + "\t" );
 		
 		if( column2 != null)
 			
@@ -133,7 +133,7 @@ public class Connect {
 		
 		if( compartment2 != null)
 			
-			s = s.concat( "\t" + compartment2.type );
+			s = s.concat( "\t" + cellType2.compartmentLabels.get(0) + "\n" + "\t" );
 		
 		if( synapseType != null)
 			
@@ -147,7 +147,7 @@ public class Connect {
 			
 			s = s.concat( "\t" + speed );
 		
-		s = s.concat("\n");
+		s = s.concat("\n \n");
 		
 		return s;
 		

@@ -41,7 +41,7 @@ public class StimulusInject extends TypedElement {
 		s = NCSWriter.writeProperty("STIM_TYPE", stimulus.type, s);
 		
 		if( column != null && layer != null && cell != null && compartment != null && probability != null )
-		s = s.concat("\tINJECT\t" + column.type + "\t" + layer.type + "\t" + cell.type + "\t" + compartment.type + "\t" + probability + "\n");
+		s = s.concat("\tINJECT\t" + column.type + "\t" + layer.type + "\t" + cell.type + "\t" + cell.compartmentLabels.get(0) + "\t" + probability + "\n");
 		
 		s = s.concat("END_STIMULUS_INJECT\n\n");
 		
